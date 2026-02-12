@@ -352,9 +352,9 @@ function setupHeroVideo() {
     if (!heroMedia) return;
 
     const videos = [
-        'media/Live_Show_Programmer_Creates_Scene.mp4',
-        'media/Looping_Video_Generation_Complete.mp4',
-        'media/Video_Generation_With_Asian_Male_Operator.mp4'
+        'media/splash/Live_Show_Programmer_Creates_Scene.mp4',
+        'media/splash/Looping_Video_Generation_Complete.mp4',
+        'media/splash/Video_Generation_With_Asian_Male_Operator.mp4'
     ];
     // Simple check if media files exist? No, just try to play.
     const randomVideo = videos[Math.floor(Math.random() * videos.length)];
