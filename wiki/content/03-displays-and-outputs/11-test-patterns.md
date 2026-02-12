@@ -1,5 +1,7 @@
 ---
-title: "Test Patterns"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
 
 
