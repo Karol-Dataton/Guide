@@ -364,9 +364,6 @@ function setupHeroVideo() {
             <video autoplay muted loop playsinline>
                 <source src="${randomVideo}" type="video/mp4">
             </video>
-            <div class="hero-overlay">
-                <img src="media/product_mark_org.png" alt="WATCHOUT Logo" class="hero-logo">
-            </div>
             <div class="hero-text">WATCHOUT</div>
         </div>
     `;

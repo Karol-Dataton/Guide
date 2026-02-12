@@ -659,7 +659,7 @@ body::before {
     color: white;
     letter-spacing: 0.1em;
     z-index: 20;
-    text-shadow: 0 4px 30px rgba(0, 0, 0, 0.9);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8), 0 8px 30px rgba(0, 0, 0, 0.6);
     opacity: 0;
     animation: fadeInText 1s ease-out 0.5s forwards;
     pointer-events: none;
