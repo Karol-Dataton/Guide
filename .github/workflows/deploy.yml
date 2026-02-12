@@ -24,13 +24,15 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
+        working-directory: wiki
 
       - name: Build Documentation
         run: npm run build
+        working-directory: wiki
 
       - name: Create Artifact
         run: |
-          zip -r watchout-docs-${{ github.ref_name }}.zip . -x ".git/*" ".github/*" "node_modules/*"
+          zip -r watchout-docs-${{ github.ref_name }}.zip wiki -x "wiki/.git/*" "wiki/.github/*" "wiki/node_modules/*"
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -42,5 +44,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./
+          publish_dir: ./wiki
           keep_files: true
