@@ -644,8 +644,37 @@ body::before {
     height: auto;
     filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
     border-radius: 16px;
-    opacity: 0.95;
+    opacity: 0.5;
     animation: fadeInLogo 1.5s ease-out;
+}
+
+.hero-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: var(--font-header);
+    font-size: 5rem;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 0.05em;
+    z-index: 20;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    animation: fadeInText 1s ease-out 0.5s forwards;
+    pointer-events: none;
+}
+
+@keyframes fadeInText {
+    from {
+        opacity: 0;
+        transform: translate(-50%, -40%);
+    }
+
+    to {
+        opacity: 1;
+        transform: translate(-50%, -50%);
+    }
 }
 
 @keyframes float {
