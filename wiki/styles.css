@@ -2,16 +2,9 @@
 /* Using the same visual style as the shortcuts page */
 
 @font-face {
-    font-family: 'Futura Now Text';
-    src: url('fonts/FuturaNowText-Rg.otf') format('opentype');
+    font-family: 'Futura Now Headline';
+    src: url('fonts/FuturaNowHeadline-Rg.otf') format('opentype');
     font-weight: normal;
-    font-style: normal;
-}
-
-@font-face {
-    font-family: 'Futura Now Text';
-    src: url('fonts/FuturaNowText-Bd.otf') format('opentype');
-    font-weight: bold;
     font-style: normal;
 }
 
@@ -38,8 +31,8 @@
     --cat-effect: #f43f5e;
     --cat-table: #a855f7;
     --cat-warp: #14b8a6;
-    --font-family: 'Futura Now Text', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-header: 'Futura Now Text', sans-serif;
+    --font-family: 'Futura Now Headline', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-header: 'Futura Now Headline', sans-serif;
     --border-radius: 10px;
     --border-radius-lg: 16px;
     --transition-fast: 150ms ease;
