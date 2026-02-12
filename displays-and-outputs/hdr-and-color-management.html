@@ -1,0 +1,1656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHOUT User Guide - HDR and Color Management">
+    <title>HDR and Color Management - WATCHOUT 7 User Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="../styles-badges.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+</head>
+<body data-page-id="hdr-and-color-management">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo" style="text-decoration: none; color: inherit;">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHOUT GUIDE</h1>
+                </a>
+
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter  " data-index="0">
+            <a href="../getting-started/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Getting Started</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    
+                        <a class="toc-subsection " href="../getting-started/welcome-to-watchout-7.html">
+                            Welcome To Watchout 7
+                        </a>
+                        
+                        <a class="toc-subsection " href="../getting-started/system-requirements.html">
+                            System Requirements
+                        </a>
+                        
+                        <a class="toc-subsection " href="../getting-started/installing-watchout.html">
+                            Installing Watchout
+                        </a>
+                        
+                        <a class="toc-subsection " href="../getting-started/launching-the-application.html">
+                            Launching The Application
+                        </a>
+                        
+                        <a class="toc-subsection " href="../getting-started/network-configuration.html">
+                            Network Configuration
+                        </a>
+                        
+                        <a class="toc-subsection " href="../getting-started/quick-start-tutorial.html">
+                            Quick Start Tutorial
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="1">
+            <a href="../working-with-shows/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">2. Working with Shows</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    
+                        <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
+                            Creating a New Show
+                        </a>
+                        
+                        <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
+                            Opening Existing Shows
+                        </a>
+                        
+                        <a class="toc-subsection " href="../working-with-shows/saving-your-work.html">
+                            Saving Your Work
+                        </a>
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-properties.html">
+                            Show Properties
+                        </a>
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-consolidation.html">
+                            Show Consolidation
+                        </a>
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-information.html">
+                            Show Information
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter expanded " data-index="2">
+            <a href="../displays-and-outputs/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
+                <span class="toc-chapter-title">3. Displays and Outputs</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    
+                        <a class="toc-subsection " href="../displays-and-outputs/adding-displays.html">
+                            Adding Displays
+                        </a>
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/virtual-displays.html">
+                            Virtual Displays
+                        </a>
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/3d-mapping-projectors.html">
+                            3D Mapping Projectors
+                        </a>
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-grid-setup.html">
+                            Display Grid Setup
+                        </a>
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-properties.html">
+                            Display Properties
+                        </a>
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/edge-blending.html">
+                            Edge Blending
+                        </a>
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/warp-geometry.html">
+                            Warp Geometry
+                        </a>
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-masks.html">
+                            Display Masks
+                        </a>
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/sdi-output.html">
+                            SDI Output
+                        </a>
+                        
+                        <a class="toc-subsection active" href="../displays-and-outputs/hdr-and-color-management.html">
+                            HDR and Color Management
+                        </a>
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/test-patterns.html">
+                            Test Patterns
+                        </a>
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-calibration.html">
+                            Display Calibration
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="3">
+            <a href="../assets-asset-manager/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></span>
+                <span class="toc-chapter-title">4. Assets & Asset Manager</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager.html">
+                            Asset Manager
+                        </a>
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-types.html">
+                            Asset Types
+                        </a>
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-properties.html">
+                            Asset Properties
+                        </a>
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/formats-codecs.html">
+                            Formats & Codecs
+                        </a>
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/svg-shapes.html">
+                            SVG Shapes
+                        </a>
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/dynamic-assets.html">
+                            Dynamic Assets
+                        </a>
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/image-sequences.html">
+                            Image Sequences
+                        </a>
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/web-user-interface.html">
+                            Web User Interface
+                        </a>
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-watcher.html">
+                            Asset Watcher
+                        </a>
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-transfer.html">
+                            Asset Transfer
+                        </a>
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager-settings.html">
+                            Asset Manager Settings
+                        </a>
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/import-export-and-mapping.html">
+                            Import, Export, and Mapping
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="4">
+            <a href="../timeline-and-cues/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                <span class="toc-chapter-title">5. Timeline and Cues</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    
+                        <a class="toc-subsection " href="../timeline-and-cues/understanding-the-timeline.html">
+                            Understanding the Timeline
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adding-media-cues.html">
+                            Adding Media Cues
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/working-with-layers.html">
+                            Working with Layers
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adjusting-timing.html">
+                            Adjusting Timing
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/control-cues.html">
+                            Control Cues
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/marker-cues.html">
+                            Marker Cues
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/output-cues.html">
+                            Output Cues
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/variables-and-variable-cues.html">
+                            Variables and Variable Cues
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/artnet-fixture-cues.html">
+                            ArtNet Fixture Cues
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/compositions.html">
+                            Compositions
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cue-sets-and-variants.html">
+                            Cue Sets and Variants
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/media-snapshots.html">
+                            Media Snapshots
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/stacking-order.html">
+                            Stacking Order
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/timeline-triggers-and-expressions.html">
+                            Timeline Triggers and Expressions
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/blind-edit-mode.html">
+                            Blind Edit Mode
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/insert-and-delete-time.html">
+                            Insert and Delete Time
+                        </a>
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/conditional-cues.html">
+                            Conditional Cues
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="5">
+            <a href="../effects-and-tweens/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">6. Effects and Tweens</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    
+                        <a class="toc-subsection " href="../effects-and-tweens/understanding-tweens.html">
+                            Understanding Tweens
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/position-and-movement.html">
+                            Position and Movement
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/scale-and-size.html">
+                            Scale and Size
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/rotation-effects.html">
+                            Rotation Effects
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/opacity-and-fades.html">
+                            Opacity and Fades
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/cropping.html">
+                            Cropping
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/color-adjustments.html">
+                            Color Adjustments
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blur-effects.html">
+                            Blur Effects
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/audio-volume.html">
+                            Audio Volume
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/corner-pinning.html">
+                            Corner Pinning
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/linear-wipe.html">
+                            Linear Wipe
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blend-modes.html">
+                            Blend Modes
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/frame-blending.html">
+                            Frame Blending
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/chroma-key.html">
+                            Chroma Key
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/key-and-fill.html">
+                            Key and Fill
+                        </a>
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/tween-expressions.html">
+                            Tween Expressions
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="6">
+            <a href="../playback/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>
+                <span class="toc-chapter-title">7. Playback</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    
+                        <a class="toc-subsection " href="../playback/starting-and-stopping.html">
+                            Starting and Stopping
+                        </a>
+                        
+                        <a class="toc-subsection " href="../playback/preview-mode.html">
+                            Preview Mode
+                        </a>
+                        
+                        <a class="toc-subsection " href="../playback/connecting-to-display-servers.html">
+                            Connecting to Display Servers
+                        </a>
+                        
+                        <a class="toc-subsection " href="../playback/going-online.html">
+                            Going Online
+                        </a>
+                        
+                        <a class="toc-subsection " href="../playback/running-your-show.html">
+                            Running Your Show
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="7">
+            <a href="../the-interface/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></span>
+                <span class="toc-chapter-title">8. The Interface</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    
+                        <a class="toc-subsection " href="../the-interface/main-window-overview.html">
+                            Main Window Overview
+                        </a>
+                        
+                        <a class="toc-subsection " href="../the-interface/the-stage-window.html">
+                            The Stage Window
+                        </a>
+                        
+                        <a class="toc-subsection " href="../the-interface/the-timeline-window.html">
+                            The Timeline Window
+                        </a>
+                        
+                        <a class="toc-subsection " href="../the-interface/the-cue-list-window.html">
+                            The Cue List Window
+                        </a>
+                        
+                        <a class="toc-subsection " href="../the-interface/the-assets-window.html">
+                            The Assets Window
+                        </a>
+                        
+                        <a class="toc-subsection " href="../the-interface/the-properties-panel.html">
+                            The Properties Panel
+                        </a>
+                        
+                        <a class="toc-subsection " href="../the-interface/the-network-window.html">
+                            The Network Window
+                        </a>
+                        
+                        <a class="toc-subsection " href="../the-interface/the-nodes-window.html">
+                            The Nodes Window
+                        </a>
+                        
+                        <a class="toc-subsection " href="../the-interface/customizing-your-workspace.html">
+                            Customizing Your Workspace
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="8">
+            <a href="../network-setup/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                <span class="toc-chapter-title">9. Network Setup</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    
+                        <a class="toc-subsection " href="../network-setup/network-overview.html">
+                            Network Overview
+                        </a>
+                        
+                        <a class="toc-subsection " href="../network-setup/display-servers.html">
+                            Display Servers
+                        </a>
+                        
+                        <a class="toc-subsection " href="../network-setup/connecting-devices.html">
+                            Connecting Devices
+                        </a>
+                        
+                        <a class="toc-subsection " href="../network-setup/firewall-configuration.html">
+                            Firewall Configuration
+                        </a>
+                        
+                        <a class="toc-subsection " href="../network-setup/ndi-video-sources.html">
+                            NDI Video Sources
+                        </a>
+                        
+                        <a class="toc-subsection " href="../network-setup/dante-audio.html">
+                            Dante Audio
+                        </a>
+                        
+                        <a class="toc-subsection " href="../network-setup/node-management-and-maintenance.html">
+                            Node Management and Maintenance
+                        </a>
+                        
+                        <a class="toc-subsection " href="../network-setup/remote-file-access.html">
+                            Remote File Access
+                        </a>
+                        
+                        <a class="toc-subsection " href="../network-setup/working-directory-management.html">
+                            Working Directory Management
+                        </a>
+                        
+                        <a class="toc-subsection " href="../network-setup/software-updates.html">
+                            Software Updates
+                        </a>
+                        
+                        <a class="toc-subsection " href="../network-setup/time-synchronization.html">
+                            Time Synchronization
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="9">
+            <a href="../external-control/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">10. External Control</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    
+                        <a class="toc-subsection " href="../external-control/external-control-overview.html">
+                            External Control Overview
+                        </a>
+                        
+                        <a class="toc-subsection " href="../external-control/variables-and-inputs.html">
+                            Variables and Inputs
+                        </a>
+                        
+                        <a class="toc-subsection " href="../external-control/osc-protocol.html">
+                            OSC Protocol
+                        </a>
+                        
+                        <a class="toc-subsection " href="../external-control/midi-bridge.html">
+                            MIDI Bridge
+                        </a>
+                        
+                        <a class="toc-subsection " href="../external-control/ltc-bridge.html">
+                            LTC Bridge
+                        </a>
+                        
+                        <a class="toc-subsection " href="../external-control/http-rest-api.html">
+                            HTTP REST API
+                        </a>
+                        
+                        <a class="toc-subsection " href="../external-control/artnet-input.html">
+                            ArtNet Input
+                        </a>
+                        
+                        <a class="toc-subsection " href="../external-control/posistagenet.html">
+                            PosiStageNet
+                        </a>
+                        
+                        <a class="toc-subsection " href="../external-control/midi-show-control.html">
+                            MIDI Show Control
+                        </a>
+                        
+                        <a class="toc-subsection " href="../external-control/watchout-6-protocol.html">
+                            WATCHOUT 6 Protocol
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="10">
+            <a href="../keyboard-shortcuts/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.001"></path><path d="M10 8h.001"></path><path d="M14 8h.001"></path><path d="M18 8h.001"></path><path d="M8 12h.001"></path><path d="M12 12h.001"></path><path d="M16 12h.001"></path><path d="M7 16h10"></path></svg></span>
+                <span class="toc-chapter-title">11. Keyboard Shortcuts</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    
+                        <a class="toc-subsection " href="../keyboard-shortcuts/file-operations.html">
+                            File Operations
+                        </a>
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/edit-commands.html">
+                            Edit Commands
+                        </a>
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/stage-navigation.html">
+                            Stage Navigation
+                        </a>
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/timeline-controls.html">
+                            Timeline Controls
+                        </a>
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/tween-shortcuts.html">
+                            Tween Shortcuts
+                        </a>
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/window-management.html">
+                            Window Management
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="11">
+            <a href="../troubleshooting/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">12. Troubleshooting</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    
+                        <a class="toc-subsection " href="../troubleshooting/common-issues.html">
+                            Common Issues
+                        </a>
+                        
+                        <a class="toc-subsection " href="../troubleshooting/performance-tips.html">
+                            Performance Tips
+                        </a>
+                        
+                        <a class="toc-subsection " href="../troubleshooting/display-problems.html">
+                            Display Problems
+                        </a>
+                        
+                        <a class="toc-subsection " href="../troubleshooting/network-issues.html">
+                            Network Issues
+                        </a>
+                        
+                        <a class="toc-subsection " href="../troubleshooting/media-playback-issues.html">
+                            Media Playback Issues
+                        </a>
+                        
+                        <a class="toc-subsection " href="../troubleshooting/feedback-reports.html">
+                            Feedback Reports
+                        </a>
+                        
+                        <a class="toc-subsection " href="../troubleshooting/getting-help.html">
+                            Getting Help
+                        </a>
+                        
+                </div>
+            
+        </div>
+        
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="tools-section">
+                    <span class="tools-label">Tools</span>
+                    <div class="tools-buttons">
+                        <a href="../../shortcuts/index.html" class="tools-btn" title="Keyboard Shortcuts">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
+                                <path d="M6 8h.001"></path>
+                                <path d="M10 8h.001"></path>
+                                <path d="M14 8h.001"></path>
+                                <path d="M18 8h.001"></path>
+                                <path d="M8 12h.001"></path>
+                                <path d="M12 12h.001"></path>
+                                <path d="M16 12h.001"></path>
+                                <path d="M7 16h10"></path>
+                            </svg>
+                        </a>
+                        <a href="../../planner/index.html" class="tools-btn" title="Infrastructure Planner">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <circle cx="18" cy="5" r="3"></circle>
+                                <circle cx="6" cy="12" r="3"></circle>
+                                <circle cx="18" cy="19" r="3"></circle>
+                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
+                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
+                            </svg>
+                        </a>
+                        <a href="../../test-patterns/index.html" class="tools-btn" title="Test Pattern Generator">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <rect x="3" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="3" width="7" height="7"></rect>
+                                <rect x="14" y="14" width="7" height="7"></rect>
+                                <rect x="3" y="14" width="7" height="7"></rect>
+                            </svg>
+                        </a>
+                        <button class="tools-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                             <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                            </svg>
+                            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="5"></circle>
+                                <line x1="12" y1="1" x2="12" y2="3"></line>
+                                <line x1="12" y1="21" x2="12" y2="23"></line>
+                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                                <line x1="1" y1="12" x2="3" y2="12"></line>
+                                <line x1="21" y1="12" x2="23" y2="12"></line>
+                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                            </svg>
+                             <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <circle cx="12" cy="12" r="4"></circle>
+                                <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                                <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                                <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                                <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                            </svg>
+                             <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                                <polyline points="2 17 12 22 22 17"></polyline>
+                                <polyline points="2 12 12 17 22 12"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">3. Displays and Outputs</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">HDR and Color Management</span>
+        
+                </div>
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><div class="article-metadata"><span class="article-badge" data-badge="Miro">Miro</span><span class="article-badge" data-badge="Karol">Karol</span><span class="article-badge" data-badge="Jacquie">Jacquie</span></div><h2>HDR and Color Management</h2>
+
+<p>WATCHOUT includes a color-managed rendering pipeline that handles the full chain from media decode through compositing to display output. This pipeline supports both standard dynamic range (SDR) and high dynamic range (HDR) workflows, with configurable color spaces and transfer functions at the asset, cue, and display levels.</p>
+
+<p>Understanding how color spaces, transfer functions, and bit depth interact is important for achieving accurate, consistent color across multi-display setups — especially when mixing SDR and HDR content or driving displays with different capabilities.</p>
+
+<div class='note-box'><p>In simple terms, color management is about making sure colors look the way they should on every screen in your setup. "SDR" is standard brightness (what most screens have shown for decades), while "HDR" allows much brighter highlights and deeper darks — closer to what your eyes see in the real world.
+</p></div>
+
+<h3>The Rendering Pipeline</h3>
+
+<p>WATCHOUT's color-managed pipeline processes every pixel through a consistent chain of operations, regardless of the source format. Each input asset's encoded pixel values are first linearized by applying the appropriate Electro-Optical Transfer Function (EOTF), which reverses the transfer curve and converts the signal back to linear light. The linear values are then converted from the asset's native color primaries into the internal compositing color space — 16-bit linear Rec. 2020.</p>
+
+<p>All compositing, blending, effects, and layer mixing happen in this single wide-gamut linear space (referred to as "Optical Space" in the diagram below). Working in linear light ensures that operations like alpha blending, color correction, and gradient rendering are physically accurate.</p>
+
+<p>Once the final composited image is ready, it is converted from the internal Rec. 2020 primaries to the target display's color space, and the appropriate Opto-Electronic Transfer Function (OETF) is applied to encode the result for the output signal — for example, PQ encoding for an HDR display or a gamma curve for an SDR display.</p>
+
+<img src="../media/watchout-pipeline.svg" alt="The WATCHOUT Pipeline" class="content-image" style="width: 100%;">
+
+<h3>Color Spaces</h3>
+A color space defines the range of colors (the "gamut") that can be represented, specified by three color primaries and a white point. WATCHOUT supports the following color spaces for display output:
+
+<div class='note-box'><p>A color space's gamut determines the range of colors it can represent. sRGB and Rec. 709 have a relatively narrow gamut suitable for conventional displays, while Rec. 2020 covers a significantly wider range — enabling more saturated and vivid color reproduction. The display hardware must support the target gamut for the wider color space to produce a visible benefit.
+</p></div>
+
+<ul>
+<li><strong>sRGB</strong> — the standard color space for computer displays, using Rec. 709 primaries with the sRGB transfer function. This is appropriate for most conventional displays and projectors.</li>
+<li><strong>sRGB (gamma 2.2)</strong> — identical primaries to sRGB but using a simple 2.2 power-law gamma curve instead of the sRGB piecewise function. Some display hardware and workflows assume a pure gamma 2.2 characteristic. This is the default color space for new displays.</li>
+<li><strong>Rec. 601</strong> — the legacy standard-definition color space, sometimes relevant for SD broadcast or older equipment.</li>
+<li><strong>Rec. 709</strong> — the HD broadcast standard, sharing primaries with sRGB but using the SDR (BT.1886) transfer function. Use this for broadcast-oriented outputs and SDI feeds.</li>
+<li><strong>Rec. 2020</strong> — a wide-gamut color space that covers a significantly larger portion of visible colors than Rec. 709. Used for UHD/4K SDR content that requires extended color accuracy. Because no current display hardware can reproduce the full Rec. 2020 gamut, this space serves as a target for wide-gamut content that will be displayed on the best available hardware.</li>
+<li><strong>Rec. 2100 PQ</strong> — combines Rec. 2020 wide-gamut primaries with the Perceptual Quantizer (PQ) transfer function, as defined in the SMPTE ST 2084 standard. PQ maps absolute luminance levels up to 10,000 nits, making it the foundation of HDR10 delivery.</li>
+<li><strong>Rec. 2100 PQ (HDR10)</strong> — the same as Rec. 2100 PQ but with HDR10 static metadata signaling enabled. Use this when the display or downstream equipment expects HDR10 metadata (MaxCLL, MaxFALL) in the signal.</li>
+<li><strong>Rec. 2100 HLG</strong> — combines Rec. 2020 primaries with the Hybrid Log-Gamma (HLG) transfer function. HLG is designed to be backward-compatible with SDR displays — the lower portion of the curve resembles a standard gamma curve, while the upper portion extends into HDR. This is commonly used in live broadcast HDR workflows.</li>
+
+</ul>
+<div class="interactive-widget" id="gamut-comparison-widget"
+    style="display: flex; flex-direction: column; align-items: center;">
+    <canvas id="gamut-canvas" width="2705" height="2970" style="width: 600px; height: auto; display: block;"></canvas>
+    <div class="widget-controls">
+        <label><input type="checkbox" id="show-srgb" checked> sRGB / Rec. 709</label>
+        <label><input type="checkbox" id="show-rec2020"> Rec. 2020</label>
+        <label><input type="checkbox" id="show-rec601"> Rec. 601</label>
+    </div>
+    <div class="widget-explainer">
+        The <strong>Rec. 2020</strong> triangle covers a significantly larger area of visible colors than the standard
+        <strong>sRGB</strong> space.
+    </div>
+</div>
+<script>
+    (function () {
+        const canvas = document.getElementById('gamut-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        const cieImage = new Image();
+        cieImage.src = '../cie_1931_chromaticity_diagram.png';
+        cieImage.onload = () => draw();
+
+        const primaries = {
+            srgb: { r: [0.64, 0.33], g: [0.30, 0.60], b: [0.15, 0.06], color: 'rgba(255, 215, 0, 0.8)', label: 'sRGB/709' },
+            rec2020: { r: [0.708, 0.292], g: [0.170, 0.797], b: [0.131, 0.046], color: 'rgba(147, 51, 234, 0.8)', label: 'Rec.2020' },
+            rec601: { r: [0.630, 0.340], g: [0.310, 0.595], b: [0.155, 0.070], color: 'rgba(50, 150, 255, 0.8)', label: 'Rec.601' }
+        };
+
+        // Alignment values for native 2705x2970 image
+        // Calibrated on 2026-02-12
+        const scaleX = 2820;
+        const scaleY = 2820;
+        const offsetX = 312;
+        const offsetY = 2745;
+
+        function toCanvas(x, y) {
+            return { x: x * scaleX + offsetX, y: offsetY - y * scaleY };
+        }
+
+        function drawTriangle(p, style, fill) {
+            const r = toCanvas(p.r[0], p.r[1]);
+            const g = toCanvas(p.g[0], p.g[1]);
+            const b = toCanvas(p.b[0], p.b[1]);
+
+            ctx.beginPath();
+            ctx.moveTo(r.x, r.y);
+            ctx.lineTo(g.x, g.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.closePath();
+
+            // Line width and points scaled for 2.7k resolution
+            ctx.lineWidth = 9;
+            ctx.strokeStyle = style;
+            ctx.stroke();
+
+            if (fill) {
+                ctx.fillStyle = style.replace('0.8', '0.15');
+                ctx.fill();
+            }
+
+            // Draw points
+            [r, g, b].forEach(pt => {
+                ctx.beginPath();
+                ctx.arc(pt.x, pt.y, 18, 0, Math.PI * 2);
+                ctx.fillStyle = style;
+                ctx.fill();
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Fill canvas background
+            ctx.fillStyle = '#111';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw CIE Diagram Image at 1:1 scale
+            if (cieImage.complete) {
+                ctx.drawImage(cieImage, 0, 0);
+            }
+
+            if (document.getElementById('show-rec2020').checked) drawTriangle(primaries.rec2020, primaries.rec2020.color, true);
+            if (document.getElementById('show-srgb').checked) drawTriangle(primaries.srgb, primaries.srgb.color, true);
+            if (document.getElementById('show-rec601').checked) drawTriangle(primaries.rec601, primaries.rec601.color, true);
+        }
+
+        ['show-srgb', 'show-rec2020', 'show-rec601'].forEach(id => {
+            document.getElementById(id).addEventListener('change', draw);
+        });
+
+        setTimeout(draw, 10);
+    })();
+</script>
+
+<h3>Transfer Functions</h3>
+Transfer functions define how linear light values are encoded into the non-linear signal that displays expect. Encoding fewer bits for bright values and more bits for dark values matches human visual perception, reducing visible banding:
+
+<div class='note-box'><p>Your eyes are more sensitive to differences in dark shades than bright ones. A transfer function takes advantage of this by spending more of the signal's precision on the darks (where you'd notice problems) and less on the brights. Different standards (sRGB, PQ, HLG) are just different strategies for doing this, optimized for different situations.
+</p></div>
+
+<ul>
+<li><strong>sRGB</strong> — a piecewise curve with a linear segment near black and a power-law segment for the rest. Standard peak brightness is 80 nits. Used with sRGB and standard computer displays.</li>
+<li><strong>SDR (BT.1886)</strong> — the broadcast SDR transfer function with a standard peak brightness of 100 nits. Used with Rec. 709 and Rec. 601 outputs.</li>
+<li><strong>PQ (Perceptual Quantizer)</strong> — an absolute luminance curve covering 0–10,000 nits. PQ encodes luminance values that map directly to real-world brightness levels, enabling HDR content to specify exact nit values. Used with Rec. 2100 PQ and HDR10.</li>
+<li><strong>HLG (Hybrid Log-Gamma)</strong> — a relative luminance curve with a standard peak of 1,000 nits. The lower half uses a gamma-like curve (backward-compatible with SDR displays), and the upper half uses a logarithmic extension for HDR highlights. Used with Rec. 2100 HLG.</li>
+
+</ul>
+<div class="interactive-widget" id="transfer-function-widget">
+    <canvas id="tf-canvas" width="800" height="500"></canvas>
+    <div class="widget-controls">
+        <label><input type="checkbox" id="show-srgb-tf" checked> sRGB</label>
+        <label><input type="checkbox" id="show-gamma22-tf" checked> Gamma 2.2</label>
+        <label><input type="checkbox" id="show-pq-tf" checked> PQ (ST 2084)</label>
+        <label><input type="checkbox" id="show-hlg-tf" checked> HLG</label>
+    </div>
+    <div class="widget-explainer">
+        Compare how different transfer functions map signal values to luminance. Note the <strong>logarithmic
+            scale</strong> on the Y-axis.
+    </div>
+</div>
+<script>
+    (function () {
+        const canvas = document.getElementById('tf-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        // Margins
+        const margin = { top: 20, right: 100, bottom: 40, left: 60 };
+        const graphW = width - margin.left - margin.right;
+        const graphH = height - margin.top - margin.bottom;
+
+        // Data curves
+        // X = Input (0..1)
+        // Y = Luminance (nits)
+        // sRGB: max 80 nits
+        // Gamma 2.2: max 100 nits (ref) or 80? Let's say 100 for SDR ref
+        // HLG: max 1000 nits
+        // PQ: max 10000 nits
+
+        // We use a log scale for Y axis 1..10000
+        const minNits = 1;
+        const maxNits = 10000;
+        const minLog = Math.log10(minNits);
+        const maxLog = Math.log10(maxNits);
+        const logRange = maxLog - minLog;
+
+        function toY(nits) {
+            let n = Math.max(minNits, nits);
+            let log = Math.log10(n);
+            let norm = (log - minLog) / logRange; // 0..1
+            return margin.top + graphH - (norm * graphH);
+        }
+
+        function toX(val) {
+            return margin.left + val * graphW;
+        }
+
+        // Transfer Functions (approx)
+
+        // --- EOTF Implementations ---
+
+        // sRGB EOTF (Signal 0..1 -> Luminance 0..80 nits)
+        // Piecewise function: Linear near black, Power law (approx 2.4) elsewhere
+        function sRGB_EOTF(v) {
+            let val;
+            if (v <= 0.04045) {
+                val = v / 12.92;
+            } else {
+                val = Math.pow((v + 0.055) / 1.055, 2.4);
+            }
+            return val * 80; // Standard definition maps roughly to 80 nits peak
+        }
+
+        // Gamma 2.2 EOTF (Signal 0..1 -> Luminance 0..100 nits)
+        // Simple power law
+        function Gamma22_EOTF(v) {
+            return Math.pow(v, 2.2) * 100; // Reference 100 nits
+        }
+
+        // PQ (Perceptual Quantizer) EOTF (Signal 0..1 -> Luminance 0..10000 nits)
+        // SMPTE ST 2084
+        function PQ_EOTF(v) {
+            // Constants
+            // Standard constants from SMPTE ST 2084
+            const m1_val = 2610 / 16384; // 0.1593017578125
+            const m2_val = 2523 / 4096 * 128; // 78.84375
+            const c1 = 3424 / 4096; // 0.8359375
+            const c2 = 2413 / 4096 * 32; // 18.8515625
+            const c3 = 2392 / 4096 * 32; // 18.6875
+
+            // Proper EOTF Formula:
+            // L = ( ( max( N^(1/m2) - c1, 0 ) ) / ( c2 - c3 * N^(1/m2) ) ) ^ (1/m1)
+            // Where N is the non-linear signal 0..1 (v in this function)
+
+            const N_p = Math.pow(v, 1 / m2_val);
+            const num = Math.max(N_p - c1, 0);
+            const den = c2 - c3 * N_p;
+
+            // Handle potential division by zero, though for v in [0,1] and standard constants, den should be > 0
+            if (den === 0) return 10000; // Max luminance
+
+            const val = Math.pow(num / den, 1 / m1_val);
+
+            return val * 10000; // Scale to 10000 nits peak
+        }
+
+        // HLG (Hybrid Log-Gamma) EOTF (Signal 0..1 -> Luminance 0..1000 nits)
+        // ARIB STD-B67
+        // HLG is relative. We assume a 1000 nit peak display for this visualization.
+        function HLG_EOTF(v) {
+            // Constants from ARIB STD-B67
+            const a = 0.17883277;
+            const b = 1 - 4 * a; // 0.28466892
+            const c = 0.5 - a * Math.log(4 * a); // 0.55991073
+
+            // Inverse OETF (Signal -> Scene Linear Light 0..1)
+            // This converts the HLG signal (v) back to linear scene light (E)
+            let E;
+            if (v <= 0.5) {
+                // For v <= 0.5, OETF is E' = sqrt(3E)
+                // So, E = (E')^2 / 3 = v^2 / 3
+                E = (v * v) / 3;
+            } else {
+                // For v > 0.5, OETF is E' = a * ln(12E - b) + c
+                // So, E = (exp((E' - c) / a) + b) / 12 = (exp((v - c) / a) + b) / 12
+                E = (Math.exp((v - c) / a) + b) / 12;
+            }
+
+            // OOTF (Opto-Optical Transfer Function) for display
+            // HLG EOTF includes a system gamma (OOTF) for display adaptation.
+            // L = Lw * E^gamma
+            // Lw is the nominal peak luminance of the display (e.g., 1000 nits).
+            // gamma is typically 1.2 for HLG.
+            const gamma = 1.2;
+            const Lw = 1000; // Assuming a 1000 nit reference display
+
+            return Lw * Math.pow(E, gamma);
+        }
+
+        function drawCurve(func, color, label, show) {
+            if (!show) return;
+            ctx.beginPath();
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2;
+
+            let moved = false;
+            for (let i = 0; i <= 200; i++) {
+                const x = i / 200; // 0..1
+                const nits = func(x);
+
+                const px = toX(x);
+                const py = toY(nits);
+
+                if (nits < minNits) continue; // Out of log graph range (below 1 nit)
+
+                if (!moved) {
+                    ctx.moveTo(px, py);
+                    moved = true;
+                } else {
+                    ctx.lineTo(px, py);
+                }
+            }
+            ctx.stroke();
+
+            // Draw label at end
+            const endNits = func(1.0);
+            const pEnd = { x: toX(1.0), y: toY(endNits) };
+            ctx.fillStyle = color;
+            ctx.font = '12px sans-serif';
+            ctx.fillText(label, pEnd.x + 5, pEnd.y + 4);
+        }
+
+        // Interaction state
+        let mouseX = -1;
+
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+
+            // Background
+            ctx.fillStyle = '#1e1e24';
+            ctx.fillRect(margin.left, margin.top, graphW, graphH);
+
+            // Grid lines (Log Y)
+            ctx.strokeStyle = '#333';
+            ctx.lineWidth = 1;
+            ctx.fillStyle = '#888';
+            ctx.font = '10px sans-serif';
+            ctx.textAlign = 'right';
+
+            // Powers of 10
+            for (let p = 0; p <= 4; p++) {
+                const nits = Math.pow(10, p);
+                const y = toY(nits);
+                ctx.beginPath();
+                ctx.moveTo(margin.left, y);
+                ctx.lineTo(width - margin.right, y);
+                ctx.stroke();
+                ctx.fillText(nits + (p === 4 ? ' nits' : ''), margin.left - 5, y + 4);
+            }
+
+            // Grid X (Input 0..1)
+            ctx.textAlign = 'center';
+            for (let i = 0; i <= 10; i++) {
+                const v = i / 10;
+                const x = toX(v);
+                ctx.beginPath();
+                ctx.moveTo(x, margin.top);
+                ctx.lineTo(x, height - margin.bottom);
+                ctx.stroke();
+                if (i % 2 === 0) ctx.fillText(v, x, height - margin.bottom + 15);
+            }
+
+            // Axis labels
+            ctx.save();
+            ctx.translate(15, height / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.textAlign = 'center';
+            ctx.font = '12px sans-serif';
+            ctx.fillStyle = '#aaa';
+            ctx.fillText("Luminance (nits) - Log Scale", 0, 0);
+            ctx.restore();
+
+            ctx.textAlign = 'center';
+            ctx.fillText("Input Signal (0.0 - 1.0)", margin.left + graphW / 2, height - 10);
+
+            // Draw Curves
+            const showSRGB = document.getElementById('show-srgb-tf').checked;
+            const showGamma = document.getElementById('show-gamma22-tf').checked;
+            const showPQ = document.getElementById('show-pq-tf').checked;
+            const showHLG = document.getElementById('show-hlg-tf').checked;
+
+            if (showSRGB) drawCurve(sRGB_EOTF, '#fcd34d', 'sRGB', true);
+            if (showGamma) drawCurve(Gamma22_EOTF, '#f87171', 'Gamma 2.2', true);
+            if (showHLG) drawCurve(HLG_EOTF, '#34d399', 'HLG', true);
+            if (showPQ) drawCurve(PQ_EOTF, '#60a5fa', 'PQ', true);
+
+            // Interaction - Crosshair
+            if (mouseX >= margin.left && mouseX <= width - margin.right) {
+                const v = (mouseX - margin.left) / graphW;
+                const x = mouseX;
+
+                ctx.beginPath();
+                ctx.strokeStyle = '#fff';
+                ctx.setLineDash([5, 5]);
+                ctx.moveTo(x, margin.top);
+                ctx.lineTo(x, height - margin.bottom);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Draw dots and values
+                const curves = [
+                    { name: 'PQ', func: PQ_EOTF, color: '#60a5fa', show: showPQ },
+                    { name: 'HLG', func: HLG_EOTF, color: '#34d399', show: showHLG },
+                    { name: 'Gamma', func: Gamma22_EOTF, color: '#f87171', show: showGamma },
+                    { name: 'sRGB', func: sRGB_EOTF, color: '#fcd34d', show: showSRGB },
+                ];
+
+                // Avoid overlap in labels
+                // We sort by Y position 
+                const points = curves.filter(c => c.show).map(c => {
+                    const nits = c.func(v);
+                    return { ...c, nits, y: toY(nits) };
+                }).sort((a, b) => a.y - b.y); // top to bottom
+
+                points.forEach(p => {
+                    // Dot
+                    ctx.beginPath();
+                    ctx.arc(x, p.y, 4, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.fill();
+
+                    // Box background for text
+                    const txt = `${Math.round(p.nits)}`;
+                    ctx.font = 'bold 12px monospace';
+                    const tw = ctx.measureText(txt).width;
+
+                    ctx.fillStyle = 'rgba(0,0,0,0.8)';
+                    ctx.fillRect(x + 10, p.y - 10, tw + 10, 20);
+
+                    ctx.fillStyle = p.color;
+                    ctx.textAlign = 'left';
+                    ctx.fillText(txt, x + 15, p.y + 4);
+                });
+            }
+        }
+
+        ['show-srgb-tf', 'show-gamma22-tf', 'show-pq-tf', 'show-hlg-tf'].forEach(id => {
+            document.getElementById(id).addEventListener('change', draw);
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            mouseX = e.clientX - rect.left;
+            draw();
+        });
+
+        canvas.addEventListener('mouseleave', () => {
+            mouseX = -1;
+            draw();
+        });
+
+        draw();
+    })();
+</script>
+
+<p>The choice of transfer function is determined by the color space you select on the display. For example, selecting Rec. 2100 PQ automatically uses the PQ transfer function.</p>
+
+<h3>Display Color Depth</h3>
+Color depth determines how many bits are used per color component in the output signal. Higher bit depth reduces banding artifacts, which is especially important for HDR content:
+
+<div class='note-box'><p>Bit depth is like the number of steps in a staircase between two colors. With only a few steps (8-bit), you might see visible "bands" where one shade jumps to the next — especially in gradients like a sunset sky. More steps (10-bit or higher) make those transitions smoother and invisible to the eye.
+</p></div>
+
+<ul>
+<li><strong>8 bpc (bits per component)</strong> — 256 levels per channel. Standard for SDR content on most displays. Adequate for sRGB and Rec. 709 workflows.</li>
+<li><strong>10 bpc</strong> — 1,024 levels per channel. Recommended for HDR output and wide-gamut content. PQ-encoded HDR10 requires at least 10-bit output to avoid visible banding in dark areas and gradients.</li>
+<li><strong>12 bpc</strong> — 4,096 levels per channel. Available for display hardware that supports it; useful for professional mastering and reference monitoring.</li>
+<li><strong>16 bpc</strong> — 65,536 levels per channel. The highest precision available, suitable for specialized workflows requiring extreme accuracy.</li>
+
+</ul>
+<div class="interactive-widget" id="bit-depth-widget">
+    <canvas id="bit-depth-canvas" width="800" height="200"></canvas>
+    <div class="widget-controls">
+        <label>Bit Depth: <select id="bit-depth-select">
+                <option value="8">8 bpc</option>
+                <option value="10">10 bpc</option>
+                <option value="12">12 bpc</option>
+            </select></label>
+        <label>Zoom Dark End: <input type="range" id="bit-depth-zoom" min="1" max="50" value="1" step="0.1"></label>
+    </div>
+    <div class="widget-explainer">
+        Select a lower bit depth (e.g., <strong>8 bpc</strong>) and increase <strong>Zoom</strong> to see quantization
+        banding artifacts in the dark gradients.
+    </div>
+</div>
+<script>
+    (function () {
+        const canvas = document.getElementById('bit-depth-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const width = canvas.width;
+        const height = canvas.height;
+
+        function draw() {
+            const depth = parseInt(document.getElementById('bit-depth-select').value);
+            const zoom = parseFloat(document.getElementById('bit-depth-zoom').value);
+
+            const levels = Math.pow(2, depth) - 1;
+            const imageData = ctx.createImageData(width, height);
+            const data = imageData.data;
+
+            // We draw a linear gradient from black to white.
+            // Zoom focuses on the dark end (0..1/zoom)
+
+            for (let x = 0; x < width; x++) {
+                // Normalized position 0..1
+                let t = x / width;
+
+                // Apply zoom (focus on darks)
+                t = t / zoom;
+
+                // Linear value 0..1
+                let val = t;
+
+                // Quantize
+                val = Math.floor(val * levels) / levels;
+
+                // Apply gamma correction (approx 2.2) for display
+                // We simulate Linear -> sRGB display
+                // If we didn't apply gamma, thebanding would be less visible in darks on a standard monitor
+                // But here we want to show the banding in the values themselves.
+                // To make it visible on screen, we convert linear value to sRGB byte
+
+                let displayVal = Math.pow(val, 1 / 2.2);
+
+                // Convert to 8-bit component for canvas
+                let pixelVal = Math.floor(displayVal * 255);
+
+                // Fill column
+                for (let y = 0; y < height; y++) {
+                    const idx = (y * width + x) * 4;
+                    data[idx] = pixelVal;
+                    data[idx + 1] = pixelVal;
+                    data[idx + 2] = pixelVal;
+                    data[idx + 3] = 255;
+                }
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+
+            // Draw text info
+            ctx.fillStyle = zoom > 10 ? '#fff' : '#000';
+            ctx.font = '24px "Futura Now Headline", Futura, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText(`Displaying 0 - ${(100 / zoom).toFixed(1)}% Luminance`, width / 2, 30);
+        }
+
+        document.getElementById('bit-depth-select').addEventListener('change', draw);
+        document.getElementById('bit-depth-zoom').addEventListener('input', draw);
+
+        draw();
+    })();
+</script>
+
+<p>Color depth is configured per display in <strong>Device Properties → Output → Signal</strong> and is available for GPU output types. SDI outputs currently operate at 8 bpc.</p>
+
+<h3>SDR White Point (Per-Cue)</h3>
+When SDR content plays on an HDR display, the system needs to know how bright "white" in the SDR content should appear relative to the HDR luminance range. The <strong>SDR White Point</strong> property on media cues controls this mapping.
+
+<div class='note-box'><p>Imagine you have a regular photo (SDR) and you want to show it on a screen that can go super bright (HDR). The SDR White Point tells the system "this is how bright the photo's white should be" — so it doesn't look washed out or blindingly overexposed on the HDR screen.
+</p></div>
+
+<p>The value is specified in nits (candelas per square meter) and ranges from 80 to 10,000. The default is <strong>200 nits</strong>, which provides a good balance for most projection and LED setups. For example:</p>
+
+<ul>
+<li>A value of <strong>100 nits</strong> means SDR white maps to 100 nits on the HDR display — typical for content mastered to broadcast SDR standards.</li>
+<li>A value of <strong>200 nits</strong> (default) maps SDR white to 200 nits, which works well for content viewed in typical ambient light conditions.</li>
+
+</ul>
+This setting only takes effect when the display is configured for an HDR color space. On SDR displays, it has no impact.
+
+<div class="interactive-widget" id="sdr-white-widget">
+    <div style="position: relative; height: 60px; background: linear-gradient(to right, #111, #fff); border-radius: 4px; margin-bottom: 30px; margin-top: 30px; width: 600px;"
+        id="nit-bar">
+        <!-- HDR Headroom Highlight -->
+        <div id="hdr-headroom"
+            style="position: absolute; right: 0; top: 0; bottom: 0; background: repeating-linear-gradient(45deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.1) 10px, rgba(139, 92, 246, 0.25) 10px, rgba(139, 92, 246, 0.25) 20px); border-left: 1px dashed rgba(255,255,255,0.3); pointer-events: none; overflow: hidden;">
+            <div
+                style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 700; letter-spacing: 1px; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">
+                HDR HEADROOM</div>
+        </div>
+
+        <!-- Markers -->
+        <div style="position: absolute; left: 0; bottom: -25px; font-size: 12px; color: #888;">0 nits (SDR Black)</div>
+        <div style="position: absolute; right: 0; bottom: -25px; font-size: 12px; color: #888;">10,000 nits</div>
+
+        <!-- Draggable Handle -->
+        <div id="white-point-handle"
+            style="position: absolute; top: -5px; bottom: -5px; width: 4px; background: var(--accent-primary); cursor: ew-resize; left: 50%; z-index: 10;">
+            <div style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: var(--accent-primary); color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"
+                id="white-point-label">203 nits</div>
+            <div
+                style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); color: var(--text-primary); font-size: 12px; font-weight: 600; white-space: nowrap;">
+                SDR White</div>
+        </div>
+    </div>
+
+    <style>
+        #sdr-white-widget .widget-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        #sdr-white-widget button {
+            padding: 10px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            background: var(--bg-tertiary, #292524);
+            color: var(--text-secondary, #a8a29e);
+            box-shadow: none;
+        }
+
+        #sdr-white-widget button:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        #sdr-white-widget button:active {
+            transform: translateY(1px);
+        }
+
+        #sdr-white-widget button.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border-color: transparent;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        #sdr-white-widget button.active:hover {
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+    </style>
+
+    <div class="widget-controls">
+        <button data-nits="100" onclick="setNits(100)">Set 100 nits (Broadcast)</button>
+        <button data-nits="203" onclick="setNits(203)">Set 203 nits (Reference)</button>
+        <button data-nits="400" onclick="setNits(400)">Set 400 nits</button>
+    </div>
+    <div class="widget-explainer">
+        Adjust the <strong>SDR White Point</strong> to define how bright standard content appears.
+        <br>The hatched area shows the remaining <strong>HDR Headroom</strong> for highlights.
+    </div>
+</div>
+<script>
+    // We need to attach this to the window or use a closure that exposes the setter
+    (function () {
+        const bar = document.getElementById('nit-bar');
+        const handle = document.getElementById('white-point-handle');
+        const label = document.getElementById('white-point-label');
+        const headroom = document.getElementById('hdr-headroom');
+
+        // Log scale: min 1 nit (for log), max 10000
+        const minLog = Math.log10(1);
+        const maxLog = Math.log10(10000);
+        const logRange = maxLog - minLog;
+
+        // Current nits
+        let currentNits = 203;
+
+        function nitsToPercent(nits) {
+            // Avoid log(0)
+            const n = Math.max(1, nits);
+            const log = Math.log10(n);
+            return ((log - minLog) / logRange) * 100;
+        }
+
+        function percentToNits(pct) {
+            const log = (pct / 100) * logRange + minLog;
+            return Math.pow(10, log);
+        }
+
+        function updateUI() {
+            const pct = nitsToPercent(currentNits);
+            handle.style.left = pct + '%';
+            label.textContent = Math.round(currentNits) + ' nits';
+
+            // Update Headroom
+            if (headroom) {
+                headroom.style.left = pct + '%';
+            }
+
+            // Update buttons active state
+            const buttons = document.querySelectorAll('#sdr-white-widget button');
+            buttons.forEach(btn => {
+                const btnNits = parseInt(btn.getAttribute('data-nits'));
+                if (Math.round(currentNits) === btnNits) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Global exposed function for buttons
+        window.setNits = function (n) {
+            currentNits = n;
+            updateUI();
+        };
+
+        // Dragging logic
+        let isDragging = false;
+
+        handle.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            document.body.style.userSelect = 'none';
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.body.style.userSelect = '';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const rect = bar.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            x = Math.max(0, Math.min(x, rect.width));
+            const pct = (x / rect.width) * 100;
+
+            // Clamp to SDR typical range for the handle dragging?
+            // User requirement: "SDR white point ... ranges from 80 to 500 nits" (actually 80-10000 in WATCHOUT, but handle for SDR white)
+            // The widget requirement says "draggable marker... range 80-500 nits"
+            // So we should clamp the *value* we can drag to, OR just let them drag anywhere but highlight valid range?
+            // "Draggable marker for the SDR white point (range 80–500 nits)"
+
+            let nits = percentToNits(pct);
+
+            // Clamp nits
+            nits = Math.max(80, Math.min(500, nits));
+
+            currentNits = nits;
+            updateUI();
+        });
+
+        // Init
+        updateUI();
+    })();
+</script>
+
+<h3>Per-Display Color Settings</h3>
+
+<p>Each display in WATCHOUT has independent color configuration in the <strong>Output → Signal</strong> section of Device Properties:</p>
+
+<ul>
+<li><strong>Color Space</strong> — selects the target color space and transfer function for GPU outputs. The available options are the full list described above (sRGB, sRGB gamma 2.2, Rec. 709, Rec. 2020, Rec. 2100 PQ, Rec. 2100 PQ HDR10, Rec. 2100 HLG).</li>
+<li><strong>Color Depth</strong> — selects the output bit depth (8, 10, 12, or 16 bpc) for GPU outputs.</li>
+
+</ul>
+These settings tell the renderer what format to output. They should match the capabilities of the physical display hardware. Setting an HDR color space on a display that only supports SDR will result in incorrect rendering.
+
+<h3>NDI Color Space</h3>
+
+<p>Displays configured with NDI output have a separate <strong>NDI Color Space</strong> setting that controls the color encoding of the NDI stream. The available options are:</p>
+
+<ul>
+<li><strong>Auto</strong> — lets the system choose based on resolution and context.</li>
+<li><strong>Rec. 601</strong> — for SD-resolution NDI streams or legacy receivers.</li>
+<li><strong>Rec. 709</strong> — the standard for HD NDI streams.</li>
+<li><strong>Rec. 2020</strong> — for wide-gamut NDI delivery to compatible receivers.</li>
+
+</ul>
+The NDI color space is independent of the GPU color space setting, since NDI and GPU outputs may serve different destinations with different requirements. NDI outputs also support the <strong>Interlaced</strong> toggle for compatibility with interlaced NDI receivers.
+
+<h3>Asset Color Space</h3>
+
+<p>Media assets carry color metadata that tells the renderer how to interpret the source pixels. WATCHOUT's decode pipeline detects the color space from the media container or codec metadata when available. If the metadata is missing or incorrect, you can override the asset's color space in the asset properties.</p>
+
+<p>The renderer uses this information to linearize the source correctly and, if necessary, convert from the asset's color primaries to the display's target primaries during compositing. Accurate asset color metadata is essential for correct rendering — if a Rec. 2020 asset is incorrectly tagged as Rec. 709, the colors will be desaturated on output.</p>
+
+<div class='note-box'><p>Every image or video file has a label that says "I was made using these colors." If that label is wrong or missing, WATCHOUT won't interpret the colors correctly — like reading a recipe in the wrong units. You can fix this by manually setting the correct color space on the asset.
+</p></div>
+
+<h3>White Point Calibration</h3>
+
+<p>Every display has a <strong>White Point</strong> setting in Device Properties, consisting of separate Red, Green, and Blue sliders (each ranging from 0.0 to 1.0, defaulting to 1.0). This is a per-display color temperature correction that adjusts the white balance of the output.</p>
+
+<p>The primary use case is <strong>projector color matching</strong> in multi-projector setups. When adjacent projectors have slightly different color temperatures (one appears warmer, another cooler), adjusting the white point sliders brings them into visual alignment. For example, if a projector's output appears too blue, reduce the Blue slider slightly until the white tone matches neighboring units.</p>
+
+<h3>Tone Mapping</h3>
+When HDR content is rendered to an SDR display, the high dynamic range must be compressed to fit the SDR output range without losing important detail in highlights and shadows. WATCHOUT uses a <strong>Hable tone mapping operator</strong> for this conversion, which preserves natural-looking midtones while smoothly compressing highlights toward peak white.
+
+<p>Tone mapping is applied automatically when the source content has a wider dynamic range than the target display. No manual configuration is required — the system handles the conversion based on the source and destination transfer functions.</p>
+
+<div class='info-box'><p><strong>Multi-display color consistency:</strong> Use the per-display white point sliders to visually match color temperature across all outputs. Work with a neutral test image (gray ramp or white field) and adjust under final show lighting conditions. Lock display settings once calibration is approved to prevent accidental changes.
+</p></div></div><div class="section-nav">
+                <a href="sdi-output.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="test-patterns.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated February 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+</body>
+</html>
