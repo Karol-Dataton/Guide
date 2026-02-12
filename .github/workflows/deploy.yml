@@ -2,8 +2,10 @@ name: Deploy Watchout Guide
 
 on:
   push:
+    branches:
+      - main  # Trigger on pushes to main
     tags:
-      - 'v*'
+      - 'v*'   # Also trigger on version tags
 
 permissions:
   contents: write
