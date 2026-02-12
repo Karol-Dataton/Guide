@@ -1,7 +1,8 @@
 ---
-title: "Show Information"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
-
 
 ## Show Information
 
@@ -82,13 +83,3 @@ The **Technical Details** section shows file-level information about the show:
 - **Last Modified** — the most recent modification date and time
 
 If the show was opened from a Director (not from a local file), these fields display "n/a" since there is no local file to report on.
-
-### Use Cases
-
-**Pre-deployment verification:** Before loading a show onto a production system, open Show Information to confirm the display count matches the physical setup, check that there are no unknown/missing assets, and verify the timeline count and cue complexity.
-
-**Performance diagnostics:** If playback performance is lower than expected, the cue count and timeline complexity can help identify whether the show is pushing system limits. A very high cue count on a single timeline, or many simultaneously active timelines, may require optimization.
-
-**Show documentation:** Use the statistics as a quick reference when handing off a show to another operator, or when documenting a production for archival purposes. The information provides a concise summary of what the show contains without needing to manually inspect every timeline and asset.
-
-**Asset auditing:** The asset breakdown and unknown asset count help identify whether all required media is present and accounted for. If the unknown count is greater than zero, some assets referenced by cues may have been deleted or not yet transferred to the Asset Manager.

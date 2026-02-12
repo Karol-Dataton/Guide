@@ -1,7 +1,8 @@
 ---
-title: "Show Properties"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
-
 
 ## Show Properties
 

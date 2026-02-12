@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="WATCHOUT User Guide - Creating a New Show">
-    <title>Creating a New Show - WATCHOUT 7 User Guide</title>
+    <meta name="description" content="WATCHOUT User Guide - Creating A New Show">
+    <title>Creating A New Show - WATCHOUT 7 User Guide</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -111,7 +111,7 @@
                 <div class="toc-subsections expanded">
                     
                         <a class="toc-subsection active" href="../working-with-shows/creating-a-new-show.html">
-                            Creating a New Show
+                            Creating A New Show
                         </a>
                         
                         <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
@@ -829,14 +829,14 @@
             <span class="breadcrumb-separator">›</span>
             <a href="index.html" class="breadcrumb-item">2. Working with Shows</a>
             <span class="breadcrumb-separator">›</span>
-            <span class="breadcrumb-item current">Creating a New Show</span>
+            <span class="breadcrumb-item current">Creating A New Show</span>
         
                 </div>
             </header>
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Creating a New Show</h2>
+                    <div class="section-content-body"><div class="article-metadata"><span class="article-badge" data-badge="Jacquie">Jacquie</span><span class="article-badge" data-badge="JME">JME</span><span class="article-badge" data-badge="Karol">Karol</span></div><h2>Creating a New Show</h2>
 
 <p>Every WATCHOUT project begins with creating a show. A show is the container for all your displays, timelines, cues, and media references—essentially your entire production wrapped into a single document that can be saved, shared, and deployed across your network.</p>
 
@@ -895,5 +895,49 @@
     <script src="../toc-data.js"></script>
     <script src="../content-data.js"></script>
     <script src="../app.js"></script>
+    
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const checkConfetti = () => {
+            const badges = document.querySelectorAll('.article-badge');
+            if (badges.length > 0) {
+                const activeBadges = document.querySelectorAll('.article-badge.active');
+                if (activeBadges.length === badges.length) {
+                    var duration = 3 * 1000;
+                    var animationEnd = Date.now() + duration;
+                    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+                    function random(min, max) {
+                      return Math.random() * (max - min) + min;
+                    }
+
+                    var interval = setInterval(function() {
+                      var timeLeft = animationEnd - Date.now();
+
+                      if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                      }
+
+                      var particleCount = 50 * (timeLeft / duration);
+                      confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
+                      confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
+                    }, 250);
+                }
+            }
+        };
+        
+        // Check after a short delay to allow app.js to restore state
+        setTimeout(checkConfetti, 500);
+        
+        // Also check on click in case user completes it interactively
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('article-badge')) {
+                setTimeout(checkConfetti, 100);
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

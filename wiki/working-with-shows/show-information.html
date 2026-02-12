@@ -111,7 +111,7 @@
                 <div class="toc-subsections expanded">
                     
                         <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
-                            Creating a New Show
+                            Creating A New Show
                         </a>
                         
                         <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
@@ -836,7 +836,7 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Show Information</h2>
+                    <div class="section-content-body"><div class="article-metadata"><span class="article-badge" data-badge="Jacquie">Jacquie</span><span class="article-badge" data-badge="JME">JME</span><span class="article-badge" data-badge="Karol">Karol</span></div><h2>Show Information</h2>
 
 <p>The <strong>Show Information</strong> dialog provides a statistical overview of the current show, giving you a quick summary of its contents, complexity, and file details. It is a read-only view — no settings are changed here — designed for auditing, documentation, and pre-deployment verification.</p>
 
@@ -924,17 +924,7 @@ The asset count includes only assets that are actually referenced by the show (u
 <li><strong>Last Modified</strong> — the most recent modification date and time</li>
 
 </ul>
-If the show was opened from a Director (not from a local file), these fields display "n/a" since there is no local file to report on.
-
-<h3>Use Cases</h3>
-
-<p><strong>Pre-deployment verification:</strong> Before loading a show onto a production system, open Show Information to confirm the display count matches the physical setup, check that there are no unknown/missing assets, and verify the timeline count and cue complexity.</p>
-
-<p><strong>Performance diagnostics:</strong> If playback performance is lower than expected, the cue count and timeline complexity can help identify whether the show is pushing system limits. A very high cue count on a single timeline, or many simultaneously active timelines, may require optimization.</p>
-
-<p><strong>Show documentation:</strong> Use the statistics as a quick reference when handing off a show to another operator, or when documenting a production for archival purposes. The information provides a concise summary of what the show contains without needing to manually inspect every timeline and asset.</p>
-
-<p><strong>Asset auditing:</strong> The asset breakdown and unknown asset count help identify whether all required media is present and accounted for. If the unknown count is greater than zero, some assets referenced by cues may have been deleted or not yet transferred to the Asset Manager.</p></div><div class="section-nav">
+If the show was opened from a Director (not from a local file), these fields display "n/a" since there is no local file to report on.</div><div class="section-nav">
                 <a href="show-consolidation.html" class="nav-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -967,5 +957,49 @@ If the show was opened from a Director (not from a local file), these fields dis
     <script src="../toc-data.js"></script>
     <script src="../content-data.js"></script>
     <script src="../app.js"></script>
+    
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const checkConfetti = () => {
+            const badges = document.querySelectorAll('.article-badge');
+            if (badges.length > 0) {
+                const activeBadges = document.querySelectorAll('.article-badge.active');
+                if (activeBadges.length === badges.length) {
+                    var duration = 3 * 1000;
+                    var animationEnd = Date.now() + duration;
+                    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+                    function random(min, max) {
+                      return Math.random() * (max - min) + min;
+                    }
+
+                    var interval = setInterval(function() {
+                      var timeLeft = animationEnd - Date.now();
+
+                      if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                      }
+
+                      var particleCount = 50 * (timeLeft / duration);
+                      confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
+                      confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
+                    }, 250);
+                }
+            }
+        };
+        
+        // Check after a short delay to allow app.js to restore state
+        setTimeout(checkConfetti, 500);
+        
+        // Also check on click in case user completes it interactively
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('article-badge')) {
+                setTimeout(checkConfetti, 100);
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

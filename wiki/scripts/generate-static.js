@@ -110,7 +110,52 @@ ASSETS_TO_COPY.forEach(asset => {
 });
 
 // --- HTML Template ---
-function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs) {
+const CONFETTI_SCRIPT = `
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const checkConfetti = () => {
+            const badges = document.querySelectorAll('.article-badge');
+            if (badges.length > 0) {
+                const activeBadges = document.querySelectorAll('.article-badge.active');
+                if (activeBadges.length === badges.length) {
+                    var duration = 3 * 1000;
+                    var animationEnd = Date.now() + duration;
+                    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+                    function random(min, max) {
+                      return Math.random() * (max - min) + min;
+                    }
+
+                    var interval = setInterval(function() {
+                      var timeLeft = animationEnd - Date.now();
+
+                      if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                      }
+
+                      var particleCount = 50 * (timeLeft / duration);
+                      confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
+                      confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
+                    }, 250);
+                }
+            }
+        };
+        
+        // Check after a short delay to allow app.js to restore state
+        setTimeout(checkConfetti, 500);
+        
+        // Also check on click in case user completes it interactively
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('article-badge')) {
+                setTimeout(checkConfetti, 100);
+            }
+        });
+    });
+</script>
+`;
+
+function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs, extraScripts = '') {
     const relPath = getRelativePath(depth);
 
     const htmlTemplate = `<!DOCTYPE html>
@@ -290,6 +335,7 @@ function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs) {
     <script src="[[RELATIVE_PATH]]toc-data.js"></script>
     <script src="[[RELATIVE_PATH]]content-data.js"></script>
     <script src="[[RELATIVE_PATH]]app.js"></script>
+    ${extraScripts}
 </body>
 </html>`;
 
@@ -479,8 +525,16 @@ chapters.forEach(chapter => {
             <span class="breadcrumb-item current">${sub.title}</span>
         `;
 
+        let extraScripts = '';
+        if (subBody) {
+            const badgeRegex = /class="article-badge([^"]*)"/g;
+            if (badgeRegex.test(subBody)) {
+                extraScripts = CONFETTI_SCRIPT;
+            }
+        }
+
         const subSidebar = generateSidebar(sub.slug, 1);
-        const subHtml = generatePageHtml(sub.title, subBody, subSidebar, 1, subBreadcrumbs);
+        const subHtml = generatePageHtml(sub.title, subBody, subSidebar, 1, subBreadcrumbs, extraScripts);
 
         fs.writeFileSync(path.join(chapterDir, `${sub.slug}.html`), subHtml);
         console.log(`Generated: ${chapter.slug}/${sub.slug}.html`);
@@ -582,10 +636,11 @@ function generateStatsPage() {
 
             let sectionWords = 0;
             let contentFound = false;
+            let sectionHtml = null;
 
             if (chapterContentData && chapterContentData.sections) {
                 // Try fuzzy match again
-                let sectionHtml = chapterContentData.sections[sub.title];
+                sectionHtml = chapterContentData.sections[sub.title];
 
                 // Reuse fuzzy match logic
                 if (!sectionHtml) {
@@ -606,11 +661,41 @@ function generateStatsPage() {
                 }
             }
 
-            if (!contentFound || sectionWords < 50) { // arbitrary threshold for "empty"
+            let needsAttention = !contentFound || sectionWords < 50;
+            let reason = sectionWords < 50 ? 'Low Word Count' : '';
+
+            let untickedBadgeNames = [];
+
+            // Check for unticked badges
+            if (sectionHtml) {
+                // Regex to match badge span with class and data-badge
+                const regex = /<span\s+[^>]*class="article-badge([^"]*)"[^>]*data-badge="([^"]*)"/g;
+                const badges = [...sectionHtml.matchAll(regex)];
+
+                badges.forEach(m => {
+                    const classAttr = m[1];
+                    const badgeName = m[2];
+                    if (!classAttr.includes('active')) {
+                        untickedBadgeNames.push(badgeName);
+                    }
+                });
+
+                if (untickedBadgeNames.length > 0) {
+                    needsAttention = true;
+                    reason = reason ? `${reason}, Unticked Badges` : 'Unticked Badges';
+                }
+            }
+
+            if (needsAttention) {
                 emptySections.push({
                     chapter: chapter.title,
+                    chapterSlug: chapter.slug,
                     title: sub.title,
-                    words: sectionWords
+                    slug: sub.slug,
+                    words: sectionWords,
+                    reason: reason,
+                    untickedBadges: untickedBadgeNames,
+                    pageId: slugify(sub.title)
                 });
             }
 
@@ -655,8 +740,11 @@ function generateStatsPage() {
         const fontSize = 1 + (weight * 2.5); // 1rem to 3.5rem
         const opacity = 0.6 + (weight * 0.4); // 0.6 to 1.0
 
-        return `<span style="font-size: ${fontSize.toFixed(2)}rem; opacity: ${opacity.toFixed(2)}; margin: 5px 10px; display: inline-block;">${word}</span>`;
+        return `<span class="blurred-word" style="font-size: ${fontSize.toFixed(2)}rem; opacity: ${opacity.toFixed(2)}; margin: 5px 10px; display: inline-block;">${word}</span>`;
     }).join('');
+
+    const untickedItems = emptySections.filter(i => i.reason && i.reason.includes('Unticked Badges'));
+    const lowCountItems = emptySections.filter(i => !i.reason || !i.reason.includes('Unticked Badges'));
 
     // Build HTML Content
     const statsBody = `
@@ -724,28 +812,104 @@ function generateStatsPage() {
                     </tr>
                 </thead>
                 <tbody>
-                    ${chapterStats.map(stat => `
+                    ${chapterStats.map(stat => {
+        let medal = '';
+        // Calculate rank based on words
+        const sortedChapters = [...chapterStats].sort((a, b) => b.words - a.words);
+        const rank = sortedChapters.findIndex(c => c.title === stat.title);
+
+        if (rank === 0) medal = '🥇 ';
+        if (rank === 1) medal = '🥈 ';
+        if (rank === 2) medal = '🥉 ';
+
+        return `
                         <tr>
-                            <td style="padding: 12px; border-bottom: 1px solid var(--border-subtle); color: var(--text-primary);">${stat.title}</td>
+                            <td style="padding: 12px; border-bottom: 1px solid var(--border-subtle); color: var(--text-primary);">${medal}${stat.title}</td>
                             <td style="padding: 12px; text-align: right; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">${stat.sections}</td>
                             <td style="padding: 12px; text-align: right; border-bottom: 1px solid var(--border-subtle); color: var(--text-secondary);">${stat.words.toLocaleString()}</td>
                         </tr>
-                    `).join('')}
+                    `;
+    }).join('')}
                 </tbody>
             </table>
         </div>
 
-        <h2>Content Needs Attention (${emptySections.length})</h2>
+        <h2>Content Needs Attention (${lowCountItems.length})</h2>
         <p style="color: var(--text-muted); margin-bottom: 20px;">Sections with less than 50 words.</p>
-        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px;">
-            ${emptySections.map(item => `
-                <div style="background: rgba(255, 100, 100, 0.1); border: 1px solid rgba(255, 100, 100, 0.2); padding: 10px; border-radius: var(--border-radius);">
-                    <div style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem;">${item.title}</div>
-                    <div style="font-size: 0.8rem; color: var(--text-muted);">${item.chapter} • ${item.words} words</div>
-                </div>
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px; margin-bottom: 40px;">
+            ${lowCountItems.map(item => `
+                <a href="${item.chapterSlug}/${item.slug}.html" style="text-decoration: none; color: inherit; display: block;">
+                    <div style="background: rgba(255, 100, 100, 0.1); border: 1px solid rgba(255, 100, 100, 0.2); padding: 10px; border-radius: var(--border-radius); transition: transform 0.2s ease;">
+                        <div style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem;">${item.title}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">${item.chapter} • ${item.words} words</div>
+                    </div>
+                </a>
+            `).join('')}
+        </div>
+
+        <p style="color: var(--text-muted); margin-bottom: 20px;">Sections requiring review (badges not ticked).</p>
+        <div id="unticked-badges-list" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 10px;">
+            ${untickedItems.map(item => `
+                <a href="${item.chapterSlug}/${item.slug}.html" 
+                   class="unticked-item-link"
+                   data-page-id="${item.pageId}"
+                   data-badges='${JSON.stringify(item.untickedBadges)}'
+                   style="text-decoration: none; color: inherit; display: block;">
+                    <div style="background: rgba(64, 224, 208, 0.1); border: 1px solid rgba(64, 224, 208, 0.2); padding: 10px; border-radius: var(--border-radius); transition: transform 0.2s ease;">
+                        <div style="font-weight: 600; color: var(--text-primary); font-size: 0.9rem;">${item.title}</div>
+                        <div style="font-size: 0.8rem; color: var(--text-muted);">${item.chapter} • ${item.words} words</div>
+                        <div class="unticked-badges-display" style="font-size: 0.75rem; color: #40E0D0; margin-top: 4px;">Loading status...</div>
+                    </div>
+                </a>
             `).join('')}
         </div>
         <script>
+            document.addEventListener('DOMContentLoaded', () => {
+                const updateUntickedStatus = () => {
+                   const items = document.querySelectorAll('.unticked-item-link');
+                   let visibleCount = 0;
+
+                   items.forEach(item => {
+                       const pageId = item.getAttribute('data-page-id');
+                       const requiredBadges = JSON.parse(item.getAttribute('data-badges'));
+                       
+                       // Get active badges from storage
+                       const storageKey = 'watchout-wiki-badges-' + pageId;
+                       let activeBadges = [];
+                       try {
+                           activeBadges = JSON.parse(localStorage.getItem(storageKey)) || [];
+                       } catch(e) {}
+
+                       const failedBadges = requiredBadges.filter(b => !activeBadges.includes(b));
+                       
+                       if (failedBadges.length === 0) {
+                           item.style.display = 'none';
+                       } else {
+                           item.style.display = 'block';
+                           const display = item.querySelector('.unticked-badges-display');
+                           if (display) {
+                               display.textContent = 'Unticked: ' + failedBadges.join(', ');
+                           }
+                           visibleCount++;
+                       }
+                   });
+                   
+                   // Update header count? Not easy as it is static HTML.
+                   // But we can hide the whole section if empty.
+                   const list = document.getElementById('unticked-badges-list');
+                   const header = list.previousElementSibling; // The paragraph
+                   const h2 = header.previousElementSibling; // The h2
+                   
+                   // We actually can't easily update the (N) without selecting it specifically.
+                   // But let's at least handle the 'all clear' state visually if we wanted.
+                };
+                
+                updateUntickedStatus();
+                
+                // Re-check on window storage event (if other tabs change it)
+                window.addEventListener('storage', updateUntickedStatus);
+            });
+            
             document.addEventListener('DOMContentLoaded', () => {
                 const counters = document.querySelectorAll('.counter');
                 const speed = 200; // The lower the slower
@@ -770,8 +934,32 @@ function generateStatsPage() {
 
                     updateCount();
                 });
+
+                // Word Unblur Effect
+                const words = document.querySelectorAll('.blurred-word');
+                words.forEach(word => {
+                    word.addEventListener('click', function() {
+                        this.classList.add('revealed');
+                    });
+                });
             });
         </script>
+        <style>
+            .blurred-word {
+                filter: blur(0);
+                transition: filter 0.5s ease;
+                cursor: pointer;
+                user-select: none;
+            }
+            .blurred-word:hover {
+                filter: blur(3px);
+            }
+            .blurred-word.revealed {
+                filter: blur(0);
+                cursor: text;
+                user-select: text;
+            }
+        </style>
     `;
 
     const breadcrumbs = `

@@ -75,7 +75,7 @@ const tocData = [
     },
     {
         "level": 2,
-        "title": "Creating a New Show",
+        "title": "Creating A New Show",
         "page": 1,
         "description": "Every WATCHOUT project begins with creating a show. A show is the container for all your displays, timelines, cues, a..."
     },

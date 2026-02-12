@@ -1,7 +1,6 @@
 ---
 badge: Anton
 badge: Jacquie
-badge: JME
 badge: Karol
 ---
 

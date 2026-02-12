@@ -111,7 +111,7 @@
                 <div class="toc-subsections ">
                     
                         <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
-                            Creating a New Show
+                            Creating A New Show
                         </a>
                         
                         <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
@@ -851,7 +851,7 @@
 </ol>
 <h3>Step 2: Add a Display</h3>
 
-<video src="../media/quickstart/add_display.mp4?t=1770930353098" class="content-video" autoplay muted loop playsinline title="Adding display to the Stage"></video>
+<video src="../media/quickstart/add_display.mp4?t=1770932551285" class="content-video" autoplay muted loop playsinline title="Adding display to the Stage"></video>
 
 <p>In WATCHOUT 7, displays are added directly on the Stage canvas.</p>
 
@@ -872,7 +872,7 @@
 </ol>
 <h3>Step 3: Import Media</h3>
 
-<video src="../media/quickstart/add_media.mp4?t=1770930353099" class="content-video" autoplay muted loop playsinline title="Adding media to the Asset Manager"></video>
+<video src="../media/quickstart/add_media.mp4?t=1770932551286" class="content-video" autoplay muted loop playsinline title="Adding media to the Asset Manager"></video>
 
 <p>WATCHOUT 7 uses the <strong>Asset Manager</strong> to handle all media.</p>
 
@@ -885,7 +885,7 @@
 </ol>
 <h3>Step 4: Place Media on the Timeline</h3>
 
-<video src="../media/quickstart/add_to_timeline.mp4?t=1770930353100" class="content-video" autoplay muted loop playsinline title="Placing media on the Timeline"></video>
+<video src="../media/quickstart/add_to_timeline.mp4?t=1770932551287" class="content-video" autoplay muted loop playsinline title="Placing media on the Timeline"></video>
 
 <ol>
 <li>In the <strong>Assets</strong> window, select the media you want to use.</li>
@@ -896,7 +896,7 @@
 </ol>
 <h3>Step 5: Position on Stage</h3>
 
-<video src="../media/quickstart/playhead.mp4?t=1770930353101" class="content-video" autoplay muted loop playsinline title="Moving the Playhead"></video>
+<video src="../media/quickstart/playhead.mp4?t=1770932551288" class="content-video" autoplay muted loop playsinline title="Moving the Playhead"></video>
 
 <ol>
 <li>Move the <strong>Playhead</strong> (the red vertical line on the Timeline) so it is positioned over your cue.</li>
@@ -971,5 +971,49 @@
     <script src="../toc-data.js"></script>
     <script src="../content-data.js"></script>
     <script src="../app.js"></script>
+    
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const checkConfetti = () => {
+            const badges = document.querySelectorAll('.article-badge');
+            if (badges.length > 0) {
+                const activeBadges = document.querySelectorAll('.article-badge.active');
+                if (activeBadges.length === badges.length) {
+                    var duration = 3 * 1000;
+                    var animationEnd = Date.now() + duration;
+                    var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+                    function random(min, max) {
+                      return Math.random() * (max - min) + min;
+                    }
+
+                    var interval = setInterval(function() {
+                      var timeLeft = animationEnd - Date.now();
+
+                      if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                      }
+
+                      var particleCount = 50 * (timeLeft / duration);
+                      confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
+                      confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
+                    }, 250);
+                }
+            }
+        };
+        
+        // Check after a short delay to allow app.js to restore state
+        setTimeout(checkConfetti, 500);
+        
+        // Also check on click in case user completes it interactively
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('article-badge')) {
+                setTimeout(checkConfetti, 100);
+            }
+        });
+    });
+</script>
+
 </body>
 </html>

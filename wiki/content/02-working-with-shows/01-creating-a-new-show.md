@@ -1,7 +1,8 @@
 ---
-title: "Creating a New Show"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
-
 
 ## Creating a New Show
 

@@ -1,5 +1,7 @@
 ---
-title: "Opening Existing Shows"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
 
 
