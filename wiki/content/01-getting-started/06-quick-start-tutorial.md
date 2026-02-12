@@ -17,7 +17,7 @@ Follow these steps to create your first simple presentation in WATCHOUT 7.
 
 ### Step 2: Add a Display
 
-<div class="video-placeholder">Video Placeholder</div>
+@[Adding display to the Stage](../media/quickstart/add_display.mp4)
 
 In WATCHOUT 7, displays are added directly on the Stage canvas.
 
@@ -32,7 +32,7 @@ In WATCHOUT 7, displays are added directly on the Stage canvas.
 
 ### Step 3: Import Media
 
-@[Adding media to the Asset Manager](../media/add_media.mp4)
+@[Adding media to the Asset Manager](../media/quickstart/add_media.mp4)
 
 WATCHOUT 7 uses the **Asset Manager** to handle all media.
 
@@ -43,7 +43,7 @@ WATCHOUT 7 uses the **Asset Manager** to handle all media.
 
 ### Step 4: Place Media on the Timeline
 
-@[Placing media on the Timeline](../media/add_to_timeline.mp4)
+@[Placing media on the Timeline](../media/quickstart/add_to_timeline.mp4)
 
 1.  In the **Assets** window, select the media you want to use.
 2.  Drag the media from the Assets window directly onto the **Timeline** window.
@@ -52,7 +52,7 @@ WATCHOUT 7 uses the **Asset Manager** to handle all media.
 
 ### Step 5: Position on Stage
 
-@[Moving the Playhead](../media/playhead.mp4)
+@[Moving the Playhead](../media/quickstart/playhead.mp4)
 
 1.  Move the **Playhead** (the red vertical line on the Timeline) so it is positioned over your cue.
 2.  Your media will now be visible in the **Stage** window.

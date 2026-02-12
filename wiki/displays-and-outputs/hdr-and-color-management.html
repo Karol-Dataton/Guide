@@ -1114,6 +1114,7 @@ Transfer functions define how linear light values are encoded into the non-linea
             return Lw * Math.pow(E, gamma);
         }
 
+
         function drawCurve(func, color, label, show) {
             if (!show) return;
             ctx.beginPath();
@@ -1199,6 +1200,7 @@ Transfer functions define how linear light values are encoded into the non-linea
 
             ctx.textAlign = 'center';
             ctx.fillText("Input Signal (0.0 - 1.0)", margin.left + graphW / 2, height - 10);
+
 
             // Draw Curves
             const showSRGB = document.getElementById('show-srgb-tf').checked;

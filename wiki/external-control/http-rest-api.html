@@ -884,69 +884,65 @@
 
 <p>Request body is a JSON array of input objects:</p>
 
-<p>``<code>json path=null start=null [   {"key": "brightness", "value": 100.0, "duration": 2000},   {"key": "volume", "value": 0.5} ] <pre><code class="language-text">Each object has:
-- `key` (string, required) — The external key matching a WATCHOUT variable.
-- `value` (number, required) — The numeric value to set.
-- `duration` (number, optional) — Interpolation duration in milliseconds. If omitted, the default 50ms interpolation is used.
+<p>``<code>json path=null start=null [   {"key": "brightness", "value": 100.0, "duration": 2000},   {"key": "volume", "value": 0.5} ] </code>`<code></p>
 
-**Set a single variable:**
-`POST /v0/input/{key}?value={number}&amp;duration={ms}`
+<p>Each object has: <ul> <li></code>key<code> (string, required) — The external key matching a WATCHOUT variable.</li> <li></code>value<code> (number, required) — The numeric value to set.</li> <li></code>duration<code> (number, optional) — Interpolation duration in milliseconds. If omitted, the default 50ms interpolation is used.</li></p>
 
-A simpler endpoint for setting one variable at a time via URL parameters.
+</ul>
+<strong>Set a single variable:</strong>
+</code>POST /v0/input/{key}?value={number}&duration={ms}<code>
 
-**Get all variables:**
-`GET /v0/inputs`
+<p>A simpler endpoint for setting one variable at a time via URL parameters.</p>
 
-Returns a map of all input variable specifications including their external keys, value ranges, and defaults.
+<p><strong>Get all variables:</strong> </code>GET /v0/inputs<code></p>
 
-### Show Management
+<p>Returns a map of all input variable specifications including their external keys, value ranges, and defaults.</p>
 
-**Get current show:**
-`GET /v0/show`
+<h3>Show Management</h3>
 
-Returns the complete show data including timelines, cues, inputs, and revision information.
+<p><strong>Get current show:</strong> </code>GET /v0/show<code></p>
 
-**Upload show (JSON):**
-`POST /v0/show`
+<p>Returns the complete show data including timelines, cues, inputs, and revision information.</p>
 
-Upload a new show in JSON format. Replaces the currently loaded show.
+<p><strong>Upload show (JSON):</strong> </code>POST /v0/show<code></p>
 
-**Upload show (binary):**
-`POST /v0/showfile`
+<p>Upload a new show in JSON format. Replaces the currently loaded show.</p>
 
-Upload a complete show file in WATCHOUT binary format.
+<p><strong>Upload show (binary):</strong> </code>POST /v0/showfile<code></p>
 
-**Get timelines:**
-`GET /v0/timelines`
+<p>Upload a complete show file in WATCHOUT binary format.</p>
 
-Returns all timelines with their names and IDs.
+<p><strong>Get timelines:</strong> </code>GET /v0/timelines<code></p>
 
-**Get cues for a timeline:**
-`GET /v0/cues/{timeline_id}`
+<p>Returns all timelines with their names and IDs.</p>
 
-Returns all cues for a specific timeline including names and IDs.
+<p><strong>Get cues for a timeline:</strong> </code>GET /v0/cues/{timeline_id}<code></p>
 
-### Cue Set State Management
+<p>Returns all cues for a specific timeline including names and IDs.</p>
 
-Cue sets (also called cue groups) can be switched via the API:
+<h3>Cue Set State Management</h3>
 
-**By ID:**
-- `POST /v0/cue-group-state/by-id/{group_id}/{variant_id}` — Set a single group.
-- `POST /v0/cue-group-state/by-id` — Set multiple groups (JSON body mapping group IDs to variant IDs).
-- `GET /v0/cue-group-state/by-id` — Get current states.
+<p>Cue sets (also called cue groups) can be switched via the API:</p>
 
-**By name:**
-- `POST /v0/cue-group-state/by-name/{group_name}/{variant_name}` — Set a single group.
-- `POST /v0/cue-group-state/by-name` — Set multiple groups (JSON body mapping group names to variant names).
-- `GET /v0/cue-group-state/by-name` — Get current states.
+<p><strong>By ID:</strong> <ul> <li></code>POST /v0/cue-group-state/by-id/{group_id}/{variant_id}<code> — Set a single group.</li> <li></code>POST /v0/cue-group-state/by-id<code> — Set multiple groups (JSON body mapping group IDs to variant IDs).</li> <li></code>GET /v0/cue-group-state/by-id<code> — Get current states.</li></p>
 
-### Hit Testing
+</ul>
+<strong>By name:</strong>
+<ul>
+<li></code>POST /v0/cue-group-state/by-name/{group_name}/{variant_name}<code> — Set a single group.</li>
+<li></code>POST /v0/cue-group-state/by-name<code> — Set multiple groups (JSON body mapping group names to variant names).</li>
+<li></code>GET /v0/cue-group-state/by-name<code> — Get current states.</li>
 
-`POST /v0/hittest`
+</ul>
+<h3>Hit Testing</h3>
 
-Tests whether a coordinate point hits any of the specified cues. This is useful for interactive installations where user input (touch, pointer, etc.) needs to determine which visual element was selected.
+<p></code>POST /v0/hittest<code></p>
 
-Request body:</code></pre>json path=null start=null {   "cues": ["1/42", "1/43"],   "x": 960.0,   "y": 540.0 } </code>`<code></p>
+<p>Tests whether a coordinate point hits any of the specified cues. This is useful for interactive installations where user input (touch, pointer, etc.) needs to determine which visual element was selected.</p>
+
+<p>Request body:</p>
+
+<p></code>`<code>json path=null start=null {   "cues": ["1/42", "1/43"],   "x": 960.0,   "y": 540.0 } </code>`<code></p>
 
 <p>The response lists which cues contain the point. Hit testing evaluates all tweens (position, scale, rotation, corner pinning) at the current playback time for accurate results with animated content.</p>
 
