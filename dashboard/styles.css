@@ -146,6 +146,26 @@ body::before {
     color: var(--text-primary);
 }
 
+.settings-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 999px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    font: inherit;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    line-height: 1;
+}
+
+.settings-btn:hover {
+    background: rgba(255, 255, 255, 0.14);
+}
+
 .status-dot {
     width: 10px;
     height: 10px;
@@ -490,6 +510,11 @@ body::before {
     display: grid;
     grid-template-columns: 1fr;
     gap: 10px;
+    width: 100%;
+}
+
+.clock-grid.dual {
+    grid-template-columns: repeat(2, minmax(260px, 1fr));
 }
 
 .clock-block {
@@ -497,6 +522,11 @@ body::before {
     flex-direction: column;
     gap: 10px;
     align-items: center;
+    width: 100%;
+}
+
+#timer-clock-block[hidden] {
+    display: none !important;
 }
 
 .digital-clock {
@@ -504,12 +534,21 @@ body::before {
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--border-radius);
     padding: 16px 20px;
-    width: min(100%, 920px);
+    width: 100%;
     min-height: clamp(98px, 14vw, 160px);
     display: flex;
     align-items: center;
     justify-content: center;
     gap: clamp(6px, 1.5vw, 14px);
+}
+
+.digital-clock-text {
+    font-family: 'Futura Now Headline', 'Futura', sans-serif;
+    font-size: clamp(2.5rem, 7vw, 6rem);
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    color: #ffffff;
+    justify-content: center;
 }
 
 .seg-digit {
@@ -521,7 +560,7 @@ body::before {
 
 .seg {
     position: absolute;
-    background: rgba(148, 163, 184, 0.15);
+    background: rgba(255, 255, 255, 0.04);
     border-radius: 6px;
     transition: background 100ms linear;
 }
@@ -572,8 +611,85 @@ body::before {
     background: #ffffff;
 }
 
-#clock-panel .panel-body {
+.seg-space {
+    width: clamp(8px, 1.2vw, 14px);
+}
+
+.seg-suffix {
+    font-family: "Courier New", monospace;
+    font-size: clamp(1rem, 2vw, 1.4rem);
+    color: #ffffff;
+    align-self: flex-end;
+    margin-bottom: clamp(12px, 2vw, 18px);
+}
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(6, 8, 20, 0.7);
+    display: flex;
     align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-backdrop[hidden] {
+    display: none;
+}
+
+.modal {
+    width: min(520px, 100%);
+    background: #16172b;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.45);
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 16px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.modal-header h3 {
+    margin: 0;
+    font-size: 1rem;
+}
+
+.modal-close {
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+.modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+}
+
+.setting-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-secondary);
+}
+
+#clock-panel .panel-body {
+    position: relative;
+    align-items: stretch;
+}
+
+.settings-fab {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
 }
 
 #clock-panel .panel-header h2 {
@@ -670,6 +786,10 @@ body::before {
 
     .sse-log-row {
         grid-template-columns: 64px 90px 1fr;
+    }
+
+    .clock-grid.dual {
+        grid-template-columns: 1fr;
     }
 }
 

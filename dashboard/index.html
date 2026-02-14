@@ -40,11 +40,15 @@
                         <h2>Local Time</h2>
                     </div>
                     <div class="panel-body" id="clock-body">
-                        <div class="clock-grid">
-                            <div class="clock-block">
+                        <div class="clock-grid" id="clock-grid">
+                            <div class="clock-block" id="local-clock-block">
                                 <div class="digital-clock" id="local-clock">--:--:--</div>
                             </div>
+                            <div class="clock-block" id="timer-clock-block" hidden>
+                                <div class="digital-clock" id="custom-timer">00:00</div>
+                            </div>
                         </div>
+                        <button class="settings-btn settings-fab" id="settings-btn" type="button" aria-label="Clock settings">⚙</button>
                     </div>
                 </section>
 
@@ -120,6 +124,39 @@
         <footer class="footer">
             <p>WATCHOUT Tools • Director Dashboard</p>
         </footer>
+    </div>
+
+    <div class="modal-backdrop" id="settings-modal" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+            <div class="modal-header">
+                <h3 id="settings-title">Clock Settings</h3>
+                <button class="modal-close" id="settings-close" type="button" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body">
+                <label class="setting-row">
+                    <input type="checkbox" id="setting-show-local" />
+                    <span>Show local clock</span>
+                </label>
+                <label class="setting-row">
+                    <input type="checkbox" id="setting-normal-font" />
+                    <span>Use normal font clock</span>
+                </label>
+                <label class="setting-row">
+                    <input type="checkbox" id="setting-ampm" />
+                    <span>Use AM/PM format</span>
+                </label>
+                <label class="setting-row">
+                    <input type="checkbox" id="setting-show-timer" />
+                    <span>Show timer clock</span>
+                </label>
+                <div class="timer-controls">
+                    <input id="timer-input" type="text" placeholder="mm:ss or seconds" />
+                    <button id="timer-start" type="button">Start</button>
+                    <button id="timer-pause" type="button">Pause</button>
+                    <button id="timer-reset" type="button">Reset</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script src="app.js" defer></script>

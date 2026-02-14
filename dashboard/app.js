@@ -19,7 +19,13 @@ const state = {
     countdowns: null,
     customTimerMs: 0,
     customTimerEndAt: null,
-    customTimerRunning: false
+    customTimerRunning: false,
+    clockSettings: {
+        showLocal: true,
+        normalFont: false,
+        ampm: false,
+        showTimer: false
+    }
 };
 
 const dom = {};
@@ -31,6 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchInitialData();
     connectSSE();
     startPlaybackClockTicker();
+    loadClockSettings();
+    setupSettingsModal();
     setupClockControls();
     startClockPanelTicker();
     setupTimelineToggles();
@@ -47,12 +55,22 @@ function cacheDom() {
     dom.variablesBody = document.getElementById('variables-body');
     dom.nodesBody = document.getElementById('nodes-body');
     dom.sseBody = document.getElementById('sse-body');
+    dom.clockGrid = document.getElementById('clock-grid');
     dom.localClock = document.getElementById('local-clock');
+    dom.localClockBlock = document.getElementById('local-clock-block');
+    dom.timerClockBlock = document.getElementById('timer-clock-block');
     dom.customTimer = document.getElementById('custom-timer');
     dom.timerInput = document.getElementById('timer-input');
     dom.timerStart = document.getElementById('timer-start');
     dom.timerPause = document.getElementById('timer-pause');
     dom.timerReset = document.getElementById('timer-reset');
+    dom.settingsBtn = document.getElementById('settings-btn');
+    dom.settingsModal = document.getElementById('settings-modal');
+    dom.settingsClose = document.getElementById('settings-close');
+    dom.settingNormalFont = document.getElementById('setting-normal-font');
+    dom.settingShowLocal = document.getElementById('setting-show-local');
+    dom.settingAmpm = document.getElementById('setting-ampm');
+    dom.settingShowTimer = document.getElementById('setting-show-timer');
 }
 
 function setConnectionStatus(status) {
@@ -969,6 +987,76 @@ function setupClockControls() {
     });
 }
 
+function loadClockSettings() {
+    try {
+        const raw = window.localStorage.getItem('dashboard.clock.settings');
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return;
+        state.clockSettings = {
+            ...state.clockSettings,
+            showLocal: parsed.showLocal !== false,
+            normalFont: Boolean(parsed.normalFont),
+            ampm: Boolean(parsed.ampm),
+            showTimer: Boolean(parsed.showTimer)
+        };
+    } catch (err) {
+        // ignore storage errors
+    }
+}
+
+function saveClockSettings() {
+    try {
+        window.localStorage.setItem('dashboard.clock.settings', JSON.stringify(state.clockSettings));
+    } catch (err) {
+        // ignore storage errors
+    }
+}
+
+function setupSettingsModal() {
+    if (!dom.settingsBtn || !dom.settingsModal || !dom.settingsClose) return;
+
+    const syncInputs = () => {
+        if (dom.settingNormalFont) dom.settingNormalFont.checked = state.clockSettings.normalFont;
+        if (dom.settingShowLocal) dom.settingShowLocal.checked = state.clockSettings.showLocal;
+        if (dom.settingAmpm) dom.settingAmpm.checked = state.clockSettings.ampm;
+        if (dom.settingShowTimer) dom.settingShowTimer.checked = state.clockSettings.showTimer;
+    };
+
+    const closeModal = () => {
+        dom.settingsModal.hidden = true;
+    };
+
+    dom.settingsBtn.addEventListener('click', () => {
+        syncInputs();
+        dom.settingsModal.hidden = false;
+    });
+
+    dom.settingsClose.addEventListener('click', closeModal);
+    dom.settingsModal.addEventListener('click', (event) => {
+        if (event.target === dom.settingsModal) closeModal();
+    });
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && !dom.settingsModal.hidden) {
+            closeModal();
+        }
+    });
+
+    const bindToggle = (input, key) => {
+        if (!input) return;
+        input.addEventListener('change', () => {
+            state.clockSettings[key] = input.checked;
+            saveClockSettings();
+            renderClockPanel();
+        });
+    };
+
+    bindToggle(dom.settingNormalFont, 'normalFont');
+    bindToggle(dom.settingShowLocal, 'showLocal');
+    bindToggle(dom.settingAmpm, 'ampm');
+    bindToggle(dom.settingShowTimer, 'showTimer');
+}
+
 function parseTimerInput(value) {
     const text = String(value || '').trim();
     if (!text) return 0;
@@ -991,15 +1079,48 @@ function parseTimerInput(value) {
 function renderClockPanel() {
     if (dom.localClock) {
         const now = new Date();
-        const text = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-        dom.localClock.innerHTML = renderSegmentClock(text);
+        const text = formatLocalClock(now, state.clockSettings.ampm);
+        if (state.clockSettings.normalFont) {
+            dom.localClock.textContent = text;
+            dom.localClock.classList.add('digital-clock-text');
+        } else {
+            dom.localClock.innerHTML = renderSegmentClock(text);
+            dom.localClock.classList.remove('digital-clock-text');
+        }
+    }
+
+    if (dom.localClockBlock) {
+        dom.localClockBlock.hidden = !state.clockSettings.showLocal;
+    }
+
+    if (dom.timerClockBlock) {
+        dom.timerClockBlock.hidden = !state.clockSettings.showTimer;
+    }
+    if (dom.clockGrid) {
+        dom.clockGrid.classList.toggle('dual', Boolean(state.clockSettings.showTimer));
     }
     if (dom.customTimer) {
-        dom.customTimer.textContent = formatTimer(state.customTimerMs);
+        const timerText = formatTimer(state.customTimerMs);
+        if (state.clockSettings.normalFont) {
+            dom.customTimer.textContent = timerText;
+            dom.customTimer.classList.add('digital-clock-text');
+        } else {
+            dom.customTimer.innerHTML = renderSegmentClock(timerText);
+            dom.customTimer.classList.remove('digital-clock-text');
+        }
     }
     if (dom.timerPause) {
         dom.timerPause.textContent = state.customTimerRunning ? 'Pause' : 'Paused';
     }
+}
+
+function formatLocalClock(now, ampm) {
+    if (!ampm) {
+        return `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+    }
+    const suffix = now.getHours() >= 12 ? 'PM' : 'AM';
+    const hour = now.getHours() % 12 || 12;
+    return `${pad(hour)}:${pad(now.getMinutes())}:${pad(now.getSeconds())} ${suffix}`;
 }
 
 function renderSegmentClock(text) {
@@ -1007,6 +1128,12 @@ function renderSegmentClock(text) {
     return chars.map((char) => {
         if (char === ':') {
             return '<span class="seg-colon" aria-hidden="true"><i></i><i></i></span>';
+        }
+        if (char === ' ') {
+            return '<span class="seg-space" aria-hidden="true"></span>';
+        }
+        if (char === 'A' || char === 'P' || char === 'M') {
+            return `<span class="seg-suffix">${char}</span>`;
         }
         return `<span class="seg-digit">${renderSegmentDigit(char)}</span>`;
     }).join('');
