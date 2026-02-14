@@ -8,6 +8,7 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     setupSidebar();
+    setupSidebarTools();
     setupThemeToggle();
     setupMobileMenu();
     setupHeroVideo();
@@ -247,6 +248,41 @@ function setupSidebarAccordion() {
     });
 }
 
+function setupSidebarTools() {
+    const toolsContainer = document.querySelector('.tools-buttons');
+    if (!toolsContainer) return;
+
+    const existingDashboard = toolsContainer.querySelector('a[href*="dashboard/index.html"]');
+    if (existingDashboard) return;
+
+    const shortcutLink = toolsContainer.querySelector('a[href*="shortcuts/index.html"]');
+    const templateHref = shortcutLink ? shortcutLink.getAttribute('href') : '../shortcuts/index.html';
+    const dashboardHref = templateHref.replace('shortcuts/index.html', 'dashboard/index.html');
+
+    const dashboardLink = document.createElement('a');
+    dashboardLink.href = dashboardHref;
+    dashboardLink.className = 'tools-btn';
+    dashboardLink.title = 'Director Dashboard';
+    dashboardLink.innerHTML = `
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+            stroke-linejoin="round">
+            <path d="M12 2v6"></path>
+            <path d="M5 7h14"></path>
+            <path d="M5 11h14"></path>
+            <path d="M5 15h10"></path>
+            <path d="M5 19h6"></path>
+        </svg>
+    `;
+
+    const themeToggle = toolsContainer.querySelector('#theme-toggle');
+    if (themeToggle) {
+        toolsContainer.insertBefore(dashboardLink, themeToggle);
+    } else {
+        toolsContainer.appendChild(dashboardLink);
+    }
+}
+
 function renderTocPreview() {
     const tocPreviewGrid = document.getElementById('toc-preview-grid');
     if (!tocPreviewGrid || typeof chaptersData === 'undefined') return;
@@ -354,7 +390,10 @@ function setupHeroVideo() {
     const videos = [
         'media/splash/Live_Show_Programmer_Creates_Scene.mp4',
         'media/splash/Looping_Video_Generation_Complete.mp4',
-        'media/splash/Video_Generation_With_Asian_Male_Operator.mp4'
+        'media/splash/Video_Generation_With_Asian_Male_Operator.mp4',
+        'media/splash/a_show_programmer_on_a_live_sh.mp4',
+        'media/splash/a_show_programmer_sits_in_a_we.mp4',
+        'media/splash/Programmer_Creates_Show_in_Watchout.mp4'
     ];
     // Simple check if media files exist? No, just try to play.
     const randomVideo = videos[Math.floor(Math.random() * videos.length)];

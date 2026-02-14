@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHOUT Director Dashboard - real-time monitoring for show playback and system state.">
+    <title>WATCHOUT Director Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        (function () {
+            document.documentElement.classList.add('js-enabled');
+        })();
+    </script>
+</head>
+
+<body>
+    <div class="app">
+        <header class="header">
+            <div class="logo">
+                <h1>WATCHOUT DASHBOARD</h1>
+                <p class="subtitle">Director Live Monitor</p>
+            </div>
+            <div class="header-status">
+                <div class="status-chip" id="status-chip">
+                    <span class="status-dot status-connecting" id="status-dot"></span>
+                    <span class="status-text" id="status-text">Connecting</span>
+                </div>
+                <div class="system-badge" id="system-badge">System: —</div>
+            </div>
+        </header>
+
+        <main class="main">
+            <div class="dashboard-grid">
+                <section class="panel panel-landscape" id="clock-panel">
+                    <div class="panel-header">
+                        <h2>Local Time</h2>
+                    </div>
+                    <div class="panel-body" id="clock-body">
+                        <div class="clock-grid">
+                            <div class="clock-block">
+                                <div class="digital-clock" id="local-clock">--:--:--</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel" id="system-panel">
+                    <div class="panel-header">
+                        <h2>System Info</h2>
+                    </div>
+                    <div class="panel-body" id="system-info-body">
+                        <p class="empty-state">Waiting for system info...</p>
+                    </div>
+                </section>
+
+                <section class="panel" id="show-panel">
+                    <div class="panel-header">
+                        <h2>Show Info</h2>
+                    </div>
+                    <div class="panel-body" id="show-info-body">
+                        <p class="empty-state">Waiting for show data...</p>
+                    </div>
+                </section>
+
+                <section class="panel" id="playback-panel">
+                    <div class="panel-header">
+                        <h2>Playback State</h2>
+                    </div>
+                    <div class="panel-body" id="playback-body">
+                        <p class="empty-state">Waiting for playback state...</p>
+                    </div>
+                </section>
+
+                <section class="panel" id="timelines-panel">
+                    <div class="panel-header">
+                        <h2>Timelines &amp; Cues</h2>
+                    </div>
+                    <div class="panel-body" id="timelines-body">
+                        <p class="empty-state">Waiting for timelines...</p>
+                    </div>
+                </section>
+
+                <section class="panel" id="variables-panel">
+                    <div class="panel-header">
+                        <h2>Variables &amp; Cue Groups</h2>
+                    </div>
+                    <div class="panel-body" id="variables-body">
+                        <p class="empty-state">Waiting for variables and cue groups...</p>
+                    </div>
+                </section>
+
+                <section class="panel" id="cue-groups-panel">
+                    <div class="panel-header">
+                        <h2>Nodes</h2>
+                    </div>
+                    <div class="panel-body">
+                        <div class="split-section">
+                            <div class="split-section-content" id="nodes-body">
+                                <p class="empty-state">No node data available.</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="panel panel-landscape" id="sse-panel">
+                    <div class="panel-header">
+                        <h2>SSE Log</h2>
+                    </div>
+                    <div class="panel-body" id="sse-body">
+                        <p class="empty-state">Waiting for SSE events...</p>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>WATCHOUT Tools • Director Dashboard</p>
+        </footer>
+    </div>
+
+    <script src="app.js" defer></script>
+</body>
+
+</html>
