@@ -991,7 +991,8 @@ function parseTimerInput(value) {
 function renderClockPanel() {
     if (dom.localClock) {
         const now = new Date();
-        dom.localClock.textContent = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        const text = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+        dom.localClock.innerHTML = renderSegmentClock(text);
     }
     if (dom.customTimer) {
         dom.customTimer.textContent = formatTimer(state.customTimerMs);
@@ -999,6 +1000,37 @@ function renderClockPanel() {
     if (dom.timerPause) {
         dom.timerPause.textContent = state.customTimerRunning ? 'Pause' : 'Paused';
     }
+}
+
+function renderSegmentClock(text) {
+    const chars = String(text || '').split('');
+    return chars.map((char) => {
+        if (char === ':') {
+            return '<span class="seg-colon" aria-hidden="true"><i></i><i></i></span>';
+        }
+        return `<span class="seg-digit">${renderSegmentDigit(char)}</span>`;
+    }).join('');
+}
+
+function renderSegmentDigit(char) {
+    const map = {
+        '0': ['a', 'b', 'c', 'd', 'e', 'f'],
+        '1': ['b', 'c'],
+        '2': ['a', 'b', 'g', 'e', 'd'],
+        '3': ['a', 'b', 'g', 'c', 'd'],
+        '4': ['f', 'g', 'b', 'c'],
+        '5': ['a', 'f', 'g', 'c', 'd'],
+        '6': ['a', 'f', 'g', 'e', 'c', 'd'],
+        '7': ['a', 'b', 'c'],
+        '8': ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
+        '9': ['a', 'b', 'c', 'd', 'f', 'g']
+    };
+
+    const active = new Set(map[char] || []);
+    const segments = ['a', 'b', 'c', 'd', 'e', 'f', 'g'];
+    return segments
+        .map((segment) => `<i class="seg seg-${segment}${active.has(segment) ? ' on' : ''}"></i>`)
+        .join('');
 }
 
 function formatTimer(ms) {
