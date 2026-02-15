@@ -30,6 +30,7 @@
                     <span class="status-text" id="status-text">Connecting</span>
                 </div>
                 <div class="system-badge" id="system-badge">System: —</div>
+                <button class="layout-btn" id="panel-layout-btn" type="button">Panels</button>
             </div>
         </header>
 
@@ -155,6 +156,25 @@
                     <button id="timer-pause" type="button">Pause</button>
                     <button id="timer-reset" type="button">Reset</button>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-backdrop" id="panel-layout-modal" hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="panel-layout-title">
+            <div class="modal-header">
+                <h3 id="panel-layout-title">Panel Layout</h3>
+                <button class="modal-close" id="panel-layout-close" type="button" aria-label="Close">×</button>
+            </div>
+            <div class="modal-body" id="panel-layout-list"></div>
+            <div class="modal-body">
+                <label class="setting-row">
+                    <input type="checkbox" id="panel-layout-lock" />
+                    <span>Lock panel positions</span>
+                </label>
+            </div>
+            <div class="modal-footer">
+                <button id="panel-layout-reset" type="button">Reset Layout</button>
             </div>
         </div>
     </div>

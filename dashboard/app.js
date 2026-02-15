@@ -1,6 +1,22 @@
 /* WATCHOUT Director Dashboard - Application Logic */
 
 const BASE_URL = window.__API_BASE_URL__ || '/api';
+const PANEL_LAYOUT_STORAGE_KEY = 'dashboard.panel.layout.v1';
+const PANEL_LAYOUT_LOCK_STORAGE_KEY = 'dashboard.panel.layout.locked.v1';
+const PANEL_COLUMNS = 12;
+const PANEL_ROW_HEIGHT = 120;
+const PANEL_MIN_W = 2;
+const PANEL_MIN_H = 2;
+const PANEL_DEFAULT_LAYOUT = {
+    'clock-panel': { x: 1, y: 1, w: 12, h: 2, hidden: false },
+    'system-panel': { x: 1, y: 3, w: 4, h: 2, hidden: false },
+    'show-panel': { x: 5, y: 3, w: 4, h: 2, hidden: false },
+    'playback-panel': { x: 9, y: 3, w: 4, h: 2, hidden: false },
+    'timelines-panel': { x: 1, y: 5, w: 8, h: 4, hidden: false },
+    'variables-panel': { x: 9, y: 5, w: 4, h: 3, hidden: false },
+    'cue-groups-panel': { x: 9, y: 8, w: 4, h: 2, hidden: false },
+    'sse-panel': { x: 1, y: 9, w: 12, h: 3, hidden: false }
+};
 
 const state = {
     connected: false,
@@ -25,13 +41,16 @@ const state = {
         normalFont: false,
         ampm: false,
         showTimer: false
-    }
+    },
+    panelLayout: null,
+    panelLayoutLocked: false
 };
 
 const dom = {};
 
 document.addEventListener('DOMContentLoaded', () => {
     cacheDom();
+    setupPanelManager();
     setConnectionStatus('connecting');
     renderNodes();
     fetchInitialData();
@@ -71,6 +90,13 @@ function cacheDom() {
     dom.settingShowLocal = document.getElementById('setting-show-local');
     dom.settingAmpm = document.getElementById('setting-ampm');
     dom.settingShowTimer = document.getElementById('setting-show-timer');
+    dom.dashboardGrid = document.querySelector('.dashboard-grid');
+    dom.panelLayoutBtn = document.getElementById('panel-layout-btn');
+    dom.panelLayoutModal = document.getElementById('panel-layout-modal');
+    dom.panelLayoutClose = document.getElementById('panel-layout-close');
+    dom.panelLayoutReset = document.getElementById('panel-layout-reset');
+    dom.panelLayoutList = document.getElementById('panel-layout-list');
+    dom.panelLayoutLock = document.getElementById('panel-layout-lock');
 }
 
 function setConnectionStatus(status) {
@@ -985,6 +1011,348 @@ function setupClockControls() {
         state.customTimerMs = parsed;
         renderClockPanel();
     });
+}
+
+function setupPanelManager() {
+    if (!dom.dashboardGrid) return;
+    state.panelLayout = loadPanelLayout();
+    state.panelLayoutLocked = loadPanelLayoutLock();
+
+    Object.keys(PANEL_DEFAULT_LAYOUT).forEach((panelId) => {
+        const panel = document.getElementById(panelId);
+        if (!panel) return;
+        let handle = panel.querySelector('.panel-resize-handle');
+        if (!handle) {
+            handle = document.createElement('div');
+            handle.className = 'panel-resize-handle';
+            handle.setAttribute('aria-hidden', 'true');
+            panel.appendChild(handle);
+        }
+        setupPanelDrag(panelId, panel);
+        setupPanelResize(panelId, panel, handle);
+    });
+
+    setupPanelLayoutModal();
+    resolvePanelOverlaps();
+    applyPanelLayout();
+
+    window.addEventListener('resize', () => {
+        applyPanelLayout();
+    });
+}
+
+function isPanelLayoutEnabled() {
+    return window.innerWidth > 900;
+}
+
+function loadPanelLayout() {
+    const layout = JSON.parse(JSON.stringify(PANEL_DEFAULT_LAYOUT));
+    try {
+        const raw = window.localStorage.getItem(PANEL_LAYOUT_STORAGE_KEY);
+        if (!raw) return layout;
+        const parsed = JSON.parse(raw);
+        if (!parsed || typeof parsed !== 'object') return layout;
+
+        Object.keys(PANEL_DEFAULT_LAYOUT).forEach((panelId) => {
+            const saved = parsed[panelId];
+            if (!saved || typeof saved !== 'object') return;
+            layout[panelId] = sanitizePanelLayout(panelId, {
+                ...layout[panelId],
+                ...saved
+            });
+        });
+    } catch (err) {
+        return layout;
+    }
+    return layout;
+}
+
+function savePanelLayout() {
+    try {
+        window.localStorage.setItem(PANEL_LAYOUT_STORAGE_KEY, JSON.stringify(state.panelLayout));
+    } catch (err) {
+        // ignore storage errors
+    }
+}
+
+function loadPanelLayoutLock() {
+    try {
+        return window.localStorage.getItem(PANEL_LAYOUT_LOCK_STORAGE_KEY) === 'true';
+    } catch (err) {
+        return false;
+    }
+}
+
+function savePanelLayoutLock() {
+    try {
+        window.localStorage.setItem(PANEL_LAYOUT_LOCK_STORAGE_KEY, state.panelLayoutLocked ? 'true' : 'false');
+    } catch (err) {
+        // ignore storage errors
+    }
+}
+
+function sanitizePanelLayout(panelId, item) {
+    const fallback = PANEL_DEFAULT_LAYOUT[panelId];
+    const w = clamp(Math.round(Number(item.w ?? fallback.w)), PANEL_MIN_W, PANEL_COLUMNS);
+    const h = clamp(Math.round(Number(item.h ?? fallback.h)), PANEL_MIN_H, 12);
+    const x = clamp(Math.round(Number(item.x ?? fallback.x)), 1, PANEL_COLUMNS - w + 1);
+    const y = Math.max(1, Math.round(Number(item.y ?? fallback.y)));
+    return {
+        x,
+        y,
+        w,
+        h,
+        hidden: Boolean(item.hidden)
+    };
+}
+
+function applyPanelLayout() {
+    if (!dom.dashboardGrid || !state.panelLayout) return;
+    const managed = isPanelLayoutEnabled();
+    dom.dashboardGrid.classList.toggle('layout-managed', managed);
+    dom.dashboardGrid.classList.toggle('layout-locked', managed && state.panelLayoutLocked);
+
+    Object.keys(PANEL_DEFAULT_LAYOUT).forEach((panelId) => {
+        const panel = document.getElementById(panelId);
+        if (!panel) return;
+        const cfg = sanitizePanelLayout(panelId, state.panelLayout[panelId] || PANEL_DEFAULT_LAYOUT[panelId]);
+        state.panelLayout[panelId] = cfg;
+
+        panel.hidden = cfg.hidden;
+        if (managed) {
+            panel.style.gridColumn = `${cfg.x} / span ${cfg.w}`;
+            panel.style.gridRow = `${cfg.y} / span ${cfg.h}`;
+        } else {
+            panel.style.gridColumn = '';
+            panel.style.gridRow = '';
+        }
+    });
+}
+
+function setupPanelLayoutModal() {
+    if (!dom.panelLayoutBtn || !dom.panelLayoutModal) return;
+
+    const close = () => {
+        dom.panelLayoutModal.hidden = true;
+    };
+
+    dom.panelLayoutBtn.addEventListener('click', () => {
+        renderPanelLayoutList();
+        if (dom.panelLayoutLock) {
+            dom.panelLayoutLock.checked = state.panelLayoutLocked;
+        }
+        dom.panelLayoutModal.hidden = false;
+    });
+
+    if (dom.panelLayoutClose) {
+        dom.panelLayoutClose.addEventListener('click', close);
+    }
+
+    dom.panelLayoutModal.addEventListener('click', (event) => {
+        if (event.target === dom.panelLayoutModal) close();
+    });
+
+    document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape' && dom.panelLayoutModal && !dom.panelLayoutModal.hidden) {
+            close();
+        }
+    });
+
+    if (dom.panelLayoutReset) {
+        dom.panelLayoutReset.addEventListener('click', () => {
+            state.panelLayout = JSON.parse(JSON.stringify(PANEL_DEFAULT_LAYOUT));
+            resolvePanelOverlaps();
+            savePanelLayout();
+            applyPanelLayout();
+            renderPanelLayoutList();
+        });
+    }
+
+    if (dom.panelLayoutLock) {
+        dom.panelLayoutLock.addEventListener('change', () => {
+            state.panelLayoutLocked = dom.panelLayoutLock.checked;
+            savePanelLayoutLock();
+            applyPanelLayout();
+        });
+    }
+}
+
+function renderPanelLayoutList() {
+    if (!dom.panelLayoutList) return;
+    const rows = Object.keys(PANEL_DEFAULT_LAYOUT).map((panelId) => {
+        const panel = document.getElementById(panelId);
+        const label = panel?.querySelector('.panel-header h2')?.textContent?.trim() || panelId;
+        const checked = !(state.panelLayout?.[panelId]?.hidden);
+        return `
+            <label class="setting-row">
+                <input type="checkbox" data-panel-visibility="${escapeHtml(panelId)}" ${checked ? 'checked' : ''} />
+                <span>${escapeHtml(label)}</span>
+            </label>
+        `;
+    }).join('');
+
+    dom.panelLayoutList.innerHTML = rows;
+    dom.panelLayoutList.querySelectorAll('input[data-panel-visibility]').forEach((input) => {
+        input.addEventListener('change', () => {
+            const panelId = input.getAttribute('data-panel-visibility');
+            if (!panelId || !state.panelLayout[panelId]) return;
+            state.panelLayout[panelId].hidden = !input.checked;
+            resolvePanelOverlaps();
+            savePanelLayout();
+            applyPanelLayout();
+        });
+    });
+}
+
+function setupPanelDrag(panelId, panel) {
+    const header = panel.querySelector('.panel-header');
+    if (!header) return;
+
+    header.addEventListener('pointerdown', (event) => {
+        if (!isPanelLayoutEnabled()) return;
+        if (state.panelLayoutLocked) return;
+        if (event.button !== 0) return;
+        if (event.target.closest('button, input, label, a, .panel-resize-handle')) return;
+        if (!state.panelLayout || !state.panelLayout[panelId] || state.panelLayout[panelId].hidden) return;
+
+        event.preventDefault();
+        panel.classList.add('dragging');
+        const startX = event.clientX;
+        const startY = event.clientY;
+        const start = { ...state.panelLayout[panelId] };
+        const metrics = getGridMetrics();
+
+        const onMove = (moveEvent) => {
+            const deltaX = moveEvent.clientX - startX;
+            const deltaY = moveEvent.clientY - startY;
+            const dx = Math.round(deltaX / metrics.colStep);
+            const dy = Math.round(deltaY / metrics.rowStep);
+            const w = state.panelLayout[panelId].w;
+            state.panelLayout[panelId].x = clamp(start.x + dx, 1, PANEL_COLUMNS - w + 1);
+            state.panelLayout[panelId].y = Math.max(1, start.y + dy);
+            resolvePanelOverlaps(panelId);
+            applyPanelLayout();
+        };
+
+        const onUp = () => {
+            panel.classList.remove('dragging');
+            window.removeEventListener('pointermove', onMove);
+            window.removeEventListener('pointerup', onUp);
+            resolvePanelOverlaps(panelId);
+            savePanelLayout();
+            applyPanelLayout();
+        };
+
+        window.addEventListener('pointermove', onMove);
+        window.addEventListener('pointerup', onUp);
+    });
+}
+
+function setupPanelResize(panelId, panel, handle) {
+    handle.addEventListener('pointerdown', (event) => {
+        if (!isPanelLayoutEnabled()) return;
+        if (state.panelLayoutLocked) return;
+        if (event.button !== 0) return;
+        if (!state.panelLayout || !state.panelLayout[panelId] || state.panelLayout[panelId].hidden) return;
+
+        event.preventDefault();
+        panel.classList.add('dragging');
+        const startX = event.clientX;
+        const startY = event.clientY;
+        const start = { ...state.panelLayout[panelId] };
+        const metrics = getGridMetrics();
+
+        const onMove = (moveEvent) => {
+            const deltaX = moveEvent.clientX - startX;
+            const deltaY = moveEvent.clientY - startY;
+            const dw = Math.round(deltaX / metrics.colStep);
+            const dh = Math.round(deltaY / metrics.rowStep);
+
+            const maxW = PANEL_COLUMNS - start.x + 1;
+            const w = clamp(start.w + dw, PANEL_MIN_W, maxW);
+            const h = clamp(start.h + dh, PANEL_MIN_H, 12);
+            state.panelLayout[panelId].w = w;
+            state.panelLayout[panelId].h = h;
+            resolvePanelOverlaps(panelId);
+            applyPanelLayout();
+        };
+
+        const onUp = () => {
+            panel.classList.remove('dragging');
+            window.removeEventListener('pointermove', onMove);
+            window.removeEventListener('pointerup', onUp);
+            resolvePanelOverlaps(panelId);
+            savePanelLayout();
+            applyPanelLayout();
+        };
+
+        window.addEventListener('pointermove', onMove);
+        window.addEventListener('pointerup', onUp);
+    });
+}
+
+function resolvePanelOverlaps(anchorPanelId) {
+    if (!state.panelLayout) return;
+    let changed = true;
+    let iterations = 0;
+    const visibleCount = Object.keys(PANEL_DEFAULT_LAYOUT).filter((id) => !state.panelLayout[id].hidden).length;
+    const maxIterations = visibleCount * visibleCount * 4;
+
+    while (changed && iterations < maxIterations) {
+        changed = false;
+        iterations += 1;
+
+        const visibleIds = Object.keys(PANEL_DEFAULT_LAYOUT).filter((id) => !state.panelLayout[id].hidden);
+        const sorted = visibleIds.sort((a, b) => {
+            const first = state.panelLayout[a];
+            const second = state.panelLayout[b];
+            return first.y - second.y || first.x - second.x;
+        });
+
+        const panelIds = anchorPanelId && sorted.includes(anchorPanelId)
+            ? [anchorPanelId, ...sorted.filter((id) => id !== anchorPanelId)]
+            : sorted;
+
+        for (let i = 0; i < panelIds.length; i += 1) {
+            const aId = panelIds[i];
+            const a = state.panelLayout[aId];
+            for (let j = i + 1; j < panelIds.length; j += 1) {
+                const bId = panelIds[j];
+                const b = state.panelLayout[bId];
+                if (!panelsOverlap(a, b)) continue;
+                const nextY = a.y + a.h;
+                if (b.y !== nextY) {
+                    b.y = nextY;
+                    changed = true;
+                }
+            }
+        }
+    }
+}
+
+function panelsOverlap(a, b) {
+    return (
+        a.x < b.x + b.w &&
+        a.x + a.w > b.x &&
+        a.y < b.y + b.h &&
+        a.y + a.h > b.y
+    );
+}
+
+function getGridMetrics() {
+    const styles = window.getComputedStyle(dom.dashboardGrid);
+    const gapX = Number.parseFloat(styles.columnGap || styles.gap || '0') || 0;
+    const gapY = Number.parseFloat(styles.rowGap || styles.gap || '0') || 0;
+    const width = dom.dashboardGrid.clientWidth;
+    const colWidth = (width - gapX * (PANEL_COLUMNS - 1)) / PANEL_COLUMNS;
+    return {
+        colStep: colWidth + gapX,
+        rowStep: PANEL_ROW_HEIGHT + gapY
+    };
+}
+
+function clamp(value, min, max) {
+    return Math.min(max, Math.max(min, value));
 }
 
 function loadClockSettings() {
