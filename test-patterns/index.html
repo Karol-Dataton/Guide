@@ -235,13 +235,45 @@
                                     <label class="checkbox-label" data-tooltip="Cycle colors across tiles">
                                         <input type="checkbox" id="led-rainbow"> Rainbow
                                     </label>
-                                    <label class="checkbox-label" data-tooltip="Fill tiles with solid/rainbow color">
-                                        <input type="checkbox" id="led-background"> Fill
-                                    </label>
                                     <label class="checkbox-label" data-tooltip="Show tile separation lines">
                                         <input type="checkbox" id="led-borders" checked> Borders
                                     </label>
+                                    <div class="input-row input-compact" data-tooltip="Thickness of tile borders in pixels">
+                                        <span>Border</span>
+                                        <input type="number" id="led-border-size" value="1" min="0.5" step="0.5"
+                                            placeholder="1">
+                                        <span class="unit">px</span>
+                                    </div>
                                     <input type="color" id="led-color" value="#8b5cf6" title="Tile Color">
+                                </div>
+                            </div>
+
+                            <div class="control-row">
+                                <div class="control-group"
+                                    data-tooltip="Choose checkerboard color pairing for panel diagnostics">
+                                    <label>Checkerboard Palette</label>
+                                    <select id="led-checker-palette">
+                                        <option value="color-dual">Color Light / Dark</option>
+                                        <option value="gray-white">Gray / White</option>
+                                    </select>
+                                </div>
+
+                                <div class="control-group"
+                                    data-tooltip="Split each cabinet into module blocks (for example 192x192 cabinets with 96x96 modules)">
+                                    <label>Module Designation</label>
+                                    <div class="options-row">
+                                        <label class="checkbox-label">
+                                            <input type="checkbox" id="led-show-modules"> Modules
+                                        </label>
+                                        <div class="input-row input-compact">
+                                            <input type="number" id="led-module-width" value="64" min="1"
+                                                placeholder="W">
+                                            <span>×</span>
+                                            <input type="number" id="led-module-height" value="64" min="1"
+                                                placeholder="H">
+                                            <span class="unit">px</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

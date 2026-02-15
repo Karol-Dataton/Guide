@@ -874,6 +874,25 @@ document.addEventListener('DOMContentLoaded', () => {
     const ledModeBtns = ledModeToggle.querySelectorAll('.toggle-btn');
     const groupWallRes = document.getElementById('group-wall-res');
     const groupTileCount = document.getElementById('group-tile-count');
+    const ledRainbowCheckbox = document.getElementById('led-rainbow');
+    const ledBordersCheckbox = document.getElementById('led-borders');
+    const ledBorderSizeInput = document.getElementById('led-border-size');
+    const ledColorInput = document.getElementById('led-color');
+    const ledNumberingSelect = document.getElementById('led-numbering');
+    const ledCoordsSelect = document.getElementById('led-coords');
+    const ledCheckerPaletteSelect = document.getElementById('led-checker-palette');
+    const ledShowModulesCheckbox = document.getElementById('led-show-modules');
+    const ledModuleWInput = document.getElementById('led-module-width');
+    const ledModuleHInput = document.getElementById('led-module-height');
+
+    function updateLedOptionStates() {
+        const modulesActive = ledShowModulesCheckbox.checked;
+
+        ledCheckerPaletteSelect.disabled = false;
+        ledBorderSizeInput.disabled = !ledBordersCheckbox.checked;
+        ledModuleWInput.disabled = !modulesActive;
+        ledModuleHInput.disabled = !modulesActive;
+    }
 
     function syncLedInputs() {
         // Find active mode
@@ -924,12 +943,17 @@ document.addEventListener('DOMContentLoaded', () => {
             rows: ledRowsInput.value,
             tileW: ledTileWInput.value,
             tileH: ledTileHInput.value,
-            rainbow: document.getElementById('led-rainbow').checked,
-            background: document.getElementById('led-background').checked,
-            borders: document.getElementById('led-borders').checked,
-            numbering: document.getElementById('led-numbering').value,
-            coords: document.getElementById('led-coords').value,
-            color: document.getElementById('led-color').value
+            rainbow: ledRainbowCheckbox.checked,
+            checkerboard: true,
+            checkerPalette: ledCheckerPaletteSelect.value,
+            borders: ledBordersCheckbox.checked,
+            borderSize: ledBorderSizeInput.value,
+            numbering: ledNumberingSelect.value,
+            coords: ledCoordsSelect.value,
+            color: ledColorInput.value,
+            showModules: ledShowModulesCheckbox.checked,
+            moduleW: ledModuleWInput.value,
+            moduleH: ledModuleHInput.value
         };
     }
 
@@ -948,12 +972,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ledTileWInput.value = s.tileW;
         ledTileHInput.value = s.tileH;
-        document.getElementById('led-rainbow').checked = s.rainbow;
-        document.getElementById('led-background').checked = s.background;
-        document.getElementById('led-borders').checked = s.borders;
-        document.getElementById('led-numbering').value = s.numbering || 'row-col';
-        document.getElementById('led-coords').value = s.coords || 'center';
-        document.getElementById('led-color').value = s.color;
+        ledRainbowCheckbox.checked = s.rainbow;
+        ledCheckerPaletteSelect.value = (s.checkerPalette === 'color-black') ? 'color-dual' : (s.checkerPalette || 'color-dual');
+        ledBordersCheckbox.checked = s.borders === undefined ? true : s.borders;
+        ledBorderSizeInput.value = s.borderSize || 1;
+        ledNumberingSelect.value = s.numbering || 'row-col';
+        ledCoordsSelect.value = s.coords || 'center';
+        ledColorInput.value = s.color;
+        ledShowModulesCheckbox.checked = Boolean(s.showModules);
+        const tileW = parseInt(s.tileW) || parseInt(ledTileWInput.value) || 128;
+        const tileH = parseInt(s.tileH) || parseInt(ledTileHInput.value) || 128;
+        ledModuleWInput.value = s.moduleW || Math.max(1, Math.round(tileW / 2));
+        ledModuleHInput.value = s.moduleH || Math.max(1, Math.round(tileH / 2));
+        updateLedOptionStates();
         drawLedPattern();
     }
 
@@ -974,10 +1005,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const h = parseInt(ledWallHInput.value) || 1080;
         const tW = parseInt(ledTileWInput.value) || 128;
         const tH = parseInt(ledTileHInput.value) || 128;
-        const useRainbow = document.getElementById('led-rainbow').checked;
-        const useBackground = document.getElementById('led-background').checked;
-        const useBorders = document.getElementById('led-borders').checked;
-        const baseColor = document.getElementById('led-color').value;
+        const useRainbow = ledRainbowCheckbox.checked;
+        const useCheckerboard = true;
+        const checkerPalette = ledCheckerPaletteSelect.value;
+        const useBorders = ledBordersCheckbox.checked;
+        const borderSize = Math.max(0.5, parseFloat(ledBorderSizeInput.value) || 1);
+        const baseColor = ledColorInput.value;
+        const numbering = ledNumberingSelect.value;
+        const coordsMode = ledCoordsSelect.value;
+        const showModules = ledShowModulesCheckbox.checked;
+        const moduleW = Math.max(1, parseInt(ledModuleWInput.value) || 96);
+        const moduleH = Math.max(1, parseInt(ledModuleHInput.value) || 96);
+        const fillTiles = true;
 
         ledCanvas.width = w;
         ledCanvas.height = h;
@@ -994,34 +1033,70 @@ document.addEventListener('DOMContentLoaded', () => {
                 const y = r * tH;
 
                 let color = baseColor;
+                let rainbowHue = 0;
                 if (useRainbow) {
-                    // Two-axis rainbow (diagonal)
-                    const hue = ((x / w) + (y / h)) * 180;
-                    color = `hsl(${hue}, 100%, 50%)`;
+                    // Two-axis rainbow by tile index for stable cabinet colors
+                    const xRatio = cols > 1 ? (c / (cols - 1)) : 0;
+                    const yRatio = rows > 1 ? (r / (rows - 1)) : 0;
+                    rainbowHue = ((xRatio * 0.7) + (yRatio * 0.3)) * 360;
+                    color = `hsl(${rainbowHue}, 95%, 48%)`;
                 }
 
-                if (useBackground) {
+                const isCheckerDarkCell = (r + c) % 2 === 1;
+                let tileFillColor = color;
+
+                if (useCheckerboard) {
+                    if (checkerPalette === 'gray-white') {
+                        tileFillColor = isCheckerDarkCell ? '#5f5f5f' : '#d0d0d0';
+                    } else if (useRainbow) {
+                        tileFillColor = isCheckerDarkCell
+                            ? `hsl(${rainbowHue}, 85%, 32%)`
+                            : `hsl(${rainbowHue}, 95%, 58%)`;
+                    } else {
+                        const checkerPair = getCheckerColorPair(color);
+                        tileFillColor = isCheckerDarkCell ? checkerPair.dark : checkerPair.light;
+                    }
+                }
+
+                if (fillTiles) {
                     // Fill Background
-                    ledCtx.fillStyle = color;
+                    ledCtx.fillStyle = tileFillColor;
                     ledCtx.fillRect(x, y, tW, tH);
 
                     // Border (Black for separation)
                     if (useBorders) {
-                        ledCtx.strokeStyle = '#000000';
-                        ledCtx.lineWidth = 1;
-                        ledCtx.strokeRect(x + 0.5, y + 0.5, tW - 1, tH - 1);
+                        ledCtx.strokeStyle = checkerPalette === 'gray-white' ? 'rgba(20, 20, 20, 0.85)' : 'rgba(255, 255, 255, 0.35)';
+                        drawTileBorder(x, y, tW, tH, borderSize);
+                    }
+
+                    if (showModules) {
+                        drawModuleGrid(x, y, tW, tH, moduleW, moduleH);
                     }
 
                     // Text (White with black outline for visibility)
-                    ledCtx.fillStyle = '#FFFFFF';
-                    ledCtx.strokeStyle = '#000000';
+                    if (useCheckerboard && checkerPalette === 'gray-white') {
+                        if (isCheckerDarkCell) {
+                            ledCtx.fillStyle = '#f5f5f5';
+                            ledCtx.strokeStyle = '#121212';
+                        } else {
+                            ledCtx.fillStyle = '#121212';
+                            ledCtx.strokeStyle = '#f5f5f5';
+                        }
+                    } else {
+                        ledCtx.fillStyle = '#FFFFFF';
+                        ledCtx.strokeStyle = '#000000';
+                    }
+
                     ledCtx.lineWidth = 3;
                 } else {
                     // Outline Only
                     if (useBorders) {
                         ledCtx.strokeStyle = color;
-                        ledCtx.lineWidth = 1;
-                        ledCtx.strokeRect(x + 0.5, y + 0.5, tW - 1, tH - 1);
+                        drawTileBorder(x, y, tW, tH, borderSize);
+                    }
+
+                    if (showModules) {
+                        drawModuleGrid(x, y, tW, tH, moduleW, moduleH);
                     }
 
                     ledCtx.fillStyle = color;
@@ -1031,7 +1106,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 // Determine Text Content
                 let mainText = '';
-                const numbering = document.getElementById('led-numbering').value;
                 if (numbering === 'row-col') mainText = `${r + 1}-${c + 1}`;
                 else if (numbering === 'a-1') mainText = `${toLetters(r + 1)}-${c + 1}`;
                 else if (numbering === '1-a') mainText = `${r + 1}-${toLetters(c + 1)}`;
@@ -1048,12 +1122,11 @@ document.addEventListener('DOMContentLoaded', () => {
                     ledCtx.textAlign = 'center';
                     ledCtx.textBaseline = 'middle';
 
-                    if (useBackground) ledCtx.strokeText(mainText, cx, cy);
+                    if (fillTiles) ledCtx.strokeText(mainText, cx, cy);
                     ledCtx.fillText(mainText, cx, cy);
                 }
 
                 // Draw Coordinates
-                const coordsMode = document.getElementById('led-coords').value;
                 if (coordsMode !== 'none') {
                     let displayX = x;
                     let displayY = y;
@@ -1075,7 +1148,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     const textY = mainText ? cy + tH / 4 : cy; // Push down if main text exists
 
-                    if (useBackground) ledCtx.strokeText(coordText, cx, textY);
+                    if (fillTiles) ledCtx.strokeText(coordText, cx, textY);
                     ledCtx.fillText(coordText, cx, textY);
                 }
             }
@@ -1100,6 +1173,75 @@ document.addEventListener('DOMContentLoaded', () => {
         // Shift start position by 1 pixel to avoid overdrawing the last tile's border
         if (fullW < w) drawHatchedArea(fullW, 0, w - fullW, h);
         if (fullH < h) drawHatchedArea(0, fullH, fullW, h - fullH);
+    }
+
+    function drawModuleGrid(x, y, tileW, tileH, moduleW, moduleH) {
+        if (moduleW <= 0 || moduleH <= 0) return;
+
+        ledCtx.save();
+        ledCtx.beginPath();
+
+        for (let mx = moduleW; mx < tileW; mx += moduleW) {
+            ledCtx.moveTo(x + mx + 0.5, y);
+            ledCtx.lineTo(x + mx + 0.5, y + tileH);
+        }
+
+        for (let my = moduleH; my < tileH; my += moduleH) {
+            ledCtx.moveTo(x, y + my + 0.5);
+            ledCtx.lineTo(x + tileW, y + my + 0.5);
+        }
+
+        ledCtx.lineWidth = 2;
+        ledCtx.strokeStyle = 'rgba(0, 0, 0, 0.55)';
+        ledCtx.stroke();
+
+        ledCtx.lineWidth = 1;
+        ledCtx.strokeStyle = 'rgba(255, 255, 255, 0.45)';
+        ledCtx.stroke();
+        ledCtx.restore();
+    }
+
+    function drawTileBorder(x, y, tileW, tileH, borderSize) {
+        const line = Math.min(borderSize, tileW, tileH);
+        const inset = line / 2;
+        const borderW = Math.max(0, tileW - line);
+        const borderH = Math.max(0, tileH - line);
+
+        ledCtx.lineWidth = line;
+        ledCtx.strokeRect(x + inset, y + inset, borderW, borderH);
+    }
+
+    function dimColor(color, factor) {
+        const f = Math.min(1, Math.max(0, factor));
+        const r = parseInt(color.slice(1, 3), 16);
+        const g = parseInt(color.slice(3, 5), 16);
+        const b = parseInt(color.slice(5, 7), 16);
+
+        const dr = Math.round(r * f);
+        const dg = Math.round(g * f);
+        const db = Math.round(b * f);
+
+        return `rgb(${dr}, ${dg}, ${db})`;
+    }
+
+    function lightenColor(color, amount) {
+        const a = Math.min(1, Math.max(0, amount));
+        const r = parseInt(color.slice(1, 3), 16);
+        const g = parseInt(color.slice(3, 5), 16);
+        const b = parseInt(color.slice(5, 7), 16);
+
+        const lr = Math.round(r + ((255 - r) * a));
+        const lg = Math.round(g + ((255 - g) * a));
+        const lb = Math.round(b + ((255 - b) * a));
+
+        return `rgb(${lr}, ${lg}, ${lb})`;
+    }
+
+    function getCheckerColorPair(baseColor) {
+        return {
+            light: lightenColor(baseColor, 0.2),
+            dark: dimColor(baseColor, 0.55)
+        };
     }
 
     function drawHatchedArea(x, y, w, h) {
@@ -1131,12 +1273,21 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     generateLedBtn.addEventListener('click', drawLedPattern);
-    document.getElementById('led-rainbow').addEventListener('change', drawLedPattern);
-    document.getElementById('led-background').addEventListener('change', drawLedPattern);
-    document.getElementById('led-borders').addEventListener('change', drawLedPattern);
-    document.getElementById('led-numbering').addEventListener('change', drawLedPattern);
-    document.getElementById('led-coords').addEventListener('change', drawLedPattern);
-    document.getElementById('led-color').addEventListener('input', drawLedPattern);
+    ledRainbowCheckbox.addEventListener('change', drawLedPattern);
+    ledBordersCheckbox.addEventListener('change', () => {
+        updateLedOptionStates();
+        drawLedPattern();
+    });
+    ledBorderSizeInput.addEventListener('input', drawLedPattern);
+    ledNumberingSelect.addEventListener('change', drawLedPattern);
+    ledCoordsSelect.addEventListener('change', drawLedPattern);
+    ledColorInput.addEventListener('input', drawLedPattern);
+    ledCheckerPaletteSelect.addEventListener('change', drawLedPattern);
+    ledShowModulesCheckbox.addEventListener('change', () => {
+        updateLedOptionStates();
+        drawLedPattern();
+    });
+    [ledModuleWInput, ledModuleHInput].forEach(i => i.addEventListener('input', drawLedPattern));
 
     function updateToggleSlider() {
         const activeBtn = ledModeToggle.querySelector('.toggle-btn.active');
@@ -1192,6 +1343,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial sync
     syncLedInputs();
+    updateLedOptionStates();
 
     // Initial draws
     document.fonts.ready.then(() => {
