@@ -2,49 +2,93 @@ const path = require('path');
 const express = require('express');
 const { createProxyMiddleware } = require('http-proxy-middleware');
 
-const app = express();
+const DEFAULT_PORT = 8080;
+const DEFAULT_TARGET = 'http://127.0.0.1:3019';
+const DEFAULT_DISCOVERY_TARGET = 'http://127.0.0.1:3017';
 
-const PORT = Number(process.env.PORT) || 8080;
-const TARGET = process.env.API_TARGET || 'http://127.0.0.1:3019';
-const DISCOVERY_TARGET = process.env.DISCOVERY_API_TARGET || 'http://127.0.0.1:3017';
-const ROOT_DIR = __dirname;
+function isDiscoveryPath(pathname) {
+    return pathname === '/v0/discovered'
+        || pathname === '/v0/discovery-sse'
+        || pathname === '/v0/discovery-ping';
+}
 
-app.use('/api', createProxyMiddleware({
-    target: TARGET,
-    router(req) {
-        if (
-            req.path === '/v0/discovered' ||
-            req.path === '/v0/discovery-sse' ||
-            req.path === '/v0/discovery-ping'
-        ) {
-            return DISCOVERY_TARGET;
+function createProxyApp(options = {}) {
+    const target = options.target || process.env.API_TARGET || DEFAULT_TARGET;
+    const discoveryTarget = options.discoveryTarget || process.env.DISCOVERY_API_TARGET || DEFAULT_DISCOVERY_TARGET;
+    const rootDir = options.rootDir || __dirname;
+
+    const staticMounts = Array.isArray(options.staticMounts) && options.staticMounts.length > 0
+        ? options.staticMounts
+        : [{ route: '/', dir: rootDir }];
+
+    const fallbackFile = options.fallbackFile || path.join(rootDir, 'index.html');
+    const enableFallback = options.enableFallback !== false;
+
+    const app = express();
+
+    app.use('/api', createProxyMiddleware({
+        target,
+        router(req) {
+            if (isDiscoveryPath(req.path)) {
+                return discoveryTarget;
+            }
+            return target;
+        },
+        changeOrigin: true,
+        ws: false,
+        pathRewrite: { '^/api': '' },
+        onError(err, req, res) {
+            if (res.headersSent) return;
+            res.status(502).json({
+                error: 'Upstream unavailable',
+                target: isDiscoveryPath(req.path) ? discoveryTarget : target,
+                path: req.originalUrl,
+                details: err.message
+            });
         }
-        return TARGET;
-    },
-    changeOrigin: true,
-    ws: false,
-    pathRewrite: { '^/api': '' },
-    onError(err, req, res) {
-        if (res.headersSent) return;
-        res.status(502).json({
-            error: 'Upstream unavailable',
-            target: req.path === '/v0/discovered' || req.path === '/v0/discovery-sse' || req.path === '/v0/discovery-ping'
-                ? DISCOVERY_TARGET
-                : TARGET,
-            path: req.originalUrl,
-            details: err.message
+    }));
+
+    staticMounts.forEach(({ route, dir }) => {
+        if (!route || route === '/') {
+            app.use(express.static(dir));
+            return;
+        }
+        app.use(route, express.static(dir));
+    });
+
+    if (enableFallback) {
+        app.get('*', (req, res) => {
+            res.sendFile(fallbackFile);
         });
     }
-}));
 
-app.use(express.static(ROOT_DIR));
+    return {
+        app,
+        target,
+        discoveryTarget
+    };
+}
 
-app.get('*', (req, res) => {
-    res.sendFile(path.join(ROOT_DIR, 'index.html'));
-});
+function startServer(options = {}) {
+    const port = Number(options.port || process.env.PORT || DEFAULT_PORT);
+    const logLabel = options.logLabel || 'Dashboard';
+    const { app, target, discoveryTarget } = createProxyApp(options);
 
-app.listen(PORT, () => {
-    console.log(`Dashboard available at http://localhost:${PORT}`);
-    console.log(`Proxying /api/* to ${TARGET}`);
-    console.log(`Proxying discovery endpoints to ${DISCOVERY_TARGET}`);
-});
+    const server = app.listen(port, () => {
+        console.log(`${logLabel} available at http://localhost:${port}`);
+        console.log(`Proxying /api/* to ${target}`);
+        console.log(`Proxying discovery endpoints to ${discoveryTarget}`);
+    });
+
+    return server;
+}
+
+if (require.main === module) {
+    startServer();
+}
+
+module.exports = {
+    createProxyApp,
+    startServer,
+    isDiscoveryPath
+};

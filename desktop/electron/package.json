@@ -1,0 +1,13 @@
+{
+  "name": "watchout-tools-electron",
+  "version": "0.1.0",
+  "private": true,
+  "description": "WATCHOUT tools desktop shell using Electron",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "devDependencies": {
+    "electron": "^37.2.0"
+  }
+}
