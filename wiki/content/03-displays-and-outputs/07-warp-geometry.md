@@ -2,10 +2,7 @@
 title: "Warp Geometry"
 ---
 
-
-## Warp Geometry
-
-Geometry correction aligns rendered imagery to real-world surfaces. In WATCHOUT, this is handled through warp geometry and optional mask geometry.
+Geometry correction aligns rendered imagery to real-world surfaces. In WATCHOUT, this is handled through [[WIDGET:warp-geometry]]
 
 ### Warp Geometry
 
@@ -17,6 +14,8 @@ Warp geometry is mesh-based and supports:
 - Per-display editing
 
 This allows precise correction for curved screens, imperfect mounting, and non-rectangular targets.
+
+In practice, warp geometry is used whenever the real projection surface or display alignment is not a perfect rectangle - for example curved LED walls, multi-projector blends, scenic facades, domes, or stages where projector mounting cannot be physically perfect. The normal workflow is to do as much mechanical alignment as possible first, then open the display's warp editor, apply a grid/test pattern, and correct from large to small: first corner/junction placement, then curve handles, then fine edge continuity between adjacent outputs. This iterative approach keeps corrections stable and makes it easier to maintain alignment after transport, re-rigging, or lamp/lens changes.
 
 ### Mask Geometry
 

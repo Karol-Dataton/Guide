@@ -7,6 +7,8 @@ title: "Edge Blending"
 
 Edge blending smooths overlap regions between adjacent projected outputs so they appear as one continuous image.
 
+<img src="../media/edge-blending-diagram.svg" alt="Edge Blending Principle" style="width: 100%; height: auto;">
+
 ### Automatic Soft Edges
 
 WATCHOUT supports automatic soft-edge generation using overlap geometry between displays.

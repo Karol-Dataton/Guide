@@ -7,6 +7,8 @@ title: "Display Calibration"
 
 Calibration is the process of aligning WATCHOUT's rendered output to the physical reality of the display surface. This encompasses projector alignment for 3D mapping, camera-based calibration via NDI streams, EDID management for display identification, and external calibration integration through the HTTP API.
 
+[[WIDGET:display-calibration]]
+
 ### NDI Calibration Stream
 
 For camera-based calibration workflows, each GPU display can be assigned an **NDI Calibration Stream** in the **Calibration** section of Device Properties. This setting specifies the name of an NDI video stream that carries a live camera feed of the display surface.

@@ -9,6 +9,8 @@ Display masks control which pixels on a display are visible and how their edges 
 
 Every display in WATCHOUT can have an independent set of mask surfaces. Masks are especially useful in projection environments where light spills beyond the intended surface, or where scenic elements require non-rectangular output boundaries.
 
+[[WIDGET:display-masks]]
+
 ### Accessing the Mask Editor
 
 There are two ways to enable and edit masks on a display:

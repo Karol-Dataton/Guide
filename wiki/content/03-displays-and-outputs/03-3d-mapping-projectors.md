@@ -34,7 +34,7 @@ Switch Stage camera mode to **Projector** for alignment work. WATCHOUT supports 
 
 ### Calibration Requirements
 
-For reality-point adjustment workflows, provide enough calibration points first.
+For reality-point adjustment workflows, provide enough calibration points first. For a complete guide to calibration workflows, including NDI streams, EDID management, and external calibration integration, see [Display Calibration](12-display-calibration.md).
 
 :::warning
 Projector calibration in 2D reality mode requires at least six virtual points before editing reality points.

@@ -89,7 +89,7 @@ function setupBadges() {
 function setupDiagramTheme() {
     const updateDiagram = () => {
         const currentTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-        const diagrams = document.querySelectorAll('img[src$="system_architecture_diagram.svg"], img[src$="system_architecture_diagram_dark.svg"], img[src$="watchout-pipeline.svg"], img[src$="watchout-pipeline_dark.svg"]');
+        const diagrams = document.querySelectorAll('img[src$="system_architecture_diagram.svg"], img[src$="system_architecture_diagram_dark.svg"], img[src$="watchout-pipeline.svg"], img[src$="watchout-pipeline_dark.svg"], img[src$="edge-blending-diagram.svg"], img[src$="edge-blending-diagram_dark.svg"]');
 
         diagrams.forEach(diagram => {
             const isDark = ['dark', 'midnight', 'rust'].includes(currentTheme);
