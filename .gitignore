@@ -1,1 +1,9 @@
 7nx/
+
+# Generated Wiki Content
+wiki/**/*.html
+wiki/content-data.js
+wiki/toc-data.js
+!wiki/index.html
+!wiki/stats.html
+!wiki/version.html

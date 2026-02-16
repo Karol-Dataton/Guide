@@ -72,6 +72,24 @@ function markdownToHtml(markdown) {
     // Images
     html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" class="content-image">');
 
+    // Links [text](url)
+    // Must be done AFTER images to avoid matching inside image syntax
+    html = html.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
+        // specific fix for .md links to .html
+        let href = url;
+        if (href.endsWith('.md') && !href.startsWith('http')) {
+            href = href.replace(/\.md$/, '.html');
+            // Remove the numerical prefix from the filename if present
+            // e.g. 06-show-information.html -> show-information.html
+            const parts = href.split('/');
+            const filename = parts.pop();
+            const cleanFilename = filename.replace(/^\d+-/, '');
+            parts.push(cleanFilename);
+            href = parts.join('/');
+        }
+        return `<a href="${href}">${text}</a>`;
+    });
+
     // Videos (custom syntax: @[alt](src)) - thumbnail with autoplay, muted, loop, no controls
     // Add timestamp to prevent browser caching issues
     let timestamp = Date.now();

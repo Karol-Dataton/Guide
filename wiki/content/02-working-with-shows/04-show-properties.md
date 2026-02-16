@@ -134,11 +134,7 @@ The **Warp** section controls defaults for warp geometry editing.
 - **New Warp Handles Should Have Fixed Length** – When enabled, new warp control handles are created with a fixed pixel length rather than being free-form. You can specify the handle length in pixels.
 - **New Warp Points Should be Smooth** – When enabled, new warp points are created with smooth (continuous) tangent handles.
 
-## NDI®
-
-The **NDI®** section manages NDI network discovery configuration.
-
-### NDI® Extra IPs
+## NDI® Extra IPs
 
 A list of additional IP addresses for NDI source discovery. This is useful when NDI sources are on different subnets that are not automatically discovered via mDNS.
 
@@ -147,6 +143,8 @@ You can add, edit, or remove IP addresses from the list using the corresponding 
 ## Show Info
 
 The **Show Info** section provides a read-only overview of the current show, including statistics, asset counts, and technical details. See [Show Information](./06-show-information.md) for a full description of each subsection.
+
+## Live Show Considerations
 
 If a property change becomes necessary during a live show, pause playback to a safe state before making adjustments. The brief transition is preferable to unexpected disruptions during active content playback.
 
