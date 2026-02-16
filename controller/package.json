@@ -1,0 +1,52 @@
+{
+    "name": "watchout-controller",
+    "version": "1.0.0",
+    "private": true,
+    "description": "Local proxy + static server for WATCHOUT controller",
+    "main": "electron-main.js",
+    "scripts": {
+        "start": "electron .",
+        "dev": "electron .",
+        "start:web": "node proxy-server.js",
+        "dist": "node scripts/build-dist.js",
+        "dist:electron": "electron-builder --mac zip --win portable"
+    },
+    "dependencies": {
+        "express": "^4.21.2",
+        "http-proxy-middleware": "^3.0.3"
+    },
+    "devDependencies": {
+        "electron": "^37.2.0",
+        "electron-builder": "^25.1.8",
+        "pkg": "^5.8.1"
+    },
+    "build": {
+        "appId": "com.watchout.controller",
+        "productName": "WATCHOUT Controller",
+        "files": [
+            "electron-main.js",
+            "proxy-server.js",
+            "app.js",
+            "index.html",
+            "styles.css",
+            "FuturaNowHeadline-Rg.otf",
+            "node_modules/**/*",
+            "package.json"
+        ],
+        "directories": {
+            "output": "electron-dist"
+        },
+        "mac": {
+            "target": [
+                "zip"
+            ],
+            "artifactName": "${productName}-${version}-mac-${arch}.${ext}"
+        },
+        "win": {
+            "target": [
+                "portable"
+            ],
+            "artifactName": "${productName}-${version}-win-${arch}.${ext}"
+        }
+    }
+}

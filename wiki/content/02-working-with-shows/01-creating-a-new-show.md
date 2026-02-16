@@ -22,12 +22,6 @@ A freshly created show includes the fundamental structures you need to begin pro
 
 At this point, nothing is connected—no display servers, no Director, no Asset Manager. The show exists purely as a local document on your Producer workstation until you choose to connect it to network resources.
 
-### Organizing Your Project Files
-
-Consider where you'll store your show file before you begin programming. Keeping your show file alongside its associated media assets in a dedicated project folder simplifies collaboration and makes packaging the show for transport much easier. A typical structure might place the show file in a project root folder with subfolders for video assets, images, and audio.
-
-When multiple team members work on the same production, consistent folder conventions prevent confusion about which version of the show is current and where media files should be located.
-
 ### Network Considerations
 
 If you create a show while already connected to network nodes, WATCHOUT remains aware of the Director's state. Should you attempt to deploy your new show to a Director that's already running a different production, you'll receive a warning about overriding the existing show. This protection helps prevent accidental interruptions to live systems.
