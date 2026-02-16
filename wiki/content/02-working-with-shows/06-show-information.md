@@ -6,11 +6,11 @@ badge: Karol
 
 ## Show Information
 
-The **Show Information** dialog provides a statistical overview of the current show, giving you a quick summary of its contents, complexity, and file details. It is a read-only view — no settings are changed here — designed for auditing, documentation, and pre-deployment verification.
+The **Show Information** section provides a statistical overview of the current show, giving you a quick summary of its contents, complexity, and file details. It is a read-only view — no settings are changed here — designed for auditing, documentation, and pre-deployment verification.
 
 ### Accessing Show Information
 
-Open the dialog from **File → Show Information**. The dialog loads the current show's data and presents it in a series of expandable sections.
+Show Information is located at the bottom of the [Show Properties](./04-show-properties.md) panel. Open Show Properties by deselecting everything (so the Properties panel shows show-level settings), or via **File → Show Properties**. Then expand the **Show Information** section, which is collapsed by default. The data is presented in a series of expandable subsections.
 
 ### Statistics
 

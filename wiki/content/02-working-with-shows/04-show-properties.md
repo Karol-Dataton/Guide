@@ -146,11 +146,7 @@ You can add, edit, or remove IP addresses from the list using the corresponding 
 
 ## Show Info
 
-The **Show Info** section provides a read-only overview of the current show, including:
-
-- **Statistics** – Total cue counts broken down by type (media, control, output, variable, comment), timeline details with per-timeline cue counts and durations, composition count, and display counts by type (GPU, NDI, SDI, virtual).
-- **Assets** – Total asset count broken down by type (image, video, audio, composition, display data, model, EDID, ArtNet fixture, ArtNet recording, font, SVG).
-- **Technical Details** – Show name, creation date, file path, file size, and last modified date.
+The **Show Info** section provides a read-only overview of the current show, including statistics, asset counts, and technical details. See [Show Information](./06-show-information.md) for a full description of each subsection.
 
 If a property change becomes necessary during a live show, pause playback to a safe state before making adjustments. The brief transition is preferable to unexpected disruptions during active content playback.
 
