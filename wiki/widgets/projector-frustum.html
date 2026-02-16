@@ -1,0 +1,560 @@
+<div class="interactive-widget" id="projector-frustum-widget">
+    <style>
+        #projector-frustum-widget {
+            width: 100%;
+        }
+
+        #projector-frustum-widget .pf-layout {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        #projector-frustum-widget .pf-canvas-wrap {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+        }
+
+        #projector-frustum-widget canvas {
+            width: 100%;
+            height: 600px;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0d0d1a 100%);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: block;
+            cursor: grab;
+        }
+
+        #projector-frustum-widget canvas:active {
+            cursor: grabbing;
+        }
+
+        #projector-frustum-widget .pf-orbit-hint {
+            position: absolute;
+            bottom: 8px;
+            left: 12px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.25);
+            pointer-events: none;
+        }
+
+        #projector-frustum-widget .pf-controls {
+            width: 210px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #projector-frustum-widget .pf-control {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding: 7px 9px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        #projector-frustum-widget .pf-control:hover,
+        #projector-frustum-widget .pf-control.active {
+            border-color: var(--accent-primary, #6366f1);
+            background: rgba(99, 102, 241, 0.08);
+        }
+
+        #projector-frustum-widget .pf-control label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary, #e7e5e4);
+            pointer-events: none;
+        }
+
+        #projector-frustum-widget .pf-control input[type=range] {
+            width: 100%;
+            accent-color: var(--accent-primary, #6366f1);
+            height: 5px;
+            cursor: pointer;
+        }
+
+        #projector-frustum-widget .pf-control .pf-val {
+            font-size: 0.7rem;
+            color: var(--text-muted, #78716c);
+            font-variant-numeric: tabular-nums;
+        }
+
+        #projector-frustum-widget .pf-explain {
+            margin-top: 10px;
+            min-height: 52px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            background: rgba(99, 102, 241, 0.06);
+            border-left: 3px solid var(--accent-primary, #6366f1);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: var(--text-secondary, #a8a29e);
+        }
+
+        #projector-frustum-widget .pf-explain strong {
+            color: var(--text-primary, #e7e5e4);
+        }
+
+        #projector-frustum-widget .pf-reset-btn {
+            margin-top: 2px;
+            padding: 5px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            background: var(--bg-tertiary, #292524);
+            color: var(--text-secondary, #a8a29e);
+            font-family: inherit;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        #projector-frustum-widget .pf-reset-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 700px) {
+            #projector-frustum-widget .pf-layout {
+                flex-direction: column;
+            }
+
+            #projector-frustum-widget .pf-controls {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            #projector-frustum-widget .pf-control {
+                flex: 1 1 45%;
+                min-width: 130px;
+            }
+        }
+    </style>
+
+    <div class="pf-layout">
+        <div class="pf-canvas-wrap">
+            <canvas id="pf-canvas" width="1600" height="1200"></canvas>
+            <div class="pf-orbit-hint">Drag to orbit</div>
+        </div>
+        <div class="pf-controls">
+            <div class="pf-control" data-param="eyeHeight" tabindex="0">
+                <label>Eye Height</label>
+                <input type="range" id="pf-eyeHeight" min="0" max="300" value="150">
+                <span class="pf-val" id="pf-eyeHeight-val">150</span>
+            </div>
+            <div class="pf-control" data-param="eyeDist" tabindex="0">
+                <label>Eye Distance</label>
+                <input type="range" id="pf-eyeDist" min="100" max="500" value="300">
+                <span class="pf-val" id="pf-eyeDist-val">300</span>
+            </div>
+            <div class="pf-control" data-param="targetHeight" tabindex="0">
+                <label>Target Height</label>
+                <input type="range" id="pf-targetHeight" min="0" max="300" value="80">
+                <span class="pf-val" id="pf-targetHeight-val">80</span>
+            </div>
+            <div class="pf-control" data-param="roll" tabindex="0">
+                <label>Roll</label>
+                <input type="range" id="pf-roll" min="-45" max="45" value="0">
+                <span class="pf-val" id="pf-roll-val">0°</span>
+            </div>
+            <div class="pf-control" data-param="hShift" tabindex="0">
+                <label>H. Lens Shift</label>
+                <input type="range" id="pf-hShift" min="-50" max="50" value="0">
+                <span class="pf-val" id="pf-hShift-val">0%</span>
+            </div>
+            <div class="pf-control" data-param="vShift" tabindex="0">
+                <label>V. Lens Shift</label>
+                <input type="range" id="pf-vShift" min="-50" max="50" value="0">
+                <span class="pf-val" id="pf-vShift-val">0%</span>
+            </div>
+            <div class="pf-control" data-param="ratio" tabindex="0">
+                <label>Width/Distance</label>
+                <input type="range" id="pf-ratio" min="40" max="200" value="100">
+                <span class="pf-val" id="pf-ratio-val">1:1.00</span>
+            </div>
+            <button class="pf-reset-btn" id="pf-reset">Reset All</button>
+        </div>
+    </div>
+    <div class="pf-explain" id="pf-explain">
+        Adjust any parameter to see its effect on the projection. Drag the 3D view to orbit.
+    </div>
+</div>
+<script>
+    (function () {
+        const canvas = document.getElementById('pf-canvas');
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        const explainEl = document.getElementById('pf-explain');
+
+        const sliders = {
+            eyeHeight: document.getElementById('pf-eyeHeight'),
+            eyeDist: document.getElementById('pf-eyeDist'),
+            targetHeight: document.getElementById('pf-targetHeight'),
+            roll: document.getElementById('pf-roll'),
+            hShift: document.getElementById('pf-hShift'),
+            vShift: document.getElementById('pf-vShift'),
+            ratio: document.getElementById('pf-ratio'),
+        };
+        const valEls = {
+            eyeHeight: document.getElementById('pf-eyeHeight-val'),
+            eyeDist: document.getElementById('pf-eyeDist-val'),
+            targetHeight: document.getElementById('pf-targetHeight-val'),
+            roll: document.getElementById('pf-roll-val'),
+            hShift: document.getElementById('pf-hShift-val'),
+            vShift: document.getElementById('pf-vShift-val'),
+            ratio: document.getElementById('pf-ratio-val'),
+        };
+        const defaults = { eyeHeight: 150, eyeDist: 300, targetHeight: 80, roll: 0, hShift: 0, vShift: 0, ratio: 100 };
+
+        const explanations = {
+            eyeHeight: '<strong>Eye Height</strong> — Vertical position of the projector. Raising it simulates ceiling mounting; lowering it simulates floor placement. The projection angle steepens as the height difference from the target increases.',
+            eyeDist: '<strong>Eye Distance</strong> — How far the projector is from the wall. Greater distance = larger projected image at the same throw ratio. This is the throw distance.',
+            targetHeight: '<strong>Target Height</strong> — The point on the wall the projector is aimed at. Moving it shifts the projection axis up or down without moving the projector body.',
+            roll: '<strong>Roll</strong> — Rotation around the projection axis (Eye → Target line). 0° = level. Use ±90° for portrait orientation. The projected rectangle rotates on the wall.',
+            hShift: '<strong>Horizontal Lens Shift</strong> — Moves the projected image left or right on the wall without moving the projector. Expressed as % of image width. Matches physical lens shift on pro projectors.',
+            vShift: '<strong>Vertical Lens Shift</strong> — Moves the projected image up or down on the wall. Used when ceiling-mounted (shift down) or floor-mounted (shift up) to avoid keystoning.',
+            ratio: '<strong>Width/Distance Ratio (Throw Ratio)</strong> — Controls how wide the image is at a given distance. Displayed as 1:N. Smaller N = wider short-throw lens. Larger N = narrower long-throw lens.',
+        };
+
+        let activeParam = null;
+        const controlEls = document.querySelectorAll('#projector-frustum-widget .pf-control');
+        controlEls.forEach(el => {
+            const p = el.dataset.param;
+            el.addEventListener('mouseenter', () => setActive(p));
+            el.addEventListener('mouseleave', () => setActive(null));
+            el.addEventListener('focus', () => setActive(p));
+            el.addEventListener('blur', () => setActive(null));
+        });
+        function setActive(p) {
+            activeParam = p;
+            controlEls.forEach(el => el.classList.toggle('active', el.dataset.param === p));
+            explainEl.innerHTML = explanations[p] || 'Adjust any parameter to see its effect on the projection. Drag the 3D view to orbit.';
+        }
+        Object.keys(sliders).forEach(k => sliders[k].addEventListener('input', draw));
+        document.getElementById('pf-reset').addEventListener('click', () => {
+            Object.keys(defaults).forEach(k => sliders[k].value = defaults[k]);
+            draw();
+        });
+
+        // --- Camera orbit ---
+        let camYaw = 0.84, camPitch = -0.44;
+        let dragging = false, lastMX, lastMY;
+        canvas.addEventListener('mousedown', e => { dragging = true; lastMX = e.clientX; lastMY = e.clientY; });
+        canvas.addEventListener('touchstart', e => { dragging = true; lastMX = e.touches[0].clientX; lastMY = e.touches[0].clientY; e.preventDefault(); }, { passive: false });
+        window.addEventListener('mouseup', () => dragging = false);
+        window.addEventListener('touchend', () => dragging = false);
+        window.addEventListener('mousemove', e => {
+            if (!dragging) return;
+            camYaw += (e.clientX - lastMX) * 0.006;
+            camPitch -= (e.clientY - lastMY) * 0.006;
+            camPitch = Math.max(-1.52, Math.min(-0.17, camPitch));
+            lastMX = e.clientX; lastMY = e.clientY;
+            draw();
+        });
+        window.addEventListener('touchmove', e => {
+            if (!dragging) return;
+            camYaw += (e.touches[0].clientX - lastMX) * 0.006;
+            camPitch -= (e.touches[0].clientY - lastMY) * 0.006;
+            camPitch = Math.max(-1.52, Math.min(-0.17, camPitch));
+            lastMX = e.touches[0].clientX; lastMY = e.touches[0].clientY;
+            draw();
+        }, { passive: false });
+
+        // --- 3D math ---
+        function project(x, y, z) {
+            // Scene center
+            const cx = 0, cy = 100, cz = -150;
+            let dx = x - cx, dy = y - cy, dz = z - cz;
+            // Rotate around Y (yaw)
+            const cosY = Math.cos(camYaw), sinY = Math.sin(camYaw);
+            let rx = dx * cosY - dz * sinY;
+            let rz = dx * sinY + dz * cosY;
+            let ry = dy;
+            // Rotate around X (pitch)
+            const cosP = Math.cos(camPitch), sinP = Math.sin(camPitch);
+            let ry2 = ry * cosP - rz * sinP;
+            let rz2 = ry * sinP + rz * cosP;
+            rx = rx;
+            // Perspective
+            const fov = 1100;
+            const dist = 600;
+            const perspective = fov / (rz2 + dist);
+            if (perspective < 0) return null;
+            return {
+                x: W / 2 + rx * perspective,
+                y: H / 2 - ry2 * perspective,
+                z: rz2,
+                s: perspective
+            };
+        }
+
+        function drawLine3D(ax, ay, az, bx, by, bz, color, width) {
+            const pa = project(ax, ay, az);
+            const pb = project(bx, by, bz);
+            if (!pa || !pb) return;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.beginPath();
+            ctx.moveTo(pa.x, pa.y);
+            ctx.lineTo(pb.x, pb.y);
+            ctx.stroke();
+        }
+
+        function drawPoly3D(points, fillColor, strokeColor, strokeWidth) {
+            const projected = points.map(p => project(p[0], p[1], p[2]));
+            if (projected.some(p => !p)) return;
+            ctx.beginPath();
+            ctx.moveTo(projected[0].x, projected[0].y);
+            for (let i = 1; i < projected.length; i++) {
+                ctx.lineTo(projected[i].x, projected[i].y);
+            }
+            ctx.closePath();
+            if (fillColor) { ctx.fillStyle = fillColor; ctx.fill(); }
+            if (strokeColor) { ctx.strokeStyle = strokeColor; ctx.lineWidth = strokeWidth || 1; ctx.stroke(); }
+        }
+
+        function drawDot3D(x, y, z, radius, color) {
+            const p = project(x, y, z);
+            if (!p) return;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius * p.s * 0.8, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+
+        function drawLabel3D(x, y, z, text, color, offsetX, offsetY) {
+            const p = project(x, y, z);
+            if (!p) return;
+            ctx.font = `600 ${Math.max(14, 20 * p.s * 0.8)}px Inter, system-ui, sans-serif`;
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.fillText(text, p.x + (offsetX || 0), p.y + (offsetY || 0));
+        }
+
+        function getVals() {
+            return {
+                eyeHeight: +sliders.eyeHeight.value,
+                eyeDist: +sliders.eyeDist.value,
+                targetHeight: +sliders.targetHeight.value,
+                roll: +sliders.roll.value,
+                hShift: +sliders.hShift.value,
+                vShift: +sliders.vShift.value,
+                ratio: +sliders.ratio.value / 100,
+            };
+        }
+
+        function draw() {
+            const v = getVals();
+
+            valEls.eyeHeight.textContent = v.eyeHeight;
+            valEls.eyeDist.textContent = v.eyeDist;
+            valEls.targetHeight.textContent = v.targetHeight;
+            valEls.roll.textContent = v.roll + '°';
+            valEls.hShift.textContent = v.hShift + '%';
+            valEls.vShift.textContent = v.vShift + '%';
+            valEls.ratio.textContent = '1:' + v.ratio.toFixed(2);
+
+            ctx.clearRect(0, 0, W, H);
+
+            // --- Ground grid ---
+            const gridSize = 400;
+            const gridStep = 50;
+            ctx.setLineDash([]);
+            for (let i = -gridSize; i <= gridSize; i += gridStep) {
+                drawLine3D(i, 0, -gridSize, i, 0, gridSize, 'rgba(255,255,255,0.04)', 0.5);
+                drawLine3D(-gridSize, 0, i, gridSize, 0, i, 'rgba(255,255,255,0.04)', 0.5);
+            }
+
+            // --- Wall (surface at z=0) ---
+            const wallW = 250, wallH = 300;
+            drawPoly3D(
+                [[-wallW, 0, 0], [wallW, 0, 0], [wallW, wallH, 0], [-wallW, wallH, 0]],
+                'rgba(255,255,255,0.04)', 'rgba(255,255,255,0.15)', 1
+            );
+            drawLabel3D(0, wallH + 15, 0, 'WALL / SURFACE', 'rgba(255,255,255,0.25)', 0, 0);
+
+            // --- Projector position ---
+            const eyeX = 0;
+            const eyeY = v.eyeHeight;
+            const eyeZ = -v.eyeDist;
+
+            // Target on wall
+            const tgtX = 0;
+            const tgtY = v.targetHeight;
+            const tgtZ = 0;
+
+            // Direction from eye to target
+            const dirX = tgtX - eyeX;
+            const dirY = tgtY - eyeY;
+            const dirZ = tgtZ - eyeZ;
+            const dirLen = Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+            const ndx = dirX / dirLen, ndy = dirY / dirLen, ndz = dirZ / dirLen;
+
+            // Build local coordinate frame at the target
+            // "up" in world = (0,1,0), apply roll
+            const rollRad = v.roll * Math.PI / 180;
+
+            // Right vector = normalize(dir cross worldUp), then rotate by roll
+            let rx = ndz * 1 - ndy * 0;  // dir cross (0,1,0) simplified
+            let ry = ndx * 0 - ndz * 0;
+            let rz = ndy * 0 - ndx * 1;
+            // Actually: cross(dir, up) where up=(0,1,0)
+            rx = ndy * 0 - 0 * ndz; // This is wrong, let me redo
+            // cross(d, u) where d=(ndx,ndy,ndz), u=(0,1,0)
+            rx = ndy * 0 - ndz * 1;  // = -ndz
+            ry = ndz * 0 - ndx * 0;  // = 0
+            rz = ndx * 1 - ndy * 0;  // = ndx
+            // So right = (-ndz, 0, ndx)
+            let rLen = Math.sqrt(rx * rx + ry * ry + rz * rz);
+            if (rLen < 0.001) { rx = 1; ry = 0; rz = 0; rLen = 1; }
+            rx /= rLen; ry /= rLen; rz /= rLen;
+
+            // Up vector = cross(right, dir)
+            let ux = ry * ndz - rz * ndy;
+            let uy = rz * ndx - rx * ndz;
+            let uz = rx * ndy - ry * ndx;
+            let uLen = Math.sqrt(ux * ux + uy * uy + uz * uz);
+            ux /= uLen; uy /= uLen; uz /= uLen;
+
+            // Apply roll: rotate right and up around dir
+            const cosR = Math.cos(rollRad), sinR = Math.sin(rollRad);
+            const rx2 = rx * cosR + ux * sinR;
+            const ry2 = ry * cosR + uy * sinR;
+            const rz2 = rz * cosR + uz * sinR;
+            const ux2 = -rx * sinR + ux * cosR;
+            const uy2 = -ry * sinR + uy * cosR;
+            const uz2 = -rz * sinR + uz * cosR;
+
+            // Frustum half-widths at the wall
+            const halfW = v.eyeDist / (2 * v.ratio);
+            const aspect = 9 / 16;
+            const halfH = halfW * aspect;
+
+            // Lens shift offsets
+            const hOff = (v.hShift / 100) * halfW * 2;
+            const vOff = (v.vShift / 100) * halfH * 2;
+
+            // Four corners of the projected image on the wall (z=0 plane)
+            // Center of projection on wall, shifted
+            const pcX = tgtX + rx2 * hOff + ux2 * vOff;
+            const pcY = tgtY + ry2 * hOff + uy2 * vOff;
+            const pcZ = tgtZ + rz2 * hOff + uz2 * vOff;
+
+            const corners = [
+                [pcX - rx2 * halfW - ux2 * halfH, pcY - ry2 * halfW - uy2 * halfH, pcZ - rz2 * halfW - uz2 * halfH], // BL
+                [pcX + rx2 * halfW - ux2 * halfH, pcY + ry2 * halfW - uy2 * halfH, pcZ + rz2 * halfW - uz2 * halfH], // BR
+                [pcX + rx2 * halfW + ux2 * halfH, pcY + ry2 * halfW + uy2 * halfH, pcZ + rz2 * halfW + uz2 * halfH], // TR
+                [pcX - rx2 * halfW + ux2 * halfH, pcY - ry2 * halfW + uy2 * halfH, pcZ - rz2 * halfW + uz2 * halfH], // TL
+            ];
+
+            // --- Draw frustum volume (edges from eye to corners) ---
+            const isRatioActive = activeParam === 'ratio';
+            const frustumEdgeColor = isRatioActive ? 'rgba(139,92,246,0.5)' : 'rgba(99,102,241,0.25)';
+            const frustumEdgeW = isRatioActive ? 1.5 : 1;
+
+            // Frustum side faces (translucent fill)
+            for (let i = 0; i < 4; i++) {
+                const j = (i + 1) % 4;
+                drawPoly3D(
+                    [[eyeX, eyeY, eyeZ], corners[i], corners[j]],
+                    'rgba(99,102,241,0.04)', frustumEdgeColor, frustumEdgeW
+                );
+            }
+
+            // Frustum edges
+            for (const c of corners) {
+                drawLine3D(eyeX, eyeY, eyeZ, c[0], c[1], c[2], frustumEdgeColor, frustumEdgeW);
+            }
+
+            // --- Projected image rectangle on wall ---
+            drawPoly3D(corners, 'rgba(250,204,21,0.12)', 'rgba(250,204,21,0.8)', 2);
+
+            // Crosshair on projected image
+            const midTop = [(corners[2][0] + corners[3][0]) / 2, (corners[2][1] + corners[3][1]) / 2, (corners[2][2] + corners[3][2]) / 2];
+            const midBot = [(corners[0][0] + corners[1][0]) / 2, (corners[0][1] + corners[1][1]) / 2, (corners[0][2] + corners[1][2]) / 2];
+            const midLeft = [(corners[0][0] + corners[3][0]) / 2, (corners[0][1] + corners[3][1]) / 2, (corners[0][2] + corners[3][2]) / 2];
+            const midRight = [(corners[1][0] + corners[2][0]) / 2, (corners[1][1] + corners[2][1]) / 2, (corners[1][2] + corners[2][2]) / 2];
+            ctx.setLineDash([4, 4]);
+            drawLine3D(midTop[0], midTop[1], midTop[2], midBot[0], midBot[1], midBot[2], 'rgba(250,204,21,0.2)', 1);
+            drawLine3D(midLeft[0], midLeft[1], midLeft[2], midRight[0], midRight[1], midRight[2], 'rgba(250,204,21,0.2)', 1);
+            ctx.setLineDash([]);
+
+            // --- Projection axis (dashed) ---
+            const isAxisActive = activeParam === 'eyeHeight' || activeParam === 'eyeDist' || activeParam === 'targetHeight';
+            ctx.setLineDash([6, 5]);
+            drawLine3D(eyeX, eyeY, eyeZ, tgtX, tgtY, tgtZ,
+                isAxisActive ? 'rgba(251,191,36,0.6)' : 'rgba(255,255,255,0.12)', 1);
+            ctx.setLineDash([]);
+
+            // --- Projector body (small box) ---
+            const bSize = 12;
+            const bLen = 20;
+            // Simple box along the direction axis
+            const bCorners = [];
+            for (let si = -1; si <= 1; si += 2) {
+                for (let sj = -1; sj <= 1; sj += 2) {
+                    const ox = rx2 * si * bSize + ux2 * sj * bSize;
+                    const oy = ry2 * si * bSize + uy2 * sj * bSize;
+                    const oz = rz2 * si * bSize + uz2 * sj * bSize;
+                    bCorners.push([eyeX + ox, eyeY + oy, eyeZ + oz]);
+                    bCorners.push([eyeX + ox + ndx * bLen, eyeY + oy + ndy * bLen, eyeZ + oz + ndz * bLen]);
+                }
+            }
+            // Draw projector box faces
+            const bFaces = [
+                [0, 2, 6, 4], [1, 3, 7, 5], // sides
+                [0, 1, 3, 2], [4, 5, 7, 6], // top/bottom
+                [0, 1, 5, 4], [2, 3, 7, 6], // front/back
+            ];
+            for (const face of bFaces) {
+                drawPoly3D(
+                    face.map(i => bCorners[i]),
+                    'rgba(99,102,241,0.35)', 'rgba(129,140,248,0.6)', 1
+                );
+            }
+
+            // --- Lens glow (small circle at projector front) ---
+            const lensCX = eyeX + ndx * bLen;
+            const lensCY = eyeY + ndy * bLen;
+            const lensCZ = eyeZ + ndz * bLen;
+            drawDot3D(lensCX, lensCY, lensCZ, 6, 'rgba(250,204,21,0.5)');
+
+            // --- Eye dot ---
+            const isEyeActive = activeParam === 'eyeHeight' || activeParam === 'eyeDist';
+            drawDot3D(eyeX, eyeY, eyeZ, isEyeActive ? 8 : 5, isEyeActive ? '#818cf8' : '#6366f1');
+            drawLabel3D(eyeX, eyeY, eyeZ, 'Eye', '#a5b4fc', 0, -20);
+
+            // --- Target dot ---
+            const isTgtActive = activeParam === 'targetHeight';
+            drawDot3D(tgtX, tgtY, tgtZ, isTgtActive ? 8 : 5, isTgtActive ? '#fbbf24' : '#f59e0b');
+            drawLabel3D(tgtX, tgtY, tgtZ, 'Target', '#fcd34d', 0, -18);
+
+            // --- Projected image label ---
+            const labelPos = [(corners[2][0] + corners[3][0]) / 2, (corners[2][1] + corners[3][1]) / 2 + 12, (corners[2][2] + corners[3][2]) / 2];
+            drawLabel3D(labelPos[0], labelPos[1], labelPos[2], 'Projected Image', 'rgba(250,204,21,0.6)', 0, -6);
+
+            // --- Vertical reference line from eye to ground ---
+            ctx.setLineDash([3, 3]);
+            drawLine3D(eyeX, 0, eyeZ, eyeX, eyeY, eyeZ, 'rgba(255,255,255,0.08)', 1);
+            ctx.setLineDash([]);
+
+            // --- Shift indicators ---
+            if (Math.abs(v.hShift) > 1 || Math.abs(v.vShift) > 1) {
+                ctx.setLineDash([3, 3]);
+                drawLine3D(tgtX, tgtY, tgtZ, pcX, pcY, pcZ, 'rgba(52,211,153,0.5)', 1);
+                ctx.setLineDash([]);
+            }
+
+        }
+
+        draw();
+    })();
+</script>
