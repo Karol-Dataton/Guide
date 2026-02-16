@@ -876,49 +876,74 @@ function generateStatsPage() {
         </div>
         <script>
             document.addEventListener('DOMContentLoaded', () => {
-                const updateUntickedStatus = () => {
-                   const items = document.querySelectorAll('.unticked-item-link');
-                   let visibleCount = 0;
+                const sanitizeBadgeList = (value) => {
+                    if (!Array.isArray(value)) return [];
+                    return [...new Set(value
+                        .map((item) => (typeof item === 'string' ? item.trim() : ''))
+                        .filter(Boolean))];
+                };
 
-                   items.forEach(item => {
-                       const pageId = item.getAttribute('data-page-id');
-                       const requiredBadges = JSON.parse(item.getAttribute('data-badges'));
-                       
-                       // Get active badges from storage
-                       const storageKey = 'watchout-wiki-badges-' + pageId;
-                       let activeBadges = [];
-                       try {
-                           activeBadges = JSON.parse(localStorage.getItem(storageKey)) || [];
-                       } catch(e) {}
+                const getLocalBadges = (pageId) => {
+                    try {
+                        return sanitizeBadgeList(JSON.parse(localStorage.getItem('watchout-wiki-badges-' + pageId)) || []);
+                    } catch (error) {
+                        return [];
+                    }
+                };
 
-                       const failedBadges = requiredBadges.filter(b => !activeBadges.includes(b));
-                       
-                       if (failedBadges.length === 0) {
-                           item.style.display = 'none';
-                       } else {
-                           item.style.display = 'block';
-                           const display = item.querySelector('.unticked-badges-display');
-                           if (display) {
-                               display.textContent = 'Unticked: ' + failedBadges.join(', ');
-                           }
-                           visibleCount++;
-                       }
-                   });
-                   
-                   // Update header count? Not easy as it is static HTML.
-                   // But we can hide the whole section if empty.
-                   const list = document.getElementById('unticked-badges-list');
-                   const header = list.previousElementSibling; // The paragraph
-                   const h2 = header.previousElementSibling; // The h2
-                   
-                   // We actually can't easily update the (N) without selecting it specifically.
-                   // But let's at least handle the 'all clear' state visually if we wanted.
+                const updateUntickedStatus = async () => {
+                    const items = Array.from(document.querySelectorAll('.unticked-item-link'));
+                    const pageIds = [...new Set(items
+                        .map((item) => item.getAttribute('data-page-id'))
+                        .filter(Boolean))];
+
+                    let badgesByPage = {};
+
+                    if (window.watchoutBadgeStore && typeof window.watchoutBadgeStore.getManyPageBadges === 'function') {
+                        try {
+                            badgesByPage = await window.watchoutBadgeStore.getManyPageBadges(pageIds);
+                        } catch (error) {
+                            badgesByPage = {};
+                        }
+                    }
+
+                    items.forEach((item) => {
+                        const pageId = item.getAttribute('data-page-id');
+                        let requiredBadges = [];
+
+                        try {
+                            requiredBadges = sanitizeBadgeList(JSON.parse(item.getAttribute('data-badges')) || []);
+                        } catch (error) {
+                            requiredBadges = [];
+                        }
+
+                        const activeBadges = Object.prototype.hasOwnProperty.call(badgesByPage, pageId)
+                            ? sanitizeBadgeList(badgesByPage[pageId])
+                            : getLocalBadges(pageId);
+
+                        const failedBadges = requiredBadges.filter((badge) => !activeBadges.includes(badge));
+
+                        if (failedBadges.length === 0) {
+                            item.style.display = 'none';
+                        } else {
+                            item.style.display = 'block';
+                            const display = item.querySelector('.unticked-badges-display');
+                            if (display) {
+                                display.textContent = 'Unticked: ' + failedBadges.join(', ');
+                            }
+                        }
+                    });
                 };
                 
-                updateUntickedStatus();
+                const refreshUntickedStatus = () => {
+                    updateUntickedStatus();
+                };
+
+                refreshUntickedStatus();
                 
-                // Re-check on window storage event (if other tabs change it)
-                window.addEventListener('storage', updateUntickedStatus);
+                // Re-check on local updates and storage sync events.
+                window.addEventListener('storage', refreshUntickedStatus);
+                window.addEventListener('watchout-badges-updated', refreshUntickedStatus);
             });
             
             document.addEventListener('DOMContentLoaded', () => {

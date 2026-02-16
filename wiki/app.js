@@ -44,7 +44,10 @@ function setLocalPageBadges(pageId, badges) {
 }
 
 function getSupabaseConfig() {
-    const supabaseConfig = (window.wikiConfig && window.wikiConfig.supabase) || {};
+    const sourceConfig = typeof wikiConfig !== 'undefined'
+        ? wikiConfig
+        : (window.wikiConfig || {});
+    const supabaseConfig = sourceConfig.supabase || {};
     const tableName = typeof supabaseConfig.table === 'string' && /^[A-Za-z0-9_]+$/.test(supabaseConfig.table)
         ? supabaseConfig.table
         : DEFAULT_BADGE_TABLE;
@@ -217,7 +220,12 @@ const watchoutBadgeStore = {
         const config = getSupabaseConfig();
         if (!isSupabaseConfigured(config)) return false;
 
-        return upsertRemotePageBadges(normalizedPageId, normalizedBadges, config);
+        try {
+            return await upsertRemotePageBadges(normalizedPageId, normalizedBadges, config);
+        } catch (error) {
+            console.warn(`Unable to persist badge state for ${normalizedPageId}.`, error);
+            return false;
+        }
     }
 };
 

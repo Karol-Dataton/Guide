@@ -9,6 +9,8 @@ A **virtual display** renders cues to an internal texture buffer instead of a ph
 
 Virtual displays are a core production tool for pixel mapping, content re-routing, and layered compositing workflows. They are not temporary placeholders — they remain in production shows alongside physical outputs.
 
+[[WIDGET:virtual-display]]
+
 ### What Makes a Display Virtual
 
 A display is virtual when its **Output Type** is set to `Virtual`. This is one of four output types available in WATCHOUT:
