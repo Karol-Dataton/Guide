@@ -1,3 +1,13 @@
+# Plan: Expand 3D Mapping Projectors Wiki Page
+
+## File to edit
+`wiki/content/03-displays-and-outputs/03-3d-mapping-projectors.md`
+
+## Changes
+
+Replace the entire file content with the following:
+
+```markdown
 ---
 title: "3D Mapping Projectors"
 ---
@@ -5,7 +15,7 @@ title: "3D Mapping Projectors"
 
 ## 3D Mapping Projectors
 
-**3D projectors** are used to project media content onto real-world three-dimensional surfaces such as buildings, stage sets, sculptures, and other irregular shapes. Unlike standard flat display outputs, 3D projectors allow content to wrap around and conform to the physical geometry of a surface, so that imagery appears correctly aligned and undistorted when viewed in the real environment. This makes them essential for architectural projection mapping, immersive stage design, and any application where projected content must match a non-flat surface.
+In WATCHOUT, 3D projectors are used to project media content onto real-world three-dimensional surfaces such as buildings, stage sets, sculptures, and other irregular shapes. Unlike standard flat display outputs, 3D projectors allow content to wrap around and conform to the physical geometry of a surface, so that imagery appears correctly aligned and undistorted when viewed in the real environment. This makes them essential for architectural projection mapping, immersive stage design, and any application where projected content must match a non-flat surface.
 
 ### What is 3D Mapping?
 
@@ -21,25 +31,26 @@ To use 3D mapping projectors in WATCHOUT, the following are needed:
 - **Calibration points** — a set of virtual points in the software matched to corresponding reality points on the physical surface. This calibration step is what enables WATCHOUT to compute the correct projection mapping.
 - **3D calibration** — the mapping itself is accomplished through WATCHOUT's 3D calibration workflow, where virtual-to-reality point correspondences are established and refined. See [3D Calibration](#3d-calibration) below.
 
+### Adding a Projector
+
+Use:
+
+- **Stage → Add 3D Projector**
+- Network context actions for selected node
+
+You can add at default placement or at a chosen stage/world position.
+
 ### Core Projector Parameters
 
-These parameters define the projection frustum — the 3D volume that the projector illuminates. Together they tell WATCHOUT exactly how to warp content so it maps correctly onto the target surface.
+Projector displays expose parameters such as:
 
-- **Eye** (X, Y, Z) — the physical position of the projector in 3D space. This is where the projector is mounted, expressed in stage coordinate units. Moving the Eye changes the projection origin and the angle at which content reaches the surface.
+- **Eye** (projector position)
+- **Target** (look-at point)
+- **Roll**
+- **Lens shift** (horizontal/vertical)
+- **Width/Distance ratio**
 
-- **Target** (X, Y, Z) — the point on the surface the projector is aimed at. Eye and Target together define the projection axis. Adjusting the Target tilts the projection without moving the projector body.
-
-- **Roll** (degrees) — rotation around the projection axis (the Eye → Target line). A value of 0° means the projector is mounted level. Adjust for portrait orientation (90°) or to correct for a tilted mounting bracket.
-
-- **Horizontal Lens Shift** (%) — offsets the projected image left or right without moving the projector. Expressed as a percentage of image width. Matches the physical lens shift mechanism on professional projectors.
-
-- **Vertical Lens Shift** (%) — offsets the projected image up or down. Commonly used when a projector is ceiling-mounted (shift down) or floor-mounted (shift up) to avoid keystoning.
-
-- **Width/Distance Ratio** (displayed as 1:N) — the throw ratio of the lens. Controls how wide the image is at a given throw distance. Smaller values produce a wider, shorter throw; larger values produce a narrower, longer throw. Enter the value as shown on the projector's specification sheet.
-
-[[WIDGET:projector-frustum]]
-
-
+These define the projection frustum used for mapping.
 
 ### Projector Camera Mode
 
@@ -59,3 +70,16 @@ Projector calibration in 2D reality mode requires at least six virtual points be
 
 - Projector mode is not available while viewing a composition-only stage context.
 - Keep calibration and geometry edits versioned like any other critical show state.
+```
+
+## Summary of changes
+
+1. **Expanded intro paragraph** — explains that 3D projectors are used to project content onto real-world 3D surfaces (buildings, stage sets, sculptures), conforming imagery to physical geometry.
+
+2. **New "What is 3D Mapping?" section** — explains that 3D mapping aligns projector output to surface contours using a virtual camera/frustum model that matches the real projector's position and lens.
+
+3. **New "What is Required" section** — lists prerequisites: projectors on stage, accurate placement (Eye/Target/Roll), lens parameters, calibration points, and 3D calibration.
+
+4. **Renamed and expanded "Calibration Requirements" → "3D Calibration"** — explains that 3D mapping is accomplished through 3D calibration, which establishes virtual-to-reality point correspondences so WATCHOUT can compute the correct projection warp.
+
+5. **All existing content preserved** — Adding a Projector, Core Projector Parameters, Projector Camera Mode, and Operational Notes sections remain intact.

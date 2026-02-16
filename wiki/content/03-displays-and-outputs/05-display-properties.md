@@ -5,7 +5,7 @@ title: "Display Properties"
 
 ## Display Properties
 
-Display Properties control how each display is named, placed, routed, rendered, and calibrated. In practice, this panel is where most output troubleshooting and final show handoff work happens.
+**Display Properties** control how each display is named, placed, routed, rendered, and calibrated. In practice, this panel is where most output troubleshooting and final show handoff work happens.
 
 ### Open Display Properties
 

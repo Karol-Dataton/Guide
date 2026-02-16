@@ -6,6 +6,223 @@
     document.documentElement.setAttribute('data-theme', savedTheme);
 })();
 
+const BADGE_STORAGE_PREFIX = 'watchout-wiki-badges-';
+const DEFAULT_BADGE_TABLE = 'wiki_badge_states';
+
+function sanitizeBadgeList(value) {
+    if (!Array.isArray(value)) return [];
+    return [...new Set(value
+        .map((item) => (typeof item === 'string' ? item.trim() : ''))
+        .filter(Boolean))];
+}
+
+function normalizePageId(pageId) {
+    if (typeof pageId !== 'string') return '';
+    return pageId.trim();
+}
+
+function getCurrentPageId() {
+    return normalizePageId(document.body.getAttribute('data-page-id')) || window.location.pathname;
+}
+
+function getBadgeStorageKey(pageId) {
+    return `${BADGE_STORAGE_PREFIX}${pageId}`;
+}
+
+function getLocalPageBadges(pageId) {
+    try {
+        return sanitizeBadgeList(JSON.parse(localStorage.getItem(getBadgeStorageKey(pageId))) || []);
+    } catch (error) {
+        return [];
+    }
+}
+
+function setLocalPageBadges(pageId, badges) {
+    const normalizedBadges = sanitizeBadgeList(badges);
+    localStorage.setItem(getBadgeStorageKey(pageId), JSON.stringify(normalizedBadges));
+    return normalizedBadges;
+}
+
+function getSupabaseConfig() {
+    const supabaseConfig = (window.wikiConfig && window.wikiConfig.supabase) || {};
+    const tableName = typeof supabaseConfig.table === 'string' && /^[A-Za-z0-9_]+$/.test(supabaseConfig.table)
+        ? supabaseConfig.table
+        : DEFAULT_BADGE_TABLE;
+
+    return {
+        url: typeof supabaseConfig.url === 'string' ? supabaseConfig.url.trim() : '',
+        anonKey: typeof supabaseConfig.anonKey === 'string' ? supabaseConfig.anonKey.trim() : '',
+        table: tableName
+    };
+}
+
+function isSupabaseConfigured(config) {
+    return Boolean(config.url && config.anonKey);
+}
+
+let supabaseClientPromise = null;
+let supabaseConfigSignature = '';
+
+async function getSupabaseClient(config) {
+    if (!isSupabaseConfigured(config)) return null;
+
+    const signature = `${config.url}::${config.anonKey}`;
+    if (!supabaseClientPromise || signature !== supabaseConfigSignature) {
+        supabaseConfigSignature = signature;
+        supabaseClientPromise = import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm')
+            .then(({ createClient }) => createClient(config.url, config.anonKey, {
+                auth: {
+                    persistSession: false,
+                    autoRefreshToken: false,
+                    detectSessionInUrl: false
+                }
+            }))
+            .catch((error) => {
+                console.warn('Supabase client failed to load, using local badge storage.', error);
+                return null;
+            });
+    }
+
+    return supabaseClientPromise;
+}
+
+async function fetchRemotePageBadges(pageId, config) {
+    const client = await getSupabaseClient(config);
+    if (!client) return null;
+
+    const { data, error } = await client
+        .from(config.table)
+        .select('active_badges')
+        .eq('page_id', pageId)
+        .maybeSingle();
+
+    if (error) {
+        console.warn(`Unable to read badge state for ${pageId} from Supabase.`, error.message);
+        return null;
+    }
+
+    if (!data) return [];
+    return sanitizeBadgeList(data.active_badges);
+}
+
+async function fetchRemotePageBadgesMap(pageIds, config) {
+    const client = await getSupabaseClient(config);
+    if (!client) return null;
+
+    const { data, error } = await client
+        .from(config.table)
+        .select('page_id,active_badges')
+        .in('page_id', pageIds);
+
+    if (error) {
+        console.warn('Unable to read badge states from Supabase.', error.message);
+        return null;
+    }
+
+    const result = {};
+    (data || []).forEach((row) => {
+        if (row && typeof row.page_id === 'string') {
+            result[row.page_id] = sanitizeBadgeList(row.active_badges);
+        }
+    });
+
+    return result;
+}
+
+async function upsertRemotePageBadges(pageId, badges, config) {
+    const client = await getSupabaseClient(config);
+    if (!client) return false;
+
+    const { error } = await client
+        .from(config.table)
+        .upsert({
+            page_id: pageId,
+            active_badges: sanitizeBadgeList(badges),
+            updated_at: new Date().toISOString()
+        }, { onConflict: 'page_id' });
+
+    if (error) {
+        console.warn(`Unable to persist badge state for ${pageId} to Supabase.`, error.message);
+        return false;
+    }
+
+    return true;
+}
+
+function emitBadgeUpdate(pageId, badges) {
+    window.dispatchEvent(new CustomEvent('watchout-badges-updated', {
+        detail: {
+            pageId,
+            badges: [...badges]
+        }
+    }));
+}
+
+const watchoutBadgeStore = {
+    isRemoteConfigured() {
+        return isSupabaseConfigured(getSupabaseConfig());
+    },
+    getCurrentPageId,
+    getLocalPageBadges,
+    async getPageBadges(pageId) {
+        const normalizedPageId = normalizePageId(pageId);
+        if (!normalizedPageId) return [];
+
+        const localBadges = getLocalPageBadges(normalizedPageId);
+        const config = getSupabaseConfig();
+        if (!isSupabaseConfigured(config)) return localBadges;
+
+        const remoteBadges = await fetchRemotePageBadges(normalizedPageId, config);
+        if (remoteBadges === null) return localBadges;
+
+        setLocalPageBadges(normalizedPageId, remoteBadges);
+        return remoteBadges;
+    },
+    async getManyPageBadges(pageIds) {
+        const uniquePageIds = [...new Set((pageIds || [])
+            .map(normalizePageId)
+            .filter(Boolean))];
+
+        const fallback = {};
+        uniquePageIds.forEach((pageId) => {
+            fallback[pageId] = getLocalPageBadges(pageId);
+        });
+
+        if (uniquePageIds.length === 0) return fallback;
+
+        const config = getSupabaseConfig();
+        if (!isSupabaseConfigured(config)) return fallback;
+
+        const remoteMap = await fetchRemotePageBadgesMap(uniquePageIds, config);
+        if (!remoteMap) return fallback;
+
+        const merged = {};
+        uniquePageIds.forEach((pageId) => {
+            const badges = Object.prototype.hasOwnProperty.call(remoteMap, pageId)
+                ? remoteMap[pageId]
+                : [];
+            merged[pageId] = badges;
+            setLocalPageBadges(pageId, badges);
+        });
+
+        return merged;
+    },
+    async setPageBadges(pageId, badges) {
+        const normalizedPageId = normalizePageId(pageId);
+        if (!normalizedPageId) return false;
+
+        const normalizedBadges = setLocalPageBadges(normalizedPageId, badges);
+        emitBadgeUpdate(normalizedPageId, normalizedBadges);
+
+        const config = getSupabaseConfig();
+        if (!isSupabaseConfigured(config)) return false;
+
+        return upsertRemotePageBadges(normalizedPageId, normalizedBadges, config);
+    }
+};
+
+window.watchoutBadgeStore = watchoutBadgeStore;
+
 document.addEventListener('DOMContentLoaded', () => {
     setupSidebar();
     setupSidebarTools();
@@ -25,31 +242,32 @@ document.addEventListener('DOMContentLoaded', () => {
 // ... existing code ...
 
 function setupBadges() {
-    // Generate a unique key for the current page
-    const getStorageKey = () => {
-        const pageId = document.body.getAttribute('data-page-id') || window.location.pathname;
-        return `watchout-wiki-badges-${pageId}`;
-    };
-
-    // Get active badges array for THIS page
-    const getActiveBadges = () => {
-        try {
-            return JSON.parse(localStorage.getItem(getStorageKey())) || [];
-        } catch (e) {
-            return [];
-        }
-    };
-
     const contentBody = document.getElementById('content-body');
+    if (!contentBody) return;
 
-    // Initial Application
-    applyBadgeFilters(getActiveBadges());
+    const pageId = watchoutBadgeStore.getCurrentPageId();
+    let activeBadges = watchoutBadgeStore.getLocalPageBadges(pageId);
+    let hasLocalInteraction = false;
+
+    // Initial application with local cache
+    applyBadgeFilters(activeBadges);
+
+    // Re-hydrate with remote state when configured
+    watchoutBadgeStore.getPageBadges(pageId).then((persistedBadges) => {
+        if (hasLocalInteraction) return;
+        activeBadges = sanitizeBadgeList(persistedBadges);
+        applyBadgeFilters(activeBadges);
+    }).catch((error) => {
+        console.warn(`Unable to hydrate badges for ${pageId}.`, error);
+    });
 
     // Toggle logic
     contentBody.addEventListener('click', (e) => {
         if (e.target.classList.contains('article-badge')) {
             const badge = e.target.getAttribute('data-badge');
-            let activeBadges = getActiveBadges();
+            if (!badge) return;
+
+            hasLocalInteraction = true;
 
             if (activeBadges.includes(badge)) {
                 // Deactivate: Remove from array
@@ -59,7 +277,7 @@ function setupBadges() {
                 activeBadges.push(badge);
             }
 
-            localStorage.setItem(getStorageKey(), JSON.stringify(activeBadges));
+            watchoutBadgeStore.setPageBadges(pageId, activeBadges);
             applyBadgeFilters(activeBadges);
         }
     });

@@ -5,126 +5,114 @@ title: "Adding Displays"
 
 ## Adding Displays
 
-Displays are the output devices your cues render to. In WATCHOUT 7, each display combines three things:
+A **display** is the fundamental output unit in WATCHOUT. It maps a rectangular pixel area on the stage to a physical output — a GPU connector, an SDI port, or an NDI stream — on a specific display server node. Every cue that appears on-screen is rendered through one or more displays.
 
-- Stage placement (where the display sits in your show layout)
-- Routing (which node/output the display is sent to)
-- Signal settings (resolution, color, timing, and output mode)
+Each display combines three things:
 
-This guide focuses on adding and configuring **physical displays**. For design-only targets, see the Virtual Displays workflow.
+- **Stage placement** — where the display sits in your show layout (position, size, rotation)
+- **Routing** — which node and output connector the display is sent to
+- **Signal settings** — resolution, color space, color depth, output timing, and format
 
-### Add a Physical Display
+### Output Types
 
-You can add displays from several places depending on how you are working:
+A display's routing is determined by its **Output Type**. WATCHOUT supports four output modes:
 
-- **Stage -> Add Display**
-  - Adds a display at a default stage location.
-- Right-click on the **Stage** and add a display
-  - Adds a display at the clicked location.
-  - Useful when laying out walls/screens quickly.
-- Right-click a node in the **Network**/**Nodes** window and choose **Add Display**
-  - Adds a display already assigned to that node.
+| Output Type | Routing Target | Channel/Port |
+| --- | --- | --- |
+| **GPU** | Physical GPU output on a display server | Numbered channel (1–65535) |
+| **SDI** | SDI output interface | Numbered channel |
+| **NDI** | NDI network stream | Stream identity |
+| **Virtual** | Internal texture buffer (no physical output) | None |
 
-If you know the target machine first, add from Network/Nodes. If you are sketching geometry first, add from Stage.
+GPU is the default when creating a new display. For virtual displays, see the dedicated Virtual Displays article.
 
-### Configure the New Display
+### Where to Add Displays
 
-After creation, select the display and use the **Properties** panel.
+You can add displays from several places depending on your workflow:
 
-#### 1) General
+- **Stage → Add Display** — adds at a default stage location
+- **Right-click in Stage → Add Display** — adds at the clicked position, useful when building screen arrays directly on the stage
+- **Right-click a node in the Network/Nodes window → Add Display** — adds a display already assigned to that node
 
-Set:
+New displays are automatically named in sequence (`Display 1`, `Display 2`, etc.) with a default resolution of **1920 × 1080**.
 
-- **Name** (clear operator-facing label)
-- **Node / Address (Alias)** (target host)
-- **Enabled** state (turn output on when ready)
+:::tip
+If you know the target machine first, add from the Network/Nodes window — the node assignment is filled in automatically. If you are sketching stage geometry first, add from Stage.
+:::
 
-Physical displays are often added before final routing is complete, so verify enabled state once assignment is done.
+### Configuring a Display
 
-#### 2) Route
+After creation, select the display and open the **Device Properties** panel. Configuration is grouped into several sections.
 
-In the route/output section, set:
+#### General
 
-- **Output type** (`GPU`, `SDI`, or `NDI`)
-- **Channel** for `GPU`/`SDI` outputs
-- For `NDI`, stream identity is used instead of a physical channel
+- **Name** — a clear operator-facing label (for example `Left_LED_Wall_A`)
+- **Node / Address** — the display server host that will render this output
+- **Enabled** — controls whether the output is active; new physical displays start disabled and must be enabled once routing is confirmed
+- **Color tag** — a visual identifier used on the stage to distinguish displays at a glance
+- **Lock** — prevents accidental edits to the display once configuration is finalized
 
-If two displays are mapped to the same route, WATCHOUT can flag a resource conflict.
+#### Output and Routing
 
-#### 3) Dimensions
+- **Output Type** — `GPU`, `SDI`, `NDI`, or `Virtual`
+- **Channel** — the physical output port number (shown for GPU and SDI only)
 
-Set:
+If two displays are mapped to the same node and channel, WATCHOUT flags a resource conflict.
 
-- **Resolution** (`width x height`) to match the real output raster
-- **Use as Input Resolution** as needed:
-  - enabled: stage size follows output raster (common/default)
-  - disabled: stage size can be modeled independently from output raster
+#### Dimensions
 
-#### 4) Signal and Quality (when needed)
+- **Resolution** (`width × height`) — must match the real output raster of the connected display device or processor
+- **Use as Input Resolution** — when enabled (default), the display's stage size follows the output raster, so a 1920×1080 output is also 1920×1080 on stage; when disabled, the stage size can be modeled independently
 
-Depending on output type and hardware, configure:
+#### Signal and Quality
 
-- color depth / color space
-- SDI link type
-- interlaced mode
-- output delay frames
-- max quality rendering
+These settings are available for physical output types (GPU, SDI, NDI) and should only be changed when required by the deployment:
 
-Use non-default signal settings only when required by the deployment.
+| Setting | GPU | SDI | NDI |
+| --- | --- | --- | --- |
+| **Color Depth** (8/10/12 bpc) | ✓ | — | — |
+| **Color Space** (sRGB, Rec. 709, Rec. 2020, HDR PQ/HLG, etc.) | ✓ | — | — |
+| **SDI Link Type** | — | ✓ | — |
+| **Interlaced** | — | ✓ | ✓ |
+| **Max Quality** | ✓ | ✓ | ✓ |
+| **Output Delay** (0–10 frames) | ✓ | ✓ | ✓ |
+| **EDID** | ✓ | — | — |
+
+#### Warp, Mask, and White Point
+
+All display types support post-processing:
+
+- **Warp** — apply geometry correction for curved or angled surfaces
+- **Mask** — define a custom mask shape or enable automatic soft edges for overlapping displays
+- **White Point** (R, G, B) — fine-tune color balance per display
 
 ### Placement on Stage
 
-Set display size and position to match the real-world layout:
+Set the display's position and size to match the real-world layout of your screens, projectors, or LED walls:
 
-- Use exact raster dimensions from the processor/projector chain.
-- Align displays in Stage coordinates before programming cues.
-- Use **Frame All Displays** to verify overall geometry.
-- For repeated arrays, use **Create Display Grid** and then fine-tune.
+- Use the exact raster dimensions from the processor or projector chain
+- Align displays in stage coordinates before programming cues
+- Use **Frame All Displays** to verify overall geometry
+- For repeated arrays, use **Create Display Grid** and then fine-tune individual positions
 
-### Verify Outputs Before Programming
+### Verifying Outputs
 
-Validate routing first, then validate content.
+Validate routing before building show content.
 
-#### Option A: Test Pattern Verification (fast)
+#### Test Pattern Verification
 
-In **Device Properties -> Test Pattern**, cycle through:
+In **Device Properties → Test Pattern**, cycle through:
 
-1. **White** (confirm expected physical screen activates)
-2. **Masked** / **Pattern** (confirm geometry and mask path)
-3. **None** (return to normal show rendering)
+1. **White** — confirm the expected physical screen activates
+2. **Masked** / **Pattern** — confirm geometry and mask alignment
+3. **None** — return to normal show rendering
 
 Enable **Render Info** overlay temporarily when identifying many outputs.
 
-#### Option B: Test Cue Verification (content path)
+#### Test Cue Verification
 
-Before building the full show:
+Place a simple test image or video cue on the new display and confirm that output appears on the expected node and connector. Using both test patterns and test cues gives the most complete validation — patterns check routing and geometry, cues check the full media playback path.
 
-1. Add a simple test image/video cue.
-2. Place it on the new display.
-3. Confirm output appears on the expected node and connector.
-
-Using both checks is best practice: patterns validate routing/geometry, cues validate real media playback.
-
-### Common Issues
-
-| Symptom | Likely cause | What to check |
-| --- | --- | --- |
-| No image on display | Disabled output or wrong node alias | Enabled state, host assignment |
-| Wrong screen lights up | Incorrect channel mapping | Output type and channel |
-| Resource conflict warning | Duplicate route assignment | Unique route per display |
-| Scale/crop looks wrong | Resolution mismatch | Display resolution vs processor raster |
-| Stage looks right, output looks wrong | Warp/mask or signal path mismatch | Test Pattern `Masked`/`Pattern`, warp/mask settings |
-
-### Recommended Setup Sequence
-
-1. Add displays.
-2. Name and assign nodes.
-3. Set output type/channel and resolution.
-4. Arrange Stage geometry.
-5. Verify with test patterns.
-6. Verify with a test cue.
-7. Lock/hand off routing once approved.
-
-:::tip
-**Tip:** Use descriptive names like `Left_LED_Wall_A` instead of generic names like `Display 1`.
+:::warning
+Physical displays start **disabled** by default. You must enable a display in Device Properties before it will produce output.
 :::

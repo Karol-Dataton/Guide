@@ -1,3 +1,13 @@
+# Plan: Rewrite Warp Geometry as In-Depth Article
+
+## File to edit
+`wiki/content/03-displays-and-outputs/07-warp-geometry.md`
+
+## Changes
+
+Replace the entire file content with the following:
+
+```markdown
 ---
 title: "Warp Geometry"
 ---
@@ -135,3 +145,34 @@ Validate warp geometry using:
 Use the display's **Test Pattern** mode to switch between Pattern (renders through warp and mask pipeline), Masked (shows warp and mask result), and White (bypasses warp and mask for raw output comparison). See [Test Patterns](11-test-patterns.md).
 
 Keep warp and geometry edits versioned like any other critical show state. After transport, re-rigging, or lamp/lens changes, revisit the warp mesh and fine-tune as needed rather than starting from scratch.
+```
+
+## Summary of changes
+
+1. **Expanded intro** — explains what warp geometry is, why it exists (correcting output to match imperfect real-world surfaces), and that all display types support it.
+
+2. **New "When Warp Geometry is Needed"** — covers curved screens, imperfect mounting, non-rectangular targets, multi-projector blends, domes, and transport/re-rigging.
+
+3. **New "How Warp Geometry Works"** — explains mesh-based system with junction points, source-to-destination mapping, Bézier interpolation, and mesh density.
+
+4. **New "Warp Mesh Presets"** — documents all four presets (2×2, Horizontal, Vertical, 3×3) with grid sizes and typical use cases.
+
+5. **New "Editing Junction Points"** — documents position (pixel offset X/Y), Bézier handles (Left/Right/Up/Down with length and angle), smooth toggle, corner behavior, keyboard navigation, and Ctrl+Click to add points.
+
+6. **New "Advanced Settings"** — documents Perspective Correction and Corner Shapes options.
+
+7. **New "Show-Level Warp Defaults"** — documents fixed handle length and smooth points settings from Show Properties.
+
+8. **New "Accessing the Warp Editor"** — documents Device Properties, Stage context menu, Nodes window context menu, and show-on-display toggle.
+
+9. **New "Keyboard Shortcuts"** — documents arrow key navigation and Ctrl+Click point insertion.
+
+10. **New "Position in the Rendering Pipeline"** — documents the full pipeline order: corner pinning → compositing → warp → masks, with cross-references.
+
+11. **New "Relationship to Edge Blending and Masks"** — explains how warp, masks, and edge blending work together, with links to related pages.
+
+12. **Enhanced "Recommended Workflow"** — expanded from 5 to 7 detailed steps.
+
+13. **Enhanced "Quality Control"** — expanded with test pattern mode details and versioning advice.
+
+14. **Removed separate "Mask Geometry" section** — replaced with references to the comprehensive Display Masks page, avoiding duplication.

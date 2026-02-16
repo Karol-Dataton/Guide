@@ -5,94 +5,100 @@ title: "Virtual Displays"
 
 ## Virtual Displays
 
-A virtual display behaves like a normal display in Stage and Timeline workflows, but it does not drive a physical output connector. Think of it as an internal render target you can use for design, compositing, and previsualization.
+A **virtual display** renders cues to an internal texture buffer instead of a physical output connector. Think of it as a **virtual camera** capturing a specific area of the stage — its rendered output can then be used as a media source in other cues, routed through a wall processor to LED tiles, or mapped onto 3D geometry.
 
-Virtual displays are ideal when you want to build and test show logic before final hardware routing is available.
+Virtual displays are a core production tool for pixel mapping, content re-routing, and layered compositing workflows. They are not temporary placeholders — they remain in production shows alongside physical outputs.
 
 ### What Makes a Display Virtual
 
-A display is virtual when its output type is set to `Virtual`.
+A display is virtual when its **Output Type** is set to `Virtual`. This is one of four output types available in WATCHOUT:
 
-In practical terms:
+| Output Type | Description |
+| --- | --- |
+| **GPU** | Renders to a physical GPU output connector |
+| **SDI** | Renders to an SDI output interface |
+| **NDI** | Renders to an NDI network stream |
+| **Virtual** | Renders to an internal texture (no physical output) |
 
-- It is not tied to a physical GPU/SDI connector.
-- It does not require a node alias to exist.
-- It can still be placed, sized, and edited like other displays.
-- It can be used as a media source in cue workflows.
+In practical terms, a virtual display:
+
+- Is **not tied** to a physical GPU, SDI, or NDI connector
+- Does **not require** a node or alias assignment
+- Is **always enabled** (the enable/disable toggle is hidden)
+- Can be placed, sized, and edited like any other display
+- Can be used as a **media source** in cue workflows
 
 ### When to Use Virtual Displays
 
-Use virtual displays when you need to:
+#### LED Wall Pixel Mapping
 
-- Design content before hardware is on site
-- Build a stage map for client review
-- Prepare layout/animation while waiting for final routing details
-- Simulate a complete system on a laptop or single workstation
+Virtual displays are widely used for mapping content onto **LED walls** through a wall processor. Place a virtual display over the stage area you want to capture, set its resolution to match the LED processor input, and use its output as the feed. This gives precise control over which part of the stage content reaches each section of the wall.
 
-They are also useful for building layered workflows where one output is rendered internally first and then reused elsewhere.
+This is especially useful for:
 
-### Add a Virtual Display
+- LED walls with **non-standard aspect ratios** or unusual tile layouts
+- Configurations where content is designed on a wide horizontal stage but must be **split or remapped** to individual processor inputs
+- Setups using a wall processor that expects specific input resolutions from the media server
 
-You can create virtual displays from multiple places:
+#### Content Compositing
 
-- **Stage -> Add Virtual Display**
-  - Adds at a default location.
-- Right-click in **Stage** and add a virtual display
-  - Adds at the clicked position.
-- **Devices** pane context menu -> **Add Virtual Display**
-  - Useful when managing device lists directly.
+Virtual displays enable **layered compositing workflows**. Because a virtual display's rendered output can be used as a media source, you can:
 
-New virtual displays are named sequentially (for example `Virtual Display 1`, `Virtual Display 2`). Rename them early.
+- Build a complex animation or multi-layer composition on one timeline
+- Capture its result via a virtual display
+- Use that result as a single media source on another timeline or display
 
-### Initial Configuration Checklist
+This keeps timelines clean and allows reusable pre-composed elements.
 
-After creating a virtual display, set:
+#### 3D Projection Mapping
 
-- **Name** (operator-friendly and clearly virtual)
-- **Resolution** (`width x height`) for the intended design raster
-- **Stage placement** to match your conceptual layout
-- **Stage tiers** if you use tier-based visibility
+When mapping content onto **3D geometry**, virtual displays can act as viewpoints that capture specific faces or sections of a model. The captured output is then routed to the corresponding physical projector or display that covers that geometry.
 
-### How They Behave
+#### Multi-Format Output
 
-Virtual displays support standard workflow operations:
+Virtual displays allow you to **adapt content layout** to match different output formats. For example, if your stage contains a single wide panoramic composition, you can overlay multiple virtual displays — each capturing a different section at the resolution required by its destination processor or screen.
 
-- Cue placement and stacking
-- Tween animation
-- Timeline playback preview
-- Grouping and composition work
+### Adding a Virtual Display
 
-You can treat them as reusable internal outputs during show construction, not just temporary placeholders.
+You can create virtual displays from multiple places in the interface:
 
-### Transitioning to Physical Outputs
+- **Stage → Add Virtual Display** — adds at a default location
+- **Right-click in Stage → Add Virtual Display** — adds at the clicked position
+- **Devices window → Add Virtual Display** — useful when managing device lists directly
 
-When hardware is available, convert virtual displays into routed outputs:
+New virtual displays are automatically named in sequence (for example `Virtual Display 1`, `Virtual Display 2`). The default resolution is **1920 × 1080** with **Use as Input Resolution** enabled.
 
-1. Change output type from `Virtual` to `GPU`, `SDI`, or `NDI`.
-2. Assign the target **Node/Alias**.
-3. Set output routing (channel where required) and final resolution.
-4. Validate signal settings (color space/depth, interlaced, delay) as needed.
-5. Verify with test patterns and then with a real test cue.
-
-This keeps your stage geometry and cue design intact while moving from previsualization to production routing.
-
-### Common Pitfalls
-
-| Symptom | Likely cause | Fix |
-| --- | --- | --- |
-| Nothing appears on a physical screen | Display is still `Virtual` | Change output type and assign node/channel |
-| Routing options seem incomplete | Virtual mode hides physical routing fields | Switch to `GPU`/`SDI`/`NDI` first |
-| Operator confusion during setup | Names do not distinguish virtual vs physical | Use clear naming prefixes |
-
-:::warning
-A virtual display will never light a physical connector until it is converted to a physical output type and routed to a node.
+:::tip
+Rename virtual displays early with a descriptive name that reflects their purpose, for example `LED_TopRow_Feed` or `Comp_BackgroundLayer`.
 :::
 
-### Best Practice
+### Initial Configuration
 
-Keep a naming convention that distinguishes virtual from physical targets, for example:
+After creating a virtual display, configure these properties in the **Device Properties** panel:
 
-- `VIRT_MainWall`
-- `VIRT_SideScreen_R`
+- **Name** — a clear label that describes its purpose
+- **Resolution** — match the expected input resolution of the downstream device (LED processor, capture, etc.)
+- **Stage placement** — position and size the display to capture the intended stage area
+- **Stage tiers** — assign tier visibility if your show uses tier-based filtering
 
-This avoids routing mistakes during deployment and handoff.
+### Using a Virtual Display as a Media Source
+
+A key capability of virtual displays is that their rendered output can be used as a **media source** for cues on other timelines or displays. This enables multi-stage compositing where one display's full render becomes a single input element elsewhere.
+
+To use a virtual display as a media source:
+
+1. Create a media cue on the target timeline.
+2. Assign the virtual display as the cue's media source (drag the virtual display from the Devices window to the timeline).
+3. The cue's dimensions automatically match the virtual display's width and height.
+
+Cues that use a virtual display as their media source are always **live** — they do not have playback controls such as in-time, looping, or free-running. The content updates in real time as the virtual display renders.
+
+:::warning
+Deleting a virtual display that is currently used as a media source in any cue will trigger a warning. Remove or reassign those cue references first.
+:::
+
+### Rendering Details
+
+Internally, a virtual display renders to an **RGBA16F** (16-bit floating-point per channel) texture. A compute shader clamps pixel values to the `[0.0, 1.0]` range during post-processing, preserving wide color range during intermediate rendering stages.
+
+Virtual displays support **output delay** (0–10 frames) for frame buffering. Warp, blend, and white point correction are applied as post-processing passes, just as they are on physical outputs.

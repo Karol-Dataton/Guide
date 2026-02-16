@@ -114,7 +114,7 @@ function markdownToHtml(markdown) {
         if (/^<\/?(h[1-6]|table|ul|ol|div|pre|blockquote|img|video)/i.test(block)) return block;
         if (block.startsWith('___CODEBLOCK_')) return block;
         if (block.startsWith('___WIDGET_')) return block;
-        if (/^[-*\d]/.test(block)) return block; // List items handled separately
+        if (/^[-*]\s/.test(block) || /^\d+\.\s/.test(block)) return block; // List items handled separately
         return `<p>${block.replace(/\n/g, ' ')}</p>`;
     }).join('\n\n');
 
@@ -230,6 +230,7 @@ function convertLists(html) {
         } else {
             if (inList && line.trim() !== '') {
                 result.push('</ul>');
+                result.push('');  // Blank line so paragraph wrapper treats next text as a new block
                 inList = false;
             }
             result.push(line);
@@ -261,6 +262,7 @@ function convertOrderedLists(html) {
         } else {
             if (inList && line.trim() !== '') {
                 result.push('</ol>');
+                result.push('');  // Blank line so paragraph wrapper treats next text as a new block
                 inList = false;
             }
             result.push(line);

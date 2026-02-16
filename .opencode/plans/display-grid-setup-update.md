@@ -1,3 +1,13 @@
+# Plan: Expand Display Grid Setup Wiki Page
+
+## File to edit
+`wiki/content/03-displays-and-outputs/04-display-grid-setup.md`
+
+## Changes
+
+Replace the entire file content with the following:
+
+```markdown
 ---
 title: "Display Grid Setup"
 ---
@@ -5,7 +15,7 @@ title: "Display Grid Setup"
 
 ## Display Grid Setup
 
-**Display grid** is an array of tiled output devices — such as LED panels, monitors, or projectors — arranged in a uniform row-and-column pattern. Rather than adding and positioning each display individually, the grid tools let you define an entire multi-display layout in a single operation, ensuring consistent resolution, spacing, and alignment across every tile. This significantly reduces setup time and eliminates the manual positioning errors that arise when configuring large tiled surfaces display by display.
+In WATCHOUT, a display grid is an array of tiled output devices — such as LED panels, monitors, or projectors — arranged in a uniform row-and-column pattern. Rather than adding and positioning each display individually, the grid tools let you define an entire multi-display layout in a single operation, ensuring consistent resolution, spacing, and alignment across every tile. This significantly reduces setup time and eliminates the manual positioning errors that arise when configuring large tiled surfaces display by display.
 
 ### When to Use Display Grids
 
@@ -83,3 +93,14 @@ This is useful when:
 - For LED processors, match processor canvas dimensions exactly.
 - Keep spacing at zero unless you intentionally model physical gaps.
 - Use separate stage tiers for alternate grid states (rehearsal vs show variants).
+```
+
+## Summary of changes
+
+1. **Expanded intro paragraph** — explains that display grids are arrays of tiled output devices arranged in a uniform pattern, and that grid tools let you define the entire layout in one operation for consistent resolution, spacing, and alignment.
+
+2. **New "When to Use Display Grids" section** — covers LED video walls, tiled monitor arrays, repeated projection arrays, and any uniform layout scenario.
+
+3. **New "What is Required" section** — lists prerequisites: tile resolution, columns/rows, spacing, start position, and output/channel assignments.
+
+4. **All existing sections preserved** — Create Display Grid, Arrange Existing Displays as Grid, Arrange Selected Cues as Grid, Pack Cues Inside a Display, Recommended Workflow, and Grid Strategy Tips remain intact.
