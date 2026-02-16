@@ -5,7 +5,7 @@ title: "SDI Output"
 
 ## SDI Output
 
-SDI (Serial Digital Interface) is a professional video transport standard used widely in broadcast, live event, and AV installation environments. In WATCHOUT, SDI is one of the four display output types alongside GPU, NDI, and Virtual. Choosing SDI routes the rendered display output through a dedicated SDI capture/output card installed in the Runner node, delivering an uncompressed digital video signal over coaxial BNC cabling.
+**SDI (Serial Digital Interface)** is a professional video transport standard used widely in broadcast, live event, and AV installation environments. In WATCHOUT, SDI is one of the four display output types alongside GPU, NDI, and Virtual. Choosing SDI routes the rendered display output through a dedicated SDI capture/output card installed in the Runner node, delivering an uncompressed digital video signal over coaxial BNC cabling.
 
 SDI is the right choice when your downstream equipment — video switchers, LED processors, recording systems, or broadcast infrastructure — expects a baseband SDI signal rather than a direct GPU output or network-based stream.
 

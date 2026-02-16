@@ -7,7 +7,7 @@ badge: Karol
 
 ## Test Patterns
 
-Test patterns are built-in diagnostic output modes rendered directly by the Runner on a per-display basis. They are independent of show content and timeline playback, making them essential tools for verifying display setup, signal routing, geometry correction, and color calibration before or during a production.
+**Test patterns** are built-in diagnostic output modes rendered directly by the Runner on a per-display basis. They are independent of show content and timeline playback, making them essential tools for verifying display setup, signal routing, geometry correction, and color calibration before or during a production.
 
 ### Accessing Test Patterns
 

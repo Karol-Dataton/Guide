@@ -5,7 +5,7 @@ title: "Display Masks"
 
 ## Display Masks
 
-Display masks control which pixels on a display are visible and how their edges are shaped. Unlike warp geometry, which repositions pixels to correct for surface distortion, masks operate as alpha-based overlays that hide or reveal regions of the rendered output. Masks are applied *after* the warp stage in the rendering pipeline, meaning they work on already-corrected imagery.
+**Display masks** control which pixels on a display are visible and how their edges are shaped. Unlike warp geometry, which repositions pixels to correct for surface distortion, masks operate as alpha-based overlays that hide or reveal regions of the rendered output. Masks are applied *after* the warp stage in the rendering pipeline, meaning they work on already-corrected imagery.
 
 Every display in WATCHOUT can have an independent set of mask surfaces. Masks are especially useful in projection environments where light spills beyond the intended surface, or where scenic elements require non-rectangular output boundaries.
 

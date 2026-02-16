@@ -5,7 +5,7 @@ title: "Display Calibration"
 
 ## Display Calibration
 
-Calibration is the process of aligning WATCHOUT's rendered output to the physical reality of the display surface. This encompasses projector alignment for 3D mapping, camera-based calibration via NDI streams, EDID management for display identification, and external calibration integration through the HTTP API.
+**Calibration** is the process of aligning WATCHOUT's rendered output to the physical reality of the display surface. This encompasses projector alignment for 3D mapping, camera-based calibration via NDI streams, EDID management for display identification, and external calibration integration through the HTTP API.
 
 [[WIDGET:display-calibration]]
 
