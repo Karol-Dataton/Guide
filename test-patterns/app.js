@@ -1070,7 +1070,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     if (showModules) {
-                        drawModuleGrid(x, y, tW, tH, moduleW, moduleH);
+                        drawModuleGrid(x, y, tW, tH, moduleW, moduleH, tileFillColor);
                     }
 
                     // Text (White with black outline for visibility)
@@ -1096,7 +1096,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     if (showModules) {
-                        drawModuleGrid(x, y, tW, tH, moduleW, moduleH);
+                        drawModuleGrid(x, y, tW, tH, moduleW, moduleH, tileFillColor);
                     }
 
                     ledCtx.fillStyle = color;
@@ -1175,10 +1175,30 @@ document.addEventListener('DOMContentLoaded', () => {
         if (fullH < h) drawHatchedArea(0, fullH, fullW, h - fullH);
     }
 
-    function drawModuleGrid(x, y, tileW, tileH, moduleW, moduleH) {
+    function drawModuleGrid(x, y, tileW, tileH, moduleW, moduleH, tileFillColor) {
         if (moduleW <= 0 || moduleH <= 0) return;
 
         ledCtx.save();
+
+        // Checkerboard fill for alternating module cells
+        const modCols = Math.ceil(tileW / moduleW);
+        const modRows = Math.ceil(tileH / moduleH);
+        const dimmedColor = dimColorCSS(tileFillColor, 0.85);
+
+        for (let mr = 0; mr < modRows; mr++) {
+            for (let mc = 0; mc < modCols; mc++) {
+                if ((mr + mc) % 2 === 1) {
+                    const mx = x + mc * moduleW;
+                    const my = y + mr * moduleH;
+                    const mw = Math.min(moduleW, tileW - mc * moduleW);
+                    const mh = Math.min(moduleH, tileH - mr * moduleH);
+                    ledCtx.fillStyle = dimmedColor;
+                    ledCtx.fillRect(mx, my, mw, mh);
+                }
+            }
+        }
+
+        // Grid lines on top
         ledCtx.beginPath();
 
         for (let mx = moduleW; mx < tileW; mx += moduleW) {
@@ -1209,6 +1229,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
         ledCtx.lineWidth = line;
         ledCtx.strokeRect(x + inset, y + inset, borderW, borderH);
+    }
+
+    // Dims any CSS color string (hex, rgb, hsl, etc.) by a factor (0-1)
+    function dimColorCSS(cssColor, factor) {
+        const f = Math.min(1, Math.max(0, factor));
+        // Use the canvas context to parse any CSS color format
+        ledCtx.save();
+        ledCtx.fillStyle = cssColor;
+        const parsed = ledCtx.fillStyle; // browser normalises to hex or rgb
+        ledCtx.restore();
+
+        let r, g, b;
+        if (parsed.startsWith('#')) {
+            r = parseInt(parsed.slice(1, 3), 16);
+            g = parseInt(parsed.slice(3, 5), 16);
+            b = parseInt(parsed.slice(5, 7), 16);
+        } else {
+            const m = parsed.match(/(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+            if (m) { r = +m[1]; g = +m[2]; b = +m[3]; }
+            else { return cssColor; } // fallback: return unchanged
+        }
+        return `rgb(${Math.round(r * f)}, ${Math.round(g * f)}, ${Math.round(b * f)})`;
     }
 
     function dimColor(color, factor) {

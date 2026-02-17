@@ -82,24 +82,6 @@ During calibration, you can lock specific projector parameters to prevent the ca
 
 Locking parameters reduces the degrees of freedom in the calibration solve, which can improve accuracy when the locked values are known to be correct, but can also degrade results if the locked values are wrong.
 
-### EDID Capture
-
-EDID (Extended Display Identification Data) is a data block that displays transmit to describe their capabilities — supported resolutions, timing modes, color depth, and manufacturer information. WATCHOUT can capture and save a display's EDID data as an asset in the show.
-
-To capture EDID:
-
-1. Select the GPU display in Device Properties.
-2. In the **Output** section, locate the EDID row.
-3. Click **Save EDID**.
-
-The captured EDID is stored as an asset that you can reference later for troubleshooting or for applying to other displays. You can also select a previously captured EDID asset from the dropdown to apply it to the display, or choose **Current Monitor** to use the live EDID from the connected display hardware, or **Keep** to not send any EDID override.
-
-:::note
-The display must be **enabled** to capture its EDID. If the display is disabled, the Save EDID button will be inactive.
-:::
-
-EDID capture is particularly useful in rental and staging environments where you need to document the exact display capabilities at each venue, or when troubleshooting resolution and timing issues where the display is not advertising the expected modes.
-
 ### External Calibration Triggers
 
 WATCHOUT supports an external calibration trigger mechanism that allows third-party calibration systems to put displays into calibration mode via the HTTP API. This is used in automated calibration workflows where an external system (such as VIOSO or other camera-based alignment tools) needs WATCHOUT to display calibration patterns while the external system captures and processes the result.
@@ -119,17 +101,6 @@ A typical automated calibration sequence:
 
 This integration supports hardware trigger devices (such as Elgato Stream Deck) for operator-initiated recalibration in permanent installations.
 
-### Best Practices
-
-For the best calibration results, follow this recommended order of operations:
-
-1. **Physical alignment** — mount and aim projectors/displays as accurately as possible before any software correction. The less the software needs to compensate, the better the final image quality.
-2. **Coarse warp** — apply initial warp geometry correction to get the output roughly aligned to the surface.
-3. **Calibration** — run the projector calibration (for 3D mapping) or external calibration workflow to compute precise alignment parameters.
-4. **Fine adjustment** — refine warp junction points and handles for any remaining geometric errors.
-5. **Mask** — add masks to shape the visible output boundary, cut spill, and define blend zones.
-6. **Content verification** — play representative show content at final brightness and verify that alignment, color, and blending are correct across all displays.
-
 :::tip
-Save a snapshot of the show file after successful calibration so you can revert if subsequent edits introduce problems. Treat calibration state as critical show data.
+**Tip:** Save a snapshot of the show file after successful calibration so you can revert if subsequent edits introduce problems. Treat calibration state as critical show data.
 :::
