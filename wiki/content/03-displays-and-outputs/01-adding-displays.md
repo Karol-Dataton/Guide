@@ -109,10 +109,6 @@ In **Device Properties → Test Pattern**, cycle through:
 
 Enable **Render Info** overlay temporarily when identifying many outputs.
 
-#### Test Cue Verification
-
-Place a simple test image or video cue on the new display and confirm that output appears on the expected node and connector. Using both test patterns and test cues gives the most complete validation — patterns check routing and geometry, cues check the full media playback path.
-
 :::warning
 Physical displays start **disabled** by default. You must enable a display in Device Properties before it will produce output.
 :::

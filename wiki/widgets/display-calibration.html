@@ -23,7 +23,7 @@
     <div
         style="position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-subtle); background: var(--bg-tertiary);">
         <canvas id="calib-canvas" width="1050" height="460"
-            style="width: 100%; height: auto; display: block; cursor: default; touch-action: none;"></canvas>
+            style="width: 100%; height: auto; display: block; cursor: crosshair; touch-action: none;"></canvas>
     </div>
 
     <div
@@ -208,31 +208,7 @@
         }
 
         // --- Mode switching ---
-        function setMode(m) {
-            mode = m;
-            const isCalib = (m === 'calibration');
 
-            btnView.style.background = isCalib ? 'transparent' : 'var(--accent-primary)';
-            btnView.style.color = isCalib ? 'var(--text-primary)' : '#fff';
-            btnView.style.fontWeight = isCalib ? '400' : '600';
-            btnCalib.style.background = isCalib ? 'var(--accent-primary)' : 'transparent';
-            btnCalib.style.color = isCalib ? '#fff' : 'var(--text-primary)';
-            btnCalib.style.fontWeight = isCalib ? '600' : '400';
-
-            const opEn = isCalib ? '1' : '0.5';
-            const peEn = isCalib ? 'auto' : 'none';
-            btnCalibrate.style.opacity = opEn;
-            btnCalibrate.style.pointerEvents = peEn;
-            btnReposition.style.opacity = opEn;
-            btnReposition.style.pointerEvents = peEn;
-            lblContinuous.style.opacity = opEn;
-            lblContinuous.style.pointerEvents = peEn;
-
-            canvas.style.cursor = isCalib ? 'crosshair' : 'default';
-            dragIndex = -1;
-            hoverIndex = -1;
-            draw();
-        }
 
         // --- Rendering ---
         let animTime = 0;
@@ -650,164 +626,95 @@
                 }));
             }
 
-            // 1. Draw the "Physical Object" (Ideal Model) as a mask/base
-            // We want to clip the *projection* (distorted texture) to the *physical object* (ideal model).
-
+            // Build clipping path from the outer hull of faces
             ctx.save();
+            // Use the front face + right side + top to form a hull
+            // Simpler: draw each face individually with texture
+            const t = animTime;
 
-            // Create a path for the entire ideal model silhouette (simplified as just faces)
-            // Ideally we'd union them, but drawing them all into the path works for winding rule usually.
-            // Actually, we can just clip to the *face we are currently drawing* if we want per-face mapping,
-            // BUT the user request "clip all that is outside it" implies the projection shouldn't spill off the building.
-            // So we need to clip to the *Ideal Face* while drawing the *Distorted Face*.
-
-            // Wait, "overlay the model over the rendering"
-            // Interpreting: 
-            // - The "Building" is the Ideal Shape.
-            // - The "Projection" is the Distorted Shape.
-            // - We only see Projection where it hits Building.
-
-            // So for each face:
-            // - Clip to Ideal Face (Physical Surface).
-            // - Draw Distorted Face (Projected Image) logic inside.
-
-            // Let's loop through faces.
             for (const face of faces) {
-                // Fix: Shift ideal points to the 3rd panel for the clipping mask (ideal[i].x is in Panel 2, so +PW moves to Panel 3)
-                const idealFacePts = face.verts.map(i => ({
-                    x: ideal[i].x + PW,
-                    y: ideal[i].y
-                }));
-                const projFacePts = face.verts.map(i => pts[i]);    // Projected coordinates
+                const quadPts = face.verts.map(i => pts[i]);
 
+                // Clip to this face
                 ctx.save();
-
-                // 1. Define Physical Surface (Clip Mask)
                 ctx.beginPath();
-                ctx.moveTo(idealFacePts[0].x, idealFacePts[0].y);
-                for (let i = 1; i < idealFacePts.length; i++) {
-                    ctx.lineTo(idealFacePts[i].x, idealFacePts[i].y);
+                ctx.moveTo(quadPts[0].x, quadPts[0].y);
+                for (let i = 1; i < quadPts.length; i++) {
+                    ctx.lineTo(quadPts[i].x, quadPts[i].y);
                 }
                 ctx.closePath();
-                ctx.clip(); // <--- This ensures we only paint on the building
+                ctx.clip();
 
-                // 2. Draw Projected Texture
-                // We draw the distorted quad. If it's larger/misaligned, parts will be clipped.
-                // If it's smaller, we'll see empty space (background).
-
-                // We need to define the geometry of the projected face to fill it with texture.
-                ctx.beginPath();
-                ctx.moveTo(projFacePts[0].x, projFacePts[0].y);
-                for (let i = 1; i < projFacePts.length; i++) {
-                    ctx.lineTo(projFacePts[i].x, projFacePts[i].y);
-                }
-                ctx.closePath();
-
-                // Use the bounding box of the PROJECTED face for the gradient generation
-                // (since that's what moves)
+                // Compute face bounding box
                 let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
-                for (const pt of projFacePts) {
+                for (const pt of quadPts) {
                     minX = Math.min(minX, pt.x);
                     maxX = Math.max(maxX, pt.x);
                     minY = Math.min(minY, pt.y);
                     maxY = Math.max(maxY, pt.y);
                 }
 
-                // Grid Texture Pattern to show distortion
-                // We draw a grid that deforms with the quad corners (bilinear interpolation)
-                const steps = 8; // 8x8 grid
-                ctx.lineWidth = 1;
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+                // Animated gradient bands
+                const bandWidth = 40;
+                const speed = 60; // pixels per second
+                const offset = (t * speed) % (bandWidth * 4);
 
-                // Helper for linear interpolation
-                const lerp = (a, b, t) => ({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
+                for (let y = minY - bandWidth * 2; y < maxY + bandWidth; y += 2) {
+                    const wave = Math.sin((y + offset) * 0.04) * 0.5 + 0.5;
+                    const wave2 = Math.sin((y - offset * 0.7) * 0.06 + 1.5) * 0.5 + 0.5;
+                    const wave3 = Math.cos((y + offset * 0.3) * 0.03 + 3.0) * 0.5 + 0.5;
 
-                // P0=BL, P1=BR, P2=TR, P3=TL (standard winding)
-                // However, our indices in quadPts are [0,1,2,3] which match this winding.
-                const p0 = projFacePts[0];
-                const p1 = projFacePts[1];
-                const p2 = projFacePts[2];
-                const p3 = projFacePts[3];
+                    const r = Math.floor(40 + wave * 80 + wave3 * 40);
+                    const g = Math.floor(60 + wave2 * 100 + wave * 30);
+                    const b = Math.floor(120 + wave3 * 120 + wave2 * 30);
 
-                // Draw vertical lines (varying u)
-                for (let i = 0; i <= steps; i++) {
-                    const u = i / steps;
-                    ctx.beginPath();
-                    // Interp along bottom and top edges
-                    const start = lerp(p0, p1, u);
-                    const end = lerp(p3, p2, u);
-
-                    // To show curve distortion properly, we must interpolate internally too
-                    // But straight lines between edges is usually fine for a quad.
-                    // Wait, perspective distortion turns lines into curves? 
-                    // No, bilinear interpolation of a quad keeps lines straight in UV space but 
-                    // in screen space 2D bilinear quad mapping *does* preserve lines?
-                    // Actually, a bilinear patch has curved diagonals. 
-                    // Drawing line start->end is a valid approximation for "projected grid lines" 
-                    // if we assume linear edge interpolation.
-                    // For higher fidelity distortion visualization, we should draw segments.
-
-                    ctx.moveTo(start.x, start.y);
-
-                    // Draw segments for curve fidelity
-                    const segs = 8;
-                    for (let j = 1; j <= segs; j++) {
-                        const v = j / segs;
-                        const pb = lerp(p0, p1, u);
-                        const pt = lerp(p3, p2, u);
-                        // Actually this is just linear line.
-                        // Bilinear interpolation: P(u,v) = (1-v)*lerp(p0,p1,u) + v*lerp(p3,p2,u)
-                        // If u is fixed, this is a line segment between bottom and top.
-                        // So straight lines are mathematically correct for 2D bilinear.
-                        // (Unlike perspective projection where z-depth makes them curved).
-                        // Since we are imitating a 2D mesh warp here, straight lines are fine.
-                        // But wait, if the quad is non-convex or twisted, grid lines might overlap.
-                    }
-                    ctx.lineTo(end.x, end.y);
-                    ctx.stroke();
+                    ctx.fillStyle = `rgba(${r}, ${g}, ${b}, 0.7)`;
+                    ctx.fillRect(minX, y, maxX - minX, 2);
                 }
 
-                // Draw horizontal lines (varying v)
-                for (let i = 0; i <= steps; i++) {
-                    const v = i / steps;
-                    ctx.beginPath();
-                    // Interp along left and right edges
-                    const start = lerp(p0, p3, v);
-                    const end = lerp(p1, p2, v);
-                    ctx.moveTo(start.x, start.y);
-                    ctx.lineTo(end.x, end.y);
-                    ctx.stroke();
-                }
+                ctx.restore();
 
-                // Add a "Checkerboard" fill for better visibility? 
-                // Let's stick to the grid first, as requested "texture that will show distortion".
-                // A grid is excellent for this.
-                // Let's adding a subtle fill to the whole quad to make it look solid.
-
-                // Fill the quad with a base color so it's not transparent
-                const baseColor = 'rgba(0, 150, 255, 0.15)';
-                ctx.fillStyle = baseColor;
+                // Subtle edge outline
                 ctx.beginPath();
-                ctx.moveTo(p0.x, p0.y);
-                ctx.lineTo(p1.x, p1.y);
-                ctx.lineTo(p2.x, p2.y);
-                ctx.lineTo(p3.x, p3.y);
-                ctx.closePath();
-                ctx.fill();
-
-                ctx.restore(); // Drop clip
-
-                // 3. Draw Wireframe of Physical Object (Ideal Model) overlay
-                ctx.beginPath();
-                ctx.moveTo(idealFacePts[0].x, idealFacePts[0].y);
-                for (let i = 1; i < idealFacePts.length; i++) {
-                    ctx.lineTo(idealFacePts[i].x, idealFacePts[i].y);
+                ctx.moveTo(quadPts[0].x, quadPts[0].y);
+                for (let i = 1; i < quadPts.length; i++) {
+                    ctx.lineTo(quadPts[i].x, quadPts[i].y);
                 }
                 ctx.closePath();
-                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
                 ctx.lineWidth = 1;
-                ctx.setLineDash([2, 2]); // Dashed line to distinguish from projection
                 ctx.stroke();
+            }
+
+            // Draw dashed outline of perfect alignment (ideal shape)
+            const idealPts = ideal.map(p => ({
+                x: p.x + PW,
+                y: p.y
+            }));
+            // Check if there's any displacement worth showing
+            let hasDisplacement = false;
+            for (let i = 0; i < pts.length && i < idealPts.length; i++) {
+                const dx = pts[i].x - idealPts[i].x;
+                const dy = pts[i].y - idealPts[i].y;
+                if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+                    hasDisplacement = true;
+                    break;
+                }
+            }
+            if (hasDisplacement) {
+                ctx.setLineDash([6, 4]);
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.35)';
+                ctx.lineWidth = 1.5;
+                for (const face of faces) {
+                    const quadPts = face.verts.map(i => idealPts[i]);
+                    ctx.beginPath();
+                    ctx.moveTo(quadPts[0].x, quadPts[0].y);
+                    for (let i = 1; i < quadPts.length; i++) {
+                        ctx.lineTo(quadPts[i].x, quadPts[i].y);
+                    }
+                    ctx.closePath();
+                    ctx.stroke();
+                }
                 ctx.setLineDash([]);
             }
 
@@ -981,9 +888,6 @@
         }
 
         canvas.addEventListener('pointerdown', (e) => {
-            if (animating && false) return; // animating check kept if needed, but mode check removed. actually just remove the line if animating is not blocking interaction.
-            // animating is true during loop, but we want interaction during animation?
-            // "animating" variable was used to stop interaction during the "solve" animation.
             if (animating) return;
             e.preventDefault();
             const { x, y } = getCanvasCoords(e);

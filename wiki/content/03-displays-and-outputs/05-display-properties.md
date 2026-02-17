@@ -151,11 +151,3 @@ Diagnostic output modes are available per display:
 - `Pattern`
 
 The **Show Overlay / Render Info** toggle helps identify outputs during setup.
-
-### Practical Advice
-
-- Set identity and routing first (name, node, output type/channel), then tune signal.
-- Keep channel numbering and naming consistent with physical labels.
-- Verify every routed display with test patterns before content checks.
-- Document all non-default signal and timing values for handoff.
-- Lock finalized devices once routing and calibration are approved.
