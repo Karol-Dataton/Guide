@@ -10,6 +10,7 @@
         <button id="codec-filter-raw" class="codec-filter-btn" type="button">Raw</button>
 
         <button id="codec-alpha-toggle" class="codec-toggle-btn" type="button">Alpha only: Off</button>
+        <button id="codec-bitdepth-toggle" class="codec-toggle-btn" type="button">10/12-bit: Off</button>
 
         <span style="margin-left: auto; font-size: 0.85rem; color: var(--text-secondary);">Sort:</span>
         <select id="codec-sort-select" style="min-width: 180px;">
@@ -23,8 +24,9 @@
 
     <div class="widget-explainer">
         Click codec chips to include or remove them from the comparison. Use filters and sorting to compare tradeoffs
-        across <strong>file size</strong>, <strong>scrub performance</strong>, <strong>decode method</strong>, and
-        <strong>alpha support</strong>. Recommended defaults are marked with <strong>*</strong>.
+        across <strong>file size</strong>, <strong>scrub performance</strong>, <strong>decode method</strong>,
+        <strong>alpha support</strong>, and <strong>10/12-bit capability</strong>. If rows exceed the view,
+        scroll inside the chart with your mouse wheel.
     </div>
 </div>
 
@@ -153,6 +155,7 @@
                 name: 'HEVC X010',
                 decode: 'GPU (HW accel)',
                 group: 'gpu',
+                highBitDepth: true,
                 alpha: false,
                 fileScore: 1,
                 fileLabel: 'Small',
@@ -165,6 +168,7 @@
                 name: 'ProRes 422',
                 decode: 'CPU',
                 group: 'cpu',
+                highBitDepth: true,
                 alpha: false,
                 fileScore: 2,
                 fileLabel: 'Medium',
@@ -177,6 +181,7 @@
                 name: 'ProRes 4444',
                 decode: 'CPU',
                 group: 'cpu',
+                highBitDepth: true,
                 alpha: true,
                 fileScore: 4,
                 fileLabel: 'Large',
@@ -237,6 +242,7 @@
                 name: 'Raw RGB 10-bit',
                 decode: 'Direct (none)',
                 group: 'raw',
+                highBitDepth: true,
                 alpha: false,
                 fileScore: 5,
                 fileLabel: 'Very large',
@@ -262,18 +268,21 @@
             selected: new Set(['HAP', 'HAP Q', 'NotchLC Opaque', 'HEVC 4:2:0', 'H.264']),
             decodeFilter: 'all',
             alphaOnly: false,
+            bitDepthOnly: false,
             sort: 'file-desc',
             hoverChip: null,
             hoverRow: null,
             mouseX: 0,
-            mouseY: 0
+            mouseY: 0,
+            scrollY: 0,
+            scrollMax: 0
         };
 
         const visuals = Object.create(null);
         codecData.forEach((codec, index) => {
             visuals[codec.name] = {
-                y: 165 + index * 56,
-                targetY: 165 + index * 56,
+                y: index * 56,
+                targetY: index * 56,
                 alpha: 0,
                 targetAlpha: 0,
                 bar: 0,
@@ -281,12 +290,11 @@
             };
         });
 
-        const MAX_VISIBLE_ROWS = 6;
-
         let chipHitboxes = [];
         let rowHitboxes = [];
         let visibleNames = [];
-        let hiddenRows = 0;
+        let rowViewportRect = null;
+        let scrollThumbRect = null;
         let animationFrame = null;
 
         const filterAllBtn = document.getElementById('codec-filter-all');
@@ -294,6 +302,7 @@
         const filterCpuBtn = document.getElementById('codec-filter-cpu');
         const filterRawBtn = document.getElementById('codec-filter-raw');
         const alphaToggleBtn = document.getElementById('codec-alpha-toggle');
+        const bitDepthToggleBtn = document.getElementById('codec-bitdepth-toggle');
         const sortSelect = document.getElementById('codec-sort-select');
 
         function pointInRect(px, py, r) {
@@ -305,6 +314,9 @@
                 return false;
             }
             if (state.alphaOnly && !codec.alpha) {
+                return false;
+            }
+            if (state.bitDepthOnly && !codec.highBitDepth) {
                 return false;
             }
             return true;
@@ -331,17 +343,14 @@
         }
 
         function updateTargets() {
-            const visibleAll = getVisibleCodecs();
-            hiddenRows = Math.max(0, visibleAll.length - MAX_VISIBLE_ROWS);
-            const visible = visibleAll.slice(0, MAX_VISIBLE_ROWS);
+            const visible = getVisibleCodecs();
             visibleNames = visible.map(codec => codec.name);
 
-            const startY = 165;
             const rowPitch = 56;
 
             visible.forEach((codec, index) => {
                 const v = visuals[codec.name];
-                v.targetY = startY + index * rowPitch;
+                v.targetY = index * rowPitch;
                 v.targetAlpha = 1;
                 v.targetBar = 1;
             });
@@ -353,6 +362,8 @@
                     v.targetBar = 0;
                 }
             });
+
+            state.scrollY = 0;
 
             requestAnimation();
         }
@@ -422,8 +433,8 @@
             ctx.font = '11px -apple-system, system-ui, sans-serif';
             ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
             let subline = 'Visible rows: ' + visibleCount;
-            if (hiddenRows > 0) {
-                subline += ' (+' + hiddenRows + ' hidden by display limit)';
+            if (state.scrollMax > 0) {
+                subline += ' | Scroll to see all';
             }
             ctx.fillText(subline, 24, 47);
         }
@@ -477,9 +488,42 @@
 
         function drawRows(rowsStartY) {
             rowHitboxes = [];
+            scrollThumbRect = null;
             const rowX = 24;
             const rowW = W - 48;
             const rowH = 48;
+            const rowPitch = 56;
+
+            rowViewportRect = {
+                x: rowX,
+                y: rowsStartY + 2,
+                w: rowW,
+                h: H - (rowsStartY + 2) - 52
+            };
+
+            if (rowViewportRect.h < 80) {
+                rowViewportRect.h = 80;
+            }
+
+            roundRect(rowViewportRect.x, rowViewportRect.y, rowViewportRect.w, rowViewportRect.h, 10);
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.22)';
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(148, 163, 184, 0.2)';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            const contentHeight = visibleNames.length === 0
+                ? 0
+                : rowH + (visibleNames.length - 1) * rowPitch;
+
+            state.scrollMax = Math.max(0, contentHeight - rowViewportRect.h);
+            if (state.scrollY > state.scrollMax) {
+                state.scrollY = state.scrollMax;
+            }
+
+            ctx.save();
+            roundRect(rowViewportRect.x + 1, rowViewportRect.y + 1, rowViewportRect.w - 2, rowViewportRect.h - 2, 9);
+            ctx.clip();
 
             const sortedVisuals = codecData
                 .map(codec => ({ codec, visual: visuals[codec.name] }))
@@ -489,10 +533,14 @@
             sortedVisuals.forEach(item => {
                 const codec = item.codec;
                 const v = item.visual;
-                const y = v.y;
+                const y = rowViewportRect.y + v.y - state.scrollY;
                 const alpha = v.alpha;
                 const isHover = state.hoverRow === codec.name;
                 const rowColor = groupColor[codec.group] || '#64748b';
+
+                if (y + rowH < rowViewportRect.y - 2 || y > rowViewportRect.y + rowViewportRect.h + 2) {
+                    return;
+                }
 
                 const fillAlpha = 0.08 * alpha + (isHover ? 0.05 : 0);
                 const borderAlpha = 0.28 * alpha + (isHover ? 0.35 : 0);
@@ -569,7 +617,7 @@
             });
 
             if (visibleNames.length === 0) {
-                roundRect(24, rowsStartY + 28, W - 48, 70, 10);
+                roundRect(rowViewportRect.x + 12, rowViewportRect.y + 24, rowViewportRect.w - 24, 70, 10);
                 ctx.fillStyle = 'rgba(148, 163, 184, 0.08)';
                 ctx.fill();
                 ctx.strokeStyle = 'rgba(148, 163, 184, 0.25)';
@@ -578,10 +626,43 @@
                 ctx.font = '12px -apple-system, system-ui, sans-serif';
                 ctx.textAlign = 'center';
                 ctx.fillStyle = 'rgba(226, 232, 240, 0.75)';
-                ctx.fillText('No codecs are currently visible.', W / 2, rowsStartY + 56);
+                ctx.fillText('No codecs are currently visible.', W / 2, rowViewportRect.y + 52);
                 ctx.font = '11px -apple-system, system-ui, sans-serif';
                 ctx.fillStyle = 'rgba(148, 163, 184, 0.9)';
-                ctx.fillText('Select codec chips or relax filters to compare.', W / 2, rowsStartY + 77);
+                ctx.fillText('Select codec chips or relax filters to compare.', W / 2, rowViewportRect.y + 73);
+            }
+
+            ctx.restore();
+
+            if (state.scrollMax > 0) {
+                const trackX = rowViewportRect.x + rowViewportRect.w - 10;
+                const trackY = rowViewportRect.y + 8;
+                const trackH = rowViewportRect.h - 16;
+
+                roundRect(trackX, trackY, 4, trackH, 2);
+                ctx.fillStyle = 'rgba(148, 163, 184, 0.25)';
+                ctx.fill();
+
+                const thumbH = Math.max(28, (rowViewportRect.h / contentHeight) * trackH);
+                const thumbRange = trackH - thumbH;
+                const thumbY = trackY + (state.scrollY / state.scrollMax) * thumbRange;
+
+                roundRect(trackX - 1, thumbY, 6, thumbH, 3);
+                ctx.fillStyle = 'rgba(99, 102, 241, 0.75)';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(199, 210, 254, 0.7)';
+                ctx.lineWidth = 1;
+                ctx.stroke();
+
+                scrollThumbRect = {
+                    x: trackX - 3,
+                    y: thumbY,
+                    w: 10,
+                    h: thumbH,
+                    trackY,
+                    trackH,
+                    thumbH
+                };
             }
         }
 
@@ -596,10 +677,11 @@
             drawLegendDot(240, y - 5, groupColor.raw, 'Direct/raw');
 
             ctx.fillStyle = 'rgba(255,255,255,0.45)';
-            const suffix = hiddenRows > 0
-                ? '* Recommended defaults | showing top ' + MAX_VISIBLE_ROWS
-                : '* Recommended defaults';
-            ctx.fillText(suffix, W - 280, y);
+            let suffix = '* Recommended defaults';
+            if (state.scrollMax > 0) {
+                suffix += ' | wheel scroll list';
+            }
+            ctx.fillText(suffix, W - 250, y);
         }
 
         function drawLegendDot(x, y, color, label) {
@@ -622,11 +704,12 @@
                 'File size: ' + codec.fileLabel,
                 'Scrub: ' + codec.scrubLabel,
                 'Alpha: ' + (codec.alpha ? 'Yes' : 'No'),
+                '10/12-bit: ' + (codec.highBitDepth ? 'Supported' : 'No'),
                 'Best for: ' + codec.bestFor
             ];
 
             const tipW = 290;
-            const tipH = 122;
+            const tipH = 139;
             let x = state.mouseX + 14;
             let y = state.mouseY + 14;
 
@@ -679,6 +762,9 @@
 
             alphaToggleBtn.classList.toggle('active', state.alphaOnly);
             alphaToggleBtn.textContent = 'Alpha only: ' + (state.alphaOnly ? 'On' : 'Off');
+
+            bitDepthToggleBtn.classList.toggle('active', state.bitDepthOnly);
+            bitDepthToggleBtn.textContent = '10/12-bit: ' + (state.bitDepthOnly ? 'On' : 'Off');
         }
 
         function setDecodeFilter(filterName) {
@@ -693,6 +779,11 @@
         filterRawBtn.addEventListener('click', () => setDecodeFilter('raw'));
         alphaToggleBtn.addEventListener('click', () => {
             state.alphaOnly = !state.alphaOnly;
+            updateButtons();
+            updateTargets();
+        });
+        bitDepthToggleBtn.addEventListener('click', () => {
+            state.bitDepthOnly = !state.bitDepthOnly;
             updateButtons();
             updateTargets();
         });
@@ -733,7 +824,9 @@
                 }
             }
 
-            const nextCursor = hoverChip || hoverRow ? 'pointer' : 'default';
+            const hoverScrollThumb = scrollThumbRect && pointInRect(p.x, p.y, scrollThumbRect);
+
+            const nextCursor = hoverScrollThumb ? 'ns-resize' : (hoverChip || hoverRow ? 'pointer' : 'default');
             canvas.style.cursor = nextCursor;
 
             if (hoverChip !== state.hoverChip || hoverRow !== state.hoverRow) {
@@ -766,6 +859,22 @@
                 }
             }
         });
+
+        canvas.addEventListener('wheel', (evt) => {
+            if (!rowViewportRect || state.scrollMax <= 0) return;
+
+            const p = getCanvasCoords(evt);
+            if (!pointInRect(p.x, p.y, rowViewportRect)) return;
+
+            const delta = evt.deltaY;
+            const next = Math.max(0, Math.min(state.scrollMax, state.scrollY + delta));
+            if (next !== state.scrollY) {
+                state.scrollY = next;
+                state.hoverRow = null;
+                draw();
+                evt.preventDefault();
+            }
+        }, { passive: false });
 
         function roundRect(x, y, w, h, r) {
             const rr = Math.max(0, Math.min(r, Math.min(w, h) / 2));
