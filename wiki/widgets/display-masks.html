@@ -33,6 +33,10 @@
         style="position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-subtle); background: var(--bg-tertiary);">
         <canvas id="mask-canvas" width="700" height="500"
             style="width: 100%; height: auto; display: block; cursor: crosshair; touch-action: none;"></canvas>
+        <div id="mask-status"
+             style="position: absolute; bottom: 10px; left: 10px; background: rgba(0,0,0,0.7); color: #eee; padding: 4px 8px; border-radius: 4px; font-size: 0.75rem; pointer-events: none; opacity: 0; transition: opacity 0.2s;">
+            Ready
+        </div>
     </div>
 
     <div
@@ -40,20 +44,21 @@
         <span style="display: flex; align-items: center; gap: 6px;">
             <span
                 style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #22c55e;"></span>
-            α=0 (visible)
+            α=0
         </span>
         <span style="display: flex; align-items: center; gap: 6px;">
             <span
                 style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #f59e0b;"></span>
-            α=0.5 (feathered)
+            α=0.5
         </span>
         <span style="display: flex; align-items: center; gap: 6px;">
             <span
                 style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #ef4444;"></span>
-            α=1 (hidden)
+            α=1
         </span>
-        <span style="display: flex; align-items: center; gap: 6px;">
-            Drag to move · Click to cycle alpha
+        <span style="display: flex; align-items: center; gap: 6px; margin-left: auto;">
+             <span style="opacity: 0.7; margin-right: 4px;">Controls:</span> 
+             Drag points/handles · Click edge to add · Shift+click to remove
         </span>
     </div>
 </div>
@@ -63,6 +68,7 @@
         const canvas = document.getElementById('mask-canvas');
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
+        const statusEl = document.getElementById('mask-status');
 
         const presetSelect = document.getElementById('mask-preset-select');
         const gammaSlider = document.getElementById('mask-gamma-slider');
@@ -72,13 +78,22 @@
         const W = canvas.width;
         const H = canvas.height;
 
+        // Data model
         let gridRows = 4;
         let gridCols = 5;
-        let junctions = []; // flat array of {x, y, alpha}
+        // Each junction: { x, y, alpha, hx, hy, vx, vy, smooth }
+        // hx,hy = horizontal handle offset from x,y
+        // vx,vy = vertical handle offset from x,y
+        let junctions = [];
         let gamma = 1.0;
-        let dragIndex = -1;
-        let hoverIndex = -1;
+
+        // Interaction state
+        let dragTarget = null; // { type: 'point'|'h-handle'|'v-handle', index: number }
+        let hoverTarget = null; // same structure
+        let hoverEdge = null;   // { type: 'row'|'col', r, c, t, x, y } for insertion
+        
         let pointerDownTime = 0;
+        let pointerStartPos = { x: 0, y: 0 };
         let pointerMoved = false;
 
         // --- Test pattern background (cached) ---
@@ -127,16 +142,8 @@
             pctx.moveTo(W, 0); pctx.lineTo(0, H);
             pctx.stroke();
 
-            // Some colored rectangles to represent "content"
-            pctx.fillStyle = 'rgba(99, 102, 241, 0.3)';
-            pctx.fillRect(W * 0.15, H * 0.2, W * 0.25, H * 0.3);
-            pctx.fillStyle = 'rgba(236, 72, 153, 0.25)';
-            pctx.fillRect(W * 0.55, H * 0.35, W * 0.3, H * 0.35);
-            pctx.fillStyle = 'rgba(34, 197, 94, 0.2)';
-            pctx.fillRect(W * 0.3, H * 0.6, W * 0.2, H * 0.25);
-
             // "CONTENT" text
-            pctx.font = 'bold 48px -apple-system, sans-serif';
+            pctx.font = 'bold 48px Futura, sans-serif';
             pctx.textAlign = 'center';
             pctx.textBaseline = 'middle';
             pctx.fillStyle = 'rgba(255,255,255,0.12)';
@@ -144,6 +151,15 @@
         }
 
         // --- Grid management ---
+        function createJunction(x, y, alpha = 0) {
+            return {
+                x, y, alpha,
+                hx: 0, hy: 0, // Horizontal handle (relative)
+                vx: 0, vy: 0, // Vertical handle (relative)
+                smooth: true  // Tangent continuity
+            };
+        }
+
         function initGrid(rows, cols) {
             gridRows = rows;
             gridCols = cols;
@@ -152,11 +168,62 @@
                 for (let c = 0; c < gridCols; c++) {
                     const x = (c / (gridCols - 1)) * W;
                     const y = (r / (gridRows - 1)) * H;
-                    junctions.push({ x, y, alpha: 0 });
+                    junctions.push(createJunction(x, y, 0));
+                }
+            }
+            // Auto-calculate initial handles for straight lines
+            updateHandlesFromGrid();
+        }
+
+        function updateHandlesFromGrid() {
+            // Set handles to 1/3 distance to neighbors for a neutral "straight" look
+            for (let r = 0; r < gridRows; r++) {
+                for (let c = 0; c < gridCols; c++) {
+                    const i = r * gridCols + c;
+                    const j = junctions[i];
+                    
+                    // Horizontal handle
+                    if (c < gridCols - 1) {
+                        const next = junctions[r * gridCols + c + 1];
+                        const dx = (next.x - j.x) * 0.33;
+                        const dy = (next.y - j.y) * 0.33;
+                        j.hx = dx; j.hy = dy;
+                    } else if (c > 0) {
+                         const prev = junctions[r * gridCols + c - 1];
+                         const dx = (j.x - prev.x) * 0.33;
+                         const dy = (j.y - prev.y) * 0.33;
+                         j.hx = -dx; j.hy = -dy; // Point inward
+                    }
+
+                    // Vertical handle
+                    if (r < gridRows - 1) {
+                        const next = junctions[(r + 1) * gridCols + c];
+                        const dx = (next.x - j.x) * 0.33;
+                        const dy = (next.y - j.y) * 0.33;
+                        j.vx = dx; j.vy = dy;
+                    } else if (r > 0) {
+                        const prev = junctions[(r - 1) * gridCols + c];
+                        const dx = (j.x - prev.x) * 0.33;
+                        const dy = (j.y - prev.y) * 0.33;
+                        j.vx = -dx; j.vy = -dy; // Point inward
+                    }
                 }
             }
         }
 
+        // --- Helper: Cubic Bezier ---
+        function cubicBezier(p0, p1, p2, p3, t) {
+            const u = 1 - t;
+            return u * u * u * p0 + 3 * u * u * t * p1 + 3 * u * t * t * p2 + t * t * t * p3;
+        }
+
+        function getPointOnCurve(p0, p1, p2, p3, t) {
+            return {
+                x: cubicBezier(p0.x, p1.x, p2.x, p3.x, t),
+                y: cubicBezier(p0.y, p1.y, p2.y, p3.y, t)
+            };
+        }
+        
         // --- Presets ---
         function applyPreset(name) {
             switch (name) {
@@ -168,17 +235,11 @@
                     for (let r = 0; r < gridRows; r++) {
                         junctions[r * gridCols + 0].alpha = 1;
                         junctions[r * gridCols + 1].alpha = 0.7;
-                        junctions[r * gridCols + 2].alpha = 0;
-                        junctions[r * gridCols + 3].alpha = 0;
-                        junctions[r * gridCols + 4].alpha = 0;
                     }
                     break;
                 case 'right':
                     initGrid(3, 5);
                     for (let r = 0; r < gridRows; r++) {
-                        junctions[r * gridCols + 0].alpha = 0;
-                        junctions[r * gridCols + 1].alpha = 0;
-                        junctions[r * gridCols + 2].alpha = 0;
                         junctions[r * gridCols + 3].alpha = 0.7;
                         junctions[r * gridCols + 4].alpha = 1;
                     }
@@ -188,65 +249,58 @@
                     for (let c = 0; c < gridCols; c++) {
                         junctions[0 * gridCols + c].alpha = 1;
                         junctions[1 * gridCols + c].alpha = 0.7;
-                        junctions[2 * gridCols + c].alpha = 0;
-                        junctions[3 * gridCols + c].alpha = 0;
-                        junctions[4 * gridCols + c].alpha = 0;
                     }
                     break;
                 case 'bottom':
                     initGrid(5, 3);
                     for (let c = 0; c < gridCols; c++) {
-                        junctions[0 * gridCols + c].alpha = 0;
-                        junctions[1 * gridCols + c].alpha = 0;
-                        junctions[2 * gridCols + c].alpha = 0;
                         junctions[3 * gridCols + c].alpha = 0.7;
                         junctions[4 * gridCols + c].alpha = 1;
                     }
                     break;
                 case 'rect':
                     initGrid(4, 5);
-                    // Outer edges α=1, middle ring α=0.5, center α=0
                     for (let r = 0; r < gridRows; r++) {
                         for (let c = 0; c < gridCols; c++) {
-                            const isEdgeR = (r === 0 || r === gridRows - 1);
-                            const isEdgeC = (c === 0 || c === gridCols - 1);
-                            const isInnerR = (r === 1 || r === gridRows - 2);
-                            const isInnerC = (c === 1 || c === gridCols - 2);
-                            if (isEdgeR || isEdgeC) {
-                                junctions[r * gridCols + c].alpha = 1;
-                            } else if (isInnerR || isInnerC) {
-                                junctions[r * gridCols + c].alpha = 0.4;
-                            } else {
-                                junctions[r * gridCols + c].alpha = 0;
-                            }
+                            const isEdge = (r === 0 || r === gridRows - 1 || c === 0 || c === gridCols - 1);
+                            const isInner = (r === 1 || r === gridRows - 2 || c === 1 || c === gridCols - 2);
+                            if (isEdge) junctions[r * gridCols + c].alpha = 1;
+                            else if (isInner) junctions[r * gridCols + c].alpha = 0.4;
                         }
                     }
                     break;
                 case 'round':
                     initGrid(5, 6);
-                    // Elliptical alpha based on distance from center
-                    const cx = W / 2;
-                    const cy = H / 2;
-                    const rx = W * 0.38;
-                    const ry = H * 0.38;
+                    const cx = W / 2, cy = H / 2;
+                    const rx = W * 0.38, ry = H * 0.38;
+                    // Approximate a circle/ellipse logic...
+                    // For a "round" mask in Watchout, usually edges are alpha=1 and center is alpha=0
+                    // But here we'll just set alpha based on distance for the default look
                     for (let r = 0; r < gridRows; r++) {
                         for (let c = 0; c < gridCols; c++) {
                             const j = junctions[r * gridCols + c];
                             const dx = (j.x - cx) / rx;
                             const dy = (j.y - cy) / ry;
                             const dist = Math.sqrt(dx * dx + dy * dy);
-                            if (dist < 0.7) {
-                                j.alpha = 0;
-                            } else if (dist < 1.0) {
-                                j.alpha = (dist - 0.7) / 0.3;
-                            } else {
-                                j.alpha = 1;
-                            }
-                            j.alpha = Math.round(j.alpha * 10) / 10;
+                            if (dist > 0.8) j.alpha = 1;
+                            else if (dist > 0.5) j.alpha = (dist - 0.5) / 0.3;
+                            else j.alpha = 0;
+                            
+                            // For round preset, let's curve the handles a bit to suggest smoothness
+                            // Tangent to the circle at this point
+                            const angle = Math.atan2(j.y - cy, j.x - cx);
+                            const handleLen = 30;
+                            // Perpendicular to radius
+                            j.hx = -Math.sin(angle) * handleLen;
+                            j.hy = Math.cos(angle) * handleLen;
+                            j.vx = Math.cos(angle) * handleLen; 
+                            j.vy = Math.sin(angle) * handleLen;
                         }
                     }
                     break;
             }
+            // Ensure handles are reasonable if not set by preset logic
+            if (name !== 'round') updateHandlesFromGrid();
         }
 
         // --- Rendering ---
@@ -254,100 +308,221 @@
             return a + (b - a) * t;
         }
 
-        function getAlphaAt(nx, ny) {
-            // nx, ny in [0, 1] across the canvas
-            // Find which cell we're in
-            const fx = nx * (gridCols - 1);
-            const fy = ny * (gridRows - 1);
-            const col = Math.min(Math.floor(fx), gridCols - 2);
-            const row = Math.min(Math.floor(fy), gridRows - 2);
-            const u = fx - col;
-            const v = fy - row;
+        // Subdivided mesh for rendering the mask
+        // We divide the canvas into small cells (e.g. 10x10 px)
+        // For each cell center, we find the corresponding (u,v) in the Bezier patch
+        // and interpolate alpha.
+        // Doing strict inverse Bezier transform per pixel is too slow.
+        // Instead, we'll rasterize the Bezier mesh patches directly.
+        
+        function drawMaskOverlay(ctx) {
+            // Create a temporary canvas for the mask
+            const maskCanvas = document.createElement('canvas');
+            maskCanvas.width = W;
+            maskCanvas.height = H;
+            const mctx = maskCanvas.getContext('2d');
+            
+            // Render each patch (grid cell)
+            const steps = 10; // Subdivision steps per patch edge
+            
+            for (let r = 0; r < gridRows - 1; r++) {
+                for (let c = 0; c < gridCols - 1; c++) {
+                    const tl = junctions[r * gridCols + c];
+                    const tr = junctions[r * gridCols + c + 1];
+                    const bl = junctions[(r + 1) * gridCols + c];
+                    const br = junctions[(r + 1) * gridCols + c + 1];
 
-            const tl = junctions[row * gridCols + col].alpha;
-            const tr = junctions[row * gridCols + col + 1].alpha;
-            const bl = junctions[(row + 1) * gridCols + col].alpha;
-            const br = junctions[(row + 1) * gridCols + col + 1].alpha;
+                    // Patch control points
+                    // Top curve
+                    const p00 = tl;
+                    const p01 = { x: tl.x + tl.hx, y: tl.y + tl.hy }; // Right handle of TL
+                    const p02 = { x: tr.x - tr.hx, y: tr.y - tr.hy }; // Left handle of TR (inverted)
+                    const p03 = tr;
 
-            // Bilinear interpolation
-            const top = lerp(tl, tr, u);
-            const bot = lerp(bl, br, u);
-            return lerp(top, bot, v);
+                    // Bottom curve
+                    const p30 = bl;
+                    const p31 = { x: bl.x + bl.hx, y: bl.y + bl.hy };
+                    const p32 = { x: br.x - br.hx, y: br.y - br.hy };
+                    const p33 = br;
+                    
+                    // Left curve (vertical) handles
+                    // p00 -> p30
+                    // p10 (handle down from TL), p20 (handle up from BL)
+                    
+                    // We need a Coons patch or similar surface interpolation.
+                    // For simplicity, we'll just linearly interpolate the two Bezier curves (top/bottom)
+                    // and (left/right) and blend them.
+                    
+                    for (let i = 0; i < steps; i++) {
+                        for (let j = 0; j < steps; j++) {
+                            const u0 = j / steps;
+                            const v0 = i / steps;
+                            const u1 = (j + 1) / steps;
+                            const v1 = (i + 1) / steps;
+                            
+                            // Sample points on the surface
+                            // Simple bilinear interpolation of the 4 corners is NOT enough
+                            // We need to sample the edges
+                            
+                            const getSurfacePoint = (u, v) => {
+                                // Horizontal interpolation
+                                const top = getPointOnCurve(p00, p01, p02, p03, u);
+                                const bot = getPointOnCurve(p30, p31, p32, p33, u);
+                                
+                                // Vertical interpolation
+                                // Note: simplified, assumes vertical handles don't deviate too wildly
+                                const x = lerp(top.x, bot.x, v);
+                                const y = lerp(top.y, bot.y, v);
+                                
+                                // Alpha interpolation (bilinear is fine for alpha usually)
+                                const alphaTop = lerp(tl.alpha, tr.alpha, u);
+                                const alphaBot = lerp(bl.alpha, br.alpha, u);
+                                const alpha = lerp(alphaTop, alphaBot, v);
+                                
+                                return { x, y, alpha };
+                            };
+
+                            const pA = getSurfacePoint(u0, v0);
+                            const pB = getSurfacePoint(u1, v0);
+                            const pC = getSurfacePoint(u1, v1);
+                            const pD = getSurfacePoint(u0, v1);
+
+                            // Draw quad
+                            mctx.beginPath();
+                            mctx.moveTo(pA.x, pA.y);
+                            mctx.lineTo(pB.x, pB.y);
+                            mctx.lineTo(pC.x, pC.y);
+                            mctx.lineTo(pD.x, pD.y);
+                            mctx.closePath();
+
+                            // Use average alpha
+                            let alpha = (pA.alpha + pB.alpha + pC.alpha + pD.alpha) / 4;
+                            alpha = Math.pow(Math.max(0, Math.min(1, alpha)), gamma);
+                            
+                            mctx.fillStyle = `rgba(0,0,0,${alpha})`;
+                            mctx.fill();
+                        }
+                    }
+                }
+            }
+            
+            ctx.drawImage(maskCanvas, 0, 0);
         }
 
         function draw() {
             ctx.clearRect(0, 0, W, H);
 
-            // Draw test pattern
+            // 1. Draw test pattern
             if (patternCanvas) {
                 ctx.drawImage(patternCanvas, 0, 0);
             }
 
-            // Draw mask overlay using pixel-level rendering via offscreen canvas
-            const maskCanvas = document.createElement('canvas');
-            maskCanvas.width = W;
-            maskCanvas.height = H;
-            const mctx = maskCanvas.getContext('2d');
-            const imageData = mctx.createImageData(W, H);
-            const data = imageData.data;
+            // 2. Draw mask overlay
+            drawMaskOverlay(ctx);
 
-            // Resolution reduction for performance
-            const step = 2;
-            for (let py = 0; py < H; py += step) {
-                for (let px = 0; px < W; px += step) {
-                    const nx = px / W;
-                    const ny = py / H;
-                    let alpha = getAlphaAt(nx, ny);
-                    // Apply gamma
-                    alpha = Math.pow(Math.max(0, Math.min(1, alpha)), gamma);
-                    const a = Math.round(alpha * 220); // Not fully opaque so you can still see grid
-                    // Fill the step×step block
-                    for (let dy = 0; dy < step && py + dy < H; dy++) {
-                        for (let dx = 0; dx < step && px + dx < W; dx++) {
-                            const idx = ((py + dy) * W + (px + dx)) * 4;
-                            data[idx] = 0;       // R
-                            data[idx + 1] = 0;   // G
-                            data[idx + 2] = 0;   // B
-                            data[idx + 3] = a;   // A
-                        }
-                    }
-                }
-            }
-            mctx.putImageData(imageData, 0, 0);
-            ctx.drawImage(maskCanvas, 0, 0);
-
-            // Draw junction grid lines (faint)
-            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            // 3. Draw grid lines (Bezier)
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
             ctx.lineWidth = 1;
             ctx.setLineDash([4, 4]);
+            
+            // Horizontal lines
             for (let r = 0; r < gridRows; r++) {
                 ctx.beginPath();
-                for (let c = 0; c < gridCols; c++) {
-                    const j = junctions[r * gridCols + c];
-                    if (c === 0) ctx.moveTo(j.x, j.y);
-                    else ctx.lineTo(j.x, j.y);
+                const first = junctions[r * gridCols];
+                ctx.moveTo(first.x, first.y);
+                for (let c = 0; c < gridCols - 1; c++) {
+                    const curr = junctions[r * gridCols + c];
+                    const next = junctions[r * gridCols + c + 1];
+                    // Cubic bezier: curr -> curr.h -> next.h(inv) -> next
+                    ctx.bezierCurveTo(
+                        curr.x + curr.hx, curr.y + curr.hy,
+                        next.x - next.hx, next.y - next.hy,
+                        next.x, next.y
+                    );
                 }
                 ctx.stroke();
             }
+            
+            // Vertical lines
             for (let c = 0; c < gridCols; c++) {
                 ctx.beginPath();
-                for (let r = 0; r < gridRows; r++) {
-                    const j = junctions[r * gridCols + c];
-                    if (r === 0) ctx.moveTo(j.x, j.y);
-                    else ctx.lineTo(j.x, j.y);
+                const first = junctions[c];
+                ctx.moveTo(first.x, first.y);
+                for (let r = 0; r < gridRows - 1; r++) {
+                    const curr = junctions[r * gridCols + c];
+                    const next = junctions[(r + 1) * gridCols + c];
+                    // Cubic bezier: curr -> curr.v -> next.v(inv) -> next
+                    ctx.bezierCurveTo(
+                        curr.x + curr.vx, curr.y + curr.vy,
+                        next.x - next.vx, next.y - next.vy,
+                        next.x, next.y
+                    );
                 }
                 ctx.stroke();
             }
             ctx.setLineDash([]);
 
-            // Draw junction points
+            // 4. Draw insertion preview (if any)
+            if (hoverEdge) {
+                ctx.strokeStyle = '#00ffff';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.arc(hoverEdge.x, hoverEdge.y, 4, 0, Math.PI*2);
+                ctx.stroke();
+                
+                // Draw a ghost line for the new edge
+                ctx.lineWidth = 1;
+                ctx.setLineDash([2, 2]);
+                // Simplified visualization (just a crosshair)
+                ctx.moveTo(hoverEdge.x - 10, hoverEdge.y);
+                ctx.lineTo(hoverEdge.x + 10, hoverEdge.y);
+                ctx.moveTo(hoverEdge.x, hoverEdge.y - 10);
+                ctx.lineTo(hoverEdge.x, hoverEdge.y + 10);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // 5. Draw junctions and handles
             for (let i = 0; i < junctions.length; i++) {
                 const j = junctions[i];
-                const isHover = (i === hoverIndex);
-                const isDrag = (i === dragIndex);
-                const radius = isDrag ? 9 : isHover ? 8 : 6;
+                const isHover = (hoverTarget && hoverTarget.type === 'point' && hoverTarget.index === i);
+                const isDrag = (dragTarget && dragTarget.type === 'point' && dragTarget.index === i);
+                const isHandleDrag = (dragTarget && (dragTarget.type === 'h-handle' || dragTarget.type === 'v-handle') && dragTarget.index === i);
+                
+                // Show handles if hovered, dragged, or if a handle is being dragged
+                const showHandles = isHover || isDrag || isHandleDrag || (hoverTarget && hoverTarget.index === i);
 
-                // Color based on alpha: green (0) → yellow (0.5) → red (1)
+                if (showHandles) {
+                    ctx.strokeStyle = 'rgba(255,255,255,0.4)';
+                    ctx.lineWidth = 1;
+                    ctx.beginPath();
+                    // Horizontal handles
+                    ctx.moveTo(j.x, j.y);
+                    ctx.lineTo(j.x + j.hx, j.y + j.hy);
+                    ctx.moveTo(j.x, j.y);
+                    ctx.lineTo(j.x - j.hx, j.y - j.hy); // mirror implied for viz
+                    // Vertical handles
+                    ctx.moveTo(j.x, j.y);
+                    ctx.lineTo(j.x + j.vx, j.y + j.vy);
+                    ctx.moveTo(j.x, j.y);
+                    ctx.lineTo(j.x - j.vx, j.y - j.vy);
+                    ctx.stroke();
+
+                    // Draw handle dots
+                    ctx.fillStyle = '#fff';
+                    const drawHandleDot = (x, y) => {
+                        ctx.beginPath(); ctx.arc(x, y, 3, 0, Math.PI*2); ctx.fill();
+                    };
+                    drawHandleDot(j.x + j.hx, j.y + j.hy);
+                    drawHandleDot(j.x - j.hx, j.y - j.hy);
+                    drawHandleDot(j.x + j.vx, j.y + j.vy);
+                    drawHandleDot(j.x - j.vx, j.y - j.vy);
+                }
+
+                // Main Junction Point
+                const radius = isDrag ? 9 : isHover ? 8 : 6;
+                
+                // Color based on alpha
                 let r, g, b;
                 if (j.alpha <= 0.5) {
                     const t = j.alpha / 0.5;
@@ -379,16 +554,26 @@
                 ctx.lineWidth = isDrag ? 2.5 : 1.5;
                 ctx.stroke();
 
+                // Smooth/Corner indicator (small dot in center if smooth)
+                if (!j.smooth) {
+                    ctx.beginPath();
+                    ctx.arc(j.x, j.y, 2, 0, Math.PI*2);
+                    ctx.fillStyle = '#000';
+                    ctx.fill();
+                }
+
                 // Alpha label
-                ctx.font = 'bold 10px -apple-system, sans-serif';
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'bottom';
-                ctx.fillStyle = 'rgba(255,255,255,0.8)';
-                ctx.fillText(j.alpha.toFixed(1), j.x, j.y - radius - 3);
+                if (isHover || isDrag) {
+                    ctx.font = 'bold 10px Futura, sans-serif';
+                    ctx.textAlign = 'center';
+                    ctx.textBaseline = 'bottom';
+                    ctx.fillStyle = 'rgba(255,255,255,0.9)';
+                    ctx.fillText(j.alpha.toFixed(1), j.x, j.y - radius - 3);
+                }
             }
         }
 
-        // --- Interaction ---
+        // --- Interaction Logic ---
         function getCanvasCoords(e) {
             const rect = canvas.getBoundingClientRect();
             const scaleX = W / rect.width;
@@ -401,70 +586,383 @@
             };
         }
 
-        function findClosestPoint(mx, my, threshold) {
-            let closest = -1;
-            let minDist = threshold * threshold;
+        function distSq(x1, y1, x2, y2) {
+            return (x1-x2)*(x1-x2) + (y1-y2)*(y1-y2);
+        }
+
+        function findHit(mx, my) {
+            const threshold = 10 * 10; // 10px radius
+            
+            // Check handles first (if visible/near)
+            // For simplicity, we check handles of the *currently hovered* point, 
+            // OR check all handles if we want easy access. Let's check all for now but prioritize points.
+            // Actually, usually you only see handles when selecting a point. 
+            // Let's stick to: Check points first, then check handles of the closest point if nearby.
+            
+            // 1. Check points
+            let closestPt = -1;
+            let minPtDist = threshold;
+            
             for (let i = 0; i < junctions.length; i++) {
-                const dx = junctions[i].x - mx;
-                const dy = junctions[i].y - my;
-                const d2 = dx * dx + dy * dy;
-                if (d2 < minDist) {
-                    minDist = d2;
-                    closest = i;
+                const d = distSq(junctions[i].x, junctions[i].y, mx, my);
+                if (d < minPtDist) {
+                    minPtDist = d;
+                    closestPt = i;
                 }
             }
-            return closest;
+            
+            if (closestPt >= 0) {
+                return { type: 'point', index: closestPt };
+            }
+
+            // 2. Check handles (of all points, because we draw them on hover of proximity)
+            // But checking ALL handles might be cluttery. 
+            // Let's detect if we are near any handle tip.
+            for (let i = 0; i < junctions.length; i++) {
+                const j = junctions[i];
+                // Check 4 handles: +h, -h, +v, -v
+                // H+
+                if (distSq(j.x + j.hx, j.y + j.hy, mx, my) < threshold) return { type: 'h-handle', index: i, dir: 1 };
+                // H-
+                if (distSq(j.x - j.hx, j.y - j.hy, mx, my) < threshold) return { type: 'h-handle', index: i, dir: -1 };
+                // V+
+                if (distSq(j.x + j.vx, j.y + j.vy, mx, my) < threshold) return { type: 'v-handle', index: i, dir: 1 };
+                // V-
+                if (distSq(j.x - j.vx, j.y - j.vy, mx, my) < threshold) return { type: 'v-handle', index: i, dir: -1 };
+            }
+
+            return null;
         }
+
+        function findEdgeHit(mx, my) {
+            // Check distance to bezier curves
+            const threshold = 10; 
+            
+            // Check horizontal edges
+            for (let r = 0; r < gridRows; r++) {
+                for (let c = 0; c < gridCols - 1; c++) {
+                    const j1 = junctions[r * gridCols + c];
+                    const j2 = junctions[r * gridCols + c + 1];
+                    // Simple check: distance to line segment first for speed
+                    // ... actually for curve we should be more precise, but line segment is okay for UI hit test
+                    // if curvature isn't extreme.
+                    
+                    // Let's sample a few points on the curve
+                    const steps = 5;
+                    for (let s = 0; s <= steps; s++) {
+                        const t = s/steps;
+                        const p = getPointOnCurve(
+                            j1, 
+                            {x: j1.x + j1.hx, y: j1.y + j1.hy},
+                            {x: j2.x - j2.hx, y: j2.y - j2.hy},
+                            j2, t
+                        );
+                        if (distSq(p.x, p.y, mx, my) < threshold * threshold) {
+                            return { type: 'col', r, c, t, x: p.x, y: p.y }; // Inserting a column here
+                        }
+                    }
+                }
+            }
+
+            // Check vertical edges
+            for (let c = 0; c < gridCols; c++) {
+                for (let r = 0; r < gridRows - 1; r++) {
+                    const j1 = junctions[r * gridCols + c];
+                    const j2 = junctions[(r + 1) * gridCols + c];
+                    
+                    const steps = 5;
+                    for (let s = 0; s <= steps; s++) {
+                        const t = s/steps;
+                        const p = getPointOnCurve(
+                            j1, 
+                            {x: j1.x + j1.vx, y: j1.y + j1.vy},
+                            {x: j2.x - j2.vx, y: j2.y - j2.vy},
+                            j2, t
+                        );
+                        if (distSq(p.x, p.y, mx, my) < threshold * threshold) {
+                            return { type: 'row', r, c, t, x: p.x, y: p.y }; // Inserting a row here
+                        }
+                    }
+                }
+            }
+            return null;
+        }
+
+        function addRow(afterRow, tVal) {
+            // Insert a new row after index `afterRow`
+            // tVal is the parameter along the vertical curve where the click happened
+            // We need to create a new row of junctions interpolated at tVal between row `afterRow` and `afterRow + 1`
+            
+            const newJunctions = [];
+            
+            for (let c = 0; c < gridCols; c++) {
+                const prev = junctions[afterRow * gridCols + c];
+                const next = junctions[(afterRow + 1) * gridCols + c];
+                
+                // Interpolate pos/alpha using the vertical curve
+                // The vertical curve is defined by prev -> prev.v -> next.v(inv) -> next
+                const pos = getPointOnCurve(
+                    prev, 
+                    {x: prev.x + prev.vx, y: prev.y + prev.vy},
+                    {x: next.x - next.vx, y: next.y - next.vy},
+                    next, tVal
+                );
+                
+                const alpha = lerp(prev.alpha, next.alpha, tVal);
+                const j = createJunction(pos.x, pos.y, alpha);
+                
+                // Initial handles for the new point should be interpolated too to maintain shape
+                // For simplicity, reset them to smooth auto-calculated values later, 
+                // or interpolate the tangent vector.
+                // Let's just zero them initially and let updateHandlesFromGrid fix them or keep them small.
+                // Better: Interpolate the tangent at tVal to get the new vertical handles.
+                // But updateHandlesFromGrid is safer to ensure valid topology.
+                
+                newJunctions.push(j);
+            }
+            
+            // Rebuild the flat array with the new row inserted
+            const nextJunctions = [];
+            for (let r = 0; r < gridRows; r++) {
+                for (let c = 0; c < gridCols; c++) {
+                    nextJunctions.push(junctions[r * gridCols + c]);
+                }
+                if (r === afterRow) {
+                    for (let c = 0; c < gridCols; c++) {
+                        nextJunctions.push(newJunctions[c]);
+                    }
+                }
+            }
+            
+            gridRows++;
+            junctions = nextJunctions;
+            // updateHandlesFromGrid(); // Optional: might reset user's custom handles elsewhere. 
+            // Better to NOT reset all handles, but maybe init the new row's handles nicely.
+            // For now, let's leave them as 0,0 (straight) or minimal.
+        }
+
+        function addCol(afterCol, tVal) {
+            const nextJunctions = [];
+            const newCol = [];
+
+            // Generate new column points
+            for (let r = 0; r < gridRows; r++) {
+                const prev = junctions[r * gridCols + afterCol];
+                const next = junctions[r * gridCols + afterCol + 1];
+                
+                const pos = getPointOnCurve(
+                    prev, 
+                    {x: prev.x + prev.hx, y: prev.y + prev.hy},
+                    {x: next.x - next.hx, y: next.y - next.hy},
+                    next, tVal
+                );
+                
+                const alpha = lerp(prev.alpha, next.alpha, tVal);
+                const j = createJunction(pos.x, pos.y, alpha);
+                newCol.push(j);
+            }
+
+            // Insert into array
+            for (let r = 0; r < gridRows; r++) {
+                // Existing cols up to afterCol
+                for (let c = 0; c <= afterCol; c++) {
+                    nextJunctions.push(junctions[r * gridCols + c]);
+                }
+                // New col
+                nextJunctions.push(newCol[r]);
+                // Remaining cols
+                for (let c = afterCol + 1; c < gridCols; c++) {
+                    nextJunctions.push(junctions[r * gridCols + c]);
+                }
+            }
+            
+            gridCols++;
+            junctions = nextJunctions;
+        }
+
+        function removeRow(rowIndex) {
+            if (gridRows <= 2) return;
+            const nextJunctions = [];
+            for (let r = 0; r < gridRows; r++) {
+                if (r === rowIndex) continue;
+                for (let c = 0; c < gridCols; c++) {
+                    nextJunctions.push(junctions[r * gridCols + c]);
+                }
+            }
+            gridRows--;
+            junctions = nextJunctions;
+        }
+
+        function removeCol(colIndex) {
+            if (gridCols <= 2) return;
+            const nextJunctions = [];
+            for (let r = 0; r < gridRows; r++) {
+                for (let c = 0; c < gridCols; c++) {
+                    if (c === colIndex) continue;
+                    nextJunctions.push(junctions[r * gridCols + c]);
+                }
+            }
+            gridCols--;
+            junctions = nextJunctions;
+        }
+
+        // --- Event Handlers ---
 
         canvas.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             const { x, y } = getCanvasCoords(e);
-            dragIndex = findClosestPoint(x, y, 20);
-            pointerDownTime = Date.now();
-            pointerMoved = false;
-            if (dragIndex >= 0) {
+            
+            // Check for edge click first if modifier held? No, priority: Point -> Handle -> Edge
+            const hit = findHit(x, y);
+            
+            if (hit) {
+                // Point or handle click
+                if (hit.type === 'point') {
+                    const r = Math.floor(hit.index / gridCols);
+                    const c = hit.index % gridCols;
+
+                    // Shift+Click -> Remove Row
+                    if (e.shiftKey) {
+                        if (gridRows > 2) {
+                            removeRow(r);
+                            draw();
+                        }
+                        return;
+                    }
+                    // Alt+Click or Ctrl+Click -> Remove Column
+                    if (e.altKey || e.ctrlKey || e.metaKey) {
+                        if (gridCols > 2) {
+                            removeCol(c);
+                            draw();
+                        }
+                        return;
+                    }
+                }
+
+                dragTarget = hit;
+                pointerDownTime = Date.now();
+                pointerMoved = false;
+                pointerStartPos = { x, y };
                 canvas.setPointerCapture(e.pointerId);
+                return;
+            }
+
+            // Check edge click (for insertion)
+            const edgeHit = findEdgeHit(x, y);
+            if (edgeHit) {
+                if (edgeHit.type === 'row') {
+                    addRow(edgeHit.r, edgeHit.t);
+                } else {
+                    addCol(edgeHit.c, edgeHit.t);
+                }
+                draw();
             }
         });
 
         canvas.addEventListener('pointermove', (e) => {
             const { x, y } = getCanvasCoords(e);
-            if (dragIndex >= 0) {
+            
+            if (dragTarget) {
+                const j = junctions[dragTarget.index];
                 pointerMoved = true;
-                junctions[dragIndex].x = Math.max(0, Math.min(W, x));
-                junctions[dragIndex].y = Math.max(0, Math.min(H, y));
+                
+                if (dragTarget.type === 'point') {
+                    // Move point
+                    const dx = x - pointerStartPos.x;
+                    const dy = y - pointerStartPos.y;
+                    j.x += dx;
+                    j.y += dy;
+                    pointerStartPos = { x, y };
+                } else if (dragTarget.type === 'h-handle') {
+                    // Move horizontal handle
+                    // New relative pos
+                    const nx = x - j.x;
+                    const ny = y - j.y;
+                    
+                    // Apply to handle (accounting for direction)
+                    if (dragTarget.dir === 1) {
+                         j.hx = nx; j.hy = ny;
+                         if (j.smooth) { j.hx = nx; j.hy = ny; } // actually just storing the offset
+                    } else {
+                         j.hx = -nx; j.hy = -ny;
+                    }
+                    
+                } else if (dragTarget.type === 'v-handle') {
+                    // Move vertical handle
+                    const nx = x - j.x;
+                    const ny = y - j.y;
+                    
+                    if (dragTarget.dir === 1) {
+                        j.vx = nx; j.vy = ny;
+                    } else {
+                        j.vx = -nx; j.vy = -ny;
+                    }
+                }
                 draw();
             } else {
-                const prev = hoverIndex;
-                hoverIndex = findClosestPoint(x, y, 20);
-                if (hoverIndex !== prev) draw();
-                canvas.style.cursor = hoverIndex >= 0 ? 'grab' : 'crosshair';
+                // Hover effects
+                const prevHover = hoverTarget;
+                const prevEdge = hoverEdge;
+                
+                hoverTarget = findHit(x, y);
+                hoverEdge = (!hoverTarget) ? findEdgeHit(x, y) : null;
+                
+                if (hoverTarget) {
+                    canvas.style.cursor = 'grab';
+                    if (e.shiftKey) {
+                        statusEl.textContent = "Click to remove ROW";
+                        statusEl.style.opacity = 1;
+                    } else if (e.altKey || e.ctrlKey || e.metaKey) {
+                        statusEl.textContent = "Click to remove COLUMN";
+                        statusEl.style.opacity = 1;
+                    } else {
+                        statusEl.textContent = "Drag point/handle · Dbl-click: Smooth · Shift+Click: Del Row · Alt+Click: Del Col";
+                        statusEl.style.opacity = 1;
+                    }
+                } else if (hoverEdge) {
+                    canvas.style.cursor = 'copy'; // "Add" cursor
+                    statusEl.textContent = "Click to insert " + (hoverEdge.type === 'row' ? 'row' : 'column');
+                    statusEl.style.opacity = 1;
+                } else {
+                    canvas.style.cursor = 'crosshair';
+                    statusEl.style.opacity = 0;
+                }
+                
+                if (JSON.stringify(prevHover) !== JSON.stringify(hoverTarget) || 
+                    JSON.stringify(prevEdge) !== JSON.stringify(hoverEdge)) {
+                    draw();
+                }
             }
         });
 
         canvas.addEventListener('pointerup', (e) => {
-            if (dragIndex >= 0) {
+            if (dragTarget) {
                 canvas.releasePointerCapture(e.pointerId);
-                // If it was a short click without much movement, cycle alpha
-                const elapsed = Date.now() - pointerDownTime;
-                if (elapsed < 300 && !pointerMoved) {
-                    const j = junctions[dragIndex];
-                    // Cycle: 0 → 0.5 → 1 → 0
-                    if (j.alpha < 0.25) j.alpha = 0.5;
-                    else if (j.alpha < 0.75) j.alpha = 1.0;
-                    else j.alpha = 0;
+                // Cycle alpha if short click on point
+                if (dragTarget.type === 'point') {
+                    const elapsed = Date.now() - pointerDownTime;
+                    if (elapsed < 300 && !pointerMoved) {
+                        const j = junctions[dragTarget.index];
+                        if (j.alpha < 0.25) j.alpha = 0.5;
+                        else if (j.alpha < 0.75) j.alpha = 1.0;
+                        else j.alpha = 0;
+                        draw();
+                    }
                 }
             }
-            dragIndex = -1;
-            canvas.style.cursor = 'crosshair';
-            draw();
+            dragTarget = null;
         });
-
-        canvas.addEventListener('pointerleave', () => {
-            if (dragIndex < 0) {
-                hoverIndex = -1;
-                draw();
-            }
+        
+        canvas.addEventListener('dblclick', (e) => {
+             const { x, y } = getCanvasCoords(e);
+             const hit = findHit(x, y);
+             if (hit && hit.type === 'point') {
+                 const j = junctions[hit.index];
+                 j.smooth = !j.smooth;
+                 // Reset handles if switching to smooth? Or corner?
+                 // For now, just toggle state flag (logic for mirroring handles is implied in movement)
+                 draw();
+             }
         });
 
         // --- Controls ---

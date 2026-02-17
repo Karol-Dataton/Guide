@@ -1,0 +1,811 @@
+<div class="interactive-widget" id="codec-comparison-widget">
+    <canvas id="codec-comparison-canvas" width="960" height="560"
+        style="width: 100%; height: auto; display: block; touch-action: none;"></canvas>
+
+    <div class="widget-controls" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <span style="font-size: 0.85rem; color: var(--text-secondary);">Decode:</span>
+        <button id="codec-filter-all" class="codec-filter-btn active" type="button">All</button>
+        <button id="codec-filter-gpu" class="codec-filter-btn" type="button">GPU</button>
+        <button id="codec-filter-cpu" class="codec-filter-btn" type="button">CPU</button>
+        <button id="codec-filter-raw" class="codec-filter-btn" type="button">Raw</button>
+
+        <button id="codec-alpha-toggle" class="codec-toggle-btn" type="button">Alpha only: Off</button>
+
+        <span style="margin-left: auto; font-size: 0.85rem; color: var(--text-secondary);">Sort:</span>
+        <select id="codec-sort-select" style="min-width: 180px;">
+            <option value="file-desc">File size (largest first)</option>
+            <option value="file-asc">File size (smallest first)</option>
+            <option value="scrub-desc">Scrub performance</option>
+            <option value="name-asc">Name</option>
+            <option value="decode">Decode method</option>
+        </select>
+    </div>
+
+    <div class="widget-explainer">
+        Click codec chips to include or remove them from the comparison. Use filters and sorting to compare tradeoffs
+        across <strong>file size</strong>, <strong>scrub performance</strong>, <strong>decode method</strong>, and
+        <strong>alpha support</strong>. Recommended defaults are marked with <strong>*</strong>.
+    </div>
+</div>
+
+<style>
+    #codec-comparison-widget .codec-filter-btn,
+    #codec-comparison-widget .codec-toggle-btn {
+        padding: 7px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-family: inherit;
+        transition: all 140ms ease;
+    }
+
+    #codec-comparison-widget .codec-filter-btn:hover,
+    #codec-comparison-widget .codec-toggle-btn:hover {
+        border-color: var(--accent-primary);
+        transform: translateY(-1px);
+    }
+
+    #codec-comparison-widget .codec-filter-btn.active,
+    #codec-comparison-widget .codec-toggle-btn.active {
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        border-color: transparent;
+        color: #fff;
+    }
+</style>
+
+<script>
+    (function () {
+        const canvas = document.getElementById('codec-comparison-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width;
+        const H = canvas.height;
+
+        const codecData = [
+            {
+                name: 'HAP',
+                decode: 'GPU (DXT1)',
+                group: 'gpu',
+                alpha: false,
+                fileScore: 4,
+                fileLabel: 'Large (5-10x H.264)',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'Most standard video content',
+                recommended: true
+            },
+            {
+                name: 'HAP Alpha',
+                decode: 'GPU (DXT5)',
+                group: 'gpu',
+                alpha: true,
+                fileScore: 4,
+                fileLabel: 'Large',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'Transparent video overlays',
+                recommended: true
+            },
+            {
+                name: 'HAP Q',
+                decode: 'GPU (BC7)',
+                group: 'gpu',
+                alpha: false,
+                fileScore: 5,
+                fileLabel: 'Very large',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'Higher visual fidelity content',
+                recommended: false
+            },
+            {
+                name: 'HAP Q Alpha',
+                decode: 'GPU (BC7 + DXT5)',
+                group: 'gpu',
+                alpha: true,
+                fileScore: 5,
+                fileLabel: 'Very large',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'High quality transparent content',
+                recommended: false
+            },
+            {
+                name: 'NotchLC Opaque',
+                decode: 'GPU',
+                group: 'gpu',
+                alpha: false,
+                fileScore: 3,
+                fileLabel: 'Medium-large',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'ProRes replacement, high quality',
+                recommended: true
+            },
+            {
+                name: 'NotchLC Alpha',
+                decode: 'GPU',
+                group: 'gpu',
+                alpha: true,
+                fileScore: 3,
+                fileLabel: 'Medium-large',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'ProRes 4444 replacement with alpha',
+                recommended: true
+            },
+            {
+                name: 'HEVC 4:2:0',
+                decode: 'GPU (HW accel)',
+                group: 'gpu',
+                alpha: false,
+                fileScore: 1,
+                fileLabel: 'Small',
+                scrubScore: 2,
+                scrubLabel: 'Good',
+                bestFor: 'Standard video when size matters',
+                recommended: false
+            },
+            {
+                name: 'HEVC X010',
+                decode: 'GPU (HW accel)',
+                group: 'gpu',
+                alpha: false,
+                fileScore: 1,
+                fileLabel: 'Small',
+                scrubScore: 2,
+                scrubLabel: 'Good',
+                bestFor: '10-bit color depth content',
+                recommended: false
+            },
+            {
+                name: 'ProRes 422',
+                decode: 'CPU',
+                group: 'cpu',
+                alpha: false,
+                fileScore: 2,
+                fileLabel: 'Medium',
+                scrubScore: 2,
+                scrubLabel: 'Good',
+                bestFor: 'Intermediate editing codec',
+                recommended: false
+            },
+            {
+                name: 'ProRes 4444',
+                decode: 'CPU',
+                group: 'cpu',
+                alpha: true,
+                fileScore: 4,
+                fileLabel: 'Large',
+                scrubScore: 2,
+                scrubLabel: 'Good',
+                bestFor: 'High quality content with alpha',
+                recommended: false
+            },
+            {
+                name: 'H.264',
+                decode: 'CPU',
+                group: 'cpu',
+                alpha: false,
+                fileScore: 1,
+                fileLabel: 'Small',
+                scrubScore: 1,
+                scrubLabel: 'Moderate',
+                bestFor: 'Source delivery, not ideal output',
+                recommended: false
+            },
+            {
+                name: 'MPEG-2',
+                decode: 'CPU',
+                group: 'cpu',
+                alpha: false,
+                fileScore: 2,
+                fileLabel: 'Medium',
+                scrubScore: 1,
+                scrubLabel: 'Moderate',
+                bestFor: 'Legacy broadcast sources',
+                recommended: false
+            },
+            {
+                name: 'Raw RGB 8-bit',
+                decode: 'Direct (none)',
+                group: 'raw',
+                alpha: false,
+                fileScore: 5,
+                fileLabel: 'Very large',
+                scrubScore: 4,
+                scrubLabel: 'Instant',
+                bestFor: 'Uncompressed texture data',
+                recommended: false
+            },
+            {
+                name: 'Raw RGBA 8-bit',
+                decode: 'Direct (none)',
+                group: 'raw',
+                alpha: true,
+                fileScore: 5,
+                fileLabel: 'Very large',
+                scrubScore: 4,
+                scrubLabel: 'Instant',
+                bestFor: 'Uncompressed content with alpha',
+                recommended: false
+            },
+            {
+                name: 'Raw RGB 10-bit',
+                decode: 'Direct (none)',
+                group: 'raw',
+                alpha: false,
+                fileScore: 5,
+                fileLabel: 'Very large',
+                scrubScore: 4,
+                scrubLabel: 'Instant',
+                bestFor: '10-bit uncompressed workflows',
+                recommended: false
+            }
+        ];
+
+        const byName = Object.create(null);
+        codecData.forEach(codec => {
+            byName[codec.name] = codec;
+        });
+
+        const groupColor = {
+            gpu: '#6366f1',
+            cpu: '#f59e0b',
+            raw: '#22c55e'
+        };
+
+        const state = {
+            selected: new Set(['HAP', 'HAP Q', 'NotchLC Opaque', 'HEVC 4:2:0', 'H.264']),
+            decodeFilter: 'all',
+            alphaOnly: false,
+            sort: 'file-desc',
+            hoverChip: null,
+            hoverRow: null,
+            mouseX: 0,
+            mouseY: 0
+        };
+
+        const visuals = Object.create(null);
+        codecData.forEach((codec, index) => {
+            visuals[codec.name] = {
+                y: 165 + index * 56,
+                targetY: 165 + index * 56,
+                alpha: 0,
+                targetAlpha: 0,
+                bar: 0,
+                targetBar: 0
+            };
+        });
+
+        const MAX_VISIBLE_ROWS = 6;
+
+        let chipHitboxes = [];
+        let rowHitboxes = [];
+        let visibleNames = [];
+        let hiddenRows = 0;
+        let animationFrame = null;
+
+        const filterAllBtn = document.getElementById('codec-filter-all');
+        const filterGpuBtn = document.getElementById('codec-filter-gpu');
+        const filterCpuBtn = document.getElementById('codec-filter-cpu');
+        const filterRawBtn = document.getElementById('codec-filter-raw');
+        const alphaToggleBtn = document.getElementById('codec-alpha-toggle');
+        const sortSelect = document.getElementById('codec-sort-select');
+
+        function pointInRect(px, py, r) {
+            return px >= r.x && px <= r.x + r.w && py >= r.y && py <= r.y + r.h;
+        }
+
+        function passesFilter(codec) {
+            if (state.decodeFilter !== 'all' && codec.group !== state.decodeFilter) {
+                return false;
+            }
+            if (state.alphaOnly && !codec.alpha) {
+                return false;
+            }
+            return true;
+        }
+
+        function getVisibleCodecs() {
+            const selectedAndFiltered = codecData.filter(codec => state.selected.has(codec.name) && passesFilter(codec));
+            const sorted = selectedAndFiltered.slice();
+
+            if (state.sort === 'file-desc') {
+                sorted.sort((a, b) => b.fileScore - a.fileScore || a.name.localeCompare(b.name));
+            } else if (state.sort === 'file-asc') {
+                sorted.sort((a, b) => a.fileScore - b.fileScore || a.name.localeCompare(b.name));
+            } else if (state.sort === 'scrub-desc') {
+                sorted.sort((a, b) => b.scrubScore - a.scrubScore || a.name.localeCompare(b.name));
+            } else if (state.sort === 'decode') {
+                const order = { gpu: 0, cpu: 1, raw: 2 };
+                sorted.sort((a, b) => order[a.group] - order[b.group] || a.name.localeCompare(b.name));
+            } else {
+                sorted.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            return sorted;
+        }
+
+        function updateTargets() {
+            const visibleAll = getVisibleCodecs();
+            hiddenRows = Math.max(0, visibleAll.length - MAX_VISIBLE_ROWS);
+            const visible = visibleAll.slice(0, MAX_VISIBLE_ROWS);
+            visibleNames = visible.map(codec => codec.name);
+
+            const startY = 165;
+            const rowPitch = 56;
+
+            visible.forEach((codec, index) => {
+                const v = visuals[codec.name];
+                v.targetY = startY + index * rowPitch;
+                v.targetAlpha = 1;
+                v.targetBar = 1;
+            });
+
+            codecData.forEach(codec => {
+                if (visibleNames.indexOf(codec.name) === -1) {
+                    const v = visuals[codec.name];
+                    v.targetAlpha = 0;
+                    v.targetBar = 0;
+                }
+            });
+
+            requestAnimation();
+        }
+
+        function requestAnimation() {
+            if (animationFrame !== null) return;
+            animationFrame = requestAnimationFrame(step);
+        }
+
+        function step() {
+            animationFrame = null;
+            let moving = false;
+
+            codecData.forEach(codec => {
+                const v = visuals[codec.name];
+
+                const nextY = v.y + (v.targetY - v.y) * 0.22;
+                const nextAlpha = v.alpha + (v.targetAlpha - v.alpha) * 0.2;
+                const nextBar = v.bar + (v.targetBar - v.bar) * 0.2;
+
+                if (Math.abs(nextY - v.targetY) > 0.3) moving = true;
+                if (Math.abs(nextAlpha - v.targetAlpha) > 0.01) moving = true;
+                if (Math.abs(nextBar - v.targetBar) > 0.01) moving = true;
+
+                v.y = nextY;
+                v.alpha = nextAlpha;
+                v.bar = nextBar;
+            });
+
+            draw();
+
+            if (moving) {
+                animationFrame = requestAnimationFrame(step);
+            }
+        }
+
+        function drawBackground() {
+            const gradient = ctx.createLinearGradient(0, 0, 0, H);
+            gradient.addColorStop(0, '#0b1220');
+            gradient.addColorStop(1, '#0f1729');
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, W, H);
+
+            ctx.strokeStyle = 'rgba(99, 102, 241, 0.05)';
+            ctx.lineWidth = 1;
+            for (let x = 0; x < W; x += 30) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, H);
+                ctx.stroke();
+            }
+            for (let y = 0; y < H; y += 30) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(W, y);
+                ctx.stroke();
+            }
+        }
+
+        function drawTitle() {
+            ctx.font = 'bold 14px -apple-system, system-ui, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
+            ctx.fillText('Codec Comparison', 24, 28);
+
+            const visibleCount = visibleNames.length;
+            ctx.font = '11px -apple-system, system-ui, sans-serif';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+            let subline = 'Visible rows: ' + visibleCount;
+            if (hiddenRows > 0) {
+                subline += ' (+' + hiddenRows + ' hidden by display limit)';
+            }
+            ctx.fillText(subline, 24, 47);
+        }
+
+        function drawChips() {
+            chipHitboxes = [];
+            ctx.font = '11px -apple-system, system-ui, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+
+            const left = 24;
+            const right = W - 24;
+            const chipH = 24;
+            let x = left;
+            let y = 62;
+
+            codecData.forEach(codec => {
+                const label = codec.name + (codec.recommended ? ' *' : '');
+                const textW = Math.ceil(ctx.measureText(label).width);
+                const chipW = textW + 18;
+
+                if (x + chipW > right) {
+                    x = left;
+                    y += 30;
+                }
+
+                const isSelected = state.selected.has(codec.name);
+                const isDimmed = !passesFilter(codec);
+                const isHovered = state.hoverChip === codec.name;
+                const color = groupColor[codec.group] || '#64748b';
+
+                const fillAlpha = isSelected ? (isDimmed ? 0.12 : 0.22) : (isDimmed ? 0.02 : 0.06);
+                const borderAlpha = isHovered ? 0.75 : isSelected ? 0.55 : 0.25;
+
+                roundRect(x, y, chipW, chipH, 7);
+                ctx.fillStyle = rgbaFromHex(color, fillAlpha);
+                ctx.fill();
+                ctx.strokeStyle = rgbaFromHex(color, borderAlpha);
+                ctx.lineWidth = isSelected ? 1.4 : 1;
+                ctx.stroke();
+
+                ctx.fillStyle = isDimmed ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.82)';
+                ctx.fillText(label, x + 9, y + chipH / 2 + 0.5);
+
+                chipHitboxes.push({ x, y, w: chipW, h: chipH, name: codec.name });
+                x += chipW + 8;
+            });
+
+            return y + chipH;
+        }
+
+        function drawRows(rowsStartY) {
+            rowHitboxes = [];
+            const rowX = 24;
+            const rowW = W - 48;
+            const rowH = 48;
+
+            const sortedVisuals = codecData
+                .map(codec => ({ codec, visual: visuals[codec.name] }))
+                .filter(item => item.visual.alpha > 0.01)
+                .sort((a, b) => a.visual.y - b.visual.y);
+
+            sortedVisuals.forEach(item => {
+                const codec = item.codec;
+                const v = item.visual;
+                const y = v.y;
+                const alpha = v.alpha;
+                const isHover = state.hoverRow === codec.name;
+                const rowColor = groupColor[codec.group] || '#64748b';
+
+                const fillAlpha = 0.08 * alpha + (isHover ? 0.05 : 0);
+                const borderAlpha = 0.28 * alpha + (isHover ? 0.35 : 0);
+
+                roundRect(rowX, y, rowW, rowH, 9);
+                ctx.fillStyle = rgbaFromHex(rowColor, fillAlpha);
+                ctx.fill();
+                ctx.strokeStyle = rgbaFromHex(rowColor, borderAlpha);
+                ctx.lineWidth = isHover ? 1.5 : 1;
+                ctx.stroke();
+
+                ctx.globalAlpha = alpha;
+
+                ctx.font = 'bold 12px -apple-system, system-ui, sans-serif';
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+                ctx.fillStyle = 'rgba(255,255,255,0.92)';
+                ctx.fillText(codec.name + (codec.recommended ? ' *' : ''), rowX + 12, y + 16);
+
+                roundRect(rowX + 12, y + 26, 90, 16, 8);
+                ctx.fillStyle = rgbaFromHex(rowColor, 0.25);
+                ctx.fill();
+                ctx.strokeStyle = rgbaFromHex(rowColor, 0.45);
+                ctx.stroke();
+                ctx.font = '10px -apple-system, system-ui, sans-serif';
+                ctx.fillStyle = 'rgba(255,255,255,0.78)';
+                ctx.fillText(codec.decode, rowX + 17, y + 34);
+
+                const barX = rowX + 170;
+                const barW = 190;
+                const fileY = y + 15;
+                const scrubY = y + 31;
+
+                ctx.fillStyle = 'rgba(255,255,255,0.08)';
+                roundRect(barX, fileY, barW, 8, 4);
+                ctx.fill();
+                roundRect(barX, scrubY, barW, 8, 4);
+                ctx.fill();
+
+                const fileFill = barW * (codec.fileScore / 5) * v.bar;
+                const scrubFill = barW * (codec.scrubScore / 4) * v.bar;
+
+                ctx.fillStyle = fileScaleColor(codec.fileScore);
+                roundRect(barX, fileY, Math.max(2, fileFill), 8, 4);
+                ctx.fill();
+
+                ctx.fillStyle = scrubScaleColor(codec.scrubScore);
+                roundRect(barX, scrubY, Math.max(2, scrubFill), 8, 4);
+                ctx.fill();
+
+                ctx.font = '10px -apple-system, system-ui, sans-serif';
+                ctx.fillStyle = 'rgba(255,255,255,0.66)';
+                ctx.fillText('File: ' + codec.fileLabel, barX + barW + 10, fileY + 4);
+                ctx.fillText('Scrub: ' + codec.scrubLabel, barX + barW + 10, scrubY + 4);
+
+                const alphaX = rowX + rowW - 180;
+                roundRect(alphaX, y + 14, 64, 20, 10);
+                ctx.fillStyle = codec.alpha ? 'rgba(34,197,94,0.2)' : 'rgba(148,163,184,0.16)';
+                ctx.fill();
+                ctx.strokeStyle = codec.alpha ? 'rgba(34,197,94,0.55)' : 'rgba(148,163,184,0.35)';
+                ctx.stroke();
+                ctx.fillStyle = codec.alpha ? 'rgba(134,239,172,0.95)' : 'rgba(203,213,225,0.85)';
+                ctx.fillText(codec.alpha ? 'Alpha yes' : 'Alpha no', alphaX + 8, y + 24);
+
+                ctx.font = '10px -apple-system, system-ui, sans-serif';
+                ctx.fillStyle = 'rgba(255,255,255,0.56)';
+                ctx.fillText(codec.bestFor, rowX + rowW - 180, y + 40);
+
+                ctx.globalAlpha = 1;
+
+                if (visibleNames.indexOf(codec.name) !== -1 && alpha > 0.4) {
+                    rowHitboxes.push({ x: rowX, y, w: rowW, h: rowH, name: codec.name });
+                }
+            });
+
+            if (visibleNames.length === 0) {
+                roundRect(24, rowsStartY + 28, W - 48, 70, 10);
+                ctx.fillStyle = 'rgba(148, 163, 184, 0.08)';
+                ctx.fill();
+                ctx.strokeStyle = 'rgba(148, 163, 184, 0.25)';
+                ctx.stroke();
+
+                ctx.font = '12px -apple-system, system-ui, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillStyle = 'rgba(226, 232, 240, 0.75)';
+                ctx.fillText('No codecs are currently visible.', W / 2, rowsStartY + 56);
+                ctx.font = '11px -apple-system, system-ui, sans-serif';
+                ctx.fillStyle = 'rgba(148, 163, 184, 0.9)';
+                ctx.fillText('Select codec chips or relax filters to compare.', W / 2, rowsStartY + 77);
+            }
+        }
+
+        function drawLegend() {
+            const y = H - 34;
+            ctx.font = '10px -apple-system, system-ui, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillStyle = 'rgba(255,255,255,0.65)';
+
+            drawLegendDot(24, y - 5, groupColor.gpu, 'GPU decode');
+            drawLegendDot(132, y - 5, groupColor.cpu, 'CPU decode');
+            drawLegendDot(240, y - 5, groupColor.raw, 'Direct/raw');
+
+            ctx.fillStyle = 'rgba(255,255,255,0.45)';
+            const suffix = hiddenRows > 0
+                ? '* Recommended defaults | showing top ' + MAX_VISIBLE_ROWS
+                : '* Recommended defaults';
+            ctx.fillText(suffix, W - 280, y);
+        }
+
+        function drawLegendDot(x, y, color, label) {
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+            ctx.fillStyle = 'rgba(255,255,255,0.65)';
+            ctx.fillText(label, x + 9, y + 3);
+        }
+
+        function drawTooltip() {
+            if (!state.hoverRow) return;
+            const codec = byName[state.hoverRow];
+            if (!codec) return;
+
+            const lines = [
+                codec.name,
+                'Decode: ' + codec.decode,
+                'File size: ' + codec.fileLabel,
+                'Scrub: ' + codec.scrubLabel,
+                'Alpha: ' + (codec.alpha ? 'Yes' : 'No'),
+                'Best for: ' + codec.bestFor
+            ];
+
+            const tipW = 290;
+            const tipH = 122;
+            let x = state.mouseX + 14;
+            let y = state.mouseY + 14;
+
+            if (x + tipW > W - 8) x = state.mouseX - tipW - 14;
+            if (y + tipH > H - 8) y = state.mouseY - tipH - 14;
+            if (x < 8) x = 8;
+            if (y < 8) y = 8;
+
+            roundRect(x, y, tipW, tipH, 8);
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.96)';
+            ctx.fill();
+            ctx.strokeStyle = rgbaFromHex(groupColor[codec.group] || '#64748b', 0.75);
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.font = '11px -apple-system, system-ui, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillStyle = 'rgba(255,255,255,0.92)';
+            ctx.fillText(lines[0], x + 12, y + 19);
+
+            ctx.font = '10px -apple-system, system-ui, sans-serif';
+            ctx.fillStyle = 'rgba(226,232,240,0.85)';
+            for (let i = 1; i < lines.length; i++) {
+                ctx.fillText(lines[i], x + 12, y + 19 + i * 17);
+            }
+        }
+
+        function draw() {
+            drawBackground();
+            drawTitle();
+            const chipsBottom = drawChips();
+
+            ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(24, chipsBottom + 12);
+            ctx.lineTo(W - 24, chipsBottom + 12);
+            ctx.stroke();
+
+            drawRows(chipsBottom + 16);
+            drawLegend();
+            drawTooltip();
+        }
+
+        function updateButtons() {
+            filterAllBtn.classList.toggle('active', state.decodeFilter === 'all');
+            filterGpuBtn.classList.toggle('active', state.decodeFilter === 'gpu');
+            filterCpuBtn.classList.toggle('active', state.decodeFilter === 'cpu');
+            filterRawBtn.classList.toggle('active', state.decodeFilter === 'raw');
+
+            alphaToggleBtn.classList.toggle('active', state.alphaOnly);
+            alphaToggleBtn.textContent = 'Alpha only: ' + (state.alphaOnly ? 'On' : 'Off');
+        }
+
+        function setDecodeFilter(filterName) {
+            state.decodeFilter = filterName;
+            updateButtons();
+            updateTargets();
+        }
+
+        filterAllBtn.addEventListener('click', () => setDecodeFilter('all'));
+        filterGpuBtn.addEventListener('click', () => setDecodeFilter('gpu'));
+        filterCpuBtn.addEventListener('click', () => setDecodeFilter('cpu'));
+        filterRawBtn.addEventListener('click', () => setDecodeFilter('raw'));
+        alphaToggleBtn.addEventListener('click', () => {
+            state.alphaOnly = !state.alphaOnly;
+            updateButtons();
+            updateTargets();
+        });
+
+        sortSelect.addEventListener('change', () => {
+            state.sort = sortSelect.value;
+            updateTargets();
+        });
+
+        function getCanvasCoords(evt) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = W / rect.width;
+            const scaleY = H / rect.height;
+            return {
+                x: (evt.clientX - rect.left) * scaleX,
+                y: (evt.clientY - rect.top) * scaleY
+            };
+        }
+
+        canvas.addEventListener('pointermove', (evt) => {
+            const p = getCanvasCoords(evt);
+            state.mouseX = p.x;
+            state.mouseY = p.y;
+
+            let hoverChip = null;
+            for (let i = 0; i < chipHitboxes.length; i++) {
+                if (pointInRect(p.x, p.y, chipHitboxes[i])) {
+                    hoverChip = chipHitboxes[i].name;
+                    break;
+                }
+            }
+
+            let hoverRow = null;
+            for (let i = 0; i < rowHitboxes.length; i++) {
+                if (pointInRect(p.x, p.y, rowHitboxes[i])) {
+                    hoverRow = rowHitboxes[i].name;
+                    break;
+                }
+            }
+
+            const nextCursor = hoverChip || hoverRow ? 'pointer' : 'default';
+            canvas.style.cursor = nextCursor;
+
+            if (hoverChip !== state.hoverChip || hoverRow !== state.hoverRow) {
+                state.hoverChip = hoverChip;
+                state.hoverRow = hoverRow;
+                draw();
+            }
+        });
+
+        canvas.addEventListener('pointerleave', () => {
+            state.hoverChip = null;
+            state.hoverRow = null;
+            canvas.style.cursor = 'default';
+            draw();
+        });
+
+        canvas.addEventListener('pointerdown', (evt) => {
+            const p = getCanvasCoords(evt);
+
+            for (let i = 0; i < chipHitboxes.length; i++) {
+                const chip = chipHitboxes[i];
+                if (pointInRect(p.x, p.y, chip)) {
+                    if (state.selected.has(chip.name)) {
+                        state.selected.delete(chip.name);
+                    } else {
+                        state.selected.add(chip.name);
+                    }
+                    updateTargets();
+                    return;
+                }
+            }
+        });
+
+        function roundRect(x, y, w, h, r) {
+            const rr = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+            ctx.beginPath();
+            ctx.moveTo(x + rr, y);
+            ctx.lineTo(x + w - rr, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + rr);
+            ctx.lineTo(x + w, y + h - rr);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - rr, y + h);
+            ctx.lineTo(x + rr, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - rr);
+            ctx.lineTo(x, y + rr);
+            ctx.quadraticCurveTo(x, y, x + rr, y);
+            ctx.closePath();
+        }
+
+        function rgbaFromHex(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+        }
+
+        function fileScaleColor(score) {
+            if (score <= 1) return 'rgba(34,197,94,0.9)';
+            if (score === 2) return 'rgba(132,204,22,0.9)';
+            if (score === 3) return 'rgba(250,204,21,0.9)';
+            if (score === 4) return 'rgba(249,115,22,0.9)';
+            return 'rgba(239,68,68,0.9)';
+        }
+
+        function scrubScaleColor(score) {
+            if (score <= 1) return 'rgba(239,68,68,0.9)';
+            if (score === 2) return 'rgba(245,158,11,0.9)';
+            if (score === 3) return 'rgba(34,197,94,0.9)';
+            return 'rgba(16,185,129,0.9)';
+        }
+
+        updateButtons();
+        updateTargets();
+        draw();
+    })();
+</script>
