@@ -1,0 +1,1035 @@
+<div class="interactive-widget" id="display-calibration-widget">
+    <div class="widget-controls"
+        style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
+
+
+
+        <div class="control-group" style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <button id="calib-calibrate"
+                style="padding: 6px 12px; border-radius: 6px; background: var(--input-bg); border: 1px solid var(--border-subtle); color: var(--text-primary); cursor: pointer; font-family: var(--font-family); font-size: 0.85rem; transition: all 150ms ease;">Solve</button>
+            <button id="calib-reposition"
+                style="padding: 6px 12px; border-radius: 6px; background: var(--input-bg); border: 1px solid var(--border-subtle); color: var(--text-primary); cursor: pointer; font-family: var(--font-family); font-size: 0.85rem; transition: all 150ms ease;">Scramble</button>
+        </div>
+
+
+
+        <div class="control-group" style="display: flex; align-items: center; gap: 6px; margin-left: auto;">
+            <span style="font-size: 0.85rem; color: var(--text-secondary);">Error:</span>
+            <span id="calib-error-badge"
+                style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; min-width: 40px; text-align: center; background: rgba(34, 197, 94, 0.2); color: #22c55e;">0.0</span>
+        </div>
+    </div>
+
+    <div
+        style="position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-subtle); background: var(--bg-tertiary);">
+        <canvas id="calib-canvas" width="1050" height="460"
+            style="width: 100%; height: auto; display: block; cursor: default; touch-action: none;"></canvas>
+    </div>
+
+    <div
+        style="margin-top: 12px; display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-secondary);">
+        <span style="display: flex; align-items: center; gap: 6px;">
+            <span
+                style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #60a5fa;"></span>
+            Virtual Point (on 3D model)
+        </span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+            <span
+                style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 2px solid #fb923c; background: transparent;"></span>
+            Reality Point (drag to calibrate)
+        </span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+            <span
+                style="display: inline-block; width: 12px; height: 2px; border-top: 2px dashed rgba(255,255,255,0.3);"></span>
+            Correspondence
+        </span>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const canvas = document.getElementById('calib-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        const btnCalibrate = document.getElementById('calib-calibrate');
+        const btnReposition = document.getElementById('calib-reposition');
+        const errorBadge = document.getElementById('calib-error-badge');
+
+        const W = canvas.width;
+        const H = canvas.height;
+        const PW = W / 3;   // panel width (each of the 3 panels)
+        const MID = PW;      // left panel occupies 0..PW
+
+        let dragIndex = -1;
+        let hoverIndex = -1;
+        let animating = false;
+
+        // --- 3D Model (isometric box/building facade) ---
+        // We define a simple 3D building shape and project it isometrically
+        // into the LEFT panel (0..MID)
+
+        // Define 3D points of a building-like box
+        // Origin at center-bottom, Y is up
+        const model3D = [
+            // Front face: bottom-left, bottom-right, top-right, top-left
+            { x: -1.2, y: 0, z: 0.6 },   // 0: front-bottom-left
+            { x: 1.2, y: 0, z: 0.6 },    // 1: front-bottom-right
+            { x: 1.2, y: 2.0, z: 0.6 },  // 2: front-top-right
+            { x: -1.2, y: 2.0, z: 0.6 }, // 3: front-top-left
+            // Back face
+            { x: -1.2, y: 0, z: -0.6 },   // 4: back-bottom-left
+            { x: 1.2, y: 0, z: -0.6 },    // 5: back-bottom-right
+            { x: 1.2, y: 2.0, z: -0.6 },  // 6: back-top-right
+            { x: -1.2, y: 2.0, z: -0.6 }, // 7: back-top-left
+        ];
+
+        // Edges of the box
+        const edges = [
+            [0, 1], [1, 2], [2, 3], [3, 0], // front
+            [4, 5], [5, 6], [6, 7], [7, 4], // back
+            [0, 4], [1, 5], [2, 6], [3, 7], // sides
+        ];
+
+        // Virtual point indices (subset of model3D corners + midpoints)
+        // We'll use 8 corners as virtual points
+        const virtualPointIndices = [0, 1, 2, 3, 4, 5, 6, 7];
+
+        // Project 3D to 2D (isometric-like)
+        const baseAngleX = 0.45; // tilt
+        const baseAngleY = 0.6;  // rotation
+
+        function project3D(p, deltaX, deltaY, zoom) {
+            const scale = 70 * (zoom || 1);
+            const angleX = baseAngleX + (deltaX || 0);
+            const angleY = baseAngleY + (deltaY || 0);
+
+            // Rotate around Y
+            const cosY = Math.cos(angleY), sinY = Math.sin(angleY);
+            let rx = p.x * cosY - p.z * sinY;
+            let rz = p.x * sinY + p.z * cosY;
+            let ry = p.y;
+
+            // Rotate around X (tilt)
+            const cosX = Math.cos(angleX), sinX = Math.sin(angleX);
+            let fy = ry * cosX - rz * sinX;
+            let fz = ry * sinX + rz * cosX;
+
+            return {
+                x: PW * 0.5 + rx * scale,
+                y: H * 0.65 - fy * scale
+            };
+        }
+
+        // Compute rotation perturbation from reality point displacement
+        function computeRotationFromError() {
+            if (realityPoints.length === 0) return { dx: 0, dy: 0, zoom: 1 };
+            const ideal = getIdealRealityPoints();
+            let avgDx = 0, avgDy = 0, totalDist = 0;
+            for (let i = 0; i < realityPoints.length; i++) {
+                const ddx = realityPoints[i].x - ideal[i].x;
+                const ddy = realityPoints[i].y - ideal[i].y;
+                avgDx += ddx;
+                avgDy += ddy;
+                totalDist += Math.sqrt(ddx * ddx + ddy * ddy);
+            }
+            avgDx /= realityPoints.length;
+            avgDy /= realityPoints.length;
+            const avgDist = totalDist / realityPoints.length;
+            // Map pixel displacement to rotation (pronounced effect)
+            // Zoom shrinks as points spread further from ideal
+            const zoom = Math.max(0.6, 1.0 - avgDist * 0.008);
+            return { dx: -avgDy * 0.008, dy: avgDx * 0.012, zoom };
+        }
+
+        // Projected 2D positions of virtual points (left panel)
+        function getVirtualPoints2D(rotDx, rotDy, zoom) {
+            return virtualPointIndices.map(i => project3D(model3D[i], rotDx, rotDy, zoom));
+        }
+
+        // --- Reality points (right panel) ---
+        // Ideal positions mirror virtual points into right panel
+        function getIdealRealityPoints(rotDx, rotDy, zoom) {
+            const vps = getVirtualPoints2D(rotDx, rotDy, zoom);
+            return vps.map(vp => ({
+                x: vp.x + PW, // shift to right panel
+                y: vp.y
+            }));
+        }
+
+        // Actual reality points (start with deliberate offset to simulate miscalibration)
+        let realityPoints = [];
+        const offsets = [
+            { dx: 15, dy: -20 },
+            { dx: -18, dy: -12 },
+            { dx: -10, dy: 18 },
+            { dx: 22, dy: 10 },
+            { dx: -8, dy: -15 },
+            { dx: 14, dy: 8 },
+            { dx: -20, dy: 14 },
+            { dx: 12, dy: -18 },
+        ];
+
+        function initRealityPoints() {
+            const ideal = getIdealRealityPoints();
+            realityPoints = ideal.map((p, i) => ({
+                x: p.x + (offsets[i] ? offsets[i].dx : 0),
+                y: p.y + (offsets[i] ? offsets[i].dy : 0)
+            }));
+        }
+
+        // --- Error computation ---
+        function computeError() {
+            const ideal = getIdealRealityPoints();
+            let totalSq = 0;
+            for (let i = 0; i < realityPoints.length; i++) {
+                const dx = realityPoints[i].x - ideal[i].x;
+                const dy = realityPoints[i].y - ideal[i].y;
+                totalSq += Math.sqrt(dx * dx + dy * dy);
+            }
+            return totalSq / realityPoints.length;
+        }
+
+        function updateErrorBadge() {
+            const error = computeError();
+            const displayError = error.toFixed(1);
+            errorBadge.textContent = displayError;
+
+            if (error < 5) {
+                errorBadge.style.background = 'rgba(34, 197, 94, 0.2)';
+                errorBadge.style.color = '#22c55e';
+            } else if (error < 15) {
+                errorBadge.style.background = 'rgba(245, 158, 11, 0.2)';
+                errorBadge.style.color = '#f59e0b';
+            } else {
+                errorBadge.style.background = 'rgba(239, 68, 68, 0.2)';
+                errorBadge.style.color = '#ef4444';
+            }
+        }
+
+        // --- Mode switching ---
+        function setMode(m) {
+            mode = m;
+            const isCalib = (m === 'calibration');
+
+            btnView.style.background = isCalib ? 'transparent' : 'var(--accent-primary)';
+            btnView.style.color = isCalib ? 'var(--text-primary)' : '#fff';
+            btnView.style.fontWeight = isCalib ? '400' : '600';
+            btnCalib.style.background = isCalib ? 'var(--accent-primary)' : 'transparent';
+            btnCalib.style.color = isCalib ? '#fff' : 'var(--text-primary)';
+            btnCalib.style.fontWeight = isCalib ? '600' : '400';
+
+            const opEn = isCalib ? '1' : '0.5';
+            const peEn = isCalib ? 'auto' : 'none';
+            btnCalibrate.style.opacity = opEn;
+            btnCalibrate.style.pointerEvents = peEn;
+            btnReposition.style.opacity = opEn;
+            btnReposition.style.pointerEvents = peEn;
+            lblContinuous.style.opacity = opEn;
+            lblContinuous.style.pointerEvents = peEn;
+
+            canvas.style.cursor = isCalib ? 'crosshair' : 'default';
+            dragIndex = -1;
+            hoverIndex = -1;
+            draw();
+        }
+
+        // --- Rendering ---
+        let animTime = 0;
+        let animRAF = null;
+
+        function startAnim() {
+            if (animRAF) return;
+            function tick() {
+                animTime = performance.now() * 0.001;
+                draw();
+                animRAF = requestAnimationFrame(tick);
+            }
+            animRAF = requestAnimationFrame(tick);
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+
+            // Background panels
+            drawLeftPanel();
+            drawRightPanel();
+            drawThirdPanel();
+
+            // Dividers
+            ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(PW, 0);
+            ctx.lineTo(PW, H);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(PW * 2, 0);
+            ctx.lineTo(PW * 2, H);
+            ctx.stroke();
+
+            // Panel labels
+            ctx.font = 'bold 11px -apple-system, system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fillText('3D MODEL', PW * 0.5, 20);
+            ctx.fillText('PROJECTOR OUTPUT', PW * 1.5, 20);
+            ctx.fillText('REALITY VIEW', PW * 2.5, 20);
+
+            // Compute rotation from reality point displacement
+            const rot = computeRotationFromError();
+
+            // Draw ghost wireframe at ideal (unrotated) position if there is displacement
+            if (rot.dx !== 0 || rot.dy !== 0 || rot.zoom !== 1) {
+                drawGhostModel();
+            }
+
+            // Draw 3D wireframe in left panel (with rotation perturbation + zoom)
+            draw3DModel(rot.dx, rot.dy, rot.zoom);
+
+            // Draw projected texture in right panel
+            drawProjectedTexture(rot.dx, rot.dy);
+
+            // Draw reality view (third panel) — animated texture on geometry
+            drawRealityView();
+
+            // Draw virtual points (follow model rotation/zoom)
+            const vps = getVirtualPoints2D(rot.dx, rot.dy, rot.zoom);
+            for (let i = 0; i < vps.length; i++) {
+                drawVirtualPoint(vps[i], i);
+            }
+
+            // Draw reality points and correspondences
+            const ideal = getIdealRealityPoints();
+
+            // Draw ghost markers at ideal positions
+            for (let i = 0; i < ideal.length; i++) {
+                drawIdealMarker(ideal[i], i);
+            }
+
+            // Wireframe edges between reality points
+            ctx.strokeStyle = 'rgba(251, 146, 60, 0.25)';
+            ctx.lineWidth = 1;
+            for (const [a, b] of edges) {
+                ctx.beginPath();
+                ctx.moveTo(realityPoints[a].x, realityPoints[a].y);
+                ctx.lineTo(realityPoints[b].x, realityPoints[b].y);
+                ctx.stroke();
+            }
+
+            // Correspondence lines
+            for (let i = 0; i < realityPoints.length; i++) {
+                const vp = vps[i];
+                const rp = realityPoints[i];
+                const dx = rp.x - ideal[i].x;
+                const dy = rp.y - ideal[i].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+
+                // Color by error: green → yellow → red
+                let lineColor;
+                if (dist < 5) lineColor = 'rgba(34, 197, 94, 0.4)';
+                else if (dist < 15) lineColor = 'rgba(245, 158, 11, 0.4)';
+                else lineColor = 'rgba(239, 68, 68, 0.4)';
+
+                ctx.strokeStyle = lineColor;
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(vp.x, vp.y);
+                ctx.lineTo(rp.x, rp.y);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            // Reality points
+            for (let i = 0; i < realityPoints.length; i++) {
+                drawRealityPoint(realityPoints[i], i, ideal[i]);
+            }
+
+            updateErrorBadge();
+        }
+
+        function drawLeftPanel() {
+            // Dark background
+            ctx.fillStyle = '#0c1222';
+            ctx.fillRect(0, 0, PW, H);
+
+            // Subtle grid
+            ctx.strokeStyle = 'rgba(99, 102, 241, 0.06)';
+            ctx.lineWidth = 1;
+            const step = 30;
+            for (let x = 0; x < PW; x += step) {
+                ctx.beginPath();
+                ctx.moveTo(x, 0);
+                ctx.lineTo(x, H);
+                ctx.stroke();
+            }
+            for (let y = 0; y < H; y += step) {
+                ctx.beginPath();
+                ctx.moveTo(0, y);
+                ctx.lineTo(PW, y);
+                ctx.stroke();
+            }
+        }
+
+        function drawRightPanel() {
+            // Slightly different dark background
+            ctx.fillStyle = '#0f1729';
+            ctx.fillRect(PW, 0, PW, H);
+
+            // Projection surface rectangle
+            const pad = 40;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(PW + pad, pad, PW - pad * 2, H - pad * 2);
+
+            // Inner grid on projection surface
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+            const cols = 6;
+            const rows = 5;
+            const cellW = (PW - pad * 2) / cols;
+            const cellH = (H - pad * 2) / rows;
+            for (let c = 1; c < cols; c++) {
+                ctx.beginPath();
+                ctx.moveTo(PW + pad + c * cellW, pad);
+                ctx.lineTo(PW + pad + c * cellW, H - pad);
+                ctx.stroke();
+            }
+            for (let r = 1; r < rows; r++) {
+                ctx.beginPath();
+                ctx.moveTo(PW + pad, pad + r * cellH);
+                ctx.lineTo(PW * 2 - pad, pad + r * cellH);
+                ctx.stroke();
+            }
+
+            // "Projection Surface" label
+            ctx.font = '10px -apple-system, system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgba(255,255,255,0.15)';
+            ctx.fillText('Projection Surface', PW * 1.5, H - pad + 18);
+        }
+
+        function drawThirdPanel() {
+            // Dark warm background to simulate wall/surface
+            ctx.fillStyle = '#131318';
+            ctx.fillRect(PW * 2, 0, PW, H);
+
+            // Subtle brick-like pattern
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+            ctx.lineWidth = 1;
+            const brickH = 20;
+            const brickW = 40;
+            for (let row = 0; row < Math.ceil(H / brickH); row++) {
+                const yy = row * brickH;
+                ctx.beginPath();
+                ctx.moveTo(PW * 2, yy);
+                ctx.lineTo(W, yy);
+                ctx.stroke();
+                const offset = (row % 2) * (brickW / 2);
+                for (let col = 0; col < Math.ceil(PW / brickW) + 1; col++) {
+                    const xx = PW * 2 + col * brickW + offset;
+                    ctx.beginPath();
+                    ctx.moveTo(xx, yy);
+                    ctx.lineTo(xx, yy + brickH);
+                    ctx.stroke();
+                }
+            }
+
+            // "Building Wall" label
+            ctx.font = '10px -apple-system, system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgba(255,255,255,0.12)';
+            ctx.fillText('Building Wall', PW * 2.5, H - 18);
+        }
+
+        // Per-vertex colors (one per model point, indices 0-7)
+        const vertexColors = [
+            { r: 56, g: 189, b: 248 },  // 0: front-bottom-left  – sky blue
+            { r: 52, g: 211, b: 153 },  // 1: front-bottom-right – emerald
+            { r: 251, g: 146, b: 60 },  // 2: front-top-right    – orange
+            { r: 168, g: 85, b: 247 },  // 3: front-top-left     – purple
+            { r: 96, g: 165, b: 250 },  // 4: back-bottom-left   – blue
+            { r: 34, g: 197, b: 94 },  // 5: back-bottom-right  – green
+            { r: 245, g: 158, b: 11 },  // 6: back-top-right     – amber
+            { r: 232, g: 121, b: 249 },  // 7: back-top-left      – fuchsia
+        ];
+
+        // Face definitions (vertex indices)
+        const faces = [
+            { verts: [0, 1, 2, 3], edge: 'rgba(255,255,255,0.25)' },  // front
+            { verts: [3, 2, 6, 7], edge: 'rgba(255,255,255,0.25)' },  // top
+            { verts: [1, 5, 6, 2], edge: 'rgba(255,255,255,0.25)' },  // right
+        ];
+
+        // Helper: fill a triangle with per-vertex color blending
+        function fillTriangleWithVertexColors(pts, colors, alpha) {
+            // pts = [{x,y}, {x,y}, {x,y}], colors = [{r,g,b}, ...]
+            // Compute bounding box
+            const minX = Math.floor(Math.min(pts[0].x, pts[1].x, pts[2].x));
+            const maxX = Math.ceil(Math.max(pts[0].x, pts[1].x, pts[2].x));
+            const minY = Math.floor(Math.min(pts[0].y, pts[1].y, pts[2].y));
+            const maxY = Math.ceil(Math.max(pts[0].y, pts[1].y, pts[2].y));
+
+            const w = maxX - minX;
+            const h = maxY - minY;
+            if (w <= 0 || h <= 0) return;
+
+            // Use an offscreen canvas for pixel blending
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = w;
+            offCanvas.height = h;
+            const offCtx = offCanvas.getContext('2d');
+            const imgData = offCtx.createImageData(w, h);
+            const data = imgData.data;
+
+            // Precompute barycentric denominator
+            const v0x = pts[1].x - pts[0].x, v0y = pts[1].y - pts[0].y;
+            const v1x = pts[2].x - pts[0].x, v1y = pts[2].y - pts[0].y;
+            const d00 = v0x * v0x + v0y * v0y;
+            const d01 = v0x * v1x + v0y * v1y;
+            const d11 = v1x * v1x + v1y * v1y;
+            const denom = d00 * d11 - d01 * d01;
+            if (Math.abs(denom) < 0.001) return; // degenerate triangle
+            const invDenom = 1.0 / denom;
+
+            for (let py = 0; py < h; py++) {
+                for (let px = 0; px < w; px++) {
+                    const sx = minX + px + 0.5;
+                    const sy = minY + py + 0.5;
+                    const v2x = sx - pts[0].x, v2y = sy - pts[0].y;
+                    const d20 = v2x * v0x + v2y * v0y;
+                    const d21 = v2x * v1x + v2y * v1y;
+                    const u = (d11 * d20 - d01 * d21) * invDenom;
+                    const v = (d00 * d21 - d01 * d20) * invDenom;
+                    if (u >= 0 && v >= 0 && (u + v) <= 1) {
+                        const w0 = 1 - u - v;
+                        const idx = (py * w + px) * 4;
+                        data[idx] = Math.round(w0 * colors[0].r + u * colors[1].r + v * colors[2].r);
+                        data[idx + 1] = Math.round(w0 * colors[0].g + u * colors[1].g + v * colors[2].g);
+                        data[idx + 2] = Math.round(w0 * colors[0].b + u * colors[1].b + v * colors[2].b);
+                        data[idx + 3] = Math.round(alpha * 255);
+                    }
+                }
+            }
+            offCtx.putImageData(imgData, 0, 0);
+            ctx.drawImage(offCanvas, minX, minY);
+        }
+
+        // Draw a quad face with per-vertex colors (split into 2 triangles)
+        function fillFaceWithVertexColors(quadPts, quadColors, alpha) {
+            // Triangle 1: verts 0, 1, 2
+            fillTriangleWithVertexColors(
+                [quadPts[0], quadPts[1], quadPts[2]],
+                [quadColors[0], quadColors[1], quadColors[2]],
+                alpha
+            );
+            // Triangle 2: verts 0, 2, 3
+            fillTriangleWithVertexColors(
+                [quadPts[0], quadPts[2], quadPts[3]],
+                [quadColors[0], quadColors[2], quadColors[3]],
+                alpha
+            );
+        }
+
+        // Ghost wireframe: ideal (unrotated) model as faint reference
+        function drawGhostModel() {
+            const projected = model3D.map(p => project3D(p, 0, 0, 1));
+
+            // Faint dashed edges
+            ctx.strokeStyle = 'rgba(167, 139, 250, 0.12)';
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 4]);
+            for (const [a, b] of edges) {
+                ctx.beginPath();
+                ctx.moveTo(projected[a].x, projected[a].y);
+                ctx.lineTo(projected[b].x, projected[b].y);
+                ctx.stroke();
+            }
+            ctx.setLineDash([]);
+
+            // Crosshair markers at each vertex
+            for (let i = 0; i < projected.length; i++) {
+                const p = projected[i];
+                const size = 5;
+                ctx.strokeStyle = 'rgba(167, 139, 250, 0.18)';
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(p.x - size, p.y);
+                ctx.lineTo(p.x + size, p.y);
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y - size);
+                ctx.lineTo(p.x, p.y + size);
+                ctx.stroke();
+            }
+        }
+
+        function draw3DModel(rotDx, rotDy, zoom) {
+            const projected = model3D.map(p => project3D(p, rotDx, rotDy, zoom));
+
+            // Draw vertex-colored faces
+            for (const face of faces) {
+                const quadPts = face.verts.map(i => projected[i]);
+                const quadColors = face.verts.map(i => vertexColors[i]);
+                fillFaceWithVertexColors(quadPts, quadColors, 0.25);
+
+                // Edge outline
+                ctx.beginPath();
+                ctx.moveTo(projected[face.verts[0]].x, projected[face.verts[0]].y);
+                for (let i = 1; i < face.verts.length; i++) {
+                    ctx.lineTo(projected[face.verts[i]].x, projected[face.verts[i]].y);
+                }
+                ctx.closePath();
+                ctx.strokeStyle = face.edge;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+
+            // Draw wireframe edges
+            ctx.strokeStyle = 'rgba(167, 139, 250, 0.5)';
+            ctx.lineWidth = 1.5;
+            for (const [a, b] of edges) {
+                ctx.beginPath();
+                ctx.moveTo(projected[a].x, projected[a].y);
+                ctx.lineTo(projected[b].x, projected[b].y);
+                ctx.stroke();
+            }
+
+            // Label
+            ctx.font = '10px -apple-system, system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgba(255,255,255,0.15)';
+            ctx.fillText('Simulated Stage', PW * 0.5, H - 18);
+        }
+
+        function drawProjectedTexture(rotDx, rotDy) {
+            // Use actual reality point positions for texture projection
+            const useReality = (realityPoints.length > 0);
+            let pts;
+            if (useReality) {
+                pts = realityPoints; // already in right-panel coords
+            } else {
+                const projected = model3D.map(p => project3D(p, rotDx, rotDy));
+                pts = projected.map(p => ({ x: p.x + PW, y: p.y }));
+            }
+
+            for (const face of faces) {
+                const quadPts = face.verts.map(i => pts[i]);
+                const quadColors = face.verts.map(i => vertexColors[i]);
+                fillFaceWithVertexColors(quadPts, quadColors, 0.3);
+
+                // Edge outline
+                ctx.beginPath();
+                ctx.moveTo(pts[face.verts[0]].x, pts[face.verts[0]].y);
+                for (let i = 1; i < face.verts.length; i++) {
+                    ctx.lineTo(pts[face.verts[i]].x, pts[face.verts[i]].y);
+                }
+                ctx.closePath();
+                ctx.strokeStyle = face.edge;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        }
+
+        // Reality simulation: geometry with animated scrolling texture
+        function drawRealityView() {
+            // Get the reality point positions shifted to third panel
+            // Use actual reality positions if available, otherwise ideal
+            const ideal = getIdealRealityPoints();
+            let pts;
+            if (realityPoints.length > 0) {
+                // Shift reality points from panel 2 to panel 3
+                pts = realityPoints.map(p => ({
+                    x: p.x + PW,
+                    y: p.y
+                }));
+            } else {
+                pts = ideal.map(p => ({
+                    x: p.x + PW,
+                    y: p.y
+                }));
+            }
+
+            // 1. Draw the "Physical Object" (Ideal Model) as a mask/base
+            // We want to clip the *projection* (distorted texture) to the *physical object* (ideal model).
+
+            ctx.save();
+
+            // Create a path for the entire ideal model silhouette (simplified as just faces)
+            // Ideally we'd union them, but drawing them all into the path works for winding rule usually.
+            // Actually, we can just clip to the *face we are currently drawing* if we want per-face mapping,
+            // BUT the user request "clip all that is outside it" implies the projection shouldn't spill off the building.
+            // So we need to clip to the *Ideal Face* while drawing the *Distorted Face*.
+
+            // Wait, "overlay the model over the rendering"
+            // Interpreting: 
+            // - The "Building" is the Ideal Shape.
+            // - The "Projection" is the Distorted Shape.
+            // - We only see Projection where it hits Building.
+
+            // So for each face:
+            // - Clip to Ideal Face (Physical Surface).
+            // - Draw Distorted Face (Projected Image) logic inside.
+
+            // Let's loop through faces.
+            for (const face of faces) {
+                // Fix: Shift ideal points to the 3rd panel for the clipping mask (ideal[i].x is in Panel 2, so +PW moves to Panel 3)
+                const idealFacePts = face.verts.map(i => ({
+                    x: ideal[i].x + PW,
+                    y: ideal[i].y
+                }));
+                const projFacePts = face.verts.map(i => pts[i]);    // Projected coordinates
+
+                ctx.save();
+
+                // 1. Define Physical Surface (Clip Mask)
+                ctx.beginPath();
+                ctx.moveTo(idealFacePts[0].x, idealFacePts[0].y);
+                for (let i = 1; i < idealFacePts.length; i++) {
+                    ctx.lineTo(idealFacePts[i].x, idealFacePts[i].y);
+                }
+                ctx.closePath();
+                ctx.clip(); // <--- This ensures we only paint on the building
+
+                // 2. Draw Projected Texture
+                // We draw the distorted quad. If it's larger/misaligned, parts will be clipped.
+                // If it's smaller, we'll see empty space (background).
+
+                // We need to define the geometry of the projected face to fill it with texture.
+                ctx.beginPath();
+                ctx.moveTo(projFacePts[0].x, projFacePts[0].y);
+                for (let i = 1; i < projFacePts.length; i++) {
+                    ctx.lineTo(projFacePts[i].x, projFacePts[i].y);
+                }
+                ctx.closePath();
+
+                // Use the bounding box of the PROJECTED face for the gradient generation
+                // (since that's what moves)
+                let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+                for (const pt of projFacePts) {
+                    minX = Math.min(minX, pt.x);
+                    maxX = Math.max(maxX, pt.x);
+                    minY = Math.min(minY, pt.y);
+                    maxY = Math.max(maxY, pt.y);
+                }
+
+                // Grid Texture Pattern to show distortion
+                // We draw a grid that deforms with the quad corners (bilinear interpolation)
+                const steps = 8; // 8x8 grid
+                ctx.lineWidth = 1;
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+
+                // Helper for linear interpolation
+                const lerp = (a, b, t) => ({ x: a.x + (b.x - a.x) * t, y: a.y + (b.y - a.y) * t });
+
+                // P0=BL, P1=BR, P2=TR, P3=TL (standard winding)
+                // However, our indices in quadPts are [0,1,2,3] which match this winding.
+                const p0 = projFacePts[0];
+                const p1 = projFacePts[1];
+                const p2 = projFacePts[2];
+                const p3 = projFacePts[3];
+
+                // Draw vertical lines (varying u)
+                for (let i = 0; i <= steps; i++) {
+                    const u = i / steps;
+                    ctx.beginPath();
+                    // Interp along bottom and top edges
+                    const start = lerp(p0, p1, u);
+                    const end = lerp(p3, p2, u);
+
+                    // To show curve distortion properly, we must interpolate internally too
+                    // But straight lines between edges is usually fine for a quad.
+                    // Wait, perspective distortion turns lines into curves? 
+                    // No, bilinear interpolation of a quad keeps lines straight in UV space but 
+                    // in screen space 2D bilinear quad mapping *does* preserve lines?
+                    // Actually, a bilinear patch has curved diagonals. 
+                    // Drawing line start->end is a valid approximation for "projected grid lines" 
+                    // if we assume linear edge interpolation.
+                    // For higher fidelity distortion visualization, we should draw segments.
+
+                    ctx.moveTo(start.x, start.y);
+
+                    // Draw segments for curve fidelity
+                    const segs = 8;
+                    for (let j = 1; j <= segs; j++) {
+                        const v = j / segs;
+                        const pb = lerp(p0, p1, u);
+                        const pt = lerp(p3, p2, u);
+                        // Actually this is just linear line.
+                        // Bilinear interpolation: P(u,v) = (1-v)*lerp(p0,p1,u) + v*lerp(p3,p2,u)
+                        // If u is fixed, this is a line segment between bottom and top.
+                        // So straight lines are mathematically correct for 2D bilinear.
+                        // (Unlike perspective projection where z-depth makes them curved).
+                        // Since we are imitating a 2D mesh warp here, straight lines are fine.
+                        // But wait, if the quad is non-convex or twisted, grid lines might overlap.
+                    }
+                    ctx.lineTo(end.x, end.y);
+                    ctx.stroke();
+                }
+
+                // Draw horizontal lines (varying v)
+                for (let i = 0; i <= steps; i++) {
+                    const v = i / steps;
+                    ctx.beginPath();
+                    // Interp along left and right edges
+                    const start = lerp(p0, p3, v);
+                    const end = lerp(p1, p2, v);
+                    ctx.moveTo(start.x, start.y);
+                    ctx.lineTo(end.x, end.y);
+                    ctx.stroke();
+                }
+
+                // Add a "Checkerboard" fill for better visibility? 
+                // Let's stick to the grid first, as requested "texture that will show distortion".
+                // A grid is excellent for this.
+                // Let's adding a subtle fill to the whole quad to make it look solid.
+
+                // Fill the quad with a base color so it's not transparent
+                const baseColor = 'rgba(0, 150, 255, 0.15)';
+                ctx.fillStyle = baseColor;
+                ctx.beginPath();
+                ctx.moveTo(p0.x, p0.y);
+                ctx.lineTo(p1.x, p1.y);
+                ctx.lineTo(p2.x, p2.y);
+                ctx.lineTo(p3.x, p3.y);
+                ctx.closePath();
+                ctx.fill();
+
+                ctx.restore(); // Drop clip
+
+                // 3. Draw Wireframe of Physical Object (Ideal Model) overlay
+                ctx.beginPath();
+                ctx.moveTo(idealFacePts[0].x, idealFacePts[0].y);
+                for (let i = 1; i < idealFacePts.length; i++) {
+                    ctx.lineTo(idealFacePts[i].x, idealFacePts[i].y);
+                }
+                ctx.closePath();
+                ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([2, 2]); // Dashed line to distinguish from projection
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            ctx.restore();
+        }
+
+        function drawVirtualPoint(p, index) {
+            const r = 5;
+            const vc = vertexColors[index];
+
+            // Glow in vertex color
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, r + 3, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${vc.r}, ${vc.g}, ${vc.b}, 0.25)`;
+            ctx.fill();
+
+            // Circle filled with vertex color
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(${vc.r}, ${vc.g}, ${vc.b}, 0.9)`;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+
+            // Label
+            ctx.font = 'bold 9px -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillStyle = `rgba(${vc.r}, ${vc.g}, ${vc.b}, 0.9)`;
+            ctx.fillText('V' + (index + 1), p.x, p.y - r - 4);
+            ctx.textBaseline = 'alphabetic';
+        }
+
+        // Ghost crosshair marker at ideal reality point position
+        function drawIdealMarker(p, index) {
+            const size = 6;
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.lineWidth = 1;
+            // Horizontal tick
+            ctx.beginPath();
+            ctx.moveTo(p.x - size, p.y);
+            ctx.lineTo(p.x + size, p.y);
+            ctx.stroke();
+            // Vertical tick
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y - size);
+            ctx.lineTo(p.x, p.y + size);
+            ctx.stroke();
+            // Faint circle
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.12)';
+            ctx.stroke();
+        }
+
+        function drawRealityPoint(p, index, ideal) {
+            const isHover = (index === hoverIndex);
+            const isDrag = (index === dragIndex);
+            const r = isDrag ? 9 : isHover ? 8 : 6;
+
+            const dx = p.x - ideal.x;
+            const dy = p.y - ideal.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            // Color by distance
+            let color;
+            if (dist < 5) color = '#22c55e';
+            else if (dist < 15) color = '#f59e0b';
+            else color = '#fb923c';
+
+            // Glow
+            if (isHover || isDrag) {
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, r + 5, 0, Math.PI * 2);
+                ctx.fillStyle = `rgba(251, 146, 60, 0.25)`;
+                ctx.fill();
+            }
+
+            // Circle (hollow)
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            // Small inner dot
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, 2, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // Label
+            ctx.font = 'bold 9px -apple-system, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillStyle = 'rgba(251, 146, 60, 0.9)';
+            ctx.fillText('R' + (index + 1), p.x, p.y - r - 4);
+            ctx.textBaseline = 'alphabetic';
+        }
+
+        // --- Calibrate animation ---
+        function animateCalibrate() {
+            if (animating) return;
+            animating = true;
+            const ideal = getIdealRealityPoints();
+            const startPositions = realityPoints.map(p => ({ x: p.x, y: p.y }));
+            const duration = 600;
+            const startTime = performance.now();
+
+            function step(now) {
+                const elapsed = now - startTime;
+                const t = Math.min(1, elapsed / duration);
+                // Ease out cubic
+                const ease = 1 - Math.pow(1 - t, 3);
+
+                for (let i = 0; i < realityPoints.length; i++) {
+                    // Don't go all the way — leave a small residual error to look realistic
+                    const residual = 2;
+                    const targetX = ideal[i].x + (startPositions[i].x - ideal[i].x > 0 ? residual * 0.3 : -residual * 0.3);
+                    const targetY = ideal[i].y + (startPositions[i].y - ideal[i].y > 0 ? residual * 0.3 : -residual * 0.3);
+                    realityPoints[i].x = startPositions[i].x + (targetX - startPositions[i].x) * ease;
+                    realityPoints[i].y = startPositions[i].y + (targetY - startPositions[i].y) * ease;
+                }
+                draw();
+
+                if (t < 1) {
+                    requestAnimationFrame(step);
+                } else {
+                    animating = false;
+                }
+            }
+            requestAnimationFrame(step);
+        }
+
+        function scramblePoints() {
+            const ideal = getIdealRealityPoints();
+            for (let i = 0; i < realityPoints.length; i++) {
+                realityPoints[i].x = ideal[i].x + (Math.random() - 0.5) * 60;
+                realityPoints[i].y = ideal[i].y + (Math.random() - 0.5) * 60;
+            }
+            draw();
+        }
+
+        // --- Interaction ---
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = W / rect.width;
+            const scaleY = H / rect.height;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
+        }
+
+        function findClosestRealityPoint(mx, my, threshold) {
+            let closest = -1;
+            let minDist = threshold * threshold;
+            for (let i = 0; i < realityPoints.length; i++) {
+                const dx = realityPoints[i].x - mx;
+                const dy = realityPoints[i].y - my;
+                const d2 = dx * dx + dy * dy;
+                if (d2 < minDist) {
+                    minDist = d2;
+                    closest = i;
+                }
+            }
+            return closest;
+        }
+
+        canvas.addEventListener('pointerdown', (e) => {
+            if (animating && false) return; // animating check kept if needed, but mode check removed. actually just remove the line if animating is not blocking interaction.
+            // animating is true during loop, but we want interaction during animation?
+            // "animating" variable was used to stop interaction during the "solve" animation.
+            if (animating) return;
+            e.preventDefault();
+            const { x, y } = getCanvasCoords(e);
+            dragIndex = findClosestRealityPoint(x, y, 22);
+            if (dragIndex >= 0) {
+                canvas.setPointerCapture(e.pointerId);
+                canvas.style.cursor = 'grabbing';
+            }
+        });
+
+        canvas.addEventListener('pointermove', (e) => {
+            const { x, y } = getCanvasCoords(e);
+            if (dragIndex >= 0) {
+                // Constrain to right panel
+                realityPoints[dragIndex].x = Math.max(PW + 10, Math.min(PW * 2 - 10, x));
+                realityPoints[dragIndex].y = Math.max(10, Math.min(H - 10, y));
+                draw();
+            } else {
+                const prev = hoverIndex;
+                hoverIndex = findClosestRealityPoint(x, y, 22);
+                if (hoverIndex !== prev) draw();
+                canvas.style.cursor = hoverIndex >= 0 ? 'grab' : 'crosshair';
+            }
+        });
+
+        canvas.addEventListener('pointerup', (e) => {
+            if (dragIndex >= 0) {
+                canvas.releasePointerCapture(e.pointerId);
+            }
+            dragIndex = -1;
+            canvas.style.cursor = 'crosshair';
+        });
+
+        canvas.addEventListener('pointerleave', () => {
+            if (dragIndex < 0) {
+                hoverIndex = -1;
+                draw();
+            }
+        });
+
+        // --- Controls ---
+        btnCalibrate.addEventListener('click', () => animateCalibrate());
+        btnReposition.addEventListener('click', () => scramblePoints());
+
+        // --- Init ---
+        initRealityPoints();
+        startAnim();
+    })();
+</script>
