@@ -1,1 +1,115 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"><svg width="100%" height="100%" viewBox="0 0 1000 400" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;"><text x="353.51px" y="40px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:24px;fill:#c084fc;">THE W<tspan x="427.584px 444.354px 455.287px 472.607px 490.209px " y="40px 40px 40px 40px 40px ">ATCHO</tspan>UT PIPELINE</text><rect x="300" y="80" width="400" height="260" style="fill:none;stroke:#4ade80;stroke-width:2px;stroke-dasharray:8,4;"/><text x="448.238px" y="360px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:16px;fill:#86efac;">Op<tspan x="472.27px 476.645px " y="360px 360px ">ti</tspan>cal Space</text><g><text x="28.838px" y="90px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:11px;fill:#fbbf24;">8-bit R<tspan x="60.205px 66.29px " y="90px 90px ">ec</tspan>. 709 (SDR)</text><rect x="20" y="100" width="120" height="50"/><text x="57.602px" y="130px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">In<tspan x="69.579px 77.973px " y="130px 130px ">pu</tspan>t X</text></g><path d="M140,125l20,0" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><rect x="160" y="100" width="80" height="50"/><text x="183.04px" y="130px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">EO<tspan x="203.09px 209.844px " y="130px 130px ">TF</tspan></text></g><path d="M240,125l20,0" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><rect x="260" y="100" width="80" height="50"/><text x="270.718px" y="130px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">CS Con<tspan x="318.7px 324.961px " y="130px 130px ">v.</tspan></text></g><path d="M340,125l110,55" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><text x="12.915px" y="170px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:11px;fill:#fbbf24;">1<tspan x="18.737px 25.526px " y="170px 170px ">6-</tspan>bit R<tspan x="50.104px 56.19px " y="170px 170px ">ec</tspan>. 2<tspan x="74.086px 80.215px 87.004px " y="170px 170px 170px ">100</tspan> PQ (HDR)</text><rect x="20" y="180" width="120" height="50"/><text x="57.725px" y="210px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">In<tspan x="69.702px 78.096px " y="210px 210px ">pu</tspan>t Y</text></g><path d="M140,205l20,0" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><rect x="160" y="180" width="80" height="50"/><text x="183.04px" y="210px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">EO<tspan x="203.09px 209.844px " y="210px 210px ">TF</tspan></text></g><path d="M240,205l20,0" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><rect x="260" y="180" width="80" height="50"/><text x="270.718px" y="210px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">CS Con<tspan x="318.7px 324.961px " y="210px 210px ">v.</tspan></text></g><path d="M340,205l110,0" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><text x="22.379px" y="250px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:11px;fill:#fbbf24;">1<tspan x="28.507px 35.296px " y="250px 250px ">0-</tspan>bit R<tspan x="59.875px 65.96px " y="250px 250px ">ec</tspan>. 2020 (SDR)</text><rect x="20" y="260" width="120" height="50"/><text x="57.551px" y="290px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">In<tspan x="69.527px 77.922px " y="290px 290px ">pu</tspan>t Z</text></g><path d="M140,285l20,0" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><rect x="160" y="260" width="80" height="50"/><text x="183.04px" y="290px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">EO<tspan x="203.09px 209.844px " y="290px 290px ">TF</tspan></text></g><path d="M240,285l20,0" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><rect x="260" y="260" width="80" height="50"/><text x="270.718px" y="290px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">CS Con<tspan x="318.7px 324.961px " y="290px 290px ">v.</tspan></text></g><path d="M340,285l110,-55" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><rect x="450" y="155" width="180" height="100" style="fill:#2e1065;stroke:#d946ef;stroke-width:3px;"/><text x="492.285px" y="200px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#e879f9;">COMPOSIT<tspan x="566.776px 579.286px " y="200px 200px ">OR</tspan></text><text x="502.423px" y="220px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">1<tspan x="509.833px 518.474px " y="220px 220px ">6-</tspan>bit linear</text><text x="507.088px" y="240px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">R<tspan x="515.292px 523.037px " y="240px 240px ">ec</tspan>. 2020</text></g><path d="M630,205l30,0" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><rect x="660" y="180" width="80" height="50"/><text x="670.718px" y="210px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">CS Con<tspan x="718.7px 724.961px " y="210px 210px ">v.</tspan></text></g><path d="M740,205l30,0" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><rect x="770" y="180" width="60" height="50"/><text x="782.852px" y="210px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">OETF</text></g><path d="M830,205l30,0" style="fill:none;fill-rule:nonzero;stroke:#cbd5e1;stroke-width:2px;"/><g><text x="852.867px" y="170px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:11px;fill:#fbbf24;">1<tspan x="858.786px 865.575px " y="170px 170px ">2-</tspan>bit R<tspan x="890.153px 896.238px " y="170px 170px ">ec</tspan>. 2<tspan x="914.135px 920.263px 927.052px " y="170px 170px 170px ">100</tspan> PQ (HDR)</text><rect x="860" y="180" width="120" height="50" style="stroke:#d946ef;stroke-width:1px;"/><text x="898.091px" y="210px" style="font-family:'Futura-Medium', 'Futura', sans-serif;font-weight:500;font-size:14px;fill:#f1f5f9;">Output</text></g></svg>
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="400" viewBox="0 0 1000 400">
+  <defs>
+    <style>
+      /* Dark Mode Colors derived from system_architecture_diagram_dark.svg */
+      .box { fill: #1e293b; stroke: #a78bfa; stroke-width: 2; rx: 8; ry: 8; }
+      .box-compositor { fill: #2e1065; stroke: #d946ef; stroke-width: 3; rx: 12; ry: 12; }
+      .optical-space { fill: none; stroke: #4ade80; stroke-width: 2; stroke-dasharray: 8 4; rx: 16; ry: 16; }
+      .line { stroke: #cbd5e1; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+      .text { font-size: 14px; text-anchor: middle; fill: #f1f5f9; }
+      .text-sub { font-size: 11px; fill: #94a3b8; }
+      .text-title { font-size: 24px; font-weight: 700; fill: #c084fc; text-anchor: middle; }
+      .text-label { font-size: 12px; font-weight: 600; fill: #86efac; text-anchor: middle; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#cbd5e1" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="500" y="40" class="text-title">THE WATCHOUT PIPELINE</text>
+
+  <!-- Optical Space Container -->
+  <!-- Enclosing Input CS Convs and Compositor -->
+  <rect x="300" y="80" width="400" height="260" class="optical-space" />
+  <text x="500" y="360" class="text-label" style="font-size: 16px;">Optical Space</text>
+
+  <!-- Row 1: Input X -->
+  <g transform="translate(20, 100)">
+    <text x="60" y="-10" class="text-sub" style="fill:#fbbf24">8-bit Rec. 709 (SDR)</text>
+    <rect width="120" height="50" class="box" />
+    <text x="60" y="30" class="text" style="font-weight:600">Input X</text>
+  </g>
+  <path d="M140,125 L160,125" class="line" />
+
+  <g transform="translate(160, 100)">
+    <rect width="80" height="50" class="box" />
+    <text x="40" y="30" class="text">EOTF</text>
+  </g>
+  <path d="M240,125 L260,125" class="line" />
+
+  <g transform="translate(260, 100)"> <!-- Inside Optical Box -->
+    <rect width="80" height="50" class="box" />
+    <text x="40" y="30" class="text">CS Conv.</text>
+  </g>
+  <path d="M340,125 L450,180" class="line" /> <!-- To Compositor -->
+
+  <!-- Row 2: Input Y -->
+  <g transform="translate(20, 180)">
+    <text x="60" y="-10" class="text-sub" style="fill:#fbbf24">16-bit Rec. 2100 PQ (HDR)</text>
+    <rect width="120" height="50" class="box" />
+    <text x="60" y="30" class="text" style="font-weight:600">Input Y</text>
+  </g>
+  <path d="M140,205 L160,205" class="line" />
+
+  <g transform="translate(160, 180)">
+    <rect width="80" height="50" class="box" />
+    <text x="40" y="30" class="text">EOTF</text>
+  </g>
+  <path d="M240,205 L260,205" class="line" />
+
+  <g transform="translate(260, 180)">
+    <rect width="80" height="50" class="box" />
+    <text x="40" y="30" class="text">CS Conv.</text>
+  </g>
+  <path d="M340,205 L450,205" class="line" />
+
+  <!-- Row 3: Input Z -->
+  <g transform="translate(20, 260)">
+    <text x="60" y="-10" class="text-sub" style="fill:#fbbf24">10-bit Rec. 2020 (SDR)</text>
+    <rect width="120" height="50" class="box" />
+    <text x="60" y="30" class="text" style="font-weight:600">Input Z</text>
+  </g>
+  <path d="M140,285 L160,285" class="line" />
+
+  <g transform="translate(160, 260)">
+    <rect width="80" height="50" class="box" />
+    <text x="40" y="30" class="text">EOTF</text>
+  </g>
+  <path d="M240,285 L260,285" class="line" />
+
+  <g transform="translate(260, 260)">
+    <rect width="80" height="50" class="box" />
+    <text x="40" y="30" class="text">CS Conv.</text>
+  </g>
+  <path d="M340,285 L450,230" class="line" />
+
+  <!-- Compositor (Center) -->
+  <g transform="translate(450, 155)">
+    <rect width="180" height="100" class="box-compositor" />
+    <text x="90" y="45" class="text" style="font-weight:700; fill:#e879f9">COMPOSITOR</text>
+    <text x="90" y="65" class="text">16-bit linear</text>
+    <text x="90" y="85" class="text">Rec. 2020</text>
+  </g>
+  <path d="M630,205 L660,205" class="line" />
+
+  <!-- Output Stage -->
+  <g transform="translate(660, 180)">
+    <rect width="80" height="50" class="box" />
+    <text x="40" y="30" class="text">CS Conv.</text>
+  </g>
+  <path d="M740,205 L770,205" class="line" />
+
+  <g transform="translate(770, 180)">
+    <rect width="60" height="50" class="box" />
+    <text x="30" y="30" class="text">OETF</text>
+  </g>
+  <path d="M830,205 L860,205" class="line" />
+
+  <g transform="translate(860, 180)">
+    <text x="60" y="-10" class="text-sub" style="fill:#fbbf24">12-bit Rec. 2100 PQ (HDR)</text>
+    <rect width="120" height="50" class="box" style="stroke:#d946ef" />
+    <text x="60" y="30" class="text" style="font-weight:600">Output</text>
+  </g>
+</svg>

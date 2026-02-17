@@ -109,6 +109,24 @@ Additional controls:
 
 Use non-default signal settings only when they solve a specific hardware or show requirement.
 
+### EDID Capture
+
+EDID (Extended Display Identification Data) is a data block that displays transmit to describe their capabilities — supported resolutions, timing modes, color depth, and manufacturer information. WATCHOUT can capture and save a display's EDID data as an asset in the show.
+
+To capture EDID:
+
+1. Select the GPU display in Device Properties.
+2. In the **Output** section, locate the EDID row.
+3. Click **Save EDID**.
+
+The captured EDID is stored as an asset that you can reference later for troubleshooting or for applying to other displays. You can also select a previously captured EDID asset from the dropdown to apply it to the display, or choose **Current Monitor** to use the live EDID from the connected display hardware, or **Keep** to not send any EDID override.
+
+:::note
+The display must be **enabled** to capture its EDID. If the display is disabled, the Save EDID button will be inactive.
+:::
+
+EDID capture is particularly useful in rental and staging environments where you need to document the exact display capabilities at each venue, or when troubleshooting resolution and timing issues where the display is not advertising the expected modes.
+
 ### Signal and Calibration
 
 Display-level calibration settings include:
@@ -151,11 +169,3 @@ Diagnostic output modes are available per display:
 - `Pattern`
 
 The **Show Overlay / Render Info** toggle helps identify outputs during setup.
-
-### Practical Advice
-
-- Set identity and routing first (name, node, output type/channel), then tune signal.
-- Keep channel numbering and naming consistent with physical labels.
-- Verify every routed display with test patterns before content checks.
-- Document all non-default signal and timing values for handoff.
-- Lock finalized devices once routing and calibration are approved.

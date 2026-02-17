@@ -225,7 +225,7 @@ body::before {
     flex: 1;
 }
 
-.control-section .control-group:first-of-type {
+.control-section .control-group:has(.toggle-container) {
     align-self: center;
 }
 
