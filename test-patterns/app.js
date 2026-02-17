@@ -1063,14 +1063,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     ledCtx.fillStyle = tileFillColor;
                     ledCtx.fillRect(x, y, tW, tH);
 
-                    // Border (Black for separation)
+                    // Module checkerboard + grid (drawn before border so border stays on top)
+                    if (showModules) {
+                        drawModuleGrid(x, y, tW, tH, moduleW, moduleH, tileFillColor);
+                    }
+
+                    // Border (drawn after modules so it isn't covered)
                     if (useBorders) {
                         ledCtx.strokeStyle = checkerPalette === 'gray-white' ? 'rgba(20, 20, 20, 0.85)' : 'rgba(255, 255, 255, 0.35)';
                         drawTileBorder(x, y, tW, tH, borderSize);
-                    }
-
-                    if (showModules) {
-                        drawModuleGrid(x, y, tW, tH, moduleW, moduleH, tileFillColor);
                     }
 
                     // Text (White with black outline for visibility)
@@ -1090,13 +1091,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     ledCtx.lineWidth = 3;
                 } else {
                     // Outline Only
+                    if (showModules) {
+                        drawModuleGrid(x, y, tW, tH, moduleW, moduleH, tileFillColor);
+                    }
+
                     if (useBorders) {
                         ledCtx.strokeStyle = color;
                         drawTileBorder(x, y, tW, tH, borderSize);
-                    }
-
-                    if (showModules) {
-                        drawModuleGrid(x, y, tW, tH, moduleW, moduleH, tileFillColor);
                     }
 
                     ledCtx.fillStyle = color;
