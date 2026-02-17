@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WO_keys — Git Tree</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="page-header">
+        <div class="page-title">WO_keys</div>
+        <div class="page-subtitle">Git commit history — <span id="stats"></span></div>
+        <div class="branch-legend" id="legend"></div>
+    </header>
+
+    <div class="tree-container" id="treeContainer">
+        <table class="tree-table" id="treeTable">
+            <colgroup>
+                <col class="col-date">
+                <col class="col-graph" id="colGraph">
+                <col class="col-message">
+                <col class="col-author">
+                <col class="col-hash">
+            </colgroup>
+            <tbody id="treeBody"></tbody>
+        </table>
+    </div>
+
+    <footer class="page-footer" id="footer"></footer>
+
+<script>
+(function () {
+    'use strict';
+
+    // ── Configuration ────────────────────────────────────────────────
+    const LANE_WIDTH   = 20;
+    const DOT_RADIUS   = 5;
+    const LINE_WIDTH   = 2;
+    const CURVE_RADIUS = 10;
+
+    // ── Color palette — deterministic, visually distinct on dark bg ──
+    const PALETTE = [
+        '#818cf8', // indigo (accent)
+        '#34d399', // emerald
+        '#f472b6', // pink
+        '#fbbf24', // amber
+        '#38bdf8', // sky
+        '#a78bfa', // violet
+        '#fb923c', // orange
+        '#2dd4bf', // teal
+        '#f87171', // red
+        '#c084fc', // purple
+        '#4ade80', // green
+        '#e879f9', // fuchsia
+        '#facc15', // yellow
+        '#22d3ee', // cyan
+        '#f97316', // orange-deep
+        '#60a5fa', // blue
+        '#a3e635', // lime
+        '#fb7185', // rose
+    ];
+
+    // ── State ────────────────────────────────────────────────────────
+    let data = null;
+
+    // ── Load data ────────────────────────────────────────────────────
+    fetch('git-data.json')
+        .then(r => r.json())
+        .then(d => { data = d; init(); })
+        .catch(err => {
+            document.getElementById('stats').textContent = 'Error loading git-data.json';
+            console.error(err);
+        });
+
+    // ── Init ─────────────────────────────────────────────────────────
+    function init() {
+        const { commits, branches } = data;
+
+        // Build lookups
+        const hashToIdx = new Map();
+        const hashToCommit = new Map();
+        commits.forEach((c, i) => {
+            hashToIdx.set(c.hash, i);
+            hashToCommit.set(c.hash, c);
+        });
+
+        // ── Clean up branches ────────────────────────────────────────
+        // Filter out bare "origin" pseudo-entry
+        const realBranches = branches.filter(b => b.name !== 'origin');
+
+        // Deduplicate: if a local and remote point to same tip, skip remote
+        const localNames = new Set(
+            realBranches.filter(b => !b.remote).map(b => b.name)
+        );
+        const dedupedBranches = realBranches.filter(b => {
+            if (b.remote && localNames.has(b.name.replace('origin/', '')))
+                return false;
+            return true;
+        });
+
+        // Build tip -> branch name lookup (prefer local names)
+        const tipToBranch = new Map();
+        dedupedBranches.forEach(b => {
+            if (!tipToBranch.has(b.tip)) tipToBranch.set(b.tip, b.name);
+        });
+
+        // ── Step 1: Walk main's first-parent spine ───────────────────
+        const mainTip = dedupedBranches.find(b => b.name === 'main')?.tip
+                     || commits[0].hash;
+        const mainSpine = new Set();
+        {
+            let h = mainTip;
+            while (h) {
+                mainSpine.add(h);
+                const c = hashToCommit.get(h);
+                if (!c || c.parents.length === 0) break;
+                h = c.parents[0]; // first parent
+            }
+        }
+
+        // ── Step 2: Discover side branches ───────────────────────────
+        // A "side branch" is a chain of commits reachable from a merge's
+        // second parent, walking first-parents, until we hit a commit
+        // already on the main spine (or on another already-discovered
+        // side branch).
+        //
+        // We also discover branches from explicit branch tips that have
+        // commits NOT on the main spine.
+
+        const commitBranch = new Map(); // hash -> branch name
+        const branchColor = new Map();  // branch name -> color
+        const branchList = [];          // ordered list of {name, remote, commits[]}
+        let colorIdx = 0;
+
+        // Assign main first
+        mainSpine.forEach(h => commitBranch.set(h, 'main'));
+        branchColor.set('main', PALETTE[colorIdx++]);
+        branchList.push({ name: 'main', remote: false, hashes: [...mainSpine] });
+
+        // Helper: find the best branch name for a chain starting at hash
+        function findBranchName(startHash) {
+            // Walk the chain and see if any commit carries a branch ref
+            let h = startHash;
+            const visited = [];
+            while (h && !commitBranch.has(h)) {
+                visited.push(h);
+                // Check if this hash is a branch tip
+                if (tipToBranch.has(h)) return tipToBranch.get(h);
+                const c = hashToCommit.get(h);
+                if (!c || c.parents.length === 0) break;
+                h = c.parents[0];
+            }
+            // Check refs on visited commits
+            for (const vh of visited) {
+                const vc = hashToCommit.get(vh);
+                if (vc && vc.refs.length > 0) {
+                    for (const r of vc.refs) {
+                        const clean = r.replace('HEAD -> ', '').trim();
+                        if (clean && clean !== 'origin/HEAD') return clean;
+                    }
+                }
+            }
+            return null;
+        }
+
+        // Helper: trace a side branch from a starting hash
+        function traceSideBranch(startHash, fallbackName) {
+            const chain = [];
+            let h = startHash;
+            while (h && !commitBranch.has(h)) {
+                chain.push(h);
+                const c = hashToCommit.get(h);
+                if (!c || c.parents.length === 0) break;
+                h = c.parents[0];
+            }
+            if (chain.length === 0) return null;
+
+            const name = findBranchName(startHash) || fallbackName;
+            const color = PALETTE[colorIdx++ % PALETTE.length];
+            chain.forEach(ch => commitBranch.set(ch, name));
+            branchColor.set(name, color);
+            branchList.push({ name, remote: false, hashes: chain });
+
+            // Recurse: if any commit in this chain is a merge, trace its
+            // second parents too
+            chain.forEach(ch => {
+                const c = hashToCommit.get(ch);
+                if (c && c.parents.length > 1) {
+                    for (let pi = 1; pi < c.parents.length; pi++) {
+                        const sp = c.parents[pi];
+                        if (!commitBranch.has(sp)) {
+                            traceSideBranch(sp, name + '-merge');
+                        }
+                    }
+                }
+            });
+
+            return name;
+        }
+
+        // Trace second parents of all merge commits on the main spine
+        // (process in topological order — newest first)
+        commits.forEach(c => {
+            if (!mainSpine.has(c.hash)) return;
+            if (c.parents.length > 1) {
+                for (let pi = 1; pi < c.parents.length; pi++) {
+                    const secondParent = c.parents[pi];
+                    if (!commitBranch.has(secondParent)) {
+                        traceSideBranch(secondParent, 'branch-' + colorIdx);
+                    }
+                }
+            }
+        });
+
+        // Handle explicit branch tips that still have unclaimed commits
+        // (e.g. standalone, which was never merged into main)
+        dedupedBranches.forEach(b => {
+            if (b.name === 'main') return;
+            const tipIdx = hashToIdx.get(b.tip);
+            if (tipIdx === undefined) return;
+            if (commitBranch.has(b.tip)) return; // already claimed
+
+            traceSideBranch(b.tip, b.name);
+        });
+
+        // Orphan commits (like gh-pages) — single-commit branches
+        commits.forEach(c => {
+            if (!commitBranch.has(c.hash)) {
+                const name = findBranchName(c.hash) || 'orphan-' + c.hash.slice(0, 5);
+                commitBranch.set(c.hash, name);
+                const color = PALETTE[colorIdx++ % PALETTE.length];
+                branchColor.set(name, color);
+                branchList.push({ name, remote: false, hashes: [c.hash] });
+            }
+        });
+
+        // ── Step 3: Lane assignment with recycling ───────────────────
+        // Process commits top-to-bottom (topological order, newest first).
+        // Each branch gets a lane. When a branch's last commit (lowest in
+        // the list) is passed, its lane is freed for reuse.
+
+        // Find first and last row index for each branch
+        const branchFirstRow = new Map();
+        const branchLastRow = new Map();
+        commits.forEach((c, i) => {
+            const br = commitBranch.get(c.hash);
+            if (!branchFirstRow.has(br)) branchFirstRow.set(br, i);
+            branchLastRow.set(br, i);
+        });
+
+        const branchLane = new Map();
+        const commitLane = new Map();
+        const activeLanes = new Set(); // lanes currently in use
+        let maxLane = 0;
+
+        // Track which branches end at each row, so we can free lanes
+        const branchEndingAtRow = new Map(); // rowIdx -> [branchNames]
+        branchLastRow.forEach((row, br) => {
+            if (!branchEndingAtRow.has(row)) branchEndingAtRow.set(row, []);
+            branchEndingAtRow.get(row).push(br);
+        });
+
+        function allocateLane() {
+            let lane = 0;
+            while (activeLanes.has(lane)) lane++;
+            activeLanes.add(lane);
+            if (lane > maxLane) maxLane = lane;
+            return lane;
+        }
+
+        // Main always gets lane 0
+        branchLane.set('main', 0);
+        activeLanes.add(0);
+
+        commits.forEach((c, i) => {
+            const br = commitBranch.get(c.hash);
+
+            // Assign lane to branch if not yet assigned
+            if (!branchLane.has(br)) {
+                branchLane.set(br, allocateLane());
+            }
+
+            commitLane.set(c.hash, branchLane.get(br));
+
+            // Free lanes for branches that end at this row
+            const ending = branchEndingAtRow.get(i);
+            if (ending) {
+                ending.forEach(endBr => {
+                    if (endBr !== 'main') { // keep main's lane forever
+                        activeLanes.delete(branchLane.get(endBr));
+                    }
+                });
+            }
+        });
+
+        const totalLanes = maxLane + 1;
+
+        // Per-commit color
+        const commitColor = new Map();
+        commits.forEach(c => {
+            const br = commitBranch.get(c.hash);
+            commitColor.set(c.hash, branchColor.get(br) || PALETTE[0]);
+        });
+
+        // ── Ref mapping: which commits have branch tips ──────────────
+        const commitRefs = new Map();
+        commits.forEach(c => {
+            if (c.refs.length > 0) {
+                const cleaned = c.refs.map(r =>
+                    r.replace('HEAD -> ', '').trim()
+                ).filter(r => r !== 'origin/HEAD');
+                if (cleaned.length > 0) commitRefs.set(c.hash, cleaned);
+            }
+        });
+
+        // Build display branch list for legend (filter to branches with
+        // commits that actually appear, deduplicated)
+        const displayBranches = branchList.map(b => ({
+            name: b.name,
+            remote: dedupedBranches.find(db => db.name === b.name)?.remote || false,
+            color: branchColor.get(b.name),
+        }));
+
+        // ── Build HTML table rows ────────────────────────────────────
+        const tbody = document.getElementById('treeBody');
+        const fragment = document.createDocumentFragment();
+        let prevDate = null;
+        const commitRows = []; // references to <tr> elements for measuring
+
+        commits.forEach((c, i) => {
+            // Date separator
+            if (c.date !== prevDate) {
+                const dateRow = document.createElement('tr');
+                dateRow.className = 'date-row';
+                dateRow.innerHTML =
+                    '<td colspan="5">' +
+                        '<div class="date-separator">' +
+                            '<span class="date-label">' + formatDate(c.date) + '</span>' +
+                            '<span class="date-line"></span>' +
+                        '</div>' +
+                    '</td>';
+                fragment.appendChild(dateRow);
+                prevDate = c.date;
+            }
+
+            // Commit row
+            const tr = document.createElement('tr');
+            tr.className = 'commit-row';
+
+            // Date cell
+            const tdDate = document.createElement('td');
+            tdDate.className = 'cell-date';
+            tdDate.textContent = shortDate(c.date);
+
+            // Graph cell (empty — canvas draws over it)
+            const tdGraph = document.createElement('td');
+            tdGraph.className = 'cell-graph';
+
+            // Message cell
+            const tdMsg = document.createElement('td');
+            tdMsg.className = 'cell-message';
+            let msgHTML = escapeHtml(c.message);
+
+            // Add merge indicator
+            if (c.parents.length > 1) {
+                msgHTML = '<span class="merge-indicator">&#x21C5; </span>' + msgHTML;
+            }
+
+            // Add ref badges
+            const refs = commitRefs.get(c.hash);
+            if (refs) {
+                refs.forEach(ref => {
+                    const refBranch = ref.replace('origin/', '');
+                    const color = branchColor.get(ref) || branchColor.get(refBranch) || PALETTE[0];
+                    msgHTML += ' <span class="ref-badge" style="' +
+                        'background:' + hexToRgba(color, 0.15) + ';' +
+                        'color:' + color + ';' +
+                        'border:1px solid ' + hexToRgba(color, 0.3) + ';">' +
+                        escapeHtml(ref) + '</span>';
+                });
+            }
+            tdMsg.innerHTML = msgHTML;
+
+            // Author cell
+            const tdAuthor = document.createElement('td');
+            tdAuthor.className = 'cell-author';
+            tdAuthor.textContent = c.author;
+
+            // Hash cell
+            const tdHash = document.createElement('td');
+            tdHash.className = 'cell-hash';
+            tdHash.textContent = c.hash;
+
+            tr.appendChild(tdDate);
+            tr.appendChild(tdGraph);
+            tr.appendChild(tdMsg);
+            tr.appendChild(tdAuthor);
+            tr.appendChild(tdHash);
+            fragment.appendChild(tr);
+            commitRows.push(tr);
+        });
+
+        tbody.appendChild(fragment);
+
+        // ── Update graph column width based on lane count ─────────────
+        const graphWidth = Math.max(totalLanes * LANE_WIDTH + LANE_WIDTH, 60);
+        document.getElementById('colGraph').style.width = graphWidth + 'px';
+
+        // ── Canvas overlay ───────────────────────────────────────────
+        // Measure actual row positions from the DOM after layout, so the
+        // canvas lines align perfectly with the rendered rows.
+        const table = document.getElementById('treeTable');
+
+        requestAnimationFrame(() => {
+            const tableTop = table.getBoundingClientRect().top;
+            const rowYPositions = commitRows.map(tr => {
+                const rect = tr.getBoundingClientRect();
+                return (rect.top - tableTop) + rect.height / 2;
+            });
+
+            drawCanvas(commits, hashToIdx, commitLane, commitColor, commitBranch,
+                       branchLane, branchColor, rowYPositions, totalLanes, graphWidth);
+        });
+
+        // ── Header stats ─────────────────────────────────────────────
+        document.getElementById('stats').textContent =
+            commits.length + ' commits across ' +
+            branchList.length + ' branches';
+
+        // ── Branch legend ────────────────────────────────────────────
+        const legend = document.getElementById('legend');
+        displayBranches.forEach(b => {
+            const pill = document.createElement('span');
+            pill.className = 'branch-pill' + (b.remote ? ' remote' : '');
+            pill.innerHTML =
+                '<span class="dot" style="background:' + b.color + '"></span>' +
+                escapeHtml(b.name);
+            legend.appendChild(pill);
+        });
+
+        // ── Footer ───────────────────────────────────────────────────
+        document.getElementById('footer').textContent =
+            'Generated ' + new Date(data.generated).toLocaleString() +
+            ' — ' + data.repoName;
+    }
+
+    // ── Canvas drawing ───────────────────────────────────────────────
+    function drawCanvas(commits, hashToIdx, commitLane, commitColor, commitBranch,
+                        branchLane, branchColor, rowYPositions, totalLanes, graphWidth) {
+        const container = document.getElementById('treeContainer');
+        const table = document.getElementById('treeTable');
+
+        // Find the first .cell-graph to get column position
+        const firstGraphCell = table.querySelector('.cell-graph');
+        if (!firstGraphCell) return;
+
+        const tableRect = table.getBoundingClientRect();
+        const containerRect = container.getBoundingClientRect();
+        const cellRect = firstGraphCell.getBoundingClientRect();
+
+        const canvasLeft = cellRect.left - containerRect.left;
+        const canvasTop = tableRect.top - containerRect.top;
+        const canvasHeight = table.offsetHeight;
+
+        const canvas = document.createElement('canvas');
+        canvas.className = 'graph-canvas';
+        canvas.style.left = canvasLeft + 'px';
+        canvas.style.top = canvasTop + 'px';
+
+        const dpr = window.devicePixelRatio || 1;
+        canvas.width = graphWidth * dpr;
+        canvas.height = canvasHeight * dpr;
+        canvas.style.width = graphWidth + 'px';
+        canvas.style.height = canvasHeight + 'px';
+
+        container.appendChild(canvas);
+
+        const ctx = canvas.getContext('2d');
+        ctx.scale(dpr, dpr);
+
+        // Lane X positions (center of each lane)
+        function laneX(lane) {
+            return LANE_WIDTH / 2 + lane * LANE_WIDTH;
+        }
+
+        // ── Draw vertical lane lines (behind everything) ─────────────
+        // For each branch, draw a continuous vertical line from its
+        // first commit to its last commit in the list.
+        const branchRowRange = new Map();
+        commits.forEach((c, i) => {
+            const br = commitBranch.get(c.hash);
+            if (!branchRowRange.has(br)) branchRowRange.set(br, [i, i]);
+            else branchRowRange.get(br)[1] = i;
+        });
+
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+
+        branchRowRange.forEach(([firstRow, lastRow], br) => {
+            if (firstRow === lastRow) return; // single commit, no line needed
+            const lane = branchLane.get(br);
+            const color = branchColor.get(br) || PALETTE[0];
+            const x = laneX(lane);
+            const y1 = rowYPositions[firstRow];
+            const y2 = rowYPositions[lastRow];
+
+            ctx.beginPath();
+            ctx.strokeStyle = hexToRgba(color, 0.35);
+            ctx.lineWidth = LINE_WIDTH;
+            ctx.moveTo(x, y1);
+            ctx.lineTo(x, y2);
+            ctx.stroke();
+        });
+
+        // ── Draw merge / fork curves ─────────────────────────────────
+        commits.forEach((c, i) => {
+            const childLane = commitLane.get(c.hash);
+            const childX = laneX(childLane);
+            const childY = rowYPositions[i];
+
+            c.parents.forEach((parentHash, pi) => {
+                const parentIdx = hashToIdx.get(parentHash);
+                if (parentIdx === undefined) return;
+
+                const parentLane = commitLane.get(parentHash);
+                const parentX = laneX(parentLane);
+                const parentY = rowYPositions[parentIdx];
+
+                // Same lane — already covered by the vertical line
+                if (childLane === parentLane) return;
+
+                // Draw a curve from child to parent across lanes
+                const color = pi === 0
+                    ? commitColor.get(c.hash)          // first parent: child's color
+                    : commitColor.get(parentHash);      // merge parent: parent's color
+
+                ctx.beginPath();
+                ctx.strokeStyle = hexToRgba(color, 0.55);
+                ctx.lineWidth = LINE_WIDTH;
+
+                // Curve: vertical from child, bend, vertical to parent
+                const midY = childY + Math.min(CURVE_RADIUS * 3, (parentY - childY) / 2);
+                ctx.moveTo(childX, childY);
+                ctx.lineTo(childX, midY - CURVE_RADIUS);
+
+                if (parentX > childX) {
+                    // Going right
+                    ctx.quadraticCurveTo(childX, midY, childX + CURVE_RADIUS, midY);
+                    ctx.lineTo(parentX - CURVE_RADIUS, midY);
+                    ctx.quadraticCurveTo(parentX, midY, parentX, midY + CURVE_RADIUS);
+                } else {
+                    // Going left
+                    ctx.quadraticCurveTo(childX, midY, childX - CURVE_RADIUS, midY);
+                    ctx.lineTo(parentX + CURVE_RADIUS, midY);
+                    ctx.quadraticCurveTo(parentX, midY, parentX, midY + CURVE_RADIUS);
+                }
+
+                ctx.lineTo(parentX, parentY);
+                ctx.stroke();
+            });
+        });
+
+        // ── Draw commit dots (on top of everything) ──────────────────
+        commits.forEach((c, i) => {
+            const lane = commitLane.get(c.hash);
+            const x = laneX(lane);
+            const y = rowYPositions[i];
+            const color = commitColor.get(c.hash);
+            const isMerge = c.parents.length > 1;
+
+            // Outer glow
+            ctx.beginPath();
+            ctx.arc(x, y, DOT_RADIUS + 2, 0, Math.PI * 2);
+            ctx.fillStyle = hexToRgba(color, 0.15);
+            ctx.fill();
+
+            // Dot
+            ctx.beginPath();
+            ctx.arc(x, y, DOT_RADIUS, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+
+            // Merge commits get an inner ring
+            if (isMerge) {
+                ctx.beginPath();
+                ctx.arc(x, y, DOT_RADIUS - 2, 0, Math.PI * 2);
+                ctx.fillStyle = '#0a0f1c';
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(x, y, DOT_RADIUS - 2, 0, Math.PI * 2);
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 1;
+                ctx.stroke();
+            }
+        });
+    }
+
+    // ── Utilities ────────────────────────────────────────────────────
+    function escapeHtml(str) {
+        return str.replace(/&/g, '&amp;')
+                  .replace(/</g, '&lt;')
+                  .replace(/>/g, '&gt;')
+                  .replace(/"/g, '&quot;');
+    }
+
+    function hexToRgba(hex, alpha) {
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        return 'rgba(' + r + ',' + g + ',' + b + ',' + alpha + ')';
+    }
+
+    function formatDate(dateStr) {
+        const d = new Date(dateStr + 'T00:00:00');
+        const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun',
+                        'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        return days[d.getDay()] + ' ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+    }
+
+    function shortDate(dateStr) {
+        const parts = dateStr.split('-');
+        return parts[1] + '/' + parts[2];
+    }
+})();
+</script>
+</body>
+</html>

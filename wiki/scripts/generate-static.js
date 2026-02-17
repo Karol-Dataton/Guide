@@ -577,6 +577,13 @@ function generateStatsPage() {
         'the', 'of', 'and', 'to', 'a', 'in', 'is', 'that', 'for', 'it', 'as', 'was', 'with', 'on', 'by', 'be', 'at', 'this', 'are', 'we', 'you', 'or', 'an', 'your', 'from', 'can', 'which', 'if', 'will', 'not', 'use', 'has', 'have', 'but', 'more', 'when', 'all', 'one', 'new', 'their', 'other', 'also', 'time', 'into', 'up', 'out', 'so', 'what', 'some', 'see', 'only', 'do', 'its', 'them', 'two', 'then', 'over', 'may', 'no', 'there', 'any', 'after', 'how', 'most', 'such', 'these', 'used', 'using', 'way', 'about', 'get', 'than', 'just', 'make', 'where', 'like', 'should'
     ]);
 
+    // Calculate Widget Count
+    const widgetsDir = path.join(WIKI_ROOT, 'widgets');
+    let widgetCount = 0;
+    if (fs.existsSync(widgetsDir)) {
+        widgetCount = fs.readdirSync(widgetsDir).filter(file => file.endsWith('.html')).length;
+    }
+
     function analyzeText(html, trackFrequency = false) {
         if (!html) return 0;
         // Strip HTML tags and entities roughly
@@ -809,6 +816,11 @@ function generateStatsPage() {
                 <div style="font-size: 2rem; margin-bottom: 10px;">⚖️</div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">${avgSentenceLength}</div>
                 <div style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Avg. Sentence Length</div>
+            </div>
+            <div class="stat-card" style="background: var(--bg-secondary); padding: 20px; border-radius: var(--border-radius); border: 1px solid var(--border-subtle); text-align: center;">
+                <div style="font-size: 2rem; margin-bottom: 10px;">🧩</div>
+                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">${widgetCount}</div>
+                <div style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Interactive Widgets</div>
             </div>
         </div>
 
