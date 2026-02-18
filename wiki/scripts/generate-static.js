@@ -414,28 +414,44 @@ chapters.forEach(chapter => {
     const chapterContentData = wikiContent[chapter.title];
     let chapterBody = '';
 
-    // ... rest of generation logic (unchanged)
+    // Check if the overview contains grouped article links (h3 + ul with links)
+    const overviewHtml = (chapterContentData && chapterContentData.overview) || '';
+    const hasGroupedLinks = overviewHtml.includes('<h3>') && overviewHtml.includes('<ul>');
 
-    if (chapterContentData && chapterContentData.overview) {
-        chapterBody = `<div class="section-overview">${chapterContentData.overview}</div>`;
-    }
+    if (hasGroupedLinks) {
+        // Split: everything before the first <h3> goes into the overview panel,
+        // the grouped h3 + link lists go into .chapter-landing below it.
+        const splitIdx = overviewHtml.indexOf('<h3>');
+        const headerHtml = overviewHtml.substring(0, splitIdx).trim();
+        const groupsHtml = overviewHtml.substring(splitIdx).trim();
 
-    // Add "In This Chapter" list
-    if (chapter.subsections.length > 0) {
-        chapterBody += `
-            <h2 style="margin-top: 32px;">In This Chapter</h2>
-            <p>This chapter covers the following topics. Click on any section to learn more.</p>
-            <div class="subsection-list">
-                ${chapter.subsections.map(sub => `
-                    <a href="./${sub.slug}.html" class="subsection-item" style="text-decoration: none; color: inherit; display: block;">
-                        <div class="subsection-details">
-                            <h4>${sub.title}</h4>
-                            ${sub.description ? `<p class="subsection-description">${sub.description}</p>` : ''}
-                        </div>
-                    </a>
-                `).join('')}
-            </div>
-        `;
+        if (headerHtml) {
+            chapterBody = `<div class="section-overview">${headerHtml}</div>`;
+        }
+        chapterBody += `<div class="chapter-landing">${groupsHtml}</div>`;
+    } else {
+        // Fallback: old layout for chapters without grouped links
+        if (overviewHtml) {
+            chapterBody = `<div class="section-overview">${overviewHtml}</div>`;
+        }
+
+        // Add "In This Chapter" bento grid
+        if (chapter.subsections.length > 0) {
+            chapterBody += `
+                <h2 style="margin-top: 32px;">In This Chapter</h2>
+                <p>This chapter covers the following topics. Click on any section to learn more.</p>
+                <div class="subsection-list">
+                    ${chapter.subsections.map(sub => `
+                        <a href="./${sub.slug}.html" class="subsection-item" style="text-decoration: none; color: inherit; display: block;">
+                            <div class="subsection-details">
+                                <h4>${sub.title}</h4>
+                                ${sub.description ? `<p class="subsection-description">${sub.description}</p>` : ''}
+                            </div>
+                        </a>
+                    `).join('')}
+                </div>
+            `;
+        }
     }
 
     const breadcrumbs = `

@@ -242,10 +242,23 @@ document.addEventListener('DOMContentLoaded', () => {
     setupVideoModals();
     setupSearch();
     setupBadges();
+    setupChapterLanding();
 
     renderTocPreview();
     setupDiagramTheme();
 });
+
+// Make chapter-landing list items fully clickable
+function setupChapterLanding() {
+    document.querySelectorAll('.chapter-landing ul li').forEach(li => {
+        const link = li.querySelector('a');
+        if (!link) return;
+        li.addEventListener('click', (e) => {
+            if (e.target.tagName === 'A') return; // let native link click handle it
+            link.click();
+        });
+    });
+}
 
 // ... existing code ...
 
