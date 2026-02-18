@@ -1,7 +1,8 @@
 ---
-title: "Edge Blending"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
-
 
 ## Edge Blending
 

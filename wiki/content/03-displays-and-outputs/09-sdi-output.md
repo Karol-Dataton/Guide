@@ -1,5 +1,7 @@
 ---
-title: "SDI Output"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
 
 

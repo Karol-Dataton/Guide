@@ -93,7 +93,7 @@ Composition cues do not support cue set (variant) assignments. If you need varia
 
 ### Blind Editing Compositions
 
-Compositions participate in the blind edit system. When a blind edit is started on a timeline, a temporary composition is created that mirrors the timeline's content. Edits are made to this temporary composition and can be applied (committed) or discarded without affecting the live show. See the [Blind Edit Mode](../06-timeline-and-cues/15-blind-edit-mode) article for details.
+Compositions participate in the blind edit system. When a blind edit is started on a timeline, a temporary composition is created that mirrors the timeline's content. Edits are made to this temporary composition and can be applied (committed) or discarded without affecting the live show. See the [Blind Edit Mode](15-blind-edit-mode.md) article for details.
 
 ### Best Practices
 

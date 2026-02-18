@@ -1,5 +1,7 @@
 ---
-title: "Display Properties"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
 
 
