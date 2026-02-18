@@ -248,13 +248,35 @@ document.addEventListener('DOMContentLoaded', () => {
     setupDiagramTheme();
 });
 
-// Make chapter-landing list items fully clickable
+// Make chapter-landing list items fully clickable + assign section indices for rail
 function setupChapterLanding() {
-    document.querySelectorAll('.chapter-landing ul li').forEach(li => {
+    const landing = document.querySelector('.chapter-landing');
+    if (!landing) return;
+
+    // Assign data-section index to each h3 and its associated siblings (p, ul)
+    let sectionIdx = 0;
+    let current = landing.firstElementChild;
+    while (current) {
+        if (current.tagName === 'H3') {
+            current.setAttribute('data-section', sectionIdx);
+            // Tag following p and ul siblings until the next h3
+            let sibling = current.nextElementSibling;
+            while (sibling && sibling.tagName !== 'H3') {
+                sibling.setAttribute('data-section', sectionIdx);
+                sibling = sibling.nextElementSibling;
+            }
+            sectionIdx++;
+        }
+        current = current.nextElementSibling;
+    }
+    landing.setAttribute('data-section-count', sectionIdx);
+
+    // Make li cards fully clickable
+    landing.querySelectorAll('ul li').forEach(li => {
         const link = li.querySelector('a');
         if (!link) return;
         li.addEventListener('click', (e) => {
-            if (e.target.tagName === 'A') return; // let native link click handle it
+            if (e.target.tagName === 'A') return;
             link.click();
         });
     });

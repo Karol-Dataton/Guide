@@ -1472,38 +1472,88 @@ button:focus-visible {
     line-height: 1.7;
 }
 
-/* Chapter Landing — grouped article links replacing bento grid */
-.chapter-landing h1 {
-    font-size: 1.8rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    margin: 0 0 16px 0;
+/* Chapter Landing — git-graph progress rail with grouped article links */
+
+/* Section color palette — progresses through the spectrum */
+.chapter-landing { --rail-color-0: #8b5cf6; } /* violet */
+.chapter-landing { --rail-color-1: #3b82f6; } /* blue */
+.chapter-landing { --rail-color-2: #06b6d4; } /* cyan */
+.chapter-landing { --rail-color-3: #22c55e; } /* green */
+.chapter-landing { --rail-color-4: #f59e0b; } /* amber */
+
+/* Container — left padding for the rail */
+.chapter-landing {
+    position: relative;
+    padding-left: 36px;
+    --rail-line-left: -30px;
+    --rail-center-x: -29px;
+    --small-dot-size: 8px;
+    --small-dot-top: 17px;
 }
 
-.chapter-landing > p:first-of-type {
-    font-size: 1.05rem;
-    color: var(--text-secondary);
-    line-height: 1.7;
-    margin: 0 0 32px 0;
-    max-width: 72ch;
-}
-
+/* --- Section headings (large milestone dots) --- */
 .chapter-landing h3 {
+    position: relative;
     font-size: 1.05rem;
     font-weight: 600;
     color: var(--text-primary);
-    margin: 28px 0 6px 0;
-    padding-bottom: 8px;
-    border-bottom: 1px solid var(--border-subtle);
+    margin: 28px 0 0 0;
+    padding-bottom: 6px;
+    border-bottom: none;
 }
 
+/* Large dot */
+.chapter-landing h3::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--rail-center-x) - 7px);
+    top: 7px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--rail-color-0);
+    border: 2px solid var(--bg-primary);
+    box-shadow: 0 0 0 2px var(--rail-color-0);
+    z-index: 2;
+}
+
+/* Vertical line segment extending down from h3 */
+.chapter-landing h3::after {
+    content: '';
+    position: absolute;
+    left: var(--rail-line-left);
+    top: 21px;
+    width: 2px;
+    bottom: 0;
+    background: var(--rail-color-0);
+    opacity: 0.4;
+    z-index: 1;
+}
+
+/* --- Intro paragraph between h3 and ul --- */
 .chapter-landing h3 + p {
     font-size: 0.88rem;
     color: var(--text-muted);
-    margin: 0 0 12px 0;
+    margin: 0;
+    padding-bottom: 12px;
     line-height: 1.5;
+    position: relative;
 }
 
+/* Continue the line through the intro paragraph */
+.chapter-landing h3 + p::before {
+    content: '';
+    position: absolute;
+    left: var(--rail-line-left);
+    top: 0;
+    width: 2px;
+    bottom: 0;
+    background: var(--rail-color-0);
+    opacity: 0.4;
+    z-index: 1;
+}
+
+/* --- Article lists --- */
 .chapter-landing ul {
     list-style: none;
     padding: 0;
@@ -1511,11 +1561,46 @@ button:focus-visible {
     display: flex;
     flex-direction: column;
     gap: 6px;
+    position: relative;
 }
 
+/* Vertical line running through the list */
+.chapter-landing ul::before {
+    content: '';
+    position: absolute;
+    left: var(--rail-line-left);
+    top: 0;
+    width: 2px;
+    bottom: 0;
+    background: var(--rail-color-0);
+    opacity: 0.4;
+    z-index: 1;
+}
+
+/* Connect sections and then end rail after final list */
+.chapter-landing > ul:not(:last-child)::before {
+    bottom: -38px;
+}
+
+.chapter-landing > ul:last-child::before {
+    bottom: 0;
+    background: linear-gradient(
+        to bottom,
+        var(--_c, var(--rail-color-0)) 0%,
+        var(--_c, var(--rail-color-0)) calc(100% - 18px),
+        transparent 100%
+    );
+}
+
+/* If a section has no intro paragraph, bridge h3 directly to ul */
+.chapter-landing h3 + ul::before {
+    top: -6px;
+}
+
+/* --- Article items (small dots) --- */
 .chapter-landing ul li {
     margin: 0;
-    padding: 12px 16px;
+    padding: 12px 16px 12px 16px;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.05);
     border-radius: var(--border-radius);
@@ -1527,10 +1612,35 @@ button:focus-visible {
     position: relative;
 }
 
+/* Small dot on each list item */
+.chapter-landing ul li::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--rail-center-x) - (var(--small-dot-size) / 2));
+    top: var(--small-dot-top);
+    width: var(--small-dot-size);
+    height: var(--small-dot-size);
+    border-radius: 50%;
+    background: var(--rail-color-0);
+    z-index: 2;
+    transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
 .chapter-landing ul li:hover {
     background: rgba(255, 255, 255, 0.06);
     border-color: var(--accent-primary);
     transform: translateX(4px);
+}
+
+.chapter-landing ul li:hover::before {
+    transform: translateX(-4px) scale(1.35);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--_c, var(--rail-color-0)) 22%, transparent);
+}
+
+.chapter-landing ul li:focus-within::before,
+.chapter-landing ul li:active::before {
+    transform: scale(1.35);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--_c, var(--rail-color-0)) 22%, transparent);
 }
 
 .chapter-landing ul li a {
@@ -1544,9 +1654,62 @@ button:focus-visible {
     color: var(--accent-secondary);
 }
 
-/* Make the entire card clickable via JS — see below — or just rely on the <a> */
+/* --- Color progression per section --- */
+.chapter-landing h3[data-section="0"]::before,
+.chapter-landing h3[data-section="0"]::after,
+.chapter-landing h3[data-section="0"] + p::before,
+.chapter-landing ul[data-section="0"]::before,
+.chapter-landing ul[data-section="0"] li::before {
+    --_c: var(--rail-color-0);
+}
+.chapter-landing h3[data-section="1"]::before,
+.chapter-landing h3[data-section="1"]::after,
+.chapter-landing h3[data-section="1"] + p::before,
+.chapter-landing ul[data-section="1"]::before,
+.chapter-landing ul[data-section="1"] li::before {
+    --_c: var(--rail-color-1);
+}
+.chapter-landing h3[data-section="2"]::before,
+.chapter-landing h3[data-section="2"]::after,
+.chapter-landing h3[data-section="2"] + p::before,
+.chapter-landing ul[data-section="2"]::before,
+.chapter-landing ul[data-section="2"] li::before {
+    --_c: var(--rail-color-2);
+}
+.chapter-landing h3[data-section="3"]::before,
+.chapter-landing h3[data-section="3"]::after,
+.chapter-landing h3[data-section="3"] + p::before,
+.chapter-landing ul[data-section="3"]::before,
+.chapter-landing ul[data-section="3"] li::before {
+    --_c: var(--rail-color-3);
+}
+.chapter-landing h3[data-section="4"]::before,
+.chapter-landing h3[data-section="4"]::after,
+.chapter-landing h3[data-section="4"] + p::before,
+.chapter-landing ul[data-section="4"]::before,
+.chapter-landing ul[data-section="4"] li::before {
+    --_c: var(--rail-color-4);
+}
 
-/* Light theme overrides for chapter landing */
+/* Apply the section color variable to all rail elements */
+.chapter-landing h3::before {
+    background: var(--_c, var(--rail-color-0));
+    box-shadow: 0 0 0 2px var(--_c, var(--rail-color-0));
+}
+.chapter-landing h3::after,
+.chapter-landing h3 + p::before,
+.chapter-landing ul::before {
+    background: var(--_c, var(--rail-color-0));
+}
+.chapter-landing ul li::before {
+    background: var(--_c, var(--rail-color-0));
+}
+
+/* --- Light theme overrides --- */
+[data-theme="light"] .chapter-landing h3::before {
+    border-color: var(--bg-primary);
+}
+
 [data-theme="light"] .chapter-landing ul li {
     background: var(--bg-secondary);
     border: 1px solid var(--border-subtle);
