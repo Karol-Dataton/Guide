@@ -51,7 +51,7 @@ Conditions are evaluated **continuously** during playback, not just at the cue's
 
 - A media cue with a conditional render will appear and disappear dynamically as the expression toggles between true and false during the cue's active time range
 - A control cue with a conditional trigger will only execute its action (play, pause, stop, jump, etc.) when the condition is true at the moment the playhead reaches the cue's activation time
-- An output cue with a conditional trigger will only send its output message (HTTP, TCP, UDP, OSC) when the condition is true at the activation time
+- An output cue with a conditional trigger will only send its output message (TCP, UDP, or HTTP) when the condition is true at the activation time
 
 If a media cue's condition becomes false while it is actively rendering, it stops rendering immediately. If the condition becomes true again while the playhead is still within the cue's time range, rendering resumes.
 
