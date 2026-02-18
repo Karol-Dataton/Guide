@@ -1,7 +1,8 @@
 ---
-title: "Adding Displays"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
-
 
 ## Adding Displays
 

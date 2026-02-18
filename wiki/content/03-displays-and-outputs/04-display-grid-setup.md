@@ -1,5 +1,7 @@
 ---
-title: "Display Grid Setup"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
 
 

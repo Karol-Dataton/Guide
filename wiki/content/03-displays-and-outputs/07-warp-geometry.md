@@ -1,5 +1,7 @@
 ---
-title: "Warp Geometry"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
 
 ## Warp Geometry

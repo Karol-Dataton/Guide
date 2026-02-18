@@ -1,7 +1,8 @@
 ---
-title: "3D Mapping Projectors"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
-
 
 ## 3D Mapping Projectors
 

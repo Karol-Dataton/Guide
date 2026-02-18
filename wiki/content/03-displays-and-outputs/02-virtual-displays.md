@@ -1,7 +1,8 @@
 ---
-title: "Virtual Displays"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
-
 
 ## Virtual Displays
 

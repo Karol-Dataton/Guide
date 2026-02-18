@@ -1,5 +1,7 @@
 ---
-title: "Display Calibration"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
 
 

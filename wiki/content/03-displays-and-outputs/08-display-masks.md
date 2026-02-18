@@ -1,5 +1,7 @@
 ---
-title: "Display Masks"
+badge: Jacquie
+badge: JME
+badge: Karol
 ---
 
 
