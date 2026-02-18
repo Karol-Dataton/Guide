@@ -1,25 +1,42 @@
 /* ── Presentation Module — Git Tree ─────────────────────────────── */
 
 @font-face {
-    font-family: 'FuturaNow';
-    src: url('../wiki/fonts/FuturaNowHeadline-Rg.otf') format('opentype');
+    font-family: 'Futura Now Text';
+    src: url('./FuturaNowText-Rg.otf') format('opentype');
     font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Futura Now Headline Regular';
+    src: url('./FuturaNowHeadline-Rg.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
     font-display: swap;
 }
 
 :root {
-    --bg-primary: #0a0f1c;
-    --bg-secondary: #0f1729;
-    --bg-card: #141c30;
-    --border: rgba(148, 163, 184, 0.12);
-    --border-accent: rgba(99, 102, 241, 0.3);
-    --text-primary: rgba(255, 255, 255, 0.92);
-    --text-secondary: rgba(255, 255, 255, 0.58);
-    --text-muted: rgba(255, 255, 255, 0.32);
-    --accent: #818cf8;
-    --font-sans: 'Inter', -apple-system, system-ui, 'Segoe UI', sans-serif;
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-tertiary: #1a1a25;
+    --bg-glass: rgba(30, 30, 45, 0.72);
+    --bg-gradient-1: rgba(99, 102, 241, 0.15);
+    --bg-gradient-2: rgba(139, 92, 246, 0.1);
+    --accent-primary: #6b25dd;
+    --accent-secondary: #8b5cf6;
+    --accent-tertiary: #a855f7;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #8494a7;
+    --border-subtle: rgba(255, 255, 255, 0.06);
+    --font-family: 'Futura Now Text', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-date: 'Futura Now Headline Thin', 'Futura Now Text', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'SF Mono', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', monospace;
-    --row-height: 38px;
+    --border-radius: 10px;
+    --border-radius-lg: 16px;
+    --row-height: 48px;
+    --intro-top-space: clamp(220px, 42vh, 460px);
     --lane-width: 20px;
     --dot-radius: 5px;
 }
@@ -31,17 +48,28 @@
 }
 
 html {
-    background: var(--bg-primary);
-    color: var(--text-primary);
-    font-family: var(--font-sans);
-    font-size: 14px;
-    line-height: 1.5;
-    -webkit-font-smoothing: antialiased;
+    font-size: 16px;
+    scroll-behavior: smooth;
 }
 
 body {
+    font-family: var(--font-family);
+    background: var(--bg-primary);
+    color: var(--text-primary);
     min-height: 100vh;
-    padding: 0;
+    line-height: 1.55;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse at 20% 20%, var(--bg-gradient-1) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 80%, var(--bg-gradient-2) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: -1;
 }
 
 /* ── Header ────────────────────────────────────────────────────── */
@@ -50,32 +78,36 @@ body {
     position: sticky;
     top: 0;
     z-index: 100;
-    background: linear-gradient(180deg, var(--bg-primary) 60%, transparent);
-    padding: 24px 32px 32px;
-    pointer-events: none;
-}
-
-.page-header > * {
-    pointer-events: auto;
+    display: grid;
+    grid-template-columns: minmax(0, 1200px);
+    justify-content: center;
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 18px 24px;
+    display: none;
 }
 
 .page-title {
-    font-family: 'FuturaNow', var(--font-sans);
-    font-size: 1.6rem;
+    font-family: var(--font-family);
+    font-size: 1.9rem;
     font-weight: 400;
-    letter-spacing: 0.5px;
-    color: var(--text-primary);
+    letter-spacing: 0.03em;
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 4px;
 }
 
 .page-subtitle {
-    font-size: 0.82rem;
-    color: var(--text-muted);
+    font-size: 0.96rem;
+    color: var(--text-secondary);
     font-weight: 400;
 }
 
 .page-subtitle span {
-    color: var(--text-secondary);
+    color: var(--accent-tertiary);
 }
 
 /* ── Branch Legend ──────────────────────────────────────────────── */
@@ -83,7 +115,7 @@ body {
 .branch-legend {
     display: flex;
     flex-wrap: wrap;
-    gap: 8px;
+    gap: 10px;
     margin-top: 14px;
 }
 
@@ -91,20 +123,26 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 3px 10px;
+    padding: 5px 12px;
     border-radius: 20px;
-    font-size: 0.72rem;
+    font-size: 0.82rem;
     font-weight: 500;
     letter-spacing: 0.3px;
-    border: 1px solid transparent;
-    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-subtle);
+    background: rgba(255, 255, 255, 0.03);
     color: var(--text-secondary);
     white-space: nowrap;
+    transition: all 150ms ease;
+}
+
+.branch-pill:hover {
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
 }
 
 .branch-pill .dot {
-    width: 8px;
-    height: 8px;
+    width: 9px;
+    height: 9px;
     border-radius: 50%;
     flex-shrink: 0;
 }
@@ -118,50 +156,74 @@ body {
 
 .tree-container {
     position: relative;
-    padding: 0 32px 64px;
+    max-width: 1280px;
+    margin: 28px auto 0;
+    padding: var(--intro-top-space) 24px 56px;
 }
 
 .tree-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
     table-layout: fixed;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
 }
 
-.tree-table colgroup .col-date    { width: 100px; }
-.tree-table colgroup .col-graph   { width: 240px; }
-.tree-table colgroup .col-message { width: auto; }
-.tree-table colgroup .col-author  { width: 100px; }
-.tree-table colgroup .col-hash    { width: 72px; }
+.tree-table colgroup .col-meta {
+    width: 470px;
+}
+
+.tree-table colgroup .col-graph {
+    width: 120px;
+}
+
+.tree-table colgroup .col-message {
+    width: auto;
+}
 
 /* ── Date Separator ────────────────────────────────────────────── */
 
 .date-row td {
     padding: 0;
-    height: 32px;
+    height: 56px;
     vertical-align: middle;
+    opacity: 0.06;
+    transition: opacity 160ms linear;
 }
 
 .date-separator {
     display: flex;
     align-items: center;
-    gap: 14px;
-    padding: 6px 0;
+    gap: 16px;
+    padding: 14px 0;
 }
 
 .date-separator .date-label {
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.8px;
-    text-transform: uppercase;
-    color: var(--accent);
+    font-family: var(--font-date);
+    font-size: 2.05rem;
+    font-weight: 300;
+    letter-spacing: 0.4px;
     white-space: nowrap;
     flex-shrink: 0;
+    padding-left: 16px;
+}
+
+.date-separator .date-label .date-day {
+    color: #ffffff;
+    font-weight: 400;
+}
+
+.date-separator .date-label .date-rest {
+    color: var(--text-secondary);
+    font-weight: 300;
 }
 
 .date-separator .date-line {
     flex: 1;
-    height: 1px;
-    background: linear-gradient(90deg, var(--border-accent), transparent);
+    height: 2px;
+    background: linear-gradient(90deg, rgba(255, 255, 255, 0.92), rgba(255, 255, 255, 0.28) 45%, transparent);
+    margin-right: 16px;
 }
 
 /* ── Commit Row ────────────────────────────────────────────────── */
@@ -172,22 +234,50 @@ body {
 
 .commit-row td {
     vertical-align: middle;
-    padding: 0 4px;
+    padding: 0 10px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-.commit-row:hover {
-    background: rgba(99, 102, 241, 0.04);
+.cell-meta {
+    font-size: 0.92rem;
+    line-height: 1.4;
+    color: var(--text-secondary);
+    padding-left: 16px !important;
+    padding-right: 2px !important;
+    text-align: right;
+    white-space: nowrap;
+    padding-top: 2px;
 }
 
-.cell-date {
-    font-size: 0.72rem;
+.cell-meta .meta-hash {
+    font-family: var(--font-family);
+    font-size: 0.84rem;
     color: var(--text-muted);
-    font-variant-numeric: tabular-nums;
-    text-align: right;
-    padding-right: 12px !important;
+    opacity: 0.5;
+    letter-spacing: 0.04em;
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.cell-meta .meta-sep {
+    color: var(--text-muted);
+    opacity: 0.8;
+    font-size: 0.86rem;
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 10px;
+}
+
+.cell-meta .meta-author {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    display: inline-block;
+    vertical-align: middle;
+    max-width: 58%;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .cell-graph {
@@ -197,20 +287,17 @@ body {
 }
 
 .cell-message {
-    font-size: 0.82rem;
+    font-size: 0.98rem;
     color: var(--text-secondary);
-    padding-left: 10px !important;
-}
-
-.commit-row:hover .cell-message {
-    color: var(--text-primary);
+    padding-left: 14px !important;
+    padding-right: 16px !important;
 }
 
 .cell-message .ref-badge {
     display: inline-block;
-    font-size: 0.65rem;
+    font-size: 0.74rem;
     font-weight: 600;
-    padding: 1px 7px;
+    padding: 3px 9px;
     border-radius: 10px;
     margin-left: 6px;
     vertical-align: middle;
@@ -222,26 +309,6 @@ body {
 .cell-message .merge-indicator {
     color: var(--text-muted);
     font-style: italic;
-}
-
-.cell-author {
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    text-align: right;
-    padding-right: 8px !important;
-}
-
-.cell-hash {
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    color: var(--text-muted);
-    letter-spacing: 0.5px;
-    text-align: right;
-    padding-right: 0 !important;
-}
-
-.commit-row:hover .cell-hash {
-    color: var(--accent);
 }
 
 /* ── Canvas Overlay ────────────────────────────────────────────── */
@@ -256,16 +323,16 @@ body {
 /* ── Scrollbar ─────────────────────────────────────────────────── */
 
 ::-webkit-scrollbar {
-    width: 6px;
+    width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-    background: transparent;
+    background: var(--bg-secondary);
 }
 
 ::-webkit-scrollbar-thumb {
-    background: rgba(99, 102, 241, 0.3);
-    border-radius: 3px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
@@ -275,9 +342,31 @@ body {
 /* ── Footer ────────────────────────────────────────────────────── */
 
 .page-footer {
-    padding: 24px 32px;
-    border-top: 1px solid var(--border);
-    font-size: 0.72rem;
+    padding: 20px 24px 28px;
+    border-top: 1px solid var(--border-subtle);
+    font-size: 0.9rem;
     color: var(--text-muted);
     text-align: center;
+}
+
+@media (max-width: 900px) {
+    .page-header {
+        padding: 14px 14px;
+    }
+
+    .tree-container {
+        padding: clamp(140px, 28vh, 260px) 12px 44px;
+    }
+
+    .tree-table colgroup .col-meta {
+        width: 260px;
+    }
+
+    .tree-table colgroup .col-graph {
+        width: 100px;
+    }
+
+    .cell-message {
+        font-size: 0.9rem;
+    }
 }

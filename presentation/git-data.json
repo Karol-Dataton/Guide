@@ -1,6 +1,85 @@
 {
   "commits": [
     {
+      "hash": "b3deab9",
+      "parents": [
+        "0040293",
+        "b2a3197"
+      ],
+      "author": "Karol-Dataton",
+      "date": "2026-02-18",
+      "message": "Merge pull request #1 from Karol-Dataton/prez",
+      "refs": [
+        "HEAD -> main",
+        "origin/main",
+        "origin/HEAD"
+      ]
+    },
+    {
+      "hash": "b2a3197",
+      "parents": [
+        "ca5829f",
+        "0040293"
+      ],
+      "author": "Karol-Dataton",
+      "date": "2026-02-18",
+      "message": "Merge branch 'main' into prez",
+      "refs": []
+    },
+    {
+      "hash": "0040293",
+      "parents": [
+        "42b4bd5"
+      ],
+      "author": "karol",
+      "date": "2026-02-18",
+      "message": "git rail effect on landing",
+      "refs": []
+    },
+    {
+      "hash": "42b4bd5",
+      "parents": [
+        "cd8fe27"
+      ],
+      "author": "karol",
+      "date": "2026-02-18",
+      "message": "new chapter landing",
+      "refs": []
+    },
+    {
+      "hash": "cd8fe27",
+      "parents": [
+        "016a76a"
+      ],
+      "author": "karol",
+      "date": "2026-02-18",
+      "message": "badges",
+      "refs": []
+    },
+    {
+      "hash": "016a76a",
+      "parents": [
+        "6ffbe3f"
+      ],
+      "author": "karol",
+      "date": "2026-02-18",
+      "message": "chapter 5",
+      "refs": []
+    },
+    {
+      "hash": "ca5829f",
+      "parents": [
+        "6ffbe3f"
+      ],
+      "author": "Karol",
+      "date": "2026-02-17",
+      "message": "init",
+      "refs": [
+        "origin/prez",
+        "prez"
+      ]
+    },
+    {
       "hash": "6ffbe3f",
       "parents": [
         "39002c2"
@@ -8,12 +87,7 @@
       "author": "Karol",
       "date": "2026-02-17",
       "message": "widget update",
-      "refs": [
-        "HEAD -> prez",
-        "origin/main",
-        "origin/HEAD",
-        "main"
-      ]
+      "refs": []
     },
     {
       "hash": "39002c2",
@@ -37,6 +111,39 @@
       "refs": []
     },
     {
+      "hash": "f313670",
+      "parents": [
+        "322ad38"
+      ],
+      "author": "Karol",
+      "date": "2026-02-17",
+      "message": "last",
+      "refs": []
+    },
+    {
+      "hash": "2677bf5",
+      "parents": [
+        "9562bba",
+        "6b0222c"
+      ],
+      "author": "karol",
+      "date": "2026-02-18",
+      "message": "WIP on nodes: 9562bba fix submodules",
+      "refs": [
+        "refs/stash"
+      ]
+    },
+    {
+      "hash": "6b0222c",
+      "parents": [
+        "9562bba"
+      ],
+      "author": "karol",
+      "date": "2026-02-18",
+      "message": "index on nodes: 9562bba fix submodules",
+      "refs": []
+    },
+    {
       "hash": "9562bba",
       "parents": [
         "dc19171"
@@ -44,7 +151,9 @@
       "author": "karol",
       "date": "2026-02-17",
       "message": "fix submodules",
-      "refs": []
+      "refs": [
+        "nodes"
+      ]
     },
     {
       "hash": "dc19171",
@@ -94,16 +203,6 @@
       "author": "karol",
       "date": "2026-02-17",
       "message": "revert svg",
-      "refs": []
-    },
-    {
-      "hash": "f313670",
-      "parents": [
-        "322ad38"
-      ],
-      "author": "Karol",
-      "date": "2026-02-17",
-      "message": "last",
       "refs": []
     },
     {
@@ -197,29 +296,6 @@
       "refs": []
     },
     {
-      "hash": "b044e9a",
-      "parents": [
-        "b184688",
-        "d7875b2"
-      ],
-      "author": "Karol",
-      "date": "2026-02-15",
-      "message": "WIP on standalone: b184688 electron",
-      "refs": [
-        "refs/stash"
-      ]
-    },
-    {
-      "hash": "d7875b2",
-      "parents": [
-        "b184688"
-      ],
-      "author": "Karol",
-      "date": "2026-02-15",
-      "message": "index on standalone: b184688 electron",
-      "refs": []
-    },
-    {
       "hash": "b184688",
       "parents": [
         "5c06c31"
@@ -228,8 +304,7 @@
       "date": "2026-02-15",
       "message": "electron",
       "refs": [
-        "origin/standalone",
-        "standalone"
+        "origin/standalone"
       ]
     },
     {
@@ -445,6 +520,28 @@
       "refs": []
     },
     {
+      "hash": "2dae103",
+      "parents": [],
+      "author": "Karol-Dataton",
+      "date": "2026-02-12",
+      "message": "deploy: a61248648360595e35c82422c1cbc69fc862a8f1",
+      "refs": [
+        "origin/gh-pages"
+      ]
+    },
+    {
+      "hash": "ec53521",
+      "parents": [
+        "d9a7306"
+      ],
+      "author": "karol",
+      "date": "2026-02-12",
+      "message": "chore(release): 1.0.1",
+      "refs": [
+        "tag: v1.0.1"
+      ]
+    },
+    {
       "hash": "d9a7306",
       "parents": [
         "b6c09b5"
@@ -615,9 +712,7 @@
       "author": "Karol",
       "date": "2026-02-09",
       "message": "nodes",
-      "refs": [
-        "nodes"
-      ]
+      "refs": []
     },
     {
       "hash": "e2e4deb",
@@ -903,8 +998,7 @@
       "date": "2026-02-08",
       "message": "push",
       "refs": [
-        "origin/codex",
-        "codex"
+        "origin/codex"
       ]
     },
     {
@@ -956,8 +1050,7 @@
       "date": "2026-02-07",
       "message": "logo width",
       "refs": [
-        "origin/static",
-        "static"
+        "origin/static"
       ]
     },
     {
@@ -1050,8 +1143,7 @@
       "date": "2026-01-31",
       "message": "first",
       "refs": [
-        "origin/wiki",
-        "wiki"
+        "origin/wiki"
       ]
     },
     {
@@ -1361,58 +1453,28 @@
       "date": "2026-01-26",
       "message": "first commit",
       "refs": []
-    },
-    {
-      "hash": "2dae103",
-      "parents": [],
-      "author": "Karol-Dataton",
-      "date": "2026-02-12",
-      "message": "deploy: a61248648360595e35c82422c1cbc69fc862a8f1",
-      "refs": [
-        "origin/gh-pages"
-      ]
     }
   ],
   "branches": [
     {
-      "name": "codex",
-      "tip": "6999e11",
-      "remote": false
-    },
-    {
       "name": "main",
-      "tip": "6ffbe3f",
+      "tip": "b3deab9",
       "remote": false
     },
     {
       "name": "nodes",
-      "tip": "d35ceaf",
+      "tip": "9562bba",
       "remote": false
     },
     {
       "name": "prez",
-      "tip": "6ffbe3f",
+      "tip": "ca5829f",
       "remote": false
     },
     {
-      "name": "standalone",
-      "tip": "b184688",
-      "remote": false
-    },
-    {
-      "name": "static",
-      "tip": "941a4fa",
-      "remote": false
-    },
-    {
-      "name": "wiki",
-      "tip": "15e074a",
-      "remote": false
-    },
-    {
-      "name": "origin",
-      "tip": "6ffbe3f",
-      "remote": false
+      "name": "origin/HEAD",
+      "tip": "b3deab9",
+      "remote": true
     },
     {
       "name": "origin/badges",
@@ -1436,7 +1498,7 @@
     },
     {
       "name": "origin/main",
-      "tip": "6ffbe3f",
+      "tip": "b3deab9",
       "remote": true
     },
     {
@@ -1447,6 +1509,11 @@
     {
       "name": "origin/patterns_upg",
       "tip": "5c06c31",
+      "remote": true
+    },
+    {
+      "name": "origin/prez",
+      "tip": "ca5829f",
       "remote": true
     },
     {
@@ -1465,7 +1532,12 @@
       "remote": true
     }
   ],
-  "tags": [],
-  "generated": "2026-02-17T22:35:11.237Z",
+  "tags": [
+    {
+      "name": "v1.0.1",
+      "tip": "417baff"
+    }
+  ],
+  "generated": "2026-02-18T12:51:48.968Z",
   "repoName": "WO_keys"
 }

@@ -141,7 +141,12 @@ function getWidgetContent(widgetName) {
     const widgetPath = path.join(__dirname, '..', 'widgets', `${safeName}.html`);
 
     if (fs.existsSync(widgetPath)) {
-        return fs.readFileSync(widgetPath, 'utf-8');
+        try {
+            return fs.readFileSync(widgetPath, 'utf-8');
+        } catch (e) {
+            console.warn(`Warning: Failed to read widget "${safeName}": ${e.message}`);
+            return `<div class="widget-error">Error loading widget: ${widgetName}</div>`;
+        }
     } else {
         console.warn(`Warning: Widget "${safeName}" not found at ${widgetPath}`);
         return `<div class="widget-error">Widget not found: ${widgetName}</div>`;

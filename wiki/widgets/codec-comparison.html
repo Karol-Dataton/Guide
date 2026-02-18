@@ -31,6 +31,10 @@
 </div>
 
 <style>
+    #codec-comparison-canvas {
+        background: transparent !important;
+    }
+
     #codec-comparison-widget .codec-filter-btn,
     #codec-comparison-widget .codec-toggle-btn {
         padding: 7px 12px;
@@ -63,8 +67,82 @@
         const canvas = document.getElementById('codec-comparison-canvas');
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
-        const W = canvas.width;
-        const H = canvas.height;
+
+        // High DPI / Retina display support
+        const dpr = window.devicePixelRatio || 1;
+        const logicalW = 960;
+        const logicalH = 560;
+
+        canvas.width = logicalW * dpr;
+        canvas.height = logicalH * dpr;
+
+        // Scale context to match logical coordinate system
+        ctx.scale(dpr, dpr);
+
+        const W = logicalW;
+        const H = logicalH;
+
+        // Theme management
+        const theme = {
+            bg: '#0f1729',
+            grid: 'rgba(255,255,255,0.05)',
+            textPrimary: '#ffffff',
+            textSecondary: '#94a3b8',
+            fontFamily: '-apple-system, sans-serif',
+            fontHeader: '-apple-system, sans-serif',
+            accent: '#6366f1',
+            gpu: '#6366f1',
+            cpu: '#f59e0b',
+            raw: '#22c55e',
+            border: 'rgba(255,255,255,0.1)',
+            tooltipBg: '#1e293b'
+        };
+
+        function colorFromVar(varName, fallback) {
+            if (typeof window === 'undefined') return fallback;
+            const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+            return val || fallback;
+        }
+
+        function updateTheme() {
+            theme.bg = colorFromVar('--bg-secondary', '#12121a');
+            theme.grid = colorFromVar('--border-subtle', 'rgba(255,255,255,0.06)');
+            theme.textPrimary = colorFromVar('--text-primary', '#f8fafc');
+            theme.textSecondary = colorFromVar('--text-secondary', '#94a3b8');
+            theme.fontFamily = colorFromVar('--font-family', '-apple-system, BlinkMacSystemFont, sans-serif');
+            theme.fontHeader = colorFromVar('--font-header', 'sans-serif');
+            theme.accent = colorFromVar('--accent-primary', '#6B25DD');
+
+            // Map groups to wiki category colors
+            theme.gpu = colorFromVar('--accent-primary', '#6B25DD'); // Main brand color for GPU
+            theme.cpu = colorFromVar('--cat-timeline', '#f59e0b'); // Timeline color for CPU
+            theme.raw = colorFromVar('--cat-general', '#22c55e'); // Green for raw/general
+
+            theme.border = colorFromVar('--border-subtle', 'rgba(255,255,255,0.1)');
+            theme.tooltipBg = colorFromVar('--bg-tertiary', '#1a1a25');
+        }
+
+        // Helper to apply alpha to any CSS color (hex, rgb, hsl, var)
+        function setFill(color, alpha) {
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = color;
+        }
+
+        function setStroke(color, alpha) {
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = color;
+        }
+
+        // Initialize theme
+        updateTheme();
+
+        // Watch for theme changes
+        const observer = new MutationObserver(() => {
+            updateTheme();
+            requestAnimation();
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
 
         const codecData = [
             {
@@ -258,11 +336,10 @@
             byName[codec.name] = codec;
         });
 
-        const groupColor = {
-            gpu: '#6366f1',
-            cpu: '#f59e0b',
-            raw: '#22c55e'
-        };
+        // Computed group colors function
+        function getGroupColor(group) {
+            return theme[group] || theme.textSecondary;
+        }
 
         const state = {
             selected: new Set(['HAP', 'HAP Q', 'NotchLC Opaque', 'HEVC 4:2:0', 'H.264']),
@@ -275,7 +352,10 @@
             mouseX: 0,
             mouseY: 0,
             scrollY: 0,
-            scrollMax: 0
+            scrollMax: 0,
+            isDragging: false,
+            dragStartY: 0,
+            dragStartScrollY: 0
         };
 
         const visuals = Object.create(null);
@@ -400,48 +480,35 @@
             }
         }
 
-        function drawBackground() {
-            const gradient = ctx.createLinearGradient(0, 0, 0, H);
-            gradient.addColorStop(0, '#0b1220');
-            gradient.addColorStop(1, '#0f1729');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, 0, W, H);
 
-            ctx.strokeStyle = 'rgba(99, 102, 241, 0.05)';
-            ctx.lineWidth = 1;
-            for (let x = 0; x < W; x += 30) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, H);
-                ctx.stroke();
-            }
-            for (let y = 0; y < H; y += 30) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(W, y);
-                ctx.stroke();
-            }
+
+        function drawBackground() {
+            // Clear background to remove container panel look
+            ctx.clearRect(0, 0, W, H);
         }
 
         function drawTitle() {
-            ctx.font = 'bold 14px -apple-system, system-ui, sans-serif';
+            ctx.font = 'bold 16px ' + theme.fontHeader; // Increased size slightly to match wiki size
             ctx.textAlign = 'left';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.72)';
+
+            setFill(theme.textPrimary, 0.9);
             ctx.fillText('Codec Comparison', 24, 28);
 
             const visibleCount = visibleNames.length;
-            ctx.font = '11px -apple-system, system-ui, sans-serif';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+            ctx.font = '11px ' + theme.fontFamily;
+            setFill(theme.textSecondary, 0.8);
+
             let subline = 'Visible rows: ' + visibleCount;
             if (state.scrollMax > 0) {
                 subline += ' | Scroll to see all';
             }
             ctx.fillText(subline, 24, 47);
+            ctx.globalAlpha = 1; // Reset
         }
 
         function drawChips() {
             chipHitboxes = [];
-            ctx.font = '11px -apple-system, system-ui, sans-serif';
+            ctx.font = '11px ' + theme.fontFamily;
             ctx.textAlign = 'left';
             ctx.textBaseline = 'middle';
 
@@ -450,6 +517,30 @@
             const chipH = 24;
             let x = left;
             let y = 62;
+
+            // Draw Select All chip
+            const selectAllLabel = "Select All";
+            const saTextW = Math.ceil(ctx.measureText(selectAllLabel).width);
+            const saChipW = saTextW + 18;
+
+            const isSAHovered = state.hoverChip === 'SELECT_ALL';
+            const saBorderAlpha = isSAHovered ? 0.9 : 0.4;
+            const saFillAlpha = isSAHovered ? 0.2 : 0.1;
+
+
+            roundRect(x, y, saChipW, chipH, 7);
+            const saColor = theme.textSecondary;
+            setFill(saColor, saFillAlpha);
+            ctx.fill();
+            setStroke(saColor, saBorderAlpha);
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            setFill(theme.textPrimary, 0.9);
+            ctx.fillText(selectAllLabel, x + 9, y + chipH / 2 + 0.5);
+
+            chipHitboxes.push({ x, y, w: saChipW, h: chipH, name: 'SELECT_ALL', action: true });
+            x += saChipW + 8;
 
             codecData.forEach(codec => {
                 const label = codec.name + (codec.recommended ? ' *' : '');
@@ -464,25 +555,25 @@
                 const isSelected = state.selected.has(codec.name);
                 const isDimmed = !passesFilter(codec);
                 const isHovered = state.hoverChip === codec.name;
-                const color = groupColor[codec.group] || '#64748b';
+                const color = getGroupColor(codec.group);
 
                 const fillAlpha = isSelected ? (isDimmed ? 0.12 : 0.22) : (isDimmed ? 0.02 : 0.06);
                 const borderAlpha = isHovered ? 0.75 : isSelected ? 0.55 : 0.25;
 
                 roundRect(x, y, chipW, chipH, 7);
-                ctx.fillStyle = rgbaFromHex(color, fillAlpha);
+                setFill(color, fillAlpha);
                 ctx.fill();
-                ctx.strokeStyle = rgbaFromHex(color, borderAlpha);
+                setStroke(color, borderAlpha);
                 ctx.lineWidth = isSelected ? 1.4 : 1;
                 ctx.stroke();
 
-                ctx.fillStyle = isDimmed ? 'rgba(255,255,255,0.35)' : 'rgba(255,255,255,0.82)';
+                setFill(theme.textPrimary, isDimmed ? 0.45 : 0.9);
                 ctx.fillText(label, x + 9, y + chipH / 2 + 0.5);
 
                 chipHitboxes.push({ x, y, w: chipW, h: chipH, name: codec.name });
                 x += chipW + 8;
             });
-
+            ctx.globalAlpha = 1;
             return y + chipH;
         }
 
@@ -490,14 +581,15 @@
             rowHitboxes = [];
             scrollThumbRect = null;
             const rowX = 24;
-            const rowW = W - 48;
+            // Shorten row width so scrollbar is not over content
+            const rowW = W - 64;
             const rowH = 48;
             const rowPitch = 56;
 
             rowViewportRect = {
                 x: rowX,
                 y: rowsStartY + 2,
-                w: rowW,
+                w: rowW + 40, // Viewport is slightly wider than rows
                 h: H - (rowsStartY + 2) - 52
             };
 
@@ -505,12 +597,7 @@
                 rowViewportRect.h = 80;
             }
 
-            roundRect(rowViewportRect.x, rowViewportRect.y, rowViewportRect.w, rowViewportRect.h, 10);
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.22)';
-            ctx.fill();
-            ctx.strokeStyle = 'rgba(148, 163, 184, 0.2)';
-            ctx.lineWidth = 1;
-            ctx.stroke();
+            // Removed container panel background/border drawing here
 
             const contentHeight = visibleNames.length === 0
                 ? 0
@@ -522,7 +609,8 @@
             }
 
             ctx.save();
-            roundRect(rowViewportRect.x + 1, rowViewportRect.y + 1, rowViewportRect.w - 2, rowViewportRect.h - 2, 9);
+            // Clip to viewport area
+            roundRect(rowViewportRect.x - 10, rowViewportRect.y - 10, rowViewportRect.w + 20, rowViewportRect.h + 20, 0);
             ctx.clip();
 
             const sortedVisuals = codecData
@@ -536,9 +624,10 @@
                 const y = rowViewportRect.y + v.y - state.scrollY;
                 const alpha = v.alpha;
                 const isHover = state.hoverRow === codec.name;
-                const rowColor = groupColor[codec.group] || '#64748b';
+                const rowColor = getGroupColor(codec.group);
 
-                if (y + rowH < rowViewportRect.y - 2 || y > rowViewportRect.y + rowViewportRect.h + 2) {
+                // Culling
+                if (y + rowH < rowViewportRect.y - 20 || y > rowViewportRect.y + rowViewportRect.h + 20) {
                     return;
                 }
 
@@ -546,27 +635,29 @@
                 const borderAlpha = 0.28 * alpha + (isHover ? 0.35 : 0);
 
                 roundRect(rowX, y, rowW, rowH, 9);
-                ctx.fillStyle = rgbaFromHex(rowColor, fillAlpha);
+                setFill(rowColor, fillAlpha);
                 ctx.fill();
-                ctx.strokeStyle = rgbaFromHex(rowColor, borderAlpha);
+                setStroke(rowColor, borderAlpha);
                 ctx.lineWidth = isHover ? 1.5 : 1;
                 ctx.stroke();
 
                 ctx.globalAlpha = alpha;
 
-                ctx.font = 'bold 12px -apple-system, system-ui, sans-serif';
+                ctx.font = 'bold 12px ' + theme.fontFamily;
                 ctx.textAlign = 'left';
                 ctx.textBaseline = 'middle';
-                ctx.fillStyle = 'rgba(255,255,255,0.92)';
+
+                setFill(theme.textPrimary, 0.95);
                 ctx.fillText(codec.name + (codec.recommended ? ' *' : ''), rowX + 12, y + 16);
 
                 roundRect(rowX + 12, y + 26, 90, 16, 8);
-                ctx.fillStyle = rgbaFromHex(rowColor, 0.25);
+                setFill(rowColor, 0.25);
                 ctx.fill();
-                ctx.strokeStyle = rgbaFromHex(rowColor, 0.45);
+                setStroke(rowColor, 0.45);
                 ctx.stroke();
-                ctx.font = '10px -apple-system, system-ui, sans-serif';
-                ctx.fillStyle = 'rgba(255,255,255,0.78)';
+
+                ctx.font = '10px ' + theme.fontFamily;
+                setFill(theme.textPrimary, 0.9);
                 ctx.fillText(codec.decode, rowX + 17, y + 34);
 
                 const barX = rowX + 170;
@@ -574,7 +665,7 @@
                 const fileY = y + 15;
                 const scrubY = y + 31;
 
-                ctx.fillStyle = 'rgba(255,255,255,0.08)';
+                setFill(theme.textSecondary, 0.15);
                 roundRect(barX, fileY, barW, 8, 4);
                 ctx.fill();
                 roundRect(barX, scrubY, barW, 8, 4);
@@ -591,23 +682,54 @@
                 roundRect(barX, scrubY, Math.max(2, scrubFill), 8, 4);
                 ctx.fill();
 
-                ctx.font = '10px -apple-system, system-ui, sans-serif';
-                ctx.fillStyle = 'rgba(255,255,255,0.66)';
+                ctx.font = '10px ' + theme.fontFamily;
+                setFill(theme.textSecondary, 0.8);
                 ctx.fillText('File: ' + codec.fileLabel, barX + barW + 10, fileY + 4);
                 ctx.fillText('Scrub: ' + codec.scrubLabel, barX + barW + 10, scrubY + 4);
 
-                const alphaX = rowX + rowW - 180;
-                roundRect(alphaX, y + 14, 64, 20, 10);
-                ctx.fillStyle = codec.alpha ? 'rgba(34,197,94,0.2)' : 'rgba(148,163,184,0.16)';
-                ctx.fill();
-                ctx.strokeStyle = codec.alpha ? 'rgba(34,197,94,0.55)' : 'rgba(148,163,184,0.35)';
-                ctx.stroke();
-                ctx.fillStyle = codec.alpha ? 'rgba(134,239,172,0.95)' : 'rgba(203,213,225,0.85)';
-                ctx.fillText(codec.alpha ? 'Alpha yes' : 'Alpha no', alphaX + 8, y + 24);
+                // Right column for Alpha and Description
+                const rightColW = 220;
+                const rightColX = rowX + rowW - rightColW;
+                const centerX = rightColX + rightColW / 2;
 
-                ctx.font = '10px -apple-system, system-ui, sans-serif';
-                ctx.fillStyle = 'rgba(255,255,255,0.56)';
-                ctx.fillText(codec.bestFor, rowX + rowW - 180, y + 40);
+                // Alpha Badge
+                const badgeW = 64;
+                const badgeH = 18;
+                const badgeX = centerX - badgeW / 2;
+                const badgeY = y + 8;
+
+                roundRect(badgeX, badgeY, badgeW, badgeH, 9);
+
+                const yesColor = theme.raw; // green
+                const noColor = theme.textSecondary;
+
+                if (codec.alpha) {
+                    setFill(yesColor, 0.2);
+                    ctx.fill();
+                    setStroke(yesColor, 0.55);
+                    ctx.stroke();
+
+                    ctx.font = '10px ' + theme.fontFamily;
+                    ctx.textAlign = 'center';
+                    setFill(yesColor, 0.95);
+                    ctx.fillText('Alpha', centerX, badgeY + badgeH / 2 + 1);
+                } else {
+                    setFill(noColor, 0.1);
+                    ctx.fill();
+                    setStroke(noColor, 0.25);
+                    ctx.stroke();
+
+                    ctx.font = '10px ' + theme.fontFamily;
+                    ctx.textAlign = 'center';
+                    setFill(noColor, 0.6);
+                    ctx.fillText('No Alpha', centerX, badgeY + badgeH / 2 + 1);
+                }
+
+                // Description
+                ctx.font = '10px ' + theme.fontFamily;
+                ctx.textAlign = 'center';
+                setFill(theme.textSecondary, 0.7);
+                ctx.fillText(codec.bestFor, centerX, y + 36);
 
                 ctx.globalAlpha = 1;
 
@@ -617,30 +739,27 @@
             });
 
             if (visibleNames.length === 0) {
-                roundRect(rowViewportRect.x + 12, rowViewportRect.y + 24, rowViewportRect.w - 24, 70, 10);
-                ctx.fillStyle = 'rgba(148, 163, 184, 0.08)';
-                ctx.fill();
-                ctx.strokeStyle = 'rgba(148, 163, 184, 0.25)';
-                ctx.stroke();
-
-                ctx.font = '12px -apple-system, system-ui, sans-serif';
+                // Centered empty state
+                const emptyY = rowViewportRect.y + 60;
+                ctx.font = '12px ' + theme.fontFamily;
                 ctx.textAlign = 'center';
-                ctx.fillStyle = 'rgba(226, 232, 240, 0.75)';
-                ctx.fillText('No codecs are currently visible.', W / 2, rowViewportRect.y + 52);
-                ctx.font = '11px -apple-system, system-ui, sans-serif';
-                ctx.fillStyle = 'rgba(148, 163, 184, 0.9)';
-                ctx.fillText('Select codec chips or relax filters to compare.', W / 2, rowViewportRect.y + 73);
+                setFill(theme.textPrimary, 0.75);
+                ctx.fillText('No codecs are currently visible.', W / 2, emptyY);
+                ctx.font = '11px ' + theme.fontFamily;
+                setFill(theme.textSecondary, 0.9);
+                ctx.fillText('Select codec chips or relax filters to compare.', W / 2, emptyY + 21);
             }
 
             ctx.restore();
 
             if (state.scrollMax > 0) {
-                const trackX = rowViewportRect.x + rowViewportRect.w - 10;
+                // Scrollbar on the far right
+                const trackX = W - 24;
                 const trackY = rowViewportRect.y + 8;
                 const trackH = rowViewportRect.h - 16;
 
                 roundRect(trackX, trackY, 4, trackH, 2);
-                ctx.fillStyle = 'rgba(148, 163, 184, 0.25)';
+                setFill(theme.textSecondary, 0.15);
                 ctx.fill();
 
                 const thumbH = Math.max(28, (rowViewportRect.h / contentHeight) * trackH);
@@ -648,11 +767,8 @@
                 const thumbY = trackY + (state.scrollY / state.scrollMax) * thumbRange;
 
                 roundRect(trackX - 1, thumbY, 6, thumbH, 3);
-                ctx.fillStyle = 'rgba(99, 102, 241, 0.75)';
+                setFill(theme.accent, 0.75);
                 ctx.fill();
-                ctx.strokeStyle = 'rgba(199, 210, 254, 0.7)';
-                ctx.lineWidth = 1;
-                ctx.stroke();
 
                 scrollThumbRect = {
                     x: trackX - 3,
@@ -668,28 +784,29 @@
 
         function drawLegend() {
             const y = H - 34;
-            ctx.font = '10px -apple-system, system-ui, sans-serif';
+            ctx.font = '10px ' + theme.fontFamily;
             ctx.textAlign = 'left';
-            ctx.fillStyle = 'rgba(255,255,255,0.65)';
+            setFill(theme.textSecondary, 0.7);
 
-            drawLegendDot(24, y - 5, groupColor.gpu, 'GPU decode');
-            drawLegendDot(132, y - 5, groupColor.cpu, 'CPU decode');
-            drawLegendDot(240, y - 5, groupColor.raw, 'Direct/raw');
+            drawLegendDot(24, y - 5, theme.gpu, 'GPU decode');
+            drawLegendDot(132, y - 5, theme.cpu, 'CPU decode');
+            drawLegendDot(240, y - 5, theme.raw, 'Direct/raw');
 
-            ctx.fillStyle = 'rgba(255,255,255,0.45)';
+            setFill(theme.textSecondary, 0.5);
             let suffix = '* Recommended defaults';
             if (state.scrollMax > 0) {
-                suffix += ' | wheel scroll list';
+                suffix += ' | Scroll to see all';
             }
             ctx.fillText(suffix, W - 250, y);
+            ctx.globalAlpha = 1;
         }
 
         function drawLegendDot(x, y, color, label) {
             ctx.beginPath();
             ctx.arc(x, y, 4, 0, Math.PI * 2);
-            ctx.fillStyle = color;
+            setFill(color, 1);
             ctx.fill();
-            ctx.fillStyle = 'rgba(255,255,255,0.65)';
+            setFill(theme.textSecondary, 0.7);
             ctx.fillText(label, x + 9, y + 3);
         }
 
@@ -719,22 +836,24 @@
             if (y < 8) y = 8;
 
             roundRect(x, y, tipW, tipH, 8);
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.96)';
+            setFill(theme.tooltipBg, 0.98); // High opacity for tooltip
             ctx.fill();
-            ctx.strokeStyle = rgbaFromHex(groupColor[codec.group] || '#64748b', 0.75);
+            setStroke(getGroupColor(codec.group), 0.75);
             ctx.lineWidth = 1;
             ctx.stroke();
 
-            ctx.font = '11px -apple-system, system-ui, sans-serif';
+            ctx.font = '11px ' + theme.fontFamily;
             ctx.textAlign = 'left';
-            ctx.fillStyle = 'rgba(255,255,255,0.92)';
+
+            setFill(theme.textPrimary, 0.95);
             ctx.fillText(lines[0], x + 12, y + 19);
 
-            ctx.font = '10px -apple-system, system-ui, sans-serif';
-            ctx.fillStyle = 'rgba(226,232,240,0.85)';
+            ctx.font = '10px ' + theme.fontFamily;
+            setFill(theme.textSecondary, 0.9);
             for (let i = 1; i < lines.length; i++) {
                 ctx.fillText(lines[i], x + 12, y + 19 + i * 17);
             }
+            ctx.globalAlpha = 1;
         }
 
         function draw() {
@@ -742,12 +861,7 @@
             drawTitle();
             const chipsBottom = drawChips();
 
-            ctx.strokeStyle = 'rgba(255,255,255,0.12)';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(24, chipsBottom + 12);
-            ctx.lineTo(W - 24, chipsBottom + 12);
-            ctx.stroke();
+
 
             drawRows(chipsBottom + 16);
             drawLegend();
@@ -775,6 +889,7 @@
 
         filterAllBtn.addEventListener('click', () => setDecodeFilter('all'));
         filterGpuBtn.addEventListener('click', () => setDecodeFilter('gpu'));
+        filterCpuBtn.addEventListener('click', () => setDecodeFilter('cpu'));
         filterCpuBtn.addEventListener('click', () => setDecodeFilter('cpu'));
         filterRawBtn.addEventListener('click', () => setDecodeFilter('raw'));
         alphaToggleBtn.addEventListener('click', () => {
@@ -826,6 +941,19 @@
 
             const hoverScrollThumb = scrollThumbRect && pointInRect(p.x, p.y, scrollThumbRect);
 
+            if (state.isDragging) {
+                const dy = p.y - state.dragStartY;
+                if (scrollThumbRect && state.scrollMax > 0) {
+                    const thumbRange = scrollThumbRect.trackH - scrollThumbRect.thumbH;
+                    if (thumbRange > 0) {
+                        const deltaScroll = (dy / thumbRange) * state.scrollMax;
+                        state.scrollY = Math.max(0, Math.min(state.scrollMax, state.dragStartScrollY + deltaScroll));
+                        draw();
+                    }
+                }
+                return;
+            }
+
             const nextCursor = hoverScrollThumb ? 'ns-resize' : (hoverChip || hoverRow ? 'pointer' : 'default');
             canvas.style.cursor = nextCursor;
 
@@ -833,6 +961,13 @@
                 state.hoverChip = hoverChip;
                 state.hoverRow = hoverRow;
                 draw();
+            }
+        });
+
+        canvas.addEventListener('pointerup', (evt) => {
+            if (state.isDragging) {
+                state.isDragging = false;
+                canvas.releasePointerCapture(evt.pointerId);
             }
         });
 
@@ -846,13 +981,32 @@
         canvas.addEventListener('pointerdown', (evt) => {
             const p = getCanvasCoords(evt);
 
+            if (scrollThumbRect && pointInRect(p.x, p.y, scrollThumbRect)) {
+                state.isDragging = true;
+                state.dragStartY = p.y;
+                state.dragStartScrollY = state.scrollY;
+                canvas.setPointerCapture(evt.pointerId);
+                return;
+            }
+
             for (let i = 0; i < chipHitboxes.length; i++) {
                 const chip = chipHitboxes[i];
                 if (pointInRect(p.x, p.y, chip)) {
-                    if (state.selected.has(chip.name)) {
-                        state.selected.delete(chip.name);
+                    if (chip.action && chip.name === 'SELECT_ALL') {
+                        // Select All Action
+                        const allSelected = codecData.every(c => state.selected.has(c.name));
+                        if (allSelected) {
+                            state.selected.clear();
+                        } else {
+                            codecData.forEach(c => state.selected.add(c.name));
+                        }
                     } else {
-                        state.selected.add(chip.name);
+                        // Toggle regular chip
+                        if (state.selected.has(chip.name)) {
+                            state.selected.delete(chip.name);
+                        } else {
+                            state.selected.add(chip.name);
+                        }
                     }
                     updateTargets();
                     return;
@@ -891,11 +1045,19 @@
             ctx.closePath();
         }
 
+        // Kept for backward compat with score functions
         function rgbaFromHex(hex, alpha) {
-            const r = parseInt(hex.slice(1, 3), 16);
-            const g = parseInt(hex.slice(3, 5), 16);
-            const b = parseInt(hex.slice(5, 7), 16);
-            return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+            // This might fail if hex is not hex.
+            // But score functions return rgba string now.
+            // This function was used in old draw loop.
+            // Helper: if hex starts with # parse it.
+            if (hex.startsWith('#')) {
+                const r = parseInt(hex.slice(1, 3), 16);
+                const g = parseInt(hex.slice(3, 5), 16);
+                const b = parseInt(hex.slice(5, 7), 16);
+                return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+            }
+            return hex; // Fallback
         }
 
         function fileScaleColor(score) {
