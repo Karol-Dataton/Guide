@@ -1,0 +1,1471 @@
+{
+  "commits": [
+    {
+      "hash": "6ffbe3f",
+      "parents": [
+        "39002c2"
+      ],
+      "author": "Karol",
+      "date": "2026-02-17",
+      "message": "widget update",
+      "refs": [
+        "HEAD -> prez",
+        "origin/main",
+        "origin/HEAD",
+        "main"
+      ]
+    },
+    {
+      "hash": "39002c2",
+      "parents": [
+        "a2338cb"
+      ],
+      "author": "Karol",
+      "date": "2026-02-17",
+      "message": "chapter 4",
+      "refs": []
+    },
+    {
+      "hash": "a2338cb",
+      "parents": [
+        "f313670",
+        "9562bba"
+      ],
+      "author": "Karol",
+      "date": "2026-02-17",
+      "message": "Merge branch 'main' of github.com-work:Karol-Dataton/Guide",
+      "refs": []
+    },
+    {
+      "hash": "9562bba",
+      "parents": [
+        "dc19171"
+      ],
+      "author": "karol",
+      "date": "2026-02-17",
+      "message": "fix submodules",
+      "refs": []
+    },
+    {
+      "hash": "dc19171",
+      "parents": [
+        "effb694"
+      ],
+      "author": "karol",
+      "date": "2026-02-17",
+      "message": "pattern gen",
+      "refs": []
+    },
+    {
+      "hash": "effb694",
+      "parents": [
+        "888cc83"
+      ],
+      "author": "karol",
+      "date": "2026-02-17",
+      "message": "changes",
+      "refs": []
+    },
+    {
+      "hash": "888cc83",
+      "parents": [
+        "b32b0ec"
+      ],
+      "author": "karol",
+      "date": "2026-02-17",
+      "message": "tweaks calibration widget",
+      "refs": []
+    },
+    {
+      "hash": "b32b0ec",
+      "parents": [
+        "b68d2e4"
+      ],
+      "author": "karol",
+      "date": "2026-02-17",
+      "message": "widgets",
+      "refs": []
+    },
+    {
+      "hash": "b68d2e4",
+      "parents": [
+        "322ad38"
+      ],
+      "author": "karol",
+      "date": "2026-02-17",
+      "message": "revert svg",
+      "refs": []
+    },
+    {
+      "hash": "f313670",
+      "parents": [
+        "322ad38"
+      ],
+      "author": "Karol",
+      "date": "2026-02-17",
+      "message": "last",
+      "refs": []
+    },
+    {
+      "hash": "322ad38",
+      "parents": [
+        "17eb379"
+      ],
+      "author": "Karol",
+      "date": "2026-02-16",
+      "message": "new widgets",
+      "refs": []
+    },
+    {
+      "hash": "17eb379",
+      "parents": [
+        "b82cc03"
+      ],
+      "author": "Karol",
+      "date": "2026-02-16",
+      "message": "supabase",
+      "refs": []
+    },
+    {
+      "hash": "b82cc03",
+      "parents": [
+        "1cec362"
+      ],
+      "author": "Karol",
+      "date": "2026-02-16",
+      "message": "burning tokens, content edits, mapping widget",
+      "refs": []
+    },
+    {
+      "hash": "1cec362",
+      "parents": [
+        "920bc7b"
+      ],
+      "author": "karol",
+      "date": "2026-02-16",
+      "message": "work on calibration widget",
+      "refs": []
+    },
+    {
+      "hash": "920bc7b",
+      "parents": [
+        "77dbde3"
+      ],
+      "author": "karol",
+      "date": "2026-02-16",
+      "message": "fmt",
+      "refs": []
+    },
+    {
+      "hash": "77dbde3",
+      "parents": [
+        "dad8d02"
+      ],
+      "author": "karol",
+      "date": "2026-02-16",
+      "message": "fmt",
+      "refs": []
+    },
+    {
+      "hash": "dad8d02",
+      "parents": [
+        "7f153ea"
+      ],
+      "author": "karol",
+      "date": "2026-02-16",
+      "message": "show-info",
+      "refs": []
+    },
+    {
+      "hash": "7f153ea",
+      "parents": [
+        "631a33e"
+      ],
+      "author": "karol",
+      "date": "2026-02-16",
+      "message": "consolidate",
+      "refs": []
+    },
+    {
+      "hash": "631a33e",
+      "parents": [
+        "5c06c31"
+      ],
+      "author": "karol",
+      "date": "2026-02-16",
+      "message": "show-properties updates",
+      "refs": []
+    },
+    {
+      "hash": "b044e9a",
+      "parents": [
+        "b184688",
+        "d7875b2"
+      ],
+      "author": "Karol",
+      "date": "2026-02-15",
+      "message": "WIP on standalone: b184688 electron",
+      "refs": [
+        "refs/stash"
+      ]
+    },
+    {
+      "hash": "d7875b2",
+      "parents": [
+        "b184688"
+      ],
+      "author": "Karol",
+      "date": "2026-02-15",
+      "message": "index on standalone: b184688 electron",
+      "refs": []
+    },
+    {
+      "hash": "b184688",
+      "parents": [
+        "5c06c31"
+      ],
+      "author": "Karol",
+      "date": "2026-02-15",
+      "message": "electron",
+      "refs": [
+        "origin/standalone",
+        "standalone"
+      ]
+    },
+    {
+      "hash": "5c06c31",
+      "parents": [
+        "4552d30"
+      ],
+      "author": "Karol",
+      "date": "2026-02-15",
+      "message": "walter feedback",
+      "refs": [
+        "origin/patterns_upg"
+      ]
+    },
+    {
+      "hash": "4552d30",
+      "parents": [
+        "90250e8"
+      ],
+      "author": "Karol",
+      "date": "2026-02-15",
+      "message": "changes",
+      "refs": []
+    },
+    {
+      "hash": "90250e8",
+      "parents": [
+        "74be4aa"
+      ],
+      "author": "Karol",
+      "date": "2026-02-14",
+      "message": "styling",
+      "refs": []
+    },
+    {
+      "hash": "74be4aa",
+      "parents": [
+        "c268110"
+      ],
+      "author": "Karol",
+      "date": "2026-02-14",
+      "message": "more clock",
+      "refs": []
+    },
+    {
+      "hash": "c268110",
+      "parents": [
+        "36870b9"
+      ],
+      "author": "Karol",
+      "date": "2026-02-14",
+      "message": "clock",
+      "refs": []
+    },
+    {
+      "hash": "36870b9",
+      "parents": [
+        "ad38dc5"
+      ],
+      "author": "Karol",
+      "date": "2026-02-14",
+      "message": "dashboard",
+      "refs": []
+    },
+    {
+      "hash": "ad38dc5",
+      "parents": [
+        "39558f0"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "add badges",
+      "refs": []
+    },
+    {
+      "hash": "39558f0",
+      "parents": [
+        "411b0c8"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "badges, editing",
+      "refs": []
+    },
+    {
+      "hash": "411b0c8",
+      "parents": [
+        "26f70c4"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "replaced product mark with hero text",
+      "refs": []
+    },
+    {
+      "hash": "26f70c4",
+      "parents": [
+        "0e1dd9d"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "Enhance hero text shadow for better visibility",
+      "refs": []
+    },
+    {
+      "hash": "0e1dd9d",
+      "parents": [
+        "1ddaca3"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "Add WATCHOUT text overlay to hero video",
+      "refs": []
+    },
+    {
+      "hash": "1ddaca3",
+      "parents": [
+        "69d0b8f"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "change font back",
+      "refs": []
+    },
+    {
+      "hash": "69d0b8f",
+      "parents": [
+        "0a78a5a"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "Change wiki font to Futura Now Text (Regular and Bold)",
+      "refs": []
+    },
+    {
+      "hash": "0a78a5a",
+      "parents": [
+        "8d77ff7"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "Move splash videos to media/splash and update app.js",
+      "refs": []
+    },
+    {
+      "hash": "8d77ff7",
+      "parents": [
+        "588f328"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "Move quickstart videos to subfolder and update links",
+      "refs": []
+    },
+    {
+      "hash": "588f328",
+      "parents": [
+        "aff3253"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "publish root",
+      "refs": []
+    },
+    {
+      "hash": "aff3253",
+      "parents": [
+        "a612486"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "modern deploy",
+      "refs": []
+    },
+    {
+      "hash": "a612486",
+      "parents": [
+        "48f09f7"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "dont require tag to build",
+      "refs": []
+    },
+    {
+      "hash": "48f09f7",
+      "parents": [
+        "dfd9960"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "package-lock",
+      "refs": []
+    },
+    {
+      "hash": "dfd9960",
+      "parents": [
+        "325ac5a"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "fix path in action",
+      "refs": []
+    },
+    {
+      "hash": "325ac5a",
+      "parents": [
+        "d9a7306"
+      ],
+      "author": "Karol",
+      "date": "2026-02-12",
+      "message": "github action -> publish pages",
+      "refs": []
+    },
+    {
+      "hash": "d9a7306",
+      "parents": [
+        "b6c09b5"
+      ],
+      "author": "karol",
+      "date": "2026-02-12",
+      "message": "versioning added",
+      "refs": []
+    },
+    {
+      "hash": "b6c09b5",
+      "parents": [
+        "d691886"
+      ],
+      "author": "karol",
+      "date": "2026-02-12",
+      "message": "update",
+      "refs": []
+    },
+    {
+      "hash": "d691886",
+      "parents": [
+        "444c9b0"
+      ],
+      "author": "karol",
+      "date": "2026-02-12",
+      "message": "sidebar minimize",
+      "refs": []
+    },
+    {
+      "hash": "444c9b0",
+      "parents": [
+        "ba6387a"
+      ],
+      "author": "karol",
+      "date": "2026-02-12",
+      "message": "edits HDR article",
+      "refs": []
+    },
+    {
+      "hash": "ba6387a",
+      "parents": [
+        "ea6611e"
+      ],
+      "author": "karol",
+      "date": "2026-02-12",
+      "message": "widget",
+      "refs": []
+    },
+    {
+      "hash": "ea6611e",
+      "parents": [
+        "a2f7b1b"
+      ],
+      "author": "karol",
+      "date": "2026-02-12",
+      "message": "layman notes",
+      "refs": []
+    },
+    {
+      "hash": "a2f7b1b",
+      "parents": [
+        "6605d8f"
+      ],
+      "author": "Karol",
+      "date": "2026-02-11",
+      "message": "fix widgets",
+      "refs": []
+    },
+    {
+      "hash": "6605d8f",
+      "parents": [
+        "30519ca"
+      ],
+      "author": "Karol",
+      "date": "2026-02-11",
+      "message": "date",
+      "refs": []
+    },
+    {
+      "hash": "30519ca",
+      "parents": [
+        "e35d017"
+      ],
+      "author": "Karol",
+      "date": "2026-02-11",
+      "message": "widgets",
+      "refs": []
+    },
+    {
+      "hash": "e35d017",
+      "parents": [
+        "46d57d3"
+      ],
+      "author": "karol",
+      "date": "2026-02-11",
+      "message": "last content",
+      "refs": []
+    },
+    {
+      "hash": "46d57d3",
+      "parents": [
+        "86fd988"
+      ],
+      "author": "karol",
+      "date": "2026-02-11",
+      "message": "more content",
+      "refs": []
+    },
+    {
+      "hash": "86fd988",
+      "parents": [
+        "43392d0"
+      ],
+      "author": "karol",
+      "date": "2026-02-11",
+      "message": "new content",
+      "refs": []
+    },
+    {
+      "hash": "43392d0",
+      "parents": [
+        "642a7c6"
+      ],
+      "author": "karol",
+      "date": "2026-02-11",
+      "message": "new content",
+      "refs": []
+    },
+    {
+      "hash": "642a7c6",
+      "parents": [
+        "9522623"
+      ],
+      "author": "karol",
+      "date": "2026-02-11",
+      "message": "fix lightmode styling",
+      "refs": []
+    },
+    {
+      "hash": "9522623",
+      "parents": [
+        "e2e4deb",
+        "303af24"
+      ],
+      "author": "Karol",
+      "date": "2026-02-11",
+      "message": "Merge branch 'nodes'",
+      "refs": []
+    },
+    {
+      "hash": "303af24",
+      "parents": [
+        "d35ceaf"
+      ],
+      "author": "Karol",
+      "date": "2026-02-11",
+      "message": "changes",
+      "refs": [
+        "origin/nodes"
+      ]
+    },
+    {
+      "hash": "d35ceaf",
+      "parents": [
+        "5ecbf15"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "nodes",
+      "refs": [
+        "nodes"
+      ]
+    },
+    {
+      "hash": "e2e4deb",
+      "parents": [
+        "91da8ba"
+      ],
+      "author": "Karol",
+      "date": "2026-02-11",
+      "message": "tooltips",
+      "refs": []
+    },
+    {
+      "hash": "91da8ba",
+      "parents": [
+        "06f60dc"
+      ],
+      "author": "Karol",
+      "date": "2026-02-11",
+      "message": "jme feedback",
+      "refs": []
+    },
+    {
+      "hash": "06f60dc",
+      "parents": [
+        "4007f29"
+      ],
+      "author": "Karol",
+      "date": "2026-02-10",
+      "message": "Enhance Test Grid: neg overlap, circle/crosshair toggle",
+      "refs": []
+    },
+    {
+      "hash": "4007f29",
+      "parents": [
+        "96e8eca"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "styling and features",
+      "refs": [
+        "origin/better_grids"
+      ]
+    },
+    {
+      "hash": "96e8eca",
+      "parents": [
+        "62011af"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "precision",
+      "refs": []
+    },
+    {
+      "hash": "62011af",
+      "parents": [
+        "5ecbf15"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "better patterns",
+      "refs": []
+    },
+    {
+      "hash": "5ecbf15",
+      "parents": [
+        "e70ed35"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "badges",
+      "refs": [
+        "origin/badges"
+      ]
+    },
+    {
+      "hash": "e70ed35",
+      "parents": [
+        "d6dfe7e"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "PDF gen",
+      "refs": []
+    },
+    {
+      "hash": "d6dfe7e",
+      "parents": [
+        "bd4373e"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "last one",
+      "refs": []
+    },
+    {
+      "hash": "bd4373e",
+      "parents": [
+        "7980d89"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "update",
+      "refs": []
+    },
+    {
+      "hash": "7980d89",
+      "parents": [
+        "d8eb61e"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "update",
+      "refs": []
+    },
+    {
+      "hash": "d8eb61e",
+      "parents": [
+        "e9098f8"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "update",
+      "refs": []
+    },
+    {
+      "hash": "e9098f8",
+      "parents": [
+        "1f22eff"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "update",
+      "refs": []
+    },
+    {
+      "hash": "1f22eff",
+      "parents": [
+        "ddeb79a"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "update",
+      "refs": []
+    },
+    {
+      "hash": "ddeb79a",
+      "parents": [
+        "55ec416"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "rebuild",
+      "refs": []
+    },
+    {
+      "hash": "55ec416",
+      "parents": [
+        "b8f7065"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "more",
+      "refs": []
+    },
+    {
+      "hash": "b8f7065",
+      "parents": [
+        "c45608b"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "more",
+      "refs": []
+    },
+    {
+      "hash": "c45608b",
+      "parents": [
+        "678eab8"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "more",
+      "refs": []
+    },
+    {
+      "hash": "678eab8",
+      "parents": [
+        "d5c419a"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "fix driver info",
+      "refs": []
+    },
+    {
+      "hash": "d5c419a",
+      "parents": [
+        "ef06168"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "fix ndi",
+      "refs": []
+    },
+    {
+      "hash": "ef06168",
+      "parents": [
+        "b21b965"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "fix",
+      "refs": []
+    },
+    {
+      "hash": "b21b965",
+      "parents": [
+        "3df8534"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "more feedback",
+      "refs": []
+    },
+    {
+      "hash": "3df8534",
+      "parents": [
+        "167e539"
+      ],
+      "author": "Karol",
+      "date": "2026-02-09",
+      "message": "added miro's feedback",
+      "refs": []
+    },
+    {
+      "hash": "167e539",
+      "parents": [
+        "060e8e7"
+      ],
+      "author": "Karol",
+      "date": "2026-02-08",
+      "message": "formatting",
+      "refs": []
+    },
+    {
+      "hash": "060e8e7",
+      "parents": [
+        "c3f5d28"
+      ],
+      "author": "Karol",
+      "date": "2026-02-08",
+      "message": "search",
+      "refs": []
+    },
+    {
+      "hash": "c3f5d28",
+      "parents": [
+        "e30dd50"
+      ],
+      "author": "Karol",
+      "date": "2026-02-08",
+      "message": "diagram color versions",
+      "refs": []
+    },
+    {
+      "hash": "e30dd50",
+      "parents": [
+        "0c4b15c",
+        "6999e11"
+      ],
+      "author": "Karol Banka",
+      "date": "2026-02-08",
+      "message": "Merge pull request #1 from Kitonae/codex",
+      "refs": []
+    },
+    {
+      "hash": "6999e11",
+      "parents": [
+        "b5539f1"
+      ],
+      "author": "Karol",
+      "date": "2026-02-08",
+      "message": "push",
+      "refs": [
+        "origin/codex",
+        "codex"
+      ]
+    },
+    {
+      "hash": "b5539f1",
+      "parents": [
+        "d2c5916"
+      ],
+      "author": "Karol",
+      "date": "2026-02-08",
+      "message": "more content",
+      "refs": []
+    },
+    {
+      "hash": "d2c5916",
+      "parents": [
+        "f7ac8c0"
+      ],
+      "author": "Karol",
+      "date": "2026-02-08",
+      "message": "feat: Add initial WATCHOUT wiki documentation and structure.",
+      "refs": []
+    },
+    {
+      "hash": "f7ac8c0",
+      "parents": [
+        "be56fc1"
+      ],
+      "author": "Karol",
+      "date": "2026-02-08",
+      "message": "feat: introduce wiki configuration with disabled chapters.",
+      "refs": []
+    },
+    {
+      "hash": "be56fc1",
+      "parents": [
+        "941a4fa"
+      ],
+      "author": "Karol",
+      "date": "2026-02-08",
+      "message": "big edit",
+      "refs": []
+    },
+    {
+      "hash": "941a4fa",
+      "parents": [
+        "4b75588"
+      ],
+      "author": "Karol",
+      "date": "2026-02-07",
+      "message": "logo width",
+      "refs": [
+        "origin/static",
+        "static"
+      ]
+    },
+    {
+      "hash": "4b75588",
+      "parents": [
+        "67d882e"
+      ],
+      "author": "Karol",
+      "date": "2026-02-07",
+      "message": "opacity",
+      "refs": []
+    },
+    {
+      "hash": "67d882e",
+      "parents": [
+        "3910608"
+      ],
+      "author": "Karol",
+      "date": "2026-02-07",
+      "message": "new logo",
+      "refs": []
+    },
+    {
+      "hash": "3910608",
+      "parents": [
+        "6f0b449"
+      ],
+      "author": "Karol",
+      "date": "2026-02-07",
+      "message": "fonts fix",
+      "refs": []
+    },
+    {
+      "hash": "0c4b15c",
+      "parents": [
+        "140fe27",
+        "6f0b449"
+      ],
+      "author": "Karol",
+      "date": "2026-02-03",
+      "message": "Merge branch 'static' into main - resolving conflicts by keeping static files",
+      "refs": []
+    },
+    {
+      "hash": "6f0b449",
+      "parents": [
+        "770541f"
+      ],
+      "author": "Karol",
+      "date": "2026-02-01",
+      "message": "vids",
+      "refs": []
+    },
+    {
+      "hash": "770541f",
+      "parents": [
+        "ab0c93a"
+      ],
+      "author": "Karol",
+      "date": "2026-02-01",
+      "message": "fixes",
+      "refs": []
+    },
+    {
+      "hash": "ab0c93a",
+      "parents": [
+        "5ae70ed"
+      ],
+      "author": "Karol",
+      "date": "2026-02-01",
+      "message": "disabled",
+      "refs": []
+    },
+    {
+      "hash": "5ae70ed",
+      "parents": [
+        "15e074a"
+      ],
+      "author": "Karol",
+      "date": "2026-02-01",
+      "message": "static",
+      "refs": []
+    },
+    {
+      "hash": "15e074a",
+      "parents": [
+        "00e5a3e"
+      ],
+      "author": "Karol",
+      "date": "2026-01-31",
+      "message": "first",
+      "refs": [
+        "origin/wiki",
+        "wiki"
+      ]
+    },
+    {
+      "hash": "00e5a3e",
+      "parents": [
+        "c0e30e3"
+      ],
+      "author": "Karol",
+      "date": "2026-01-31",
+      "message": "md tree",
+      "refs": []
+    },
+    {
+      "hash": "c0e30e3",
+      "parents": [
+        "84fc3fb"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "logo fix",
+      "refs": []
+    },
+    {
+      "hash": "84fc3fb",
+      "parents": [
+        "d3e34de"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "Merged upstream and finalized wiki pages",
+      "refs": []
+    },
+    {
+      "hash": "d3e34de",
+      "parents": [
+        "b1f19dd"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "video splash",
+      "refs": []
+    },
+    {
+      "hash": "140fe27",
+      "parents": [
+        "a1640b5"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "refactor: update `.info-panel` height to `max-height: 600px` to allow for more content.",
+      "refs": []
+    },
+    {
+      "hash": "a1640b5",
+      "parents": [
+        "c42e96a"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "Fix layout tremor by enforcing fixed height on info panel",
+      "refs": []
+    },
+    {
+      "hash": "c42e96a",
+      "parents": [
+        "64ce17e"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "pdf",
+      "refs": []
+    },
+    {
+      "hash": "64ce17e",
+      "parents": [
+        "264e588"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "Remove all animations and transitions to fix layout tremor",
+      "refs": []
+    },
+    {
+      "hash": "264e588",
+      "parents": [
+        "7c2ab60"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "Add missing font file",
+      "refs": []
+    },
+    {
+      "hash": "7c2ab60",
+      "parents": [
+        "740d9c9"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "Remove hover animations from interactive keys",
+      "refs": []
+    },
+    {
+      "hash": "740d9c9",
+      "parents": [
+        "ad1fbcb"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "Embed Futura Now Headline OTF font",
+      "refs": []
+    },
+    {
+      "hash": "ad1fbcb",
+      "parents": [
+        "ee5c7d5"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "Center the Download PDF button",
+      "refs": []
+    },
+    {
+      "hash": "ee5c7d5",
+      "parents": [
+        "17bf071"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "Fix styling for Download PDF button and hide in print view",
+      "refs": []
+    },
+    {
+      "hash": "17bf071",
+      "parents": [
+        "b1f19dd"
+      ],
+      "author": "Karol",
+      "date": "2026-01-28",
+      "message": "Remove wiki files and references after rebase",
+      "refs": []
+    },
+    {
+      "hash": "b1f19dd",
+      "parents": [
+        "883f73e"
+      ],
+      "author": "Karol",
+      "date": "2026-01-27",
+      "message": "no bento on hero card",
+      "refs": []
+    },
+    {
+      "hash": "883f73e",
+      "parents": [
+        "bb1796b"
+      ],
+      "author": "Karol",
+      "date": "2026-01-27",
+      "message": "wiki",
+      "refs": []
+    },
+    {
+      "hash": "bb1796b",
+      "parents": [
+        "9a27ec4"
+      ],
+      "author": "Karol",
+      "date": "2026-01-27",
+      "message": "fix font",
+      "refs": []
+    },
+    {
+      "hash": "9a27ec4",
+      "parents": [
+        "0ec7e67"
+      ],
+      "author": "Karol",
+      "date": "2026-01-27",
+      "message": "fix printable",
+      "refs": []
+    },
+    {
+      "hash": "0ec7e67",
+      "parents": [
+        "e14472e"
+      ],
+      "author": "Karol",
+      "date": "2026-01-27",
+      "message": "unified page",
+      "refs": []
+    },
+    {
+      "hash": "e14472e",
+      "parents": [
+        "51ae056"
+      ],
+      "author": "Karol",
+      "date": "2026-01-27",
+      "message": "nonbold header",
+      "refs": []
+    },
+    {
+      "hash": "51ae056",
+      "parents": [
+        "da4b362"
+      ],
+      "author": "Karol",
+      "date": "2026-01-27",
+      "message": "futura",
+      "refs": []
+    },
+    {
+      "hash": "da4b362",
+      "parents": [
+        "5442cfc"
+      ],
+      "author": "Karol",
+      "date": "2026-01-27",
+      "message": "styling",
+      "refs": []
+    },
+    {
+      "hash": "5442cfc",
+      "parents": [
+        "50f4e9d"
+      ],
+      "author": "Karol",
+      "date": "2026-01-27",
+      "message": "styling",
+      "refs": []
+    },
+    {
+      "hash": "50f4e9d",
+      "parents": [
+        "a461136"
+      ],
+      "author": "Karol",
+      "date": "2026-01-26",
+      "message": "mode toggle",
+      "refs": []
+    },
+    {
+      "hash": "a461136",
+      "parents": [
+        "4595ef0"
+      ],
+      "author": "Karol",
+      "date": "2026-01-26",
+      "message": "print",
+      "refs": []
+    },
+    {
+      "hash": "4595ef0",
+      "parents": [
+        "f4ba1f2"
+      ],
+      "author": "Karol",
+      "date": "2026-01-26",
+      "message": "remove glows",
+      "refs": []
+    },
+    {
+      "hash": "f4ba1f2",
+      "parents": [
+        "8f08dc4"
+      ],
+      "author": "Karol",
+      "date": "2026-01-26",
+      "message": "search",
+      "refs": []
+    },
+    {
+      "hash": "8f08dc4",
+      "parents": [
+        "ce07c1f"
+      ],
+      "author": "Karol",
+      "date": "2026-01-26",
+      "message": "styling",
+      "refs": []
+    },
+    {
+      "hash": "ce07c1f",
+      "parents": [
+        "1cf0a70"
+      ],
+      "author": "Karol",
+      "date": "2026-01-26",
+      "message": "more",
+      "refs": []
+    },
+    {
+      "hash": "1cf0a70",
+      "parents": [
+        "9842052"
+      ],
+      "author": "Karol",
+      "date": "2026-01-26",
+      "message": "styling changes",
+      "refs": []
+    },
+    {
+      "hash": "9842052",
+      "parents": [],
+      "author": "Karol",
+      "date": "2026-01-26",
+      "message": "first commit",
+      "refs": []
+    },
+    {
+      "hash": "2dae103",
+      "parents": [],
+      "author": "Karol-Dataton",
+      "date": "2026-02-12",
+      "message": "deploy: a61248648360595e35c82422c1cbc69fc862a8f1",
+      "refs": [
+        "origin/gh-pages"
+      ]
+    }
+  ],
+  "branches": [
+    {
+      "name": "codex",
+      "tip": "6999e11",
+      "remote": false
+    },
+    {
+      "name": "main",
+      "tip": "6ffbe3f",
+      "remote": false
+    },
+    {
+      "name": "nodes",
+      "tip": "d35ceaf",
+      "remote": false
+    },
+    {
+      "name": "prez",
+      "tip": "6ffbe3f",
+      "remote": false
+    },
+    {
+      "name": "standalone",
+      "tip": "b184688",
+      "remote": false
+    },
+    {
+      "name": "static",
+      "tip": "941a4fa",
+      "remote": false
+    },
+    {
+      "name": "wiki",
+      "tip": "15e074a",
+      "remote": false
+    },
+    {
+      "name": "origin",
+      "tip": "6ffbe3f",
+      "remote": false
+    },
+    {
+      "name": "origin/badges",
+      "tip": "5ecbf15",
+      "remote": true
+    },
+    {
+      "name": "origin/better_grids",
+      "tip": "4007f29",
+      "remote": true
+    },
+    {
+      "name": "origin/codex",
+      "tip": "6999e11",
+      "remote": true
+    },
+    {
+      "name": "origin/gh-pages",
+      "tip": "2dae103",
+      "remote": true
+    },
+    {
+      "name": "origin/main",
+      "tip": "6ffbe3f",
+      "remote": true
+    },
+    {
+      "name": "origin/nodes",
+      "tip": "303af24",
+      "remote": true
+    },
+    {
+      "name": "origin/patterns_upg",
+      "tip": "5c06c31",
+      "remote": true
+    },
+    {
+      "name": "origin/standalone",
+      "tip": "b184688",
+      "remote": true
+    },
+    {
+      "name": "origin/static",
+      "tip": "941a4fa",
+      "remote": true
+    },
+    {
+      "name": "origin/wiki",
+      "tip": "15e074a",
+      "remote": true
+    }
+  ],
+  "tags": [],
+  "generated": "2026-02-17T22:35:11.237Z",
+  "repoName": "WO_keys"
+}
