@@ -11,7 +11,7 @@ title: "Variables and Variable Cues"
 
 A variable is a named numeric container inside the show. Each variable holds a single floating-point value that can change at runtime. The value is accessible by name from any [expression](14-timeline-triggers-and-expressions.md), any [conditional cue](17-conditional-cues.md), and any variable cue tween.
 
-Variables are defined in the producer and synchronized to the director at runtime. External control systems address variables by their **key** — a protocol-specific identifier that maps incoming messages to the correct variable. When no external input is active, a variable holds its **default value**.
+Variables are defined in the producer and synchronized to the director during playback. External control systems address variables by their **key** — a protocol-specific identifier that maps incoming messages to the correct variable. When no external input is active, a variable holds its **default value**.
 
 Variables serve two complementary roles in a show:
 
@@ -63,7 +63,7 @@ Open **Window > Variables** to access the Variables window.
 5. **Copy/Paste** — variables can be copied and pasted within the Variables window.
 6. **Remove** — select a variable and press Delete or use the Remove action. Protected variables and variables currently in use cannot be removed.
 
-The available edit operations are: Add, Edit, SetName, SetKey, SetInterpolation, EditFloat (for numeric fields), Remove, SaveAsDefaultValue, Cut, Copy, and Paste.
+The available edit operations in the Variables window include adding, editing, renaming, setting keys and interpolation, adjusting numeric fields, removing, saving as default, and cut/copy/paste.
 
 ### Naming Rules
 
@@ -158,7 +158,7 @@ A variable cue contains the following data:
 | **Duration** | The time span over which the tween animation runs. |
 | **Name** | Optional display name for the cue on the timeline. |
 | **Tween Data** | The animation curve that defines how the variable's value changes over the cue's duration. Uses the same tween system as [media cue](02-adding-media-cues.md) property animations. |
-| **Target Variable** | The specific variable (identified by its internal InputId) that this cue drives. |
+| **Target Variable** | The specific variable that this cue drives. Selected from the list of defined show variables. |
 
 #### Creating Variable Cues
 
@@ -166,7 +166,7 @@ To create a variable cue, drag a variable from the Variables window onto a timel
 
 ### Variable Cue Behavior
 
-During playback, a variable cue evaluates its tween curve and emits updated values at a fixed interval of **28 ms** (`VARIABLE_SPAM_INTERVAL_MS`). The variable's value is set to the tween output at the current playhead position within the cue's duration.
+During playback, a variable cue evaluates its tween curve and emits updated values at a fixed interval of approximately **28 ms** (about 35 updates per second). The variable's value is set to the tween output at the current playhead position within the cue's duration.
 
 Variable cues are duration-based: they start when the playhead enters the cue and stop when it exits. Unlike media cues, variable cues do not render visual content — they only update the numeric value of their target variable.
 

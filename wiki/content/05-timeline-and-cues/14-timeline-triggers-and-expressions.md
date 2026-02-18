@@ -21,7 +21,7 @@ An empty trigger expression has no effect — it does not evaluate to true or fa
 
 ### How Expressions Work
 
-WATCHOUT uses the **fasteval** expression engine to parse and evaluate all expressions at runtime. The evaluation follows these rules:
+WATCHOUT uses a built-in expression engine to parse and evaluate all expressions at runtime. The evaluation follows these rules:
 
 1. **Case-insensitive** — all expressions are lowercased before parsing. `MyVariable`, `myvariable`, and `MYVARIABLE` all reference the same variable.
 2. **Numeric result** — every expression produces a floating-point number.
@@ -90,9 +90,9 @@ You can set any combination of the three triggers on a single timeline. For exam
 
 | Property | Expression Type | Default | Purpose |
 |----------|----------------|---------|---------|
-| **trigger_play** | TriggerExpression | Empty (no trigger) | When the expression evaluates to true, the timeline begins or resumes playback |
-| **trigger_pause** | TriggerExpression | Empty (no trigger) | When the expression evaluates to true, the timeline pauses at its current position |
-| **trigger_stop** | TriggerExpression | Empty (no trigger) | When the expression evaluates to true, the timeline stops and resets |
+| **trigger_play** | Trigger Expression | Empty (no trigger) | When the expression evaluates to true, the timeline begins or resumes playback |
+| **trigger_pause** | Trigger Expression | Empty (no trigger) | When the expression evaluates to true, the timeline pauses at its current position |
+| **trigger_stop** | Trigger Expression | Empty (no trigger) | When the expression evaluates to true, the timeline stops and resets |
 
 An empty expression means no trigger is active for that action — the timeline's playback state is not affected by that trigger slot.
 
@@ -110,19 +110,19 @@ Validation rejects references to non-existent variable names at edit time. If yo
 
 ### Expression Types in WATCHOUT
 
-Timeline triggers use one of several expression types that share the same fasteval engine but serve different purposes across the application:
+Timeline triggers use one of several expression types that share the same expression engine but serve different purposes across the application:
 
 | Expression Type | Default Variable | Usage Context |
 |-----------------|-----------------|---------------|
-| **TweenExpression** | `tweenValue` | Tween curves — the expression receives the current tween value as input |
-| **TriggerExpression** | None | Timeline play/pause/stop triggers — evaluated against show variables |
-| **AudioCueRouteExpression** | `cueVolume` | Audio cue routing — expression receives the cue's volume level |
-| **AudioDeviceRouteExpression** | `masterVolume` | Audio device routing — expression receives the master volume level |
-| **CueExpression** | None | Per-cue conditions — determines whether a cue renders or fires (see [Conditional Cues](17-conditional-cues.md)) |
+| **Tween Expression** | `tweenValue` | Tween curves — the expression receives the current tween value as input |
+| **Trigger Expression** | None | Timeline play/pause/stop triggers — evaluated against show variables |
+| **Audio Cue Route Expression** | `cueVolume` | Audio cue routing — expression receives the cue's volume level |
+| **Audio Device Route Expression** | `masterVolume` | Audio device routing — expression receives the master volume level |
+| **Cue Expression** | None | Per-cue conditions — determines whether a cue renders or fires (see [Conditional Cues](17-conditional-cues.md)) |
 
 All five types use identical syntax and the same truth rule (result > 0.0 = true). The difference is the context in which they are evaluated and whether a default variable is injected into the expression namespace.
 
-For CueExpression specifically, an **empty expression evaluates to true** (the cue is always active), which differs from TriggerExpression where an empty expression has no effect.
+For Cue Expressions specifically, an **empty expression evaluates to true** (the cue is always active), which differs from Trigger Expressions where an empty expression has no effect.
 
 ### Reserved Variable Names
 
@@ -130,9 +130,9 @@ The following names are reserved by the expression system and **cannot be used a
 
 | Reserved Name | Used By |
 |---------------|---------|
-| `tweenValue` | TweenExpression — represents the current tween interpolation value |
-| `cueVolume` | AudioCueRouteExpression — represents the cue's audio volume |
-| `masterVolume` | AudioDeviceRouteExpression — represents the master audio volume |
+| `tweenValue` | Tween Expression — represents the current tween interpolation value |
+| `cueVolume` | Audio Cue Route Expression — represents the cue's audio volume |
+| `masterVolume` | Audio Device Route Expression — represents the master audio volume |
 
 The reservation check is **case-insensitive** — you cannot create a show variable named "TweenValue", "tweenvalue", or "TWEENVALUE". Attempting to do so will be rejected by the variable name validator.
 

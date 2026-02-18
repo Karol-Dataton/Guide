@@ -1,11 +1,11 @@
 ---
-title: "Adjusting Timing"
+badge: Karol
 ---
 
 
 ## Adjusting Timing
 
-**Precise timing is central to show quality -- a single frame of misalignment between projectors or a late audio cue can break the audience's immersion.** WATCHOUT stores time at nanosecond precision internally and exposes direct-manipulation tools that let you position, trim, and tempo-shift cues with frame-accurate control. This article explains how the engine represents time, how each timing property works, and how to use snapping, looping, and fades to build tight, repeatable shows.
+**Precise timing is central to show quality - a single frame of misalignment between projectors or a late audio cue can break the audience's immersion.** WATCHOUT stores time at nanosecond precision internally and exposes direct-manipulation tools that let you position, trim, and tempo-shift cues with frame-accurate control. This article explains how the engine represents time, how each timing property works, and how to use snapping, looping, and fades to build tight, repeatable shows.
 
 ### How WATCHOUT Represents Time
 
@@ -13,30 +13,18 @@ Understanding the time pipeline helps when you encounter rounding questions or n
 
 | Layer | Precision | Format |
 |---|---|---|
-| **Internal engine** | Nanosecond (`std::time::Duration`) | Used for all offset and loop calculations |
-| **Serialized (save file / API)** | Millisecond (`u64`) | Stored as integer milliseconds in the show file |
+| **Internal engine** | Nanosecond | Used for all offset and loop calculations |
+| **Serialized (save file / API)** | Millisecond | Stored as integer milliseconds in the show file |
 | **Display (UI)** | `HH:MM:SS.mmm` | Shown in the timeline ruler, Properties panel, and transport bar |
 
 Because calculations happen at nanosecond resolution and are only quantized to milliseconds on save, loop points and speed-scaled offsets remain accurate across long playback runs.
 
 :::note
-When scripting via the external API, all time values are sent and received as integer milliseconds. The engine up-converts to nanoseconds on ingest.
+When scripting via the external API, all time values are sent and received as integer milliseconds. The engine converts to nanosecond precision internally.
 :::
 
-### Core Timing Properties
-
-Every cue on the timeline carries the following timing fields. Edit them in the **Properties** panel or by direct manipulation on the timeline.
-
-| Property | Type | Default | Purpose |
-|---|---|---|---|
-| **start** | Time | Drop position | Position on the timeline where the cue begins playback |
-| **duration** | Duration | Asset duration (video/audio) or 10 s (images) | How long the cue occupies the timeline |
-| **in_time** | Duration | 0 | Offset into the source media -- the point within the asset where playback begins |
-| **playback_speed** | Float | 1.0 | Rate multiplier applied to media playback (0.5 = half speed, 2.0 = double speed) |
-| **preroll** | Duration | 0 | Time reserved before cue start for decoder warm-up or network pre-fetch |
-
 :::tip
-For image assets, the default duration is **10 seconds** (set by the show-level `image_duration` default). Video and audio assets default to their intrinsic asset duration. You can change the show default in **Show Settings**.
+For image assets, the default duration is **10 seconds** (set by the show-level image duration default). Video and audio assets default to their intrinsic asset duration. You can change the show default in **Show Settings**.
 :::
 
 ### Moving Cues
@@ -87,7 +75,7 @@ To change in_time directly, select the cue and edit the **In-Time** field in the
 
 ### Playback Speed
 
-The **playback_speed** property is a floating-point multiplier applied to media playback rate.
+The **Playback Speed** property is a multiplier applied to media playback rate.
 
 | Speed value | Effect |
 |---|---|
@@ -104,7 +92,7 @@ Extreme speed values (above 4x or below 0.25x) may cause dropped frames on compl
 
 ### Auto-Adjust Duration
 
-The **AutoAdjustDuration** setting controls whether the cue duration updates automatically when related values change.
+The **Auto-Adjust Duration** setting controls whether the cue duration updates automatically when related values change.
 
 | Mode | Behavior | When to use |
 |---|---|---|
@@ -114,37 +102,21 @@ The **AutoAdjustDuration** setting controls whether the cue duration updates aut
 
 The default mode is **None**. Set the mode per cue in the Properties panel.
 
-### Offset Calculation
+### How Playback Position Is Calculated
 
-Understanding how the engine computes the current playback frame helps when debugging timing mismatches or building complex loop structures.
+Understanding how WATCHOUT determines the current playback frame helps when debugging timing mismatches or building complex loop structures.
 
-For a standard cue, the **media offset** at any point during playback is:
+For a standard cue, the **media playback position** at any point during playback is determined by:
 
-```
-offset = timeline_time - cue_start + in_time
-```
+1. Taking the current timeline position.
+2. Subtracting the cue's start time to get how far into the cue you are.
+3. Adding the In Time to skip into the asset.
 
-This offset is the position within the source asset that the engine decodes and renders at the current timeline time. The formula means:
+For example, if the timeline is at 15 seconds, the cue starts at 10 seconds, and In Time is 3 seconds, then WATCHOUT plays from the 8-second mark in the source media (15 - 10 + 3 = 8).
 
-1. Take the current timeline position.
-2. Subtract the cue's start to get how far into the cue you are.
-3. Add in_time to skip into the asset.
+For **looping cues**, the playback position wraps around: once it reaches the loop end point, it resets to the loop start point and repeats. WATCHOUT performs this wrap at nanosecond precision to avoid drift over long loops.
 
-For **looping cues**, the offset wraps:
-
-```
-offset = (offset - loop_start) % (loop_end - loop_start) + loop_start
-```
-
-The modulo operation uses nanosecond-precision `try_rem` to avoid drift over long loops.
-
-For **free-running cues**, the offset is based on wall-clock time rather than the timeline:
-
-```
-offset = clock_time - free_running_start
-```
-
-This means the media continues advancing even when the timeline is paused. See [Understanding the Timeline](01-understanding-the-timeline.md) for more on free-running mode.
+For **free-running cues**, the playback position is based on wall-clock time rather than the timeline position. This means the media continues advancing even when the timeline is paused. See [Understanding the Timeline](01-understanding-the-timeline.md) for more on free-running mode.
 
 ### Snapping
 
@@ -152,47 +124,21 @@ This means the media continues advancing even when the timeline is paused. See [
 
 #### How Snapping Works
 
-The timeline uses a **6-pixel threshold** -- when a dragged point comes within 6 pixels of a snap target (at the current zoom level), the cue locks to that target.
-
-#### Snap Targets
-
-| Target | Description |
-|---|---|
-| **Start/end of other cues** | Cues on the same layer or one layer above/below (+/- 1 layer) |
-| **Playhead position** | The current play cursor (when `clickJumpsToTime` is disabled) |
-
-#### Snappable Points by Operation
-
-| Operation | Points that snap |
-|---|---|
-| **Move** (drag cue body) | Cue start and cue end |
-| **Resize fade-in** (drag left edge) | Cue start only |
-| **Resize fade-out** (drag right edge) | Cue end only |
+The timeline uses a **6-pixel threshold**-when a dragged point comes within 6 pixels of a snap target (at the current zoom level), the cue locks to that target.
 
 #### Disabling Snapping
 
 - Hold **Shift** while dragging to temporarily bypass snapping.
-- Disable snapping globally via the **useEditSnapping** setting in preferences.
+- Disable snapping globally via the **Edit Snapping** setting in preferences.
 
 ### Looping
 
-Cues can loop a portion of their source media using **LoopPoints**.
+Cues can loop a portion of their source media using **loop points**.
 
-| Property | Description |
-|---|---|
-| **loop_start** | The offset within the asset where the loop region begins |
-| **loop_end** | The offset within the asset where the loop region ends |
-
-When the playback offset reaches `loop_end`, it wraps back to `loop_start`. The wrap calculation uses nanosecond-precision modulo arithmetic:
-
-```
-loop_offset = (offset - loop_start) % (loop_end - loop_start) + loop_start
-```
-
-This ensures seamless looping without cumulative drift, even for loops running across extended show durations.
+When the playback position reaches the Loop End point, it wraps back to Loop Start. The wrap calculation uses nanosecond-precision arithmetic internally, ensuring seamless looping without cumulative drift, even for loops running across extended show durations.
 
 :::tip
-Set the cue duration longer than the loop region to let the loop repeat multiple times. The loop cycle length is `loop_end - loop_start`; the cue will loop as many full cycles as fit within its duration.
+Set the cue duration longer than the loop region to let the loop repeat multiple times. The loop cycle length is the difference between Loop End and Loop Start; the cue will loop as many full cycles as fit within its duration.
 :::
 
 ### Free-Running Mode
@@ -201,10 +147,10 @@ In free-running mode, a cue's playback offset is derived from the system clock r
 
 Free-running is useful for always-on background content such as live clocks, ambient video loops, or generative feeds that should not reset when an operator pauses the show.
 
-The offset formula is:
+The playback position is derived from the system clock:
 
 ```
-offset = clock_time - free_running_start
+playback position = current clock time - free-running start time
 ```
 
 For more detail, see [Understanding the Timeline](01-understanding-the-timeline.md).
@@ -215,64 +161,6 @@ Fades control how a cue's opacity, volume, or generic value ramps at its start a
 
 #### Fade Structure
 
-Each cue has optional **fade_in** and **fade_out** properties. A fade consists of:
+Each cue has optional **fade in** and **fade out** properties. A fade consists of:
 
-| Field | Description |
-|---|---|
-| **fade_type** | What the fade controls: `Opacity`, `Volume`, or `Generic` |
-| **transition** | The easing curve (tween transition) applied to the fade |
-| **span** | How long the fade lasts -- either a fixed duration or an overlap link |
-
-#### Fade Span Types
-
-| Span Type | Behavior |
-|---|---|
-| **Duration** | A fixed time value (e.g., 1 second). The fade ramps over this fixed period. |
-| **Overlap** | Linked to another cue by ID. The fade duration is dynamically calculated from the overlap region between the two cues, creating a cross-fade. |
-
-The **Overlap** span type is what makes cross-fades work: when two cues overlap on the same layer, linking their fade spans synchronizes the outgoing fade-out with the incoming fade-in.
-
-#### Show Defaults for Fades
-
-| Default | Value |
-|---|---|
-| **auto_fade** | Enabled |
-| **fade_in_duration** | 1 second |
-| **fade_out_duration** | 1 second |
-| **curve** | Linear (0) |
-
-When auto_fade is enabled, newly placed cues automatically receive fade-in and fade-out with the show default durations and curve. Adjust these defaults in **Show Settings** to match your project's style.
-
-### Best Practices
-
-- **Set show defaults early.** Configure `image_duration`, `fade_in_duration`, and `fade_out_duration` in Show Settings before building the timeline. This avoids repetitive per-cue adjustments later.
-
-- **Use Auto-Adjust Duration for video cues.** Setting the mode to **Asset** ensures video cues always match their source length, even after asset replacement.
-
-- **Zoom in for frame-accurate edits.** At low zoom levels, a single pixel can represent many frames. Zoom to your target frame rate's resolution before trimming.
-
-- **Rely on snapping for back-to-back cues.** Snapping eliminates single-frame black flashes between sequential cues on the same layer. Verify alignment visually if you override snapping with Shift.
-
-- **Test loops over their full runtime.** Nanosecond-precision modulo prevents drift in theory, but codec seek behavior can introduce a visible glitch at the loop point. Preview the full expected loop count before committing.
-
-- **Use preroll for network-heavy shows.** If cues trigger media served from remote Runners, set a preroll value to give the decoder time to buffer before the cue's visible start.
-
-### Troubleshooting
-
-| Problem | Cause | Fix |
-|---|---|---|
-| Cue starts mid-way through the video | Non-zero **in_time** | Select the cue and use **Reset In-Time** |
-| Video plays at wrong speed | **playback_speed** is not 1.0 | Check and reset the speed value in Properties |
-| Cue duration does not match asset length | **AutoAdjustDuration** set to None | Change to **Asset** mode, or manually reset duration |
-| Tiny gap visible between back-to-back cues | Cue edges are not snapped | Zoom in, enable snapping, and drag the cue end to snap to the next cue's start |
-| Loop stutters at wrap point | Loop points do not fall on clean decode boundaries | Adjust loop_start and loop_end to align with keyframe intervals in the source asset |
-| Fade appears abrupt or too slow | Default fade duration does not suit content | Edit the fade span in the cue's Properties panel, or change show-level fade defaults |
-| Cue ignores timeline stop (keeps playing) | Cue is in **free-running** mode | Disable free-running in the cue's Properties panel |
-| Snapping not working | **useEditSnapping** is disabled or Shift is held | Check preferences and release Shift |
-| Time values shift after save/reload | Millisecond quantization on save | Avoid relying on sub-millisecond precision for critical loop points |
-
-### Related Articles
-
-- [Adding Media Cues](02-adding-media-cues.md) -- placing assets on the timeline
-- [Working with Layers](03-working-with-layers.md) -- layer stacking and snap target scope
-- [Insert and Delete Time](16-insert-delete-time.md) -- shifting cue positions in bulk
+When auto-fade is enabled, newly placed cues automatically receive fade-in and fade-out with the show default durations and curve. Adjust these defaults in **Show Settings** to match your project's style.

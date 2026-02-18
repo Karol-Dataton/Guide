@@ -9,22 +9,22 @@ title: "ArtNet Fixture Cues"
 
 ### What ArtNet Fixture Cues Are
 
-An ArtNet fixture cue is a media cue whose `MediaOptions` include an `ArtNet` payload (`ArtNetOptions`). The cue references an Art-Net Fixture asset that defines the fixture's channel layout, and the cue's tween data drives the value of each channel over time. At playback, WATCHOUT evaluates the tween values for every active fixture channel and transmits them as Art-Net DMX packets on the network.
+An ArtNet fixture cue is a specialized media cue that includes Art-Net configuration in its properties. The cue references an Art-Net Fixture asset that defines the fixture's channel layout, and the cue's tween data drives the value of each channel over time. At playback, WATCHOUT evaluates the tween values for every active fixture channel and transmits them as Art-Net DMX packets on the network.
 
 The key components are:
 
-- **Fixture asset** -- defines the fixture type, its available modes, and the channels within each mode.
-- **Cue addressing** -- specifies which Art-Net universe and start channel the fixture occupies.
-- **Tween automation** -- each channel is controlled by a `TweenType::Artnet(ArtnetTweenType)` keyframe, using any of the standard 31 easing curves.
-- **Optional recording** -- pre-captured DMX data can be layered on top of tween values for complex playback.
+- **Fixture asset**-defines the fixture type, its available modes, and the channels within each mode.
+- **Cue addressing**-specifies which Art-Net universe and start channel the fixture occupies.
+- **Tween automation**-each channel is controlled by an Art-Net tween keyframe, using any of the standard 31 easing curves.
+- **Optional recording**-pre-captured DMX data can be layered on top of tween values for complex playback.
 
 Together, these allow a single timeline cue to drive one fixture instance across its full channel range with frame-accurate automation.
 
 ### Fixture Definitions
 
-Every ArtNet fixture cue is backed by an **ArtNetFixture** asset that describes the fixture's identity and capabilities.
+Every ArtNet fixture cue is backed by an **Art-Net Fixture** asset that describes the fixture's identity and capabilities.
 
-The fixture model (`ArtNetFixture`) contains:
+The fixture definition contains:
 
 | Field | Purpose |
 |---|---|
@@ -33,7 +33,7 @@ The fixture model (`ArtNetFixture`) contains:
 | **short_name** | Abbreviated name for compact UI display |
 | **description** | Fixture description |
 | **fixture_type_id** | UUID identifying the fixture type |
-| **modes** | List of available fixture modes (`ArtNetFixtureMode`) |
+| **modes** | List of available fixture modes |
 
 Each **ArtNetFixtureMode** defines:
 
@@ -57,17 +57,17 @@ The 1-channel generic is useful for single-parameter devices such as dimmers or 
 
 ### Channel Resolutions
 
-Each channel in a fixture mode has a **resolution** that determines its bit depth and how many consecutive DMX addresses it occupies. Channels are defined as a tagged enum (`ArtNetFixtureChannel`) by resolution:
+Each channel in a fixture mode has a **resolution** that determines its bit depth and how many consecutive DMX addresses it occupies. WATCHOUT supports the following channel resolutions:
 
-| Resolution | Bit Depth | DMX Addresses | Value Type | Description |
-|---|---|---|---|---|
-| **Coarse** | 8-bit | 1 | u8 | Standard DMX precision; one address per channel |
-| **Fine** | 16-bit | 2 | u16 | High precision; occupies two consecutive addresses |
-| **Ultra** | 24-bit | 3 | u24 | Very high precision; occupies three consecutive addresses |
-| **Uber** | 32-bit | 4 | u32 | Maximum precision; occupies four consecutive addresses |
-| **Virtual** | -- | 0 | () | No physical DMX address; used for internal logic only |
+| Resolution | Bit Depth | DMX Addresses | Description |
+|---|---|---|---|
+| **Coarse** | 8-bit | 1 | Standard DMX precision; one address per channel |
+| **Fine** | 16-bit | 2 | High precision; occupies two consecutive addresses |
+| **Ultra** | 24-bit | 3 | Very high precision; occupies three consecutive addresses |
+| **Uber** | 32-bit | 4 | Maximum precision; occupies four consecutive addresses |
+| **Virtual** |-| 0 | No physical DMX address; used for internal logic only |
 
-Each channel (regardless of resolution) carries common properties through `ArtNetFixtureChannelInner`:
+Each channel (regardless of resolution) carries common properties:
 
 | Property | Purpose |
 |---|---|
@@ -79,7 +79,7 @@ Each channel (regardless of resolution) carries common properties through `ArtNe
 | **capabilities** | Channel capability descriptors |
 
 :::tip
-Choose the lowest resolution that meets your needs. Most conventional DMX fixtures only respond to 8-bit (Coarse) values. Use Fine or higher only when the receiving device explicitly supports 16-bit or wider channels -- unnecessary high resolution wastes DMX addresses without improving output quality.
+Choose the lowest resolution that meets your needs. Most conventional DMX fixtures only respond to 8-bit (Coarse) values. Use Fine or higher only when the receiving device explicitly supports 16-bit or wider channels-unnecessary high resolution wastes DMX addresses without improving output quality.
 :::
 
 ### Creating Fixture Assets
@@ -91,7 +91,7 @@ Before you can add a fixture cue to the timeline, you need a fixture asset in th
 3. Select a fixture preset from the available options (1ch Generic or 10ch Generic).
 4. The fixture asset appears in the Assets window and is ready to use.
 
-Fixture assets do not require optimization -- they are definition files, not media. They appear under the **Art-Net Fixture** type in the asset list. See [Asset Types](../04-assets-asset-manager/02-asset-types.md) for details on how Art-Net assets are classified.
+Fixture assets do not require optimization-they are definition files, not media. They appear under the **Art-Net Fixture** type in the asset list. See [Asset Types](../04-assets-asset-manager/02-asset-types.md) for details on how Art-Net assets are classified.
 
 ### Adding Fixture Cues to the Timeline
 
@@ -112,34 +112,34 @@ ArtNet fixture cues are **not supported inside compositions**. If a fixture cue 
 
 ### Fixture Cue Properties
 
-When a cue references an Art-Net Fixture asset, the `ArtNetOptions` payload provides the following settings:
+When a cue references an Art-Net Fixture asset, the following Art-Net settings are available in the Properties panel:
 
 | Setting | Purpose | Notes |
 |---|---|---|
 | **Name** | Fixture instance name | Identifies this specific fixture cue |
-| **Start Universe** | Absolute universe number (0--32767) | u15 value; see [Universe Addressing](#universe-addressing) for decomposition |
-| **Start Channel** | Channel within universe (0--511) | u9 value; first DMX address for this fixture |
-| **Selected Mode** | Index into the fixture's modes array | Determines which channel layout is active |
+| **Start Universe** | Absolute universe number (0--32767) | See [Universe Addressing](#universe-addressing) for how this maps to Net/Sub-Net/Universe |
+| **Start Channel** | Channel within universe (0--511) | First DMX address for this fixture |
+| **Selected Mode** | Index into the fixture's modes list | Determines which channel layout is active |
 | **Relations** | Channel relation overrides | Master/follower bindings; see [Channel Relations](#channel-relations) |
 | **Recording Source** | Reference to an Art-Net Recording asset | Links pre-captured DMX data to the cue |
 
 ### Universe Addressing
 
-WATCHOUT uses an **absolute universe number** (u15, range 0--32767) for Art-Net addressing. This single value is decomposed into the standard Art-Net hierarchy of Net, Sub-Net, and Universe:
+WATCHOUT uses an **absolute universe number** (range 0--32767) for Art-Net addressing. This single value maps to the standard Art-Net hierarchy of Net, Sub-Net, and Universe as follows:
 
 ```
-uv     = absolute_universe % 16
-subnet = (absolute_universe / 16) % 16
-net    = absolute_universe / 256
+Universe    = absolute_universe mod 16
+Sub-Net     = (absolute_universe / 16) mod 16
+Net         = absolute_universe / 256
 ```
 
-| Component | Range | Derivation |
+| Component | Range | How to Calculate |
 |---|---|---|
-| **Universe (uv)** | 0--15 | `value % 16` |
-| **Sub-Net** | 0--15 | `(value / 16) % 16` |
-| **Net** | 0--127 | `value / 256` |
+| **Universe** | 0--15 | Absolute value mod 16 |
+| **Sub-Net** | 0--15 | (Absolute value / 16) mod 16 |
+| **Net** | 0--127 | Absolute value / 256 |
 
-For example, absolute universe **289** decomposes to: uv = 289 % 16 = **1**, subnet = (289 / 16) % 16 = **2**, net = 289 / 256 = **1**. This corresponds to Net 1, Sub-Net 2, Universe 1.
+For example, absolute universe **289** maps to: Universe = 289 mod 16 = **1**, Sub-Net = (289 / 16) mod 16 = **2**, Net = 289 / 256 = **1**. This corresponds to Net 1, Sub-Net 2, Universe 1.
 
 :::note
 If a fixture's channels span beyond address 511 within a universe, WATCHOUT wraps the remaining channels into the next universe automatically. Plan your addressing to avoid unintentional overlap with other fixtures on adjacent universes.
@@ -147,7 +147,7 @@ If a fixture's channels span beyond address 511 within a universe, WATCHOUT wrap
 
 ### Channel Relations
 
-Channel relations define dependencies between channels within a fixture mode. Each `ArtnetChannelRelation` specifies:
+Channel relations define dependencies between channels within a fixture mode. Each relation specifies:
 
 | Field | Purpose |
 |---|---|
@@ -157,10 +157,10 @@ Channel relations define dependencies between channels within a fixture mode. Ea
 
 The two relation types behave differently:
 
-- **Override** -- the master channel's value replaces the follower channel's value entirely. When the master is active, the follower's own tween value is ignored.
-- **Multiply** -- the master channel's value is multiplied with the follower channel's value. This is commonly used for master dimmer relationships where a global intensity channel scales individual channel outputs.
+- **Override**-the master channel's value replaces the follower channel's value entirely. When the master is active, the follower's own tween value is ignored.
+- **Multiply**-the master channel's value is multiplied with the follower channel's value. This is commonly used for master dimmer relationships where a global intensity channel scales individual channel outputs.
 
-Relations are defined in the fixture mode and can be overridden per-cue through the `ArtNetOptions` relations field.
+Relations are defined in the fixture mode and can be overridden per-cue through the cue's Art-Net settings.
 
 ### ArtNet Recording
 
@@ -170,14 +170,14 @@ ArtNet Recording assets capture live DMX data for playback on the timeline. This
 
 Recordings are stored in **JSONL format** (one JSON object per line):
 
-- **Line 1 (header)** -- metadata describing the recording session.
-- **Subsequent lines (frames)** -- one line per captured frame, each with a **microsecond timestamp** (u64) and the channel values for that frame.
+- **Line 1 (header)**-metadata describing the recording session.
+- **Subsequent lines (frames)**-one line per captured frame, each with a **microsecond timestamp** and the channel values for that frame.
 
 During optimization, the raw recording is parsed into a `frames.json` file for efficient playback.
 
 #### How Recorded Values Combine with Tweens
 
-Recorded values do not replace tween automation -- they **multiply** with it. The output formula is:
+Recorded values do not replace tween automation-they **multiply** with it. The output formula is:
 
 ```
 output = cue_tween_value * recorded_value / 255
@@ -197,7 +197,7 @@ To play back a recording at its original captured levels, set all tween channel 
 
 ### Output Behavior
 
-WATCHOUT transmits Art-Net DMX data at a fixed rate of **44 frames per second** (`ARTNET_FPS = 44`). This rate applies to all fixture cues uniformly and is not configurable per-cue.
+WATCHOUT transmits Art-Net DMX data at a fixed rate of **44 frames per second**. This rate applies to all fixture cues uniformly and is not configurable per-cue.
 
 At each output frame, WATCHOUT:
 
@@ -206,7 +206,7 @@ At each output frame, WATCHOUT:
 3. Packs the channel values into Art-Net DMX packets addressed to the configured universe and channel.
 4. Transmits the packets on the network.
 
-All standard tween easing curves are available for fixture channels, providing smooth transitions between values. The `TweenType::Artnet(ArtnetTweenType)` tween type is dedicated to fixture channel automation and behaves identically to other tween types in terms of keyframe interpolation and curve selection.
+All standard tween easing curves are available for fixture channels, providing smooth transitions between values. The Art-Net tween type is dedicated to fixture channel automation and behaves identically to other tween types in terms of keyframe interpolation and curve selection.
 
 ### Limitations
 

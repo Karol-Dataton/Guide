@@ -16,7 +16,7 @@ Key characteristics:
 - **Point-in-time execution** — an output cue fires at its start time and completes immediately. It has no duration and no fade-in or fade-out.
 - **String-based payload** — the cue sends a single string value. This is the only output format currently supported.
 - **Three transport protocols** — TCP, UDP, and HTTP. There is no OSC output from output cues.
-- **Independent of timeline-level cue expressions** — output cues do not check the timeline's `cue_expressions.enabled()` flag. If the playhead reaches the cue and any cue-level condition is satisfied, it fires.
+- **Independent of timeline-level expression settings** — output cues do not check the timeline's expression-enabled flag. If the playhead reaches the cue and any cue-level condition is satisfied, it fires.
 
 ### Creating an Output Cue
 
@@ -56,6 +56,8 @@ WATCHOUT output cues support exactly three transport protocols. There is no OSC 
 | **TCP** | Sends the payload over a persistent TCP connection to the target address and port. Reliable, ordered delivery. | Address, Port, Keep-Alive, Data |
 | **UDP** | Sends the payload as a single UDP datagram. No delivery guarantee, but lowest latency. | Address, Port, Data |
 | **HTTP** | Sends the payload as the body of an HTTP request to the target address, port, and path. | Address, Port, Path, HTTP Method, HTTP Content Type, Keep-Alive, Data |
+
+<img src="../media/output-protocol-comparison.svg" alt="Output Cue Protocol Comparison — TCP, UDP, and HTTP data flow" style="width: 100%; height: auto;">
 
 ### HTTP Configuration
 
@@ -112,7 +114,7 @@ Formatting considerations:
 
 - **Point-in-time firing.** Output cues execute instantaneously at their timeline position. If the playhead jumps past an output cue (for example, via a control cue jump or manual scrub), the output cue does not fire. It only fires when the playhead reaches the cue's position during normal forward playback.
 
-- **No timeline-level expression check.** Unlike some other cue types, output cues do not evaluate the timeline's top-level `cue_expressions.enabled()` flag. This means an output cue will fire even if timeline-level cue expressions would otherwise suppress cue activation. However, output cues do respect their own cue-level [conditional trigger](17-conditional-cues.md) if one is set.
+- **No timeline-level expression check.** Unlike some other cue types, output cues do not evaluate the timeline's expression-enabled setting. This means an output cue will fire even if timeline-level cue expressions would otherwise suppress cue activation. However, output cues do respect their own cue-level [conditional trigger](17-conditional-cues.md) if one is set.
 
 - **Separate from control cues.** Output cues and [control cues](05-control-cues.md) are distinct cue types with different purposes. Control cues affect WATCHOUT's internal playback state (play, pause, jump). Output cues send data to external systems. Do not confuse the two.
 
@@ -156,7 +158,7 @@ If external systems controlled by output cues are safety-critical (e.g., pyrotec
 | UDP message never arrives | Packet loss on the network, or target is not listening | Verify the target is listening on the correct port; consider switching to TCP for reliable delivery |
 | HTTP request returns an error status | Wrong path, method, or content type for the target API | Check the path, HTTP method, and content type against the API documentation of the target system |
 | Cue fires but payload is malformed | Data field contains invalid JSON/XML for the selected content type | Validate the data string format independently (e.g., paste into a JSON validator) before entering it in the cue |
-| Cue fires even though timeline expressions are disabled | Output cues do not check timeline-level `cue_expressions.enabled()` | This is expected behavior; use a cue-level [conditional trigger](17-conditional-cues.md) to gate the output cue instead |
+| Cue fires even though timeline expressions are disabled | Output cues do not check the timeline-level expression setting | This is expected behavior; use a cue-level [conditional trigger](17-conditional-cues.md) to gate the output cue instead |
 | High latency on HTTP output cues | Keep-alive is disabled, causing a new connection per cue | Enable keep-alive (the default) to reuse connections |
 
 ### Related Articles

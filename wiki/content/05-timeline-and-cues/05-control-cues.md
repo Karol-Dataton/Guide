@@ -18,7 +18,7 @@ Each control cue specifies:
 - An optional **jump** that repositions the target's playhead
 - An optional **start delay** before execution
 
-Control cues are one of several specialized cue types in WATCHOUT. They are distinct from [Output Cues](07-output-cues.md), which send external messages (HTTP, TCP, UDP, OSC), and from [Variable Cues](08-variables-and-variable-cues.md), which automate show variable values. Output and Variable cues are separate `CueData` variants — they are not subtypes of control cues.
+Control cues are one of several specialized cue types in WATCHOUT. They are distinct from [Output Cues](07-output-cues.md), which send external messages (HTTP, TCP, UDP, OSC), and from [Variable Cues](08-variables-and-variable-cues.md), which automate show variable values. Output and Variable cues are separate cue types-they are not subtypes of control cues.
 
 ### Control Cue States
 
@@ -44,24 +44,9 @@ States are ranked in priority order: **Stop > Pause > Run**. This ordering matte
 Give control cues descriptive names — especially cues that serve as jump targets. A cue named "Loop Point A" is far easier to work with than an unnamed cue at an arbitrary timecode. Named control cues and named [Marker Cues](06-marker-cues.md) both appear in jump-target lists.
 :::
 
-### Control Cue Properties
-
-The following table lists all configurable properties of a control cue:
-
-| Property | Type | Default | Description |
-|----------|------|---------|-------------|
-| **state** | Run / Pause / Stop | Run | The playback state to apply to the target timeline(s). |
-| **target** (labeled "timeline" in the UI) | Legacy / List / All | Legacy (This) | Which timelines are affected. See [Targeting](#targeting) for details. |
-| **jump** | False / ToTime / ToCue | False | Whether the target's playhead should jump before the state change takes effect. See [Jump Behavior](#jump-behavior). |
-| **to_time** | Time (optional) | None | The destination time when jump is set to ToTime. |
-| **to_cue** | String (optional) | None | The name of the destination cue when jump is set to ToCue. |
-| **search_reverse** | Boolean (optional) | false | When jump is ToCue, controls the search direction. `false` searches forward; `true` searches backward. |
-| **name** | String (optional) | None | An optional display name for the cue. Named cues serve as jump targets for other control cues. |
-| **start_delay** | Duration | 0 | A delay between the playhead reaching the cue and the cue actually executing. See [Start Delay](#start-delay). |
-
 ### Targeting
 
-The target property (serialized as "timeline" in the data model) determines which timelines a control cue affects. There are three targeting modes.
+The target property (labeled **"Timeline"** in the Properties panel) determines which timelines a control cue affects. There are three targeting modes.
 
 #### Legacy Mode
 
@@ -69,7 +54,7 @@ Legacy mode targets a single timeline and is the default behavior. It uses one o
 
 | Value | Behavior |
 |-------|----------|
-| **This** (default) | Targets the timeline that contains the control cue. Serializes as an empty string for backward compatibility. |
+| **This** (default) | Targets the timeline that contains the control cue. |
 | **Id** | Targets a specific timeline by its unique identifier. |
 | **Name** | Targets a timeline by its display name. |
 
@@ -139,7 +124,7 @@ When a control cue uses **ToCue** jump mode, it searches the target timeline for
 - **Named control cues** — any control cue with a non-empty `name` property
 - **Named marker (comment) cues** — any [Marker Cue](06-marker-cues.md) with a name
 
-Both types are stored in the same internal jump-target index (`jump_targets_by_name`), so they are interchangeable as destinations. This means you can use lightweight marker cues purely as labeled positions for control cue jumps, without needing to place a control cue at every potential destination.
+Both types are indexed together as potential jump destinations, so they are interchangeable as targets. This means you can use lightweight marker cues purely as labeled positions for control cue jumps, without needing to place a control cue at every potential destination.
 
 :::tip
 Use [Marker Cues](06-marker-cues.md) as jump targets when the destination is simply a labeled position in the timeline. Reserve named control cues as jump targets when the destination also needs to perform its own state change or jump.
@@ -164,7 +149,7 @@ Start delays are useful for staggering a sequence of state changes — for examp
 
 ### Blind Edit Mode and Control Cues
 
-When a timeline is opened in [Blind Edit Mode](15-blind-edit-mode.md), it is isolated from the live show. The system uses a `skip_control_cues_from` mechanism to prevent control cues in blind-edited compositions from affecting other timelines during editing. This ensures that making changes to a composition offline does not inadvertently start, stop, or jump timelines in the running show.
+When a timeline is opened in [Blind Edit Mode](15-blind-edit-mode.md), it is isolated from the live show. WATCHOUT automatically prevents control cues in blind-edited compositions from affecting other timelines during editing. This ensures that making changes to a composition offline does not inadvertently start, stop, or jump timelines in the running show.
 
 ### Best Practices
 
@@ -192,7 +177,7 @@ When a timeline is opened in [Blind Edit Mode](15-blind-edit-mode.md), it is iso
 | ToCue reverse jump fails | No matching cue exists before the current playhead position, and reverse search does not wrap | Place the named target cue earlier on the timeline, or switch to forward search which wraps to the beginning. |
 | Multiple control cues conflict | Several cues fire at the same time with different states | The highest-priority state wins (Stop > Pause > Run). If this is unintended, stagger the cues with different start delays or adjust targeting. |
 | Control cue affects unintended timelines | All mode is active without proper exclusions | Add timelines or folders to the exclude lists, or switch to List mode with explicit targets. |
-| Control cue in blind-edited composition triggers live timelines | Unexpected — blind edit mode should isolate control cues | Verify the composition is opened in [Blind Edit Mode](15-blind-edit-mode.md). The `skip_control_cues_from` mechanism should prevent this. |
+| Control cue in blind-edited composition triggers live timelines | Unexpected — blind edit mode should isolate control cues | Verify the composition is opened in [Blind Edit Mode](15-blind-edit-mode.md). The isolation mechanism should prevent this. |
 | Jump creates an infinite loop | Two or more control cues jump to each other's positions | Break the cycle by removing one jump, or use a conditional trigger to gate one of the cues. |
 
 ### See Also

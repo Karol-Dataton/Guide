@@ -1,5 +1,5 @@
 ---
-title: "Working with Layers"
+badge: Karol
 ---
 
 
@@ -9,7 +9,7 @@ title: "Working with Layers"
 
 ### What Layers Are
 
-A layer is a horizontal track in the Timeline window that holds cues. Internally, each timeline stores its layers as a collection keyed by unique layer identifiers (53-bit integer IDs). Each layer carries its own properties — name, order position, visibility state, lock state, and optional key-and-fill settings — independent of the cues it contains.
+A layer is a horizontal track in the Timeline window that holds cues. Each timeline maintains its own collection of layers, each identified by a unique ID. Each layer carries its own properties — name, order position, visibility state, lock state, and optional key-and-fill settings — independent of the cues it contains.
 
 Layers serve two distinct purposes:
 
@@ -102,7 +102,7 @@ Each layer has an optional **Key and Fill** system that controls how the layer's
 |---|---|---|
 | **Enabled** | On / Off | Off |
 | **Mode** | Luma, Luma Inverted, Alpha, Alpha Inverted | Luma |
-| **Channels** | Channel bitmask | Channel 1 (0x01) |
+| **Channels** | Channel selection | Channel 1 |
 
 #### Key and Fill Modes
 
@@ -112,6 +112,8 @@ Each layer has an optional **Key and Fill** system that controls how the layer's
 | **Luma Inverted** | Dark areas of the key layer are opaque; bright areas are transparent. |
 | **Alpha** | The alpha channel of the key layer controls transparency directly. |
 | **Alpha Inverted** | The inverted alpha channel of the key layer controls transparency. |
+
+[[WIDGET:key-fill-modes]]
 
 Key and fill is typically used when integrating WATCHOUT with broadcast graphics systems or when building advanced compositing setups where one layer's luminance or alpha drives the visibility of another layer's content.
 
@@ -142,36 +144,3 @@ The layer order applies within a single timeline. When multiple timelines overla
 | **Set Key and Fill Enabled** | Toggles key-and-fill compositing for the layer. |
 | **Set Key and Fill Mode** | Changes the key-and-fill mode (Luma, Luma Inverted, Alpha, Alpha Inverted). |
 | **Set Key and Fill Channels** | Configures which output channels the key-and-fill setting applies to. |
-
-### Best Practices
-
-- **Name layers immediately.** As soon as you establish a layer's purpose, give it a descriptive name. Default names like "Layer 4" convey no meaning during a live show.
-
-- **Establish a layer convention early.** Decide on a consistent top-to-bottom ordering before programming begins — for example, overlays and titles on top layers, primary video in the middle, backgrounds at the bottom. Changing layer structure mid-production forces you to move cues between layers.
-
-- **Separate control cues from media.** Place [control cues](05-control-cues.md) on dedicated layers rather than mixing them with media cues. This makes it easier to lock media layers while still editing control logic, and keeps the timeline readable.
-
-- **Use visibility toggling for A/B testing.** Disable a layer to quickly compare your show with and without a particular content element, instead of deleting and re-adding cues.
-
-- **Keep layer count manageable.** Although there is no hard limit on layer count, timelines with dozens of layers become difficult to navigate. If you need many independent content streams, consider splitting them across [compositions](10-compositions.md) or separate timelines.
-
-- **Lock finalized layers.** Once a layer's content is approved, lock it. This is especially important in multi-operator environments where another programmer might accidentally modify completed work.
-
-### Troubleshooting
-
-| Problem | Cause | Fix |
-|---|---|---|
-| Cue not visible on stage | Layer is disabled | Enable the layer in the Timeline window |
-| Cannot select or move a cue | Layer is locked | Unlock the layer, make your edit, then re-lock |
-| Cannot delete a layer | It is the only remaining layer on the timeline | Add a new layer first, then delete the unwanted one |
-| Cue appears behind expected position | Layer order is lower than intended (higher number = further back) | Move the cue to a higher layer (lower number) or reorder layers |
-| Default layer names reappear after reorder | Layer has no custom name — auto-name reflects current position | Assign a custom name to the layer |
-| Key and fill has no visible effect | Key and fill is not enabled on the layer | Enable key and fill in the layer properties and set the appropriate mode |
-| Deleting a layer removed cues unexpectedly | Layer deletion cascades to all cues on that layer | Use undo immediately if available; otherwise, restore from a saved version |
-| New composition has fewer layers than expected | Compositions start with a minimum of 3 layers | Add more layers manually as needed using Append Layer or Insert Layer |
-
-### Related Articles
-
-- [Adding Media Cues](02-adding-media-cues.md) — how to place content onto layers
-- [Stacking Order](13-stacking-order.md) — the full compositing model for By Layer and By Z modes
-- [Compositions](10-compositions.md) — nested timelines with their own independent layer stacks
