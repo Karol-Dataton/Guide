@@ -364,11 +364,11 @@ body::before {
     color: var(--text-primary);
     font-family: var(--font-header);
     font-size: 0.9rem;
+    line-height: 22px;
     font-weight: 400;
     cursor: pointer;
     width: 100%;
     text-align: left;
-    transition: all var(--transition-fast);
     position: relative;
     z-index: 1;
 }
@@ -450,10 +450,10 @@ body::before {
     color: var(--text-primary);
     opacity: 0.8;
     font-size: 0.85rem;
+    line-height: 20px;
     text-decoration: none;
     border-radius: 6px;
     border: 1px solid transparent;
-    transition: all var(--transition-fast);
     cursor: pointer;
     background: transparent;
 }
