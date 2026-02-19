@@ -5,143 +5,157 @@ title: "Customizing Your Workspace"
 
 ## Customizing Your Workspace
 
-WATCHOUT 7's interface is fully customizable to match your workflow. The flexible window system allows you to arrange, resize, and organize your workspace exactly as you prefer.
+WATCHOUT 7's interface is built around independent, freely positioned windows that you arrange to suit your workflow. Whether you are programming on a single laptop screen, spread across multiple monitors during a production build, or monitoring a live show from a simplified view, the workspace adapts to your needs. This article covers everything related to arranging, saving, and recalling window layouts.
 
-### Window Management
+[[WIDGET:customizing-workspace]]
 
-#### Moving Windows
+### Moving Windows
 
-Drag any window by its title bar to reposition it within the application. Windows can be placed anywhere on screen and can overlap freely.
+Drag any window by its **title bar** to reposition it within the application. Windows can be placed anywhere and can overlap freely.
 
-#### Resizing Windows
+**Double-click** the title bar to automatically fit the window into the best available space on screen.
 
-Drag the edges or corners of any window to resize:
+### Resizing Windows
 
-*   **Edges** – Resize in one direction
-*   **Corners** – Resize in both directions simultaneously
+Drag any **edge or corner** of a window to resize it. All eight resize directions are supported (top, bottom, left, right, and all four corners). Each window enforces a minimum size to ensure its controls remain usable.
 
-Windows maintain a minimum size to ensure controls remain usable.
+### Closing and Reopening Windows
 
-#### Closing Windows
+Close a window by clicking the **close button** (X) in its title bar, or press **Ctrl+F4** to close the active window.
 
-Click the × button in any window's title bar, or right-click the title bar and select **Close**.
+Reopen any closed window from the **Window** menu:
 
-#### Reopening Windows
+| Menu Command | Shortcut | Window |
+|---|---|---|
+| Window > Stage | Ctrl+Alt+S | Stage |
+| Window > Assets | Ctrl+Alt+A | Assets |
+| Window > Timelines | Ctrl+Alt+T | Timelines |
+| Window > Devices | Ctrl+Alt+D | Devices |
+| Window > Variables | Ctrl+Alt+V | Variables |
+| Window > Cues | Ctrl+Alt+C | Cue List |
+| Window > Cue Sets | — | Cue Sets |
+| Window > Properties | — | Properties |
+| Window > Nodes | — | Nodes |
 
-Closed windows can be reopened via the **Window** menu:
+### Window Snapping
 
-*   **Window → Stage**
-*   **Window → Timeline**
-*   **Window → Assets**
-*   **Window → Properties**
-*   **Window → Network**
-*   **Window → Variables** (for show variables/inputs)
+When you move or resize a window near another window or the edge of the application canvas, the window automatically **snaps into alignment** with a small gap between them. This makes it easy to tile windows into a clean, non-overlapping arrangement without pixel-perfect dragging.
+
+- **Hold Ctrl** while dragging to temporarily disable snapping
+- **Hold Alt** while dragging to resize the window to fit the available space between adjacent windows
 
 ### Window Docking
 
-Windows can be **docked** to the edges of the application:
+Docking locks a window to an edge of the application, where it stretches to fill that edge and stays anchored when the application is resized.
 
-1. Hold `Ctrl` and double-click a window's title bar
-2. The window docks to the nearest edge
+To dock a window:
+1. Hold **Ctrl** and **double-click** the window's title bar
+2. The window docks to the nearest edge (left, right, top, or bottom)
 
-Docked windows:
+To undock, **Ctrl+double-click** the title bar again. The window returns to its previous floating state.
 
-*   Stretch to fill the edge
-*   Don't overlap other content
-*   Stay at their docked position when the application resizes
+Docked windows do not overlap other docked content. They divide the available space along their edge.
 
-To undock, hold `Ctrl` and double-click the title bar again.
+### Window Focus
+
+The currently active window is indicated by a **brighter border** and a **stronger drop shadow**. Only the focused window receives keyboard input. Click any window to bring it to the front and transfer focus to it.
 
 ### Layout Presets
 
-Save and recall up to 9 custom workspace layouts:
+WATCHOUT 7 provides nine numbered layout preset slots. Presets remember the complete window arrangement: which windows are open, their positions, sizes, and docking states.
 
-#### Saving Presets
+#### Saving a Preset
 
-*   `Ctrl+Shift+1` through `Ctrl+Shift+9` – Save current layout to preset 1-9
+Press **Ctrl+Alt+1** through **Ctrl+Alt+9** to save the current window arrangement to preset 1 through 9. You can also save presets from **Window > Layout > Save Preset 1-9**.
 
-#### Loading Presets
+#### Loading a Preset
 
-*   `Ctrl+1` through `Ctrl+9` – Load layout preset 1-9
+Press **Alt+1** through **Alt+9** to instantly recall a saved layout. You can also load from **Window > Layout > Load Preset 1-9**.
 
-Presets remember:
+#### Reset Layout
 
-*   Window positions
-*   Window sizes
-*   Which windows are open
-*   Docking states
+Press **Alt+0** or use **Window > Layout > Reset** to return all windows to their default positions and sizes.
+
+:::tip
+Set up different presets for different phases of production. For example: preset 1 for programming (Stage + Timeline + Properties), preset 2 for content review (Stage + Assets + large Timeline), and preset 3 for live monitoring (Nodes dashboard + Timelines list + minimal Stage).
+:::
 
 ### Layout Files
 
-For sharing layouts between projects or team members:
+For sharing layouts between projects or team members, you can export and import layouts as files:
 
-#### Save Layout to File
+- **Window > Layout > Export** — saves the current window arrangement to a `.layout.json` file
+- **Window > Layout > Import** — loads a window arrangement from a `.layout.json` file
 
-*   **Window → Save Layout** – Export current workspace to a `.layout.json` file
+Layout files are portable and can be shared across different installations of WATCHOUT 7.
 
-#### Load Layout from File
+### Window Navigation Shortcuts
 
-*   **Window → Load Layout** – Import a workspace from file
-
-### Reset Layout
-
-To restore the default workspace arrangement:
-
-*   **Window → Reset Layout**
-
-This returns all windows to their original positions and sizes.
-
-### Window Navigation
-
-#### Cycling Windows
-
-Navigate between windows using keyboard shortcuts:
+Navigate between windows without using the mouse:
 
 | Shortcut | Action |
-| --- | --- |
-| `Ctrl+Tab` | Activate next window |
-| `Ctrl+Shift+Tab` | Activate previous window |
-| `Ctrl+\`` | Next window of same type |
-| `Ctrl+Shift+\`` | Previous window of same type |
+|---|---|
+| **Ctrl+Tab** or **Ctrl+F6** | Cycle to the next window |
+| **Ctrl+Shift+Tab** or **Ctrl+Shift+F6** | Cycle to the previous window |
+| **Alt+Left** | Previous window of the same type (e.g., cycle between open Timeline windows) |
+| **Alt+Right** | Next window of the same type |
+| **Ctrl+F4** | Close the active window |
 
-#### Direct Window Access
+#### Direct Window Activation
 
-Jump directly to specific windows:
+Jump directly to a specific window type:
 
-*   **Stage** – Click in background or use **Window → Stage**
-*   **Timeline** – **Window → Timelines**
-*   **Assets** – **Window → Assets**
-*   **Properties** – **Window → Properties** or `Ctrl+P`
-*   **Network** – **Window → Network**
-
-### Theme Selection
-
-Toggle between visual themes via **Window → Light Theme**:
-
-*   **Dark Theme** – Reduced brightness for low-light environments
-*   **Light Theme** – Higher contrast for bright environments
-
-Your theme preference persists across sessions.
+| Shortcut | Window |
+|---|---|
+| **Ctrl+Alt+S** | Stage |
+| **Ctrl+Alt+A** | Assets |
+| **Ctrl+Alt+T** | Timelines |
+| **Ctrl+Alt+D** | Devices |
+| **Ctrl+Alt+V** | Variables |
+| **Ctrl+Alt+C** | Cue List |
 
 ### Multiple Timeline Windows
 
-WATCHOUT supports multiple Timeline windows open simultaneously, useful when working with multiple timelines in your show. Each Timeline window operates independently and can display a different timeline.
+WATCHOUT supports having multiple Timeline windows open simultaneously, each displaying a different timeline. This is useful when you need to work across several timelines — for example, editing a content timeline while monitoring a control timeline. Each Timeline window operates independently with its own zoom, scroll position, and selection.
 
-### Window Focus Indicators
+Open additional Timeline windows by double-clicking timelines in the Timelines window. Each opens in its own window instance.
 
-The active (focused) window displays:
+### Default Layout
 
-*   Brighter title bar text
-*   Enhanced border color
-*   Stronger drop shadow
+When you first launch WATCHOUT 7 or reset the layout with **Alt+0**, the application arranges windows in a default configuration:
 
-This visual hierarchy helps identify which window receives keyboard input.
+- **Stage** — top-left
+- **Properties** — top-center
+- **Assets** — top-right
+- **Timelines** — below Assets
+- **Timeline** — bottom, spanning beneath Stage and Properties
+- **Devices** — bottom-right
 
-### Transparent Stage
+This default provides a balanced starting point for most workflows, with the visual canvas, editing tools, and media library all visible simultaneously.
 
-The Stage window can display a transparent background when configured, allowing the operating system desktop or other applications to show through. This is useful for:
+### Theme
 
-*   Calibration reference
-*   Matching on-screen content with physical elements
-*   Presentation previews
+WATCHOUT 7 uses a **dark theme** by default, designed to reduce eye strain in the low-light environments typical of production work. The interface uses dark backgrounds with light text and accent colors for interactive elements.
 
+:::note
+A light theme option exists in the application but is currently inactive. The dark theme is the standard working appearance.
+:::
+
+### Complete Keyboard Reference
+
+| Shortcut | Action |
+|---|---|
+| **Alt+1** through **Alt+9** | Load layout preset 1-9 |
+| **Ctrl+Alt+1** through **Ctrl+Alt+9** | Save layout preset 1-9 |
+| **Alt+0** | Reset to default layout |
+| **Ctrl+Tab** / **Ctrl+F6** | Next window |
+| **Ctrl+Shift+Tab** / **Ctrl+Shift+F6** | Previous window |
+| **Alt+Left** | Previous window of same type |
+| **Alt+Right** | Next window of same type |
+| **Ctrl+F4** | Close active window |
+| **Ctrl+Alt+S** | Activate Stage |
+| **Ctrl+Alt+A** | Activate Assets |
+| **Ctrl+Alt+T** | Activate Timelines |
+| **Ctrl+Alt+D** | Activate Devices |
+| **Ctrl+Alt+V** | Activate Variables |
+| **Ctrl+Alt+C** | Activate Cue List |

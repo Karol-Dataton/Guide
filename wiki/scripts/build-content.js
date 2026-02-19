@@ -74,8 +74,10 @@ function markdownToHtml(markdown) {
     });
 
     // Headers
+    // Handle ### headers with optional [Overrides] for the TOC label
+    // We strip the [Override] part for the HTML output
     html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
-    html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
+    html = html.replace(/^###\s+(.+?)(\s*\[.*\])?$/gm, '<h3>$1</h3>');
     html = html.replace(/^## (.+)$/gm, '<h2>$1</h2>');
     html = html.replace(/^# (.+)$/gm, '<h1>$1</h1>');
 
@@ -408,7 +410,16 @@ function parseIndexGroups(markdown) {
     lines.forEach(line => {
         const headingMatch = line.match(/^###\s+(.+)$/);
         if (headingMatch) {
-            currentGroup = headingMatch[1].trim();
+            let groupName = headingMatch[1].trim();
+
+            // Check for [Override Label] syntax
+            const overrideMatch = groupName.match(/^(.+?)\s*\[(.+)\]$/);
+            if (overrideMatch) {
+                // Use the text inside [] as the group name for TOC/sidebar
+                groupName = overrideMatch[2].trim();
+            }
+
+            currentGroup = groupName;
             currentGroupOrder += 1;
             currentGroupItemOrder = 0;
             return;

@@ -7,7 +7,7 @@ icon: "play"
 
 **Playback is where your show leaves the editing environment and reaches the audience — whether that means previewing on your Producer screen or running live across a network of display servers.** This chapter covers the full path from local preview through network connection to live show operation, including the per-timeline playback model, system readiness verification, and procedures for reliable performance.
 
-### Getting Started
+### Getting Started [Core Concepts]
 
 Understand how WATCHOUT controls playback before going live.
 

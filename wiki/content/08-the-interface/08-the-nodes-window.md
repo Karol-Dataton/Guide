@@ -1,143 +1,104 @@
 ---
-title: "The Nodes Window"
+title: "The Devices Window"
 ---
 
 
-## The Nodes Window
+## The Devices Window
 
-The **Nodes** window (also known as the Devices & Network window) provides a unified view of your show's output devices and the WATCHOUT nodes available on your network. It consists of two panes that work together to help you configure and monitor your display system.
+The Devices window manages the output devices in your show — displays, virtual displays, audio devices, and capture sources. While the Nodes window focuses on the physical machines running WATCHOUT services, the Devices window focuses on the logical output devices configured within your show. It provides a filtered, sortable list of all devices, with quick access to enable/disable, warp editing, mask editing, and device properties.
 
-### Window Layout
+Open the Devices window from **Window > Devices** or press **Ctrl+Alt+D**.
 
-The Nodes window is split into two resizable panes:
+[[WIDGET:devices-window]]
 
-| Pane | Purpose |
-| --- | --- |
-| **Devices** (left) | Output devices assigned to your show |
-| **Network** (right) | WATCHOUT nodes discovered on the network |
+### Device List
 
-Drag the splitter between panes to adjust their relative sizes.
-
-## Devices Pane
-
-The **Devices** pane lists all output devices configured in your show, including displays, audio devices, and capture sources.
-
-### Device Table
+The Devices window displays all output devices in a table with two columns:
 
 | Column | Description |
-| --- | --- |
-| **Name** | Device name with type icon and optional warning indicators |
-| **Host** | The network node hosting this device, or "Virtual" for virtual displays |
+|---|---|
+| **Name** | The device name, preceded by a type icon. Warning indicators appear next to the name when issues are detected (such as an offline host or configuration problem). |
+| **Host** | The network node hosting this device. Virtual displays show "Virtual" instead of a node name. |
 
-### Device Types
+### Device Type Icons
 
 Each device displays an icon indicating its type:
 
-| Icon | Type | Description |
-| --- | --- | --- |
-| Monitor | Display | Physical video output |
-| Monitor (shimmer) | Virtual Display | Software-rendered output for compositions |
-| Volume | Audio | Audio output device |
-| Cast | Capture | Video input source |
+| Icon | Device Type |
+|---|---|
+| Monitor | Display (physical video output) |
+| Monitor (shimmer) | Virtual Display (software-rendered for compositions) |
+| Volume/Speaker | Audio device |
+| Cast/Capture | Capture source (video input) |
 
-### Filtering Devices
+### Filtering
 
-Use the dropdown filter to narrow the device list:
+A dropdown filter at the top of the window lets you narrow the device list:
 
 | Filter | Shows |
-| --- | --- |
+|---|---|
 | **All** | Every device in the show |
 | **Display** | Physical display outputs only |
 | **Virtual** | Virtual displays only |
-| **Capture** | Video capture sources |
-| **Audio** | Audio output devices |
+| **Capture** | Capture sources only |
+| **Audio** | Audio devices only |
 
-### Device Status Indicators
-
-Devices may display warning icons for issues such as:
-
-*   Missing host assignment
-*   Offline host
-*   Configuration errors
-*   Resolution mismatches
-
-Hover over warning icons to see details.
+An additional **tier filter** is available to show only devices assigned to specific stage tiers.
 
 ### Color Coding
 
-Display devices show a colored left border matching their assigned color, making it easy to identify displays across the Stage and Devices views.
+Display devices show a colored left border matching their assigned display color. This color is the same one visible on the Stage canvas, making it easy to visually match devices between the Devices window and the Stage view. Assign or change a display's color in its properties.
 
 ### Host Grouping
 
-When sorted by Host, devices on the same node display a connecting bracket in the left margin, visually grouping outputs by their rendering machine.
+When the device list is sorted by Host, devices assigned to the same node display a connecting bracket in the left margin. This visual grouping makes it easy to see which outputs are rendered by the same machine — useful when planning hardware load distribution or troubleshooting node-specific issues.
 
-### Context Menu Actions
+### Selection
 
-Right-click devices to access:
+- **Click** a device to select it
+- **Shift+Click** to select a range
+- **Ctrl+Click** to toggle individual devices
 
-*   **Enable/Disable Device** – Toggle device output
-*   **Edit Warp** – Open warp correction editor
-*   **Edit Mask** – Open mask editor
-*   **Cut/Copy/Paste/Delete** – Standard editing operations
-*   **Add Capture** – Create a new capture source
-*   **Add Virtual Display** – Create a new virtual display
+Selecting a device updates the Properties panel with that device's settings, and highlights the corresponding display on the Stage.
+
+### Context Menu
+
+Right-click a device (or the window background) to access:
+
+| Action | Description |
+|---|---|
+| **Enable / Disable** | Toggle the device's output on or off |
+| **Edit Warp** | Open the warp geometry editor for this display. See [Warp Geometry](../03-displays-and-outputs/07-warp-geometry.md). |
+| **Edit Mask** | Open the mask editor for this display. See [Display Masks](../03-displays-and-outputs/08-display-masks.md). |
+| **Cut / Copy / Paste / Delete** | Standard clipboard operations for devices |
+| **Add Capture** | Create a new capture source |
+| **Add Virtual Display** | Create a new virtual display |
 
 ### Adding Devices
 
-Create new devices using:
+New devices can be created from several places in the application:
 
-*   **Right-click menu** in the Devices pane
-*   **Stage menu → Add Display/Projector**
-*   **Right-click a node** in the Network pane
+- **Devices window context menu** — right-click and choose Add Capture or Add Virtual Display
+- **Stage menu** — Add Display, Add Virtual Display, Add 3D Projector, Create Display Grid
+- **Nodes window context menu** — right-click a node and choose Add Display, Add 3D Projector, Add Audio Device, or Add Capture Device. The new device is automatically assigned to that node.
 
 ### Editing Devices
 
-*   **Double-click** a device to open its properties
-*   **Drag** devices to reorder (when enabled)
-*   Select multiple devices with `Shift+Click` or `Ctrl+Click`
+- **Double-click** a device to open its properties in the Properties panel
+- **Select** a device and view/edit its properties in the Properties panel
 
-## Network Pane
-
-The **Network** pane displays all WATCHOUT nodes discovered on your local network. For detailed information, see [The Network Window](06-the-network-window.md).
-
-### Quick Overview
-
-The Network pane shows:
-
-*   **Node name** – Hostname or identifier
-*   **Services** – Available WATCHOUT services (Director, Runner, Asset Manager)
-*   **Address** – IP address
-
-### Assigning Devices to Nodes
-
-1. Select a node in the Network pane
-2. Right-click and choose **Add Display** or **Add Audio Device**
-3. The new device is automatically assigned to that node
-
-### Monitoring Node Status
-
-Nodes display real-time status:
-
-*   Normal text – Online and responsive
-*   Dimmed text – Offline or not responding recently
-
-## Workflow Tips
-
-### Efficient Device Management
-
-1. **Filter by type** when working with many devices
-2. **Sort by Host** to see device groupings per node
-3. **Use color coding** to match devices between Stage and Devices views
-
-### Multi-Selection
-
-Select multiple devices to:
-
-*   Enable or disable as a group
-*   Move to a different host
-*   Delete in bulk
+Device properties vary by type. For a full reference of display, audio, and capture properties, see [The Properties Panel](06-the-properties-panel.md).
 
 ### Drag and Drop
 
-Drag devices from the Devices pane to the Stage to reposition displays visually.
+The Devices window supports drag-and-drop interactions:
 
+- **Drag devices** from the Devices window to the Timeline or Cue List to create cues that source from those devices (useful for virtual displays and capture sources)
+- **Reorder** devices by dragging them within the list
+
+### Relationship to Other Windows
+
+- **Stage** — displays listed in the Devices window correspond to displays shown on the Stage canvas. Selecting a device here highlights it on the Stage, and vice versa. See [The Stage Window](02-the-stage-window.md).
+- **Nodes** — the Host column shows which node each device is assigned to. Create new devices from the Nodes window to automatically assign them to a node. See [The Nodes Window](07-the-network-window.md).
+- **Properties** — selecting a device loads its full property set (placement, output configuration, warp, mask, calibration) in the Properties panel. See [The Properties Panel](06-the-properties-panel.md).
+- **Timeline** — virtual displays and capture sources can be dragged from Devices to the Timeline to create media cues. See [The Timeline Window](03-the-timeline-window.md).
