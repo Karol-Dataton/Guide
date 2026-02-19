@@ -13,6 +13,8 @@ When a video plays at a different rate than the show's output (for example, 24 f
 
 With Frame Blending enabled, the renderer blends the two neighboring source frames together for any output frame that falls between them. The blend ratio is determined by the fractional position between the two source frames, producing a smooth temporal crossfade.
 
+[[WIDGET:frame-blending-filmstrip]]
+
 ### Enabling Frame Blending
 
 To enable Frame Blending on a cue:
