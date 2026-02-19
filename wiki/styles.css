@@ -412,9 +412,9 @@ body::before {
 .toc-subsections {
     display: grid;
     grid-template-rows: 0fr;
-    transition: grid-template-rows 0.3s ease-out, padding-top 0.3s ease-out;
     padding-top: 0;
     margin: 0;
+    overflow: hidden;
 }
 
 .toc-chapter.expanded .toc-subsections {
@@ -424,6 +424,7 @@ body::before {
 
 .toc-subsections-inner {
     overflow: hidden;
+    min-height: 0;
 }
 
 .toc-subsection {

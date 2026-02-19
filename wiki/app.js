@@ -494,8 +494,9 @@ function setupSidebarAccordion() {
     // But setupSidebar is only for index.html.
     // So let's make sure we attach event listeners to all .toc-chapter-header elements.
 
-    const headers = document.querySelectorAll('.toc-chapter-header');
+    const headers = document.querySelectorAll('.toc-chapter-header:not(.accordion-initialized)');
     headers.forEach(header => {
+        header.classList.add('accordion-initialized');
         header.addEventListener('click', (e) => {
             const chapterDiv = header.parentElement;
             const isExpanded = chapterDiv.classList.contains('expanded');
@@ -530,8 +531,10 @@ function setupSidebarAccordion() {
                 e.preventDefault();
                 chapterDiv.classList.remove('expanded');
                 header.classList.remove('expanded');
+            } else {
+                // Navigate immediately
+                window.location.href = headerLink;
             }
-            // Else: let default link behavior happen (navigation)
         });
     });
 }

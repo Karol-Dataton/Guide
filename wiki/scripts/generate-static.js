@@ -398,26 +398,28 @@ function generateSidebar(activeSlug, depth) {
             </a>
             ${sidebarSubsections.length > 0 ? `
                 <div class="toc-subsections ${expandedClass}">
+                    <div class="toc-subsections-inner">
                     ${(() => {
-            let currentGroup = null;
-            return sidebarSubsections.map(sub => {
-                const subUrl = `${relPath}${chapter.slug}/${sub.slug}.html`;
-                const subActive = sub.slug === activeSlug ? 'active' : '';
-                let groupLabel = '';
+                    let currentGroup = null;
+                    return sidebarSubsections.map(sub => {
+                        const subUrl = `${relPath}${chapter.slug}/${sub.slug}.html`;
+                        const subActive = sub.slug === activeSlug ? 'active' : '';
+                        let groupLabel = '';
 
-                if (sub.group && sub.group !== currentGroup) {
-                    currentGroup = sub.group;
-                    groupLabel = `<div class="toc-group-label">${sub.group}</div>`;
-                }
+                        if (sub.group && sub.group !== currentGroup) {
+                            currentGroup = sub.group;
+                            groupLabel = `<div class="toc-group-label">${sub.group}</div>`;
+                        }
 
-                return `
+                        return `
                         ${groupLabel}
                         <a class="toc-subsection ${subActive}" href="${subUrl}">
                             ${sub.title}
                         </a>
                         `;
-            }).join('');
-        })()}
+                    }).join('');
+                })()}
+                    </div>
                 </div>
             ` : ''}
         </div>
