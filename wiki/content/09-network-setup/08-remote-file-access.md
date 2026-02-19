@@ -42,7 +42,7 @@ The allow list is a JSON file that specifies which directories on a node are acc
 **Path format:** Paths can use either forward slashes (`/`) or backslashes (`\`). The system normalizes paths internally.
 
 :::warning
-After creating or modifying the `allow_list.json` file, you must **restart Producer** (including WATCHOUT Manager) for the changes to take effect. The allow list is read at startup and cached.
+After creating or modifying the `allow_list.json` file, you must **restart WATCHOUT Manager** on the target node for the changes to take effect. The allow list is read at startup and cached.
 :::
 
 ### Setting Up Remote Access
@@ -52,7 +52,7 @@ When you attempt to access a remote node that has no allow list configured (or t
 1. Click **Open allow list directory** to navigate to the settings folder on the target node.
 2. Open the file named `allow_list.json` in a text editor, or create it if it doesn't exist.
 3. Add the required folder paths to the `folders` array.
-4. Save the file and restart Producer (including WATCHOUT Manager).
+4. Save the file and restart WATCHOUT Manager on the target node.
 
 The dialog also shows a pre-populated example JSON based on the path you tried to access.
 
@@ -88,3 +88,8 @@ The allow list exists to prevent unintended exposure of a node's file system ove
 - **Limit access to necessary directories only** — only add paths that WATCHOUT actually needs to access, such as show data directories and asset storage locations.
 - **Avoid listing the root of system drives** (e.g., `C:/`) unless absolutely necessary. Prefer more specific paths like `C:/shows/` or `D:/watchout-assets/`.
 - **Review the allow list periodically** — remove paths that are no longer needed after a project concludes.
+
+### Relationship to Other Articles
+
+- [Node Management and Maintenance](07-node-management-and-maintenance.md) — other remote management operations available from the Nodes window
+- [Working Directory Management](09-working-directory-management.md) — the directory where cached assets and show data are stored on each node

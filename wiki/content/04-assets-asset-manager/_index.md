@@ -7,7 +7,7 @@ icon: "film"
 
 **The Asset Manager is the centralized service that handles every stage of the media lifecycle - upload, optimization, storage, and distribution to display servers.** All media in a WATCHOUT 7 show passes through the Asset Manager, which transcodes source files into GPU-friendly formats, stores them in a content-addressed chunk system using Blake3 hashes, and distributes them to Runner nodes on demand. Understanding this system is essential for efficient show production and reliable playback.
 
-### Start Here
+### Start Here [Core Concepts]
 
 Core concepts for working with media in WATCHOUT.
 

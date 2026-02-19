@@ -9,7 +9,7 @@ WATCHOUT provides a built-in mechanism for pushing software updates from Produce
 
 ### Why Version Alignment Matters
 
-All WATCHOUT nodes (Runners, Director, Operative, Asset Manager) communicate using internal protocols that evolve with each software release. When nodes run different versions, protocol mismatches can cause communication failures, missing features, or unexpected behavior. Keeping all nodes at the same version eliminates these risks.
+All WATCHOUT nodes (Runners, Director, Asset Manager) communicate using internal protocols that evolve with each software release. When nodes run different versions, protocol mismatches can cause communication failures, missing features, or unexpected behavior. Keeping all nodes at the same version eliminates these risks.
 
 ### Version Mismatch Indicators
 
@@ -59,3 +59,8 @@ Switching to WATCHOUT 6 is a machine-level operation that triggers a full reboot
 - **Update all nodes at once** — select all nodes that need updating and push the update simultaneously to minimize the window of version mismatch.
 - **Verify after update** — after all nodes restart, check the Nodes window to confirm every node reports the same version and no version mismatch warnings remain.
 - **Keep a backup installer** — retain a copy of the previous version's installer in case you need to roll back.
+
+### Relationship to Other Articles
+
+- [Node Management and Maintenance](07-node-management-and-maintenance.md) — the full set of node management actions, including software updates
+- [Network Overview](01-network-overview.md) — how services communicate and why version alignment matters

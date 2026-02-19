@@ -53,6 +53,12 @@ The same warnings about asset availability apply when resetting to default — a
 
 ### Troubleshooting
 
-If the working directory path becomes invalid (e.g., the target drive is removed), WATCHOUT will attempt to fall back to the default location. If neither the configured path nor the default path is available, the Process Manager will log an error and may be unable to start services.
+If the working directory path becomes invalid (e.g., the target drive is removed), WATCHOUT will attempt to fall back to the default location. If neither the configured path nor the default path is available, WATCHOUT will log an error and may be unable to start services on that node.
 
 To recover, either restore the target drive or reset the working directory by editing the WATCHOUT Manager settings file directly on the affected node.
+
+### Relationship to Other Articles
+
+- [Node Management and Maintenance](07-node-management-and-maintenance.md) — how to access the Working Directory controls and other node actions
+- [Remote File Access](08-remote-file-access.md) — browsing files on remote nodes, including the working directory
+- [Display Servers](02-display-servers.md) — hardware considerations for the drives that host the working directory

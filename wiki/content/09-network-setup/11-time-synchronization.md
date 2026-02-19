@@ -89,4 +89,10 @@ The warning notes that delays may occur between time needle changes and updates 
 - If nodes show high NTP diff values, try restarting the Windows Time Service or triggering a manual resync.
 - If using User-managed mode, verify your external NTP configuration is correct and that all nodes point to the same reference.
 - Switch to WATCHOUT-managed mode for automatic configuration if your external NTP setup is unreliable.
-- For hardware-level frame accuracy across multiple displays, consider using **NVIDIA Quadro Sync** (genlock/framelock) in addition to NTP synchronization.
+- For hardware-level frame accuracy across multiple displays, consider using **NVIDIA Quadro Sync** (genlock/framelock) in addition to NTP synchronization. WATCHOUT supports **Hardware Sync Groups** — configure these in **Edit > Show Properties** under the **Warp** section by creating sync groups and assigning nodes to them.
+
+### Relationship to Other Articles
+
+- [Network Overview](01-network-overview.md) — the overall network architecture and how services communicate
+- [Firewall Configuration](04-firewall-configuration.md) — UDP port 123 must be open for NTP traffic
+- [Node Management and Maintenance](07-node-management-and-maintenance.md) — accessing Sync Settings and other node actions from the Nodes window

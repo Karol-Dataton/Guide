@@ -89,6 +89,8 @@ This means you can use keyframes to define the base animation and an expression 
 
 If you want the expression to completely replace the keyframe value, simply write an expression that doesn't reference `tweenValue` (e.g., just `myVariable`). In this case, the keyframe curve is still computed but its value is ignored.
 
+[[WIDGET:tween-expression-visualizer]]
+
 ### Practical Examples
 
 **Externally controlled opacity:**

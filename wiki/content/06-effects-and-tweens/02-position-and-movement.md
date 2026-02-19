@@ -54,6 +54,8 @@ By default, the cue moves in straight lines between tween points. To create curv
 
 When **Linked Handles** is enabled, the In and Out handles are locked together so that adjusting one automatically adjusts the other, maintaining a smooth, continuous curve through the point. Disable Linked Handles when you need a sharp change of direction at a specific point — for example, a cue that slides in from the left, pauses, then exits upward.
 
+[[WIDGET:position-bezier-path]]
+
 :::tip
 When Linked Handles is active, the individual Smooth In and Smooth Out toggles are locked on. To control them independently, first disable Linked Handles.
 :::
@@ -66,6 +68,8 @@ The **Align with Trajectory** option (shown in the tween-level Properties panel 
 - Content that needs to follow a curved path while maintaining a natural orientation relative to the path.
 
 When enabled, the cue's rotation is continuously updated based on the tangent of the motion path at each moment. Manual rotation tweens (Rotation X/Y/Z) are overridden along the affected axes while this option is active.
+
+[[WIDGET:position-align-trajectory]]
 
 ### Building a Motion Path
 

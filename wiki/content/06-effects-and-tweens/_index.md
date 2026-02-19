@@ -7,7 +7,7 @@ icon: "sliders"
 
 **Tweens are time-based value changes attached to cues that bring your content to life with animation, transitions, and dynamic visual effects.** Every visual property of a cue - position, scale, opacity, color, crop, rotation, and more - can be animated over time using tweens. WATCHOUT supports 48 tween types across categories ranging from simple fades to complex corner-pin distortion and expression-driven automation.
 
-### Start Here
+### Start Here [Core Concepts]
 
 Understand how tweens work before diving into specific effect types.
 

@@ -7,7 +7,7 @@ icon: "monitor"
 
 **Displays are the foundation of every WATCHOUT show - they define where and how your content reaches the audience.** Each display combines a stage placement, an output route (GPU, SDI, NDI, or Virtual), and signal settings into a single configurable unit. Getting display setup right is the first step toward seamless multi-screen presentations.
 
-### Start Here
+### Start Here [Essentials]
 
 Understand the basics of adding and configuring displays.
 

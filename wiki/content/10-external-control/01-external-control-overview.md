@@ -13,7 +13,7 @@ External control in WATCHOUT follows a layered architecture where signals from t
 
 The **Operative** is the central receiving point for most external protocols. It runs on the same machine as the Director and listens for incoming ArtNet, OSC, PosiStageNet, HTTP, and WATCHOUT 6 protocol messages. When a message arrives, the Operative converts it into a standardized internal format and forwards it to the Director.
 
-The **Director** is the authoritative coordinator. It receives variable updates from the Operative (and in some cases directly from bridge services like MIDI and LTC), validates values against variable definitions in the show, and broadcasts the updated state to all connected Runners via Server-Sent Events (SSE). Runners then apply the new values atomically to their rendering pipeline.
+The **Director** is the authoritative coordinator. It receives variable updates from the Operative (and in some cases directly from bridge services like MIDI and LTC), validates values against variable definitions in the show, and broadcasts the updated state to all connected Runners. Runners then apply the new values to their rendering pipeline in real time.
 
 Some protocols bypass the Operative and communicate directly with the Director. The **MIDI Bridge** and **LTC Bridge** are standalone services that each have their own connection to the Director — MIDI for variable input and show control, and LTC for timeline synchronization.
 
@@ -40,16 +40,16 @@ WATCHOUT supports the following external control protocols:
 
 ### Enabling and Disabling Protocols
 
-Individual protocols can be enabled or disabled from the **Network** window in Producer. The available toggles include:
+Individual protocols can be enabled or disabled from the **Nodes** window in Producer. Select a node and look for the **Protocols** section, which provides toggles for:
 
-- **ArtNet** — Enables/disables the ArtNet listener on the Operative.
-- **OSC** — Enables/disables the OSC listener (both UDP and TCP).
-- **PosiStageNet** — Enables/disables the PSN forwarder.
-- **Web UI** — Enables/disables the HTTP REST API and its built-in documentation interface.
-- **WATCHOUT 7 Protocol** — Enables/disables the native HTTP API endpoints.
-- **WATCHOUT 6 Protocol** — Enables/disables the backward-compatible TCP protocol.
+- **ArtNet** — Enables or disables the ArtNet listener on the Operative.
+- **OSC** — Enables or disables the OSC listener (both UDP and TCP).
+- **PosiStageNet** — Enables or disables the PSN receiver.
+- **Web UI** — Enables or disables the HTTP REST API and its built-in documentation interface.
+- **WATCHOUT 7 protocol** — Enables or disables the native HTTP API endpoints.
+- **WATCHOUT 6 protocol** — Enables or disables the backward-compatible TCP protocol.
 
-The MIDI Bridge and LTC Bridge are managed separately as individual services — they can be started or stopped from the Network window's node management.
+The MIDI Bridge and LTC Bridge are managed separately as individual services — they can be started or stopped from the Nodes window's node actions.
 
 :::tip
 Disable protocols you are not using to reduce network traffic and minimize the system's attack surface on public or shared networks.
@@ -78,3 +78,9 @@ The best protocol depends on your production environment:
 - **Existing WATCHOUT 6 integration** → **WATCHOUT 6 Protocol**. If you have an existing Crestron, AMX, or other control system programmed for WATCHOUT 6, the backward-compatible TCP protocol lets it work with WATCHOUT 7 without changes.
 - **Manual fader control** → **MIDI Bridge**. Physical MIDI controllers with faders and knobs provide tactile, hands-on control of WATCHOUT variables.
 - **Theatrical cue triggering** → **MIDI Show Control**. MSC is the industry standard for triggering cues across multiple show control devices in theater and live event environments.
+
+### Related Topics
+
+- [Variables and Inputs](02-variables-and-inputs.md) for the variable system that connects all protocols to the show
+- [Node Management and Maintenance](../09-network-setup/07-node-management-and-maintenance.md) for enabling protocol toggles and managing bridge services on nodes
+- [Firewall Configuration](../09-network-setup/04-firewall-configuration.md) for the ports each protocol uses

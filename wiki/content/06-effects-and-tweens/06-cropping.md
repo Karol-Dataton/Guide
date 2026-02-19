@@ -28,6 +28,8 @@ All four channels use the same value system:
 
 A value of 0% means the edge is at its natural position (nothing cropped). A value of 50% moves the edge halfway across the cue. A value of 100% moves the edge all the way to the opposite side, completely hiding the content.
 
+[[WIDGET:crop-edge-manipulator]]
+
 ### Dual Value Display
 
 When you select a crop tween point, the Properties panel shows two fields:

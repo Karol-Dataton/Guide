@@ -638,22 +638,24 @@ function setupSidebar() {
             </a>
             ${sidebarSubsections.length > 0 ? `
                 <div class="toc-subsections">
+                    <div class="toc-subsections-inner">
                     ${(() => {
-                        let currentGroup = null;
-                        return sidebarSubsections.map(sub => {
-                            let groupLabel = '';
-                            if (sub.group && sub.group !== currentGroup) {
-                                currentGroup = sub.group;
-                                groupLabel = `<div class="toc-group-label">${sub.group}</div>`;
-                            }
+                    let currentGroup = null;
+                    return sidebarSubsections.map(sub => {
+                        let groupLabel = '';
+                        if (sub.group && sub.group !== currentGroup) {
+                            currentGroup = sub.group;
+                            groupLabel = `<div class="toc-group-label">${sub.group}</div>`;
+                        }
 
-                            return `${groupLabel}
+                        return `${groupLabel}
                         <a class="toc-subsection" href="${chapterSlug}/${slugify(sub.title)}.html">
                             ${sub.title}
                         </a>
                     `;
-                        }).join('');
-                    })()}
+                    }).join('');
+                })()}
+                    </div>
                 </div>
             ` : ''}
         </div>

@@ -19,6 +19,8 @@ WATCHOUT offers three rotation tweens, each corresponding to a different axis:
 
 All three are measured in **degrees** with a default of **0** (no rotation). The range is unlimited — values beyond 360 or below -360 produce multiple full revolutions, which is useful for continuous spinning effects.
 
+[[WIDGET:rotation-axes-3d]]
+
 ### Adding Rotation Tweens
 
 To add rotation animation to a cue:
@@ -40,6 +42,8 @@ In practice, this means:
 - **Rotation X** then tilts the already-Z-and-Y-rotated cue vertically.
 
 If you are creating simple single-axis effects, the order does not matter. When combining multiple axes, preview the result carefully and adjust values until the orientation matches your intent.
+
+[[WIDGET:rotation-order-comparison]]
 
 :::tip
 For most 2D work, only Rotation Z is needed. Reserve Rotation X and Y for situations where you specifically want a 3D perspective effect — they are most impactful when combined with content that has a visible sense of depth or when used alongside Position Z changes.

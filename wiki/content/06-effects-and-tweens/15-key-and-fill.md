@@ -18,6 +18,8 @@ Key & Fill involves two layers working together:
 
 The key layer provides the mask signal, and the fill layer is where the mask is consumed. The key layer itself is not rendered to the output — it exists solely to generate the transparency mask.
 
+[[WIDGET:key-fill-compositor]]
+
 ### Keying Modes
 
 WATCHOUT supports four keying modes that determine how the key layer's content is interpreted as a mask:

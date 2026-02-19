@@ -82,6 +82,8 @@ Use the fade system for standard transitions where you want speed and consistenc
 
 A cue can have both an Opacity tween and fades applied simultaneously. When both are present, the effects multiply: the fade opacity value and the tween opacity value are combined. For example, if the fade is at 50% and the tween is at 80%, the resulting opacity is 40% (0.5 x 0.8).
 
+[[WIDGET:opacity-fade-multiplier]]
+
 In most workflows, you use one or the other — not both. If you need custom fade shapes, use the Opacity tween directly and skip the fade system. If you need quick standard transitions, use fades and skip the Opacity tween.
 
 ### Applying Fades to Compositions

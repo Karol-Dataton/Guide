@@ -7,7 +7,7 @@ icon: "alertCircle"
 
 **When something goes wrong during setup, rehearsal, or performance, systematic diagnosis gets you back on track faster than guesswork.** This chapter organizes solutions by problem category - from common setup issues through display, network, and media playback problems - and provides tools for gathering diagnostic data and escalating to Dataton support when needed.
 
-### Start Here
+### Start Here [Common Issues]
 
 Begin troubleshooting with the most frequently encountered issues.
 

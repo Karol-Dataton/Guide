@@ -22,6 +22,8 @@ The Linear Wipe effect is controlled through four tween channels, all added toge
 For a simple left-to-right reveal, set the Angle to 0° and animate Completion from 0 to 100. For a top-to-bottom reveal, set the Angle to 90°. Add Feather to soften the transition edge.
 :::
 
+[[WIDGET:linear-wipe-controls]]
+
 ### Creating a Linear Wipe
 
 To add a Linear Wipe to a cue:

@@ -17,6 +17,35 @@
             "name": "Launch Wiki (Mac)",
             "file": "${workspaceFolder}/wiki/index.html",
             "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Controller (NPM Start)",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "start"
+            ],
+            "cwd": "${workspaceFolder}/controller"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Dashboard (Server)",
+            "program": "${workspaceFolder}/dashboard/proxy-server.js",
+            "cwd": "${workspaceFolder}/dashboard"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Build Wiki",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "build"
+            ],
+            "cwd": "${workspaceFolder}/wiki"
         }
     ]
 }

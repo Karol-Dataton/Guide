@@ -15,6 +15,8 @@ A tween is a sequence of **tween points** (keyframes) spread across the duration
 
 The simplest tween has two points: a start value and an end value. For example, an Opacity tween might start at 0% at the beginning of a cue and reach 100% halfway through, producing a fade-in over the first half of the cue's duration. More complex animations use additional tween points to create multi-stage transitions — a value that rises, holds, then falls, or that follows a specific rhythm synchronized to other show elements.
 
+[[WIDGET:tween-keyframe-interpolation]]
+
 Every tween point has three core properties:
 
 - **Time from Start of Cue** — when this point occurs, measured from the beginning of the cue.
@@ -74,6 +76,8 @@ Once a tween is added, you work with it by adding, moving, and adjusting tween p
 ### Transition Types (Easing Curves)
 
 The **Transition Type** property on each tween point controls how the value interpolates from the previous point to the current one. WATCHOUT provides 31 easing curves organized into 11 families:
+
+[[WIDGET:tween-easing-curves-gallery]]
 
 | Family | Variants | Character |
 |---|---|---|

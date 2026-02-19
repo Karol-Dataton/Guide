@@ -51,12 +51,16 @@ The color tweens fall into three functional categories:
 - **Contrast** widens or narrows the gap between the darkest and brightest pixels. Increasing contrast makes darks darker and lights lighter. Decreasing it pushes everything toward the midpoint.
 - **Gamma** targets midtones specifically, leaving deep shadows and bright highlights relatively untouched. This is useful for adjusting the perceived brightness of content without clipping highlights or crushing shadows.
 
+[[WIDGET:color-global-controls]]
+
 **Tone and color manipulation** — Temperature, Hue, Saturation, and Invert change the color character of the image.
 
 - **Temperature** shifts the color balance along the warm-cool axis. This is particularly useful for matching content shot under different lighting conditions, or for creating mood shifts (warm for sunset scenes, cool for moonlight).
 - **Hue** rotates the entire color spectrum. Small shifts (10–20°) subtly change the mood of an image. Larger shifts create dramatic color transformations. At 180°, every color becomes its complement.
 - **Saturation** controls how vivid colors appear. Reducing saturation toward 0% produces a grayscale look; the default 100% preserves the original color intensity. Values between create a "washed out" aesthetic.
 - **Invert** blends between the normal and inverted image. Partial inversion (around 50%) produces a flat, low-contrast look. Full inversion (100%) reverses all colors — useful as a creative effect or for working with negative-format source material.
+
+[[WIDGET:color-hue-rotation-wheel]]
 
 **Per-channel corrections** — Red/Green/Blue Gain and Red/Green/Blue Offset provide independent control over each color channel.
 

@@ -16,13 +16,13 @@ The **Variables** window in Producer is where you manage all show variables. Fro
 - **Edit live values** using sliders or direct numeric entry, allowing real-time preview of how a variable affects the show.
 - **Save current values as defaults** so that when the show is loaded or variables are reset, they return to a known state.
 
-Each variable in the list displays its current value, external key assignment, and configured range.
+Each variable in the list displays its name, external key, and current value (with an interactive slider). Additional columns for minimum, maximum, default value, and interpolation type can be shown through the column menu.
 
 ### Variable Properties
 
 Each variable has the following properties:
 
-- **Name** — The display name of the variable as it appears in the Variables window and in expression references. This is also the name used internally when matching render inputs.
+- **Name** — The display name of the variable as it appears in the Variables window and in expression references. This is also the name used when matching variables to values from external protocols.
 - **External Key** — The identifier that external protocols use to address this variable. For example, an OSC message sent to `/brightness/0` would match a variable whose external key is `osc.addr(/brightness/0)`. Each protocol has its own key format (described in the individual protocol articles).
 - **Minimum Value** — The lower bound of the variable's range. Incoming values below this are clamped.
 - **Maximum Value** — The upper bound of the variable's range. Incoming values above this are clamped.
@@ -38,7 +38,7 @@ The **external key** is what connects an incoming protocol message to a specific
 - **MIDI:** `midi.ch(0).cc(7)` — specifies the MIDI channel and control change number.
 - **PosiStageNet:** `psn.1.pos.x` — specifies the tracker ID and data field.
 
-Rather than manually typing these key strings, WATCHOUT provides a **Learn** mode. When Learn mode is active, you select a variable in the Variables window and then send a signal from your external device (move a fader, send an OSC message, etc.). WATCHOUT captures the incoming key and automatically assigns it to the selected variable. This eliminates guesswork about key format and ensures the mapping is correct.
+Rather than manually typing these key strings, WATCHOUT provides a **Learn** mode. Open the Variable Properties panel for a variable, then click the **Learn** button next to the Key field. While Learn mode is active, send a signal from your external device (move a fader, send an OSC message, etc.). WATCHOUT captures the incoming key and automatically assigns it to the selected variable. This eliminates guesswork about key format and ensures the mapping is correct.
 
 ### Input Flow
 
@@ -83,3 +83,9 @@ Once a variable receives a value from an external source, that value can be refe
 - **Tween expressions** — Bind a cue's position, opacity, scale, rotation, or any other tweenable property to a variable. The property value updates in real time as the variable changes.
 - **Conditional cues** — Set a cue's visibility condition to depend on a variable value (e.g., show a cue only when `brightness > 50`).
 - **Variable cues** — Timeline-based automation that sets variable values at specific points during playback. See the Variable Cues section in Chapter 6 for details on driving variables from the timeline rather than from external input.
+
+### Related Topics
+
+- [External Control Overview](01-external-control-overview.md) for the architecture connecting external protocols to variables
+- [OSC Protocol](03-osc-protocol.md), [ArtNet Input](07-artnet-input.md), [MIDI Bridge](04-midi-bridge.md), and [PosiStageNet](08-posistagenet.md) for the external key formats each protocol uses
+- [Effects and Tweens](../06-effects-and-tweens/) for using variables in tween expressions

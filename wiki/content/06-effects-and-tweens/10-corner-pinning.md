@@ -24,6 +24,8 @@ Each channel represents a **normalized offset** from the corner's default positi
 Because each axis is independent, you have full control over both horizontal and vertical movement of every corner. This makes it possible to create not just simple trapezoids but complex quadrilateral shapes.
 :::
 
+[[WIDGET:corner-pinning-editor]]
+
 ### Adding Corner Tweens
 
 To add corner tweens to a cue:

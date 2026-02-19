@@ -37,6 +37,8 @@ The **Maintain Proportions** toggle (displayed as a link icon between the X and 
 
 This ensures the cue scales uniformly without distortion. Disable Maintain Proportions when you intentionally want to stretch or compress content along one axis — for example, creating a horizontal squeeze effect or matching content to a non-square display region.
 
+[[WIDGET:scale-anchor-proportions]]
+
 :::tip
 Maintain Proportions is a per-tween-point setting. You can have some points locked and others unlocked within the same tween, though in practice most workflows keep it consistent.
 :::
