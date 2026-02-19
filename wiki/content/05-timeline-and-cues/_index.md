@@ -11,6 +11,7 @@ icon: "clock"
 
 The fundamentals of placing content and organizing your timeline.
 
+- [Understanding The Timeline](01-understanding-the-timeline.md) - an overview of the timeline system and its key components
 - [Adding Media Cues](02-adding-media-cues.md) - placing assets on the timeline, initial cue values, media sources, and the full set of cue properties
 - [Working with Layers](03-working-with-layers.md) - organizing cues vertically for compositing order and structural clarity
 - [Adjusting Timing](04-adjusting-timing.md) - moving, trimming, snapping, looping, and fine-tuning cue timing with nanosecond precision
