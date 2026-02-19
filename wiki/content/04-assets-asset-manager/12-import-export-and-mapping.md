@@ -5,166 +5,124 @@ title: "Import, Export, and Mapping"
 
 ## Import, Export, and Mapping
 
-**The Assets window provides workflows for exporting optimized assets to external storage, importing them onto another system, and controlling how the optimizer maps source codecs to output formats.** Export creates a self-contained package with the asset database and all chunk files; import reads that package and atomically merges it into the current Asset Manager. Codec mappings let you override the optimizer's default transcoding decisions for specific input formats.
+**Export and import let you package a show's optimized assets into a portable archive and bring them into a different WATCHOUT system, or back into the same system after changes.** This is the standard workflow for moving shows between machines — preparing media on a production workstation, then deploying it at a venue; creating a backup before major edits; or transferring a show to a client's hardware after programming is complete. WATCHOUT also provides a pre-download option for pushing assets to specific display servers (Runners) ahead of going online, and codec mapping settings that control how source media is converted during optimization.
 
-### How Export Works
+### When to Use Export and Import
 
-Export assembles a portable asset package using an exclusive locking mechanism to ensure consistency:
-
-| Step | Action |
-|------|--------|
-| 1 | **Acquire lock** — opens (or creates) `assetdb.json` at the target location with an exclusive file lock. No other process can read or write this file until the export completes. |
-| 2 | **Create shared folder** — creates a `shared/` directory at the target for content-addressed chunk files. |
-| 3 | **Copy loop** — scans for assets in `Ok` state, copies their UUID folders and shared chunks to the target, skipping files already present. Assets still uploading or optimizing are retried on the next scan pass. |
-| 4 | **Write asset database** — builds a filtered `assetdb.json` containing only the exported assets (plus their parent folder hierarchy) and writes it to the locked file. |
-| 5 | **Release lock** — drops the file handle, allowing other processes to import from the package. |
-
-:::warning
-**Export holds an exclusive lock on the target `assetdb.json` for the entire duration.** Multiple exports to the same directory will queue — only one can proceed at a time. The order is non-deterministic. Do not manually modify the export folder while an export is in progress.
-:::
-
-### Export Package Structure
-
-The export creates a `__WO_EXPORTED_ASSETS` folder at the target location with this structure:
-
-```
-<target path>/
-  __WO_EXPORTED_ASSETS/
-    assetdb.json                 # Filtered asset database (only exported assets)
-    shared/                      # Content-addressed chunk files (Blake3-hashed)
-      <hash-1>.chunk
-      <hash-2>.chunk
-      ...
-    <asset-uuid-1>/              # Per-asset folder
-      asset.json                 # Full-resolution part descriptor
-      asset_preview.json         # Preview part descriptor
-      thumbnail.jpg              # Asset thumbnail
-      ...
-    <asset-uuid-2>/
-      ...
-```
-
-Assets in `Fail` or `Cancelled` state are excluded from the export. Assets still in `Uploading`, `Optimizing`, or `Importing` state are deferred until they complete — the export loop retries until all requested assets are ready or the job is cancelled.
-
-### Export States
-
-Each export job progresses through these states:
-
-| State | Description |
-|-------|-------------|
-| **Pending** | Job is queued but has not started |
-| **Scanning** | Comparing assets to determine what needs copying |
-| **Transferring** | Copying asset files and chunks to the target |
-| **Waiting** | Paused, retrying after a temporary error (with deadline) |
-| **Success** | All requested assets exported successfully |
-| **Cancelled** | Export stopped by the user |
-
-Export progress includes detailed metrics: bytes/files copied, bytes/files skipped (already present at target), start time, and up to 100 error reports.
+- **Deploying to a venue.** Program and optimize a show on your production system, export the assets to a portable drive, then import them on the venue's WATCHOUT system.
+- **Backup before major changes.** Export all assets before restructuring a show. If something goes wrong, you can import the backup to restore the original media.
+- **Handing off to another operator.** Export the complete asset package so another team can import it on their hardware without needing your original source files.
+- **Cloning a show across multiple systems.** Export once, then import the same package onto several WATCHOUT systems running identical or similar shows.
 
 ### Exporting Assets
 
-From the Assets window context menu, choose **Transfer Assets** and then:
+To export assets, right-click in the Assets window and choose **Transfer Assets**, then either:
 
-- **Export All** — exports every asset in the show.
-- **Export Selected** — exports only the currently selected assets.
+- **Export** — exports only the currently selected assets
+- **Export All** — exports every asset in the show
 
-Both options open a dialog where you select:
+Both options open the export dialog with two fields:
 
-1. **Target node** — the machine to export to (can be the local machine or any connected node).
-2. **Destination path** — the folder on the target node where the `__WO_EXPORTED_ASSETS` folder will be created.
+| Field | Purpose |
+|---|---|
+| **Destination Node** | The machine where the export package will be created. This can be the local machine or any connected node on the network. |
+| **Directory Path** | The folder on the destination node where the export package will be stored. |
 
-<!-- screenshot: Export dialog showing node selection and destination path -->
+Click **Ok** to start the export. WATCHOUT creates a self-contained package folder at the destination containing all the optimized media files, thumbnails, and an asset database. The export skips any assets that have already been exported to the same location, so re-exporting after adding a few new assets is fast.
 
-### How Import Works
+You can also export a single asset from the Properties panel using the **Export To** button.
 
-Import reads an export package and atomically merges its contents into the current Asset Manager:
-
-| Step | Action |
-|------|--------|
-| 1 | **Acquire lock** — opens the source `assetdb.json` with an exclusive lock to prevent concurrent reads. |
-| 2 | **Read asset database** — deserializes the exported asset entries. |
-| 3 | **Filter and stage** — for each asset: skips if already present in `Ok`/`Uploading`/`Optimizing`/`Importing` state; overrides if in `Fail`/`Cancelled` state; sets state to `Importing` for new entries. |
-| 4 | **Copy data** — copies (or moves) asset folders and shared chunks from the source to the Asset Manager's storage. |
-| 5 | **Commit or rollback** — if all assets copied successfully, transitions all imported assets to `Ok` state atomically. If any asset fails, **all imports are rolled back** (removed from the database entirely). |
-
-:::warning
-**Import is atomic — it either fully succeeds or fully rolls back.** If any single asset fails to copy, all assets from that import batch are removed from the database. This prevents partially-imported shows.
+:::note
+Assets that are still being uploaded or optimized are not included immediately. The export waits for them to finish processing, then includes them automatically. Assets that failed during optimization are excluded entirely.
 :::
 
-:::info
-**Crash recovery:** If the Asset Server restarts while an import is in progress, any assets still in `Importing` state are automatically removed from the database on startup. This ensures the system never starts with partially-imported data.
-:::
+**What to expect during export:**
+
+- The export runs in the background. You can monitor progress in the Node Info panel, which shows the percentage complete, data copied, files copied, files skipped (already present at the destination), and any errors.
+- While an export is running to a particular destination, no other export or import can use that same destination folder simultaneously. Wait for one operation to finish before starting another to the same location.
+- Do not manually modify or move files in the export folder while an export is in progress.
 
 ### Importing Assets
 
-From the Assets context menu, choose **Transfer Assets → Import**.
+To import assets, right-click in the Assets window and choose **Transfer Assets > Import**. The import dialog has two fields:
 
-1. **Source node** — the machine where the export package resides.
-2. **Source path** — the folder containing the `__WO_EXPORTED_ASSETS` directory (or the path to `assetdb.json` directly).
+| Field | Purpose |
+|---|---|
+| **Source Node** | The machine where the export package is stored. |
+| **Directory Path** | The folder on the source node that contains the exported asset package. |
 
-The import process copies files into the Asset Manager's storage. If the source node is the local machine but the Asset Manager runs on a remote node, WATCHOUT checks that the path is accessible via the remote file access allowlist. If the path is not permitted, a dialog appears explaining how to configure remote access.
+Click **Ok** to start the import. WATCHOUT reads the export package and copies the assets into the current Asset Manager.
 
 **Key behaviors:**
 
-- **Asset IDs are preserved** — imported assets keep their original UUIDs. This means if you export from system A and import on system B, the asset IDs remain identical.
-- **No ID remapping** — there is no mapping table between old and new IDs. Assets are inserted with their original identifiers.
-- **Existing assets are not overwritten** — if an asset with the same ID already exists in a non-failed state, the import skips it.
-- **Original source paths are cleared** — imported assets have their `orig_path` set to `None`, since the original source file location is not relevant on the target system.
+- **Asset identities are preserved.** Imported assets keep the same internal identifiers they had on the original system. This means timeline references, cue assignments, and all other links remain valid after import.
+- **Duplicates are skipped.** If an asset with the same identity already exists in the current Asset Manager in a working state, the import skips it. This makes it safe to re-import a package without creating duplicates.
+- **Failed assets are replaced.** If an asset previously failed during optimization, importing a working copy of that asset replaces the failed entry.
+- **All-or-nothing safety.** The import either succeeds completely or rolls back entirely. If any asset in the batch fails to copy (due to disk space, permissions, or file corruption), all assets from that import are removed. This prevents partially imported shows that could cause unpredictable behavior.
 
-### Pre-Caching Assets on Runners
+:::warning
+If the source node is a remote machine, the import path must be accessible via WATCHOUT's remote file access settings. If the path is not permitted, a dialog appears explaining how to configure remote access.
+:::
 
-For shows with large media libraries, you can pre-cache selected assets onto specific Runners without going fully online:
+### Merge Assets
 
-1. Select the assets to cache.
-2. Right-click → **Transfer Assets → Cache Selected Assets**.
-3. Choose one or more Runners.
-4. Click **OK**.
+When importing from an export package that is stored on the same physical disk as the Asset Manager, WATCHOUT offers the option to **Merge Assets** instead of copying. Merging moves files directly rather than copying them, which is significantly faster for large media libraries. However, merging consumes the export package — the files are relocated, so the export can only be used once.
 
-This pushes the optimized files to the selected Runners ahead of time, reducing the time needed when the show goes online. For details on the transfer mechanism, see [Asset Transfer](./10-asset-transfer.md).
+:::tip
+Use Merge Assets when deploying from a local export to the same machine's Asset Manager. Use standard import (copy) when working with portable drives or network locations where you want to keep the export package intact for reuse.
+:::
 
-### Codec Mapping (Optimizer Settings)
+### Pre-Downloading Assets to Runners
 
-The **Asset Manager Settings** dialog (accessible from the Assets context menu) includes the codec mapping section. This controls how the optimizer converts source codecs to output formats — this is what "mapping" refers to in the context of the optimizer, not asset ID remapping.
+For shows with large media libraries, you can push selected assets to specific Runners before the show goes online. This reduces the time needed when you go online because the media is already in place on the display servers.
 
-Each row in the mapping table shows:
+1. Select the assets to pre-download in the Assets window.
+2. Right-click and choose **Transfer Assets > Download to Runners**.
+3. In the dialog, select one or more Runners to receive the assets. Use **Select All** or **Clear** to manage the selection.
+4. Click **Ok** to start the transfer.
 
-| Column | Description |
-|--------|-------------|
-| **In** | The source codec detected in the imported file |
-| **Out** | The output codec the optimizer will produce |
-| **Default** | The system's recommended output for that source |
+:::warning
+Pre-downloading transfers media over the network to Runners. This operation may temporarily affect playback performance if a show is already running, and it may interfere with automatic file transfers that occur when going online. Plan pre-downloads during non-critical periods.
+:::
 
-You can override individual mappings by changing the output dropdown. Non-default mappings are highlighted. Use the **Reset All** button to revert all overrides. Codec mappings are stored in `optimizer_mapping.json` and persisted per Asset Manager.
+For details on how assets are distributed to Runners during normal show operation, see [Asset Transfer](./10-asset-transfer.md).
 
-For details on quality levels, track management, and default codec mappings, see [Asset Manager Settings](./11-asset-manager-settings.md).
+### Codec Mapping
 
-[[WIDGET: interactive-export-import-flow — animated diagram showing the export package assembly, file locking, and atomic import commit/rollback]]
+The term "mapping" in the context of asset management also refers to **codec mapping** — the rules that determine how the optimizer converts source media formats into playback-optimized formats. For example, an H.264 video might be mapped to HEVC for GPU-accelerated decoding, or a ProRes file might be mapped to NotchLC.
+
+Codec mapping is configured in the **Asset Manager Settings** dialog, accessible by right-clicking in the Assets window and choosing **Asset Manager Settings**. The dialog shows each source format with its configured output format, and lets you override the defaults to match your hardware capabilities and quality requirements.
+
+For the complete guide to codec mappings, quality levels, track management, and bandwidth settings, see [Asset Manager Settings](./11-asset-manager-settings.md).
 
 ### Best Practices
 
-- **Export before making changes** — create an export before major show modifications as a backup. The export is a complete, self-contained archive.
-- **Verify after import** — check that all assets appear with `Ok` state after importing. Assets that failed to copy will have been rolled back.
-- **Use copy mode for archives** — the default copy mode preserves the source package. Move mode is faster but removes assets from the source after successful import.
-- **Check codec mappings on the target** — if the target system has different hardware capabilities (e.g., no GPU for HEVC decoding), update codec mappings in [Asset Manager Settings](./11-asset-manager-settings.md) before re-optimizing.
-- **Plan for exclusive locks** — exports and imports hold exclusive file locks for their entire duration. Do not attempt to export to and import from the same location simultaneously.
-- **Use Find Cues before deleting** — before deleting or replacing critical assets, use **Find Cues** to ensure no timeline references will break.
+- **Export before making major changes.** Create an export as a checkpoint before restructuring timelines, deleting assets, or changing codec settings. The export is a complete, self-contained archive you can import to restore.
+
+- **Verify assets after import.** After importing, check the Assets window to confirm all assets show a healthy status. If the import encountered an error, all assets from that batch will have been removed — check the error message, fix the underlying issue (disk space, permissions), and re-import.
+
+- **Check codec settings on the target system.** If the target system has different hardware (for example, GPUs without HEVC decode support), review the codec mappings in [Asset Manager Settings](./11-asset-manager-settings.md) before re-optimizing content.
+
+- **Use pre-download for large venue deployments.** When deploying hundreds of gigabytes of media, start pre-downloading to Runners well in advance of showtime. Monitor the transfer progress in the Node Info panel.
+
+- **Use Find Cues before deleting assets.** Before deleting or replacing assets, use the **Find Cues** feature to check whether any timeline cues reference them. This prevents broken references during playback.
 
 ### Troubleshooting
 
 | Problem | Cause | Fix |
-|---------|-------|-----|
-| Export stalls on specific asset | Asset is still in `Uploading` or `Optimizing` state | Wait for the asset to finish processing, or cancel and re-export after it completes |
-| "File is locked" error on export | Another export or import is using the target `assetdb.json` | Wait for the other operation to complete; only one can hold the lock at a time |
-| Import reports all assets skipped | Assets already exist in `Ok` state on the target (same UUIDs) | Expected behavior — identical assets are not re-imported |
-| Import rolled back entirely | One asset failed to copy, triggering atomic rollback | Check the error message; fix the issue (disk space, permissions, corrupt file) and retry |
-| Assets show `Importing` state after restart | Previous import was interrupted by a crash or shutdown | Normal — these are automatically cleaned up on startup. Re-import the package. |
-| Remote path not accessible during import | Path not in the remote file access allowlist | Add the path to the allowlist in the WATCHOUT administration settings |
-| Export package larger than expected | Content-addressed chunks are not deduplicated against existing exports | Each export is self-contained; chunk deduplication only applies within a single export |
+|---|---|---|
+| Export takes a long time on certain assets | Some assets are still being optimized and the export is waiting for them to finish | Wait for optimization to complete, or cancel and re-export after all assets are ready |
+| Cannot start a second export to the same folder | Only one export or import operation can use a given folder at a time | Wait for the current operation to finish before starting another |
+| Import reports all assets skipped | The same assets already exist in the current Asset Manager | Expected behavior — identical assets are not re-imported. No action needed. |
+| Import failed and all assets were removed | One asset in the batch could not be copied, triggering the all-or-nothing safety rollback | Check the error message for the specific cause (disk space, permissions, corrupt file), fix it, and re-import |
+| Assets show as still importing after a restart | A previous import was interrupted by a crash or unexpected shutdown | These entries are automatically cleaned up on restart. Re-import the package to complete the operation. |
+| Remote path not accessible during import | The path is not included in WATCHOUT's remote file access settings | Add the path to the remote access allowlist in the WATCHOUT administration settings |
+| Merge Assets option not available | The export package is not on the same physical disk as the Asset Manager | Use standard import (copy) instead, or move the export package to the same disk first |
 
 ### See Also
 
-- [Asset Manager](./01-asset-manager.md) — asset pipeline overview and optimization stages
+- [Asset Manager](./01-asset-manager.md) — overview of the asset pipeline and optimization stages
 - [Asset Transfer](./10-asset-transfer.md) — how assets are distributed to Runners during show playback
-- [Asset Manager Settings](./11-asset-manager-settings.md) — codec mapping configuration and quality levels
-- [Asset Properties](./03-asset-properties.md) — understanding asset states including `Importing`
-- [Formats and Codecs](./04-formats-codecs.md) — supported codecs and optimization output details
+- [Asset Manager Settings](./11-asset-manager-settings.md) — codec mapping, quality levels, track management, and bandwidth configuration
+- [Asset Properties](./03-asset-properties.md) — understanding asset status and metadata
+- [Formats and Codecs](./04-formats-codecs.md) — supported media formats and optimization output details

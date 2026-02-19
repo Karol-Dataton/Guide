@@ -23,7 +23,7 @@ The **media-level properties** carry everything about the content itself-source,
 
 ### Media Sources
 
-Every media cue has a **MediaSource** that determines where its content comes from. The source is set automatically when you place an asset on the timeline, but you can change it in the Properties panel.
+Every media cue has a **media source** that determines where its content comes from. The source is set automatically when you place an asset on the timeline, but you can change it in the Properties panel.
 
 | Source Type | Description | Typical Use |
 |---|---|---|

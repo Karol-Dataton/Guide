@@ -68,6 +68,6 @@ Within each timeline, cues composite according to their per-cue stacking mode (B
 
 **Opacity and fade effects.** When a cue fades to transparent, the content behind it (as determined by stacking order) becomes visible. Incorrect stacking can result in unexpected content showing through during fades.
 
-**Performance considerations.** Stacking order affects the rendering pipeline. Cues using By Z stacking require depth buffer operations, which can be slightly more expensive than By Layer compositing. For purely 2D shows, By Layer is the more efficient choice.
+**Performance considerations.** Stacking order affects the rendering pipeline. Cues using By Z stacking require additional depth calculations, which can be slightly more expensive than By Layer compositing. For purely 2D shows, By Layer is the more efficient choice.
 
 **Multi-timeline shows.** In complex productions with many overlapping timelines, use the Always on Top setting sparingly for true overlay layers (emergency messages, persistent logos) and rely on panel ordering for the main content timelines.

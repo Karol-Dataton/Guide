@@ -30,8 +30,16 @@
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
 
-        const W = canvas.width;
-        const H = canvas.height;
+        // High-DPI scaling to prevent blurry rendering on Retina displays
+        const dpr = window.devicePixelRatio || 1;
+        const W = canvas.width;   // logical width (900)
+        const H = canvas.height;  // logical height (420)
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        canvas.style.width = W + 'px';
+        canvas.style.maxWidth = '100%';
+        canvas.style.height = 'auto';
+        ctx.scale(dpr, dpr);
 
         const playBtn = document.getElementById('apf-play-btn');
         const resetBtn = document.getElementById('apf-reset-btn');
@@ -108,7 +116,10 @@
         // --- Drawing ---
 
         function draw() {
-            ctx.clearRect(0, 0, W, H);
+            ctx.save();
+            ctx.setTransform(1, 0, 0, 1, 0, 0);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.restore();
             drawBackground();
             drawTitle();
             drawConnectors();
@@ -127,7 +138,7 @@
             ctx.fillRect(0, 0, W, H);
 
             // Subtle grid
-            ctx.strokeStyle = 'rgba(99, 102, 241, 0.04)';
+            ctx.strokeStyle = 'rgba(99, 102, 241, 0.07)';
             ctx.lineWidth = 1;
             const step = 30;
             for (let x = 0; x < W; x += step) {
@@ -147,16 +158,16 @@
         function drawTitle() {
             ctx.font = 'bold 14px -apple-system, system-ui, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.25)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
             ctx.fillText('ASSET PIPELINE', W / 2, 30);
 
             // Source file icon on left
             ctx.font = '22px -apple-system, system-ui, sans-serif';
             ctx.textAlign = 'center';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
             ctx.fillText('\uD83D\uDCC1', startX - 40, stageY + stageH / 2 + 6);
             ctx.font = '9px -apple-system, system-ui, sans-serif';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.2)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
             ctx.fillText('Source File', startX - 40, stageY + stageH / 2 + 24);
         }
 
@@ -170,7 +181,7 @@
 
                 // Arrow line
                 const isActive = (animPhase > i) || (animPhase === i && animProgress > 0.8);
-                const alpha = isActive ? 0.6 : 0.15;
+                const alpha = isActive ? 0.8 : 0.3;
 
                 ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
                 ctx.lineWidth = 2;
@@ -206,7 +217,7 @@
             const entryToX = r0.x;
             const entryY = stageY + stageH / 2;
             const entryActive = animPhase >= 0;
-            const entryAlpha = entryActive ? 0.5 : 0.12;
+            const entryAlpha = entryActive ? 0.7 : 0.25;
 
             ctx.strokeStyle = `rgba(255, 255, 255, ${entryAlpha})`;
             ctx.lineWidth = 2;
@@ -227,8 +238,8 @@
                 const isHovered = (hoverStage === i);
 
                 // Stage box
-                const boxAlpha = isActive ? 0.25 : isCompleted ? 0.15 : 0.06;
-                const borderAlpha = isActive ? 0.8 : isCompleted ? 0.5 : isHovered ? 0.4 : 0.15;
+                const boxAlpha = isActive ? 0.35 : isCompleted ? 0.25 : 0.12;
+                const borderAlpha = isActive ? 0.9 : isCompleted ? 0.65 : isHovered ? 0.55 : 0.3;
 
                 // Glow when active
                 if (isActive) {
@@ -266,7 +277,7 @@
                     const barH = 3;
                     const barPad = 12;
                     // Background track
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
                     roundRect(ctx, rect.x + barPad, barY, rect.w - barPad * 2, barH, 2);
                     ctx.fill();
                     // Progress fill
@@ -289,24 +300,24 @@
                 // Stage number
                 ctx.font = 'bold 10px -apple-system, system-ui, sans-serif';
                 ctx.textAlign = 'left';
-                ctx.fillStyle = hexToRgba(stage.color, isActive || isCompleted ? 0.8 : 0.4);
+                ctx.fillStyle = hexToRgba(stage.color, isActive || isCompleted ? 0.9 : 0.6);
                 ctx.fillText((i + 1).toString(), rect.x + 10, rect.y + 16);
 
                 // Icon
                 ctx.font = '26px -apple-system, system-ui, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillStyle = hexToRgba(stage.color, isActive ? 1 : isCompleted ? 0.7 : 0.4);
+                ctx.fillStyle = hexToRgba(stage.color, isActive ? 1 : isCompleted ? 0.85 : 0.6);
                 ctx.fillText(stage.icon, rect.x + rect.w / 2, rect.y + 50);
 
                 // Label
                 ctx.font = 'bold 12px -apple-system, system-ui, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillStyle = isActive || isCompleted ? 'rgba(255,255,255,0.9)' : 'rgba(255,255,255,0.5)';
+                ctx.fillStyle = isActive || isCompleted ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.7)';
                 ctx.fillText(stage.label, rect.x + rect.w / 2, rect.y + 72);
 
                 // Short description
                 ctx.font = '10px -apple-system, system-ui, sans-serif';
-                ctx.fillStyle = 'rgba(255,255,255,0.35)';
+                ctx.fillStyle = 'rgba(255,255,255,0.55)';
                 const descLines = stage.desc.split('\n');
                 for (let l = 0; l < descLines.length; l++) {
                     ctx.fillText(descLines[l], rect.x + rect.w / 2, rect.y + 88 + l * 13);
@@ -340,7 +351,7 @@
                 const lineFromY = distRect.y + distRect.h;
                 const lineToX = rx + runnerW / 2;
                 const lineToY = ry;
-                const lineAlpha = fillProgress > 0 ? 0.4 : 0.1;
+                const lineAlpha = fillProgress > 0 ? 0.6 : 0.2;
 
                 ctx.strokeStyle = `rgba(251, 146, 60, ${lineAlpha})`;
                 ctx.lineWidth = 1;
@@ -362,8 +373,8 @@
                 }
 
                 // Runner box
-                const boxAlpha = fillProgress > 0 ? 0.15 : 0.05;
-                const borderAlpha = fillProgress > 0 ? 0.5 : 0.12;
+                const boxAlpha = fillProgress > 0 ? 0.25 : 0.12;
+                const borderAlpha = fillProgress > 0 ? 0.65 : 0.25;
 
                 const rr = 6;
                 ctx.beginPath();
@@ -399,7 +410,7 @@
                     ctx.quadraticCurveTo(rx, ry, rx + rr, ry);
                     ctx.closePath();
                     ctx.clip();
-                    ctx.fillStyle = 'rgba(251, 146, 60, 0.08)';
+                    ctx.fillStyle = 'rgba(251, 146, 60, 0.18)';
                     ctx.fillRect(rx, ry, runnerW * fillProgress, runnerH);
                     ctx.restore();
                 }
@@ -415,7 +426,7 @@
                 // Runner label
                 ctx.font = '10px -apple-system, system-ui, sans-serif';
                 ctx.textAlign = 'center';
-                ctx.fillStyle = fillProgress > 0 ? 'rgba(255,255,255,0.7)' : 'rgba(255,255,255,0.3)';
+                ctx.fillStyle = fillProgress > 0 ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.55)';
                 ctx.fillText(runners[i].label, rx + runnerW / 2, ry + runnerH / 2 + 4);
             }
         }

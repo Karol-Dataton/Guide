@@ -22,7 +22,7 @@ Both mechanisms can coexist. A variable might be driven by an ArtNet channel dur
 
 ### Variable Properties
 
-Every variable is described by the following properties. The **Default** column reflects the values assigned when creating a new variable through the UI, not the internal struct defaults.
+Every variable is described by the following properties. The **Default** column reflects the values assigned when creating a new variable through the UI.
 
 | Setting | Purpose | Default |
 |---|---|---|
@@ -113,8 +113,8 @@ Instead of manually typing a key, use **Learn** mode to capture the key from an 
 
 1. Select the variable in the Variables window.
 2. Enable **Learn** mode in the variable properties.
-3. Send the external control signal (move a fader, send an OSC message, transmit an ArtNet channel, etc.). The director captures the first received key and stores it.
-4. The producer polls the director for the captured key and assigns it to the variable. Confirm the assignment and disable Learn mode.
+3. Send the external control signal (move a fader, send an OSC message, transmit an ArtNet channel, etc.). The system captures the first received key and stores it.
+4. The captured key is assigned to the variable automatically. Confirm the assignment and disable Learn mode.
 
 :::tip
 Learn mode is the fastest way to map physical controllers to variables. It eliminates manual key formatting and reduces configuration errors, especially for ArtNet and OSC addresses where the key syntax must match exactly.
@@ -143,7 +143,7 @@ When a variable receives a new value from an external source, it does not jump i
 
 This smoothing prevents visible jumps when control surfaces send rapid discrete steps. If your use case requires instant response (e.g., a binary trigger or a button press), set the interpolation type to **None**.
 
-The 50 ms interpolation window is a system default. It is short enough to feel responsive for interactive control but long enough to smooth out the step artifacts common in 7-bit MIDI or 8-bit ArtNet inputs.
+The default smoothing window is short enough to feel responsive for interactive control but long enough to smooth out the step artifacts common in 7-bit MIDI or 8-bit ArtNet inputs.
 
 ### Variable Cues
 
@@ -166,14 +166,14 @@ To create a variable cue, drag a variable from the Variables window onto a timel
 
 ### Variable Cue Behavior
 
-During playback, a variable cue evaluates its tween curve and emits updated values at a fixed interval of approximately **28 ms** (about 35 updates per second). The variable's value is set to the tween output at the current playhead position within the cue's duration.
+During playback, a variable cue evaluates its tween curve and emits updated values at approximately **35 updates per second**. The variable's value is set to the tween output at the current playhead position within the cue's duration.
 
 Variable cues are duration-based: they start when the playhead enters the cue and stop when it exits. Unlike media cues, variable cues do not render visual content — they only update the numeric value of their target variable.
 
-The 28 ms update interval means variable cues produce approximately 35 updates per second. This is sufficient for smooth visual transitions driven by expressions, but keep it in mind when designing precision timing — variable-driven animations have an inherent granularity of roughly one frame at 30 fps.
+The approximately 35 updates per second rate is sufficient for smooth visual transitions driven by expressions, but keep it in mind when designing precision timing — variable-driven animations have an inherent granularity of roughly one frame at 30 fps.
 
 :::tip
-For the smoothest results, design variable cue tweens with gradual curves rather than abrupt steps. The 28 ms emission interval can make sharp tween transitions appear stepped when driving visual properties through expressions.
+For the smoothest results, design variable cue tweens with gradual curves rather than abrupt steps. The update rate can make sharp tween transitions appear stepped when driving visual properties through expressions.
 :::
 
 ### Conflict Resolution

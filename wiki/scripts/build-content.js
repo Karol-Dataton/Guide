@@ -39,6 +39,40 @@ function markdownToHtml(markdown) {
     // Inline code
     html = html.replace(/`([^`]+)`/g, '<code>$1</code>');
 
+    // Tabs (custom syntax: ::: tabs ... :::)
+    // Must be done BEFORE headers are processed to capture the ### structure
+    // Matches the outer block, uses a function to process inner content
+    let tabGroupCounter = 0;
+    html = html.replace(/^:::\s*tabs\s*\n([\s\S]*?)^:::/gm, (match, content) => {
+        tabGroupCounter++;
+        const parts = content.split(/^###\s+(.+)$/gm);
+        // parts[0] is content before first header (usually empty)
+
+        let tabButtons = '';
+        let tabContents = '';
+        let tabIndex = 0;
+
+        // Iterate through split results. 
+        // Logic: parts[0] = preamble (ignore), 
+        // parts[1] = title1, parts[2] = body1, 
+        // parts[3] = title2, parts[4] = body2...
+        for (let i = 1; i < parts.length; i += 2) {
+            tabIndex++;
+            const title = parts[i].trim();
+            const body = parts[i + 1] ? parts[i + 1].trim() : '';
+            // Add padding (newlines) to ensure subsequent markdown processing works correctly (e.g. lists/tables need newlines)
+            const paddedBody = '\n\n' + body + '\n\n';
+
+            const tabId = `tab-group-${tabGroupCounter}-item-${tabIndex}`;
+            const isActive = (tabIndex === 1) ? 'active' : '';
+
+            tabButtons += `<button class="tab-btn ${isActive}" data-tab="${tabId}">${title}</button>\n`;
+            tabContents += `<div class="tab-content ${isActive}" id="${tabId}">${paddedBody}</div>\n`;
+        }
+
+        return `<div class="tab-container">\n<div class="tab-buttons">\n${tabButtons}</div>\n${tabContents}</div>`;
+    });
+
     // Headers
     html = html.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
     html = html.replace(/^### (.+)$/gm, '<h3>$1</h3>');
@@ -362,6 +396,32 @@ function filenameToTitle(filename) {
         .replace(/\b\w/g, c => c.toUpperCase()); // Capitalize words
 }
 
+// Parse grouped links from chapter _index.md files.
+// Returns Map<sectionFilename, groupName>.
+function parseIndexGroups(markdown) {
+    const groups = new Map();
+    const lines = markdown.split(/\r?\n/);
+    let currentGroup = null;
+
+    lines.forEach(line => {
+        const headingMatch = line.match(/^###\s+(.+)$/);
+        if (headingMatch) {
+            currentGroup = headingMatch[1].trim();
+            return;
+        }
+
+        if (!currentGroup) return;
+
+        const linkMatch = line.match(/^\s*[-*]\s+\[[^\]]+\]\(([^)#]+\.md)(?:#[^)]+)?\)/);
+        if (linkMatch) {
+            const filename = path.basename(linkMatch[1].trim());
+            groups.set(filename, currentGroup);
+        }
+    });
+
+    return groups;
+}
+
 // Main build function
 function buildContent() {
     const contentDir = path.join(__dirname, '..', 'content');
@@ -397,6 +457,7 @@ function buildContent() {
         let chapterTitle = filenameToTitle(chapterDir);
         let chapterOverview = '';
         let chapterIcon = 'book';
+        let sectionFileGroups = new Map();
 
         if (fs.existsSync(indexPath)) {
             const indexContent = fs.readFileSync(indexPath, 'utf-8');
@@ -405,6 +466,7 @@ function buildContent() {
             if (metadata.title) chapterTitle = metadata.title;
             if (metadata.icon) chapterIcon = metadata.icon;
             chapterOverview = markdownToHtml(content);
+            sectionFileGroups = parseIndexGroups(content);
         }
 
         const chapterKey = `${chapterNum}. ${chapterTitle}`;
@@ -448,12 +510,14 @@ function buildContent() {
             }
 
             const sectionHtml = metadataHtml + markdownToHtml(content);
+            const sectionGroup = sectionFileGroups.get(sectionFile);
 
             sections[sectionTitle] = sectionHtml;
             tocSections.push({
                 title: sectionTitle,
                 page: pageCounter++,
-                description: sectionDescription
+                description: sectionDescription,
+                ...(sectionGroup ? { group: sectionGroup } : {})
             });
 
             console.log(`    - ${sectionTitle}`);
@@ -522,7 +586,8 @@ function getIcon(iconName) {
                 level: 2,
                 title: sub.title,
                 page: sub.page,
-                description: sub.description
+                description: sub.description,
+                ...(sub.group ? { group: sub.group } : {})
             });
         });
     });

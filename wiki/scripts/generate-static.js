@@ -379,15 +379,26 @@ function generateSidebar(activeSlug, depth) {
             </a>
             ${chapter.subsections.length > 0 ? `
                 <div class="toc-subsections ${expandedClass}">
-                    ${chapter.subsections.map(sub => {
-            const subUrl = `${relPath}${chapter.slug}/${sub.slug}.html`;
-            const subActive = sub.slug === activeSlug ? 'active' : '';
-            return `
+                    ${(() => {
+            let currentGroup = null;
+            return chapter.subsections.map(sub => {
+                const subUrl = `${relPath}${chapter.slug}/${sub.slug}.html`;
+                const subActive = sub.slug === activeSlug ? 'active' : '';
+                let groupLabel = '';
+
+                if (sub.group && sub.group !== currentGroup) {
+                    currentGroup = sub.group;
+                    groupLabel = `<div class="toc-group-label">${sub.group}</div>`;
+                }
+
+                return `
+                        ${groupLabel}
                         <a class="toc-subsection ${subActive}" href="${subUrl}">
                             ${sub.title}
                         </a>
                         `;
-        }).join('')}
+            }).join('');
+        })()}
                 </div>
             ` : ''}
         </div>

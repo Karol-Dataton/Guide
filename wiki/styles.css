@@ -464,6 +464,22 @@ body::before {
     box-shadow: 0 2px 8px var(--shadow-color);
 }
 
+.toc-group-label {
+    padding: 10px 12px 4px 36px;
+    color: var(--text-secondary);
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.7;
+    pointer-events: none;
+    user-select: none;
+}
+
+.toc-group-label:first-child {
+    padding-top: 4px;
+}
+
 /* Disabled state */
 .toc-chapter.disabled .toc-chapter-header,
 .toc-chapter.disabled .toc-subsections,
@@ -1475,11 +1491,31 @@ button:focus-visible {
 /* Chapter Landing — git-graph progress rail with grouped article links */
 
 /* Section color palette — progresses through the spectrum */
-.chapter-landing { --rail-color-0: #8b5cf6; } /* violet */
-.chapter-landing { --rail-color-1: #3b82f6; } /* blue */
-.chapter-landing { --rail-color-2: #06b6d4; } /* cyan */
-.chapter-landing { --rail-color-3: #22c55e; } /* green */
-.chapter-landing { --rail-color-4: #f59e0b; } /* amber */
+.chapter-landing {
+    --rail-color-0: #8b5cf6;
+}
+
+/* violet */
+.chapter-landing {
+    --rail-color-1: #3b82f6;
+}
+
+/* blue */
+.chapter-landing {
+    --rail-color-2: #06b6d4;
+}
+
+/* cyan */
+.chapter-landing {
+    --rail-color-3: #22c55e;
+}
+
+/* green */
+.chapter-landing {
+    --rail-color-4: #f59e0b;
+}
+
+/* amber */
 
 /* Container — left padding for the rail */
 .chapter-landing {
@@ -1531,7 +1567,7 @@ button:focus-visible {
 }
 
 /* --- Intro paragraph between h3 and ul --- */
-.chapter-landing h3 + p {
+.chapter-landing h3+p {
     font-size: 0.88rem;
     color: var(--text-muted);
     margin: 0;
@@ -1541,7 +1577,7 @@ button:focus-visible {
 }
 
 /* Continue the line through the intro paragraph */
-.chapter-landing h3 + p::before {
+.chapter-landing h3+p::before {
     content: '';
     position: absolute;
     left: var(--rail-line-left);
@@ -1578,22 +1614,20 @@ button:focus-visible {
 }
 
 /* Connect sections and then end rail after final list */
-.chapter-landing > ul:not(:last-child)::before {
+.chapter-landing>ul:not(:last-child)::before {
     bottom: -38px;
 }
 
-.chapter-landing > ul:last-child::before {
+.chapter-landing>ul:last-child::before {
     bottom: 0;
-    background: linear-gradient(
-        to bottom,
-        var(--_c, var(--rail-color-0)) 0%,
-        var(--_c, var(--rail-color-0)) calc(100% - 18px),
-        transparent 100%
-    );
+    background: linear-gradient(to bottom,
+            var(--_c, var(--rail-color-0)) 0%,
+            var(--_c, var(--rail-color-0)) calc(100% - 18px),
+            transparent 100%);
 }
 
 /* If a section has no intro paragraph, bridge h3 directly to ul */
-.chapter-landing h3 + ul::before {
+.chapter-landing h3+ul::before {
     top: -6px;
 }
 
@@ -1657,35 +1691,39 @@ button:focus-visible {
 /* --- Color progression per section --- */
 .chapter-landing h3[data-section="0"]::before,
 .chapter-landing h3[data-section="0"]::after,
-.chapter-landing h3[data-section="0"] + p::before,
+.chapter-landing h3[data-section="0"]+p::before,
 .chapter-landing ul[data-section="0"]::before,
 .chapter-landing ul[data-section="0"] li::before {
     --_c: var(--rail-color-0);
 }
+
 .chapter-landing h3[data-section="1"]::before,
 .chapter-landing h3[data-section="1"]::after,
-.chapter-landing h3[data-section="1"] + p::before,
+.chapter-landing h3[data-section="1"]+p::before,
 .chapter-landing ul[data-section="1"]::before,
 .chapter-landing ul[data-section="1"] li::before {
     --_c: var(--rail-color-1);
 }
+
 .chapter-landing h3[data-section="2"]::before,
 .chapter-landing h3[data-section="2"]::after,
-.chapter-landing h3[data-section="2"] + p::before,
+.chapter-landing h3[data-section="2"]+p::before,
 .chapter-landing ul[data-section="2"]::before,
 .chapter-landing ul[data-section="2"] li::before {
     --_c: var(--rail-color-2);
 }
+
 .chapter-landing h3[data-section="3"]::before,
 .chapter-landing h3[data-section="3"]::after,
-.chapter-landing h3[data-section="3"] + p::before,
+.chapter-landing h3[data-section="3"]+p::before,
 .chapter-landing ul[data-section="3"]::before,
 .chapter-landing ul[data-section="3"] li::before {
     --_c: var(--rail-color-3);
 }
+
 .chapter-landing h3[data-section="4"]::before,
 .chapter-landing h3[data-section="4"]::after,
-.chapter-landing h3[data-section="4"] + p::before,
+.chapter-landing h3[data-section="4"]+p::before,
 .chapter-landing ul[data-section="4"]::before,
 .chapter-landing ul[data-section="4"] li::before {
     --_c: var(--rail-color-4);
@@ -1696,11 +1734,13 @@ button:focus-visible {
     background: var(--_c, var(--rail-color-0));
     box-shadow: 0 0 0 2px var(--_c, var(--rail-color-0));
 }
+
 .chapter-landing h3::after,
-.chapter-landing h3 + p::before,
+.chapter-landing h3+p::before,
 .chapter-landing ul::before {
     background: var(--_c, var(--rail-color-0));
 }
+
 .chapter-landing ul li::before {
     background: var(--_c, var(--rail-color-0));
 }
@@ -2280,4 +2320,73 @@ button:focus-visible {
     width: fit-content;
     max-width: 100%;
     box-shadow: 0 4px 20px var(--shadow-color);
+}
+
+/* Tabs */
+.tab-container {
+    margin: 30px 0;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    background: var(--bg-secondary);
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.tab-buttons {
+    display: flex;
+    background: var(--bg-tertiary);
+    border-bottom: 1px solid var(--border-subtle);
+    overflow-x: auto;
+    scrollbar-width: none;
+    /* Hide scrollbar for cleaner look */
+}
+
+.tab-buttons::-webkit-scrollbar {
+    display: none;
+}
+
+.tab-btn {
+    padding: 16px 24px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    color: var(--text-muted);
+    font-family: var(--font-header);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all var(--transition-fast);
+    white-space: nowrap;
+    position: relative;
+}
+
+.tab-btn:hover {
+    color: var(--text-primary);
+    background: var(--hover-bg);
+}
+
+.tab-btn.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent-primary);
+    background: var(--bg-secondary);
+}
+
+.tab-content {
+    display: none;
+    padding: 24px;
+    animation: fadeIn 0.3s ease;
+}
+
+.tab-content.active {
+    display: block;
+}
+
+/* Adjust table spacing inside tabs */
+.tab-content table {
+    margin-top: 0;
+    width: 100%;
+}
+
+.tab-content h3 {
+    margin-top: 0;
 }

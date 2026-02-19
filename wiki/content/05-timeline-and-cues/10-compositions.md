@@ -28,7 +28,7 @@ To create a composition:
 
 The selected cues must all belong to the same timeline. WATCHOUT collects them, determines the required number of layers, creates a new composition named sequentially (e.g. "Composition 1", "Composition 2"), and replaces the selected cues with a single composition cue at the position of the first selected cue.
 
-The composition cue's duration matches the span of the grouped cues. Its blend mode, tier mask, and other media options are set to defaults (Normal blend, first tier only, no depth check).
+The composition cue's duration matches the span of the grouped cues. Its blend mode, display assignment, and other media options are set to defaults (Normal blend, first display only, standard stacking).
 
 :::tip
 When importing 3D models, WATCHOUT automatically creates compositions for multi-mesh models — each mesh surface becomes a separate cue inside the composition, allowing independent texturing while keeping the model as a single unit on the timeline.

@@ -5,170 +5,119 @@ title: "Asset Transfer"
 
 ## Asset Transfer
 
-**When a show goes online, the Asset Manager distributes optimized assets to every display server (Runner) in the system over the network.** Each Runner determines which assets it actually needs based on visibility culling — only assets referenced by cues visible on that Runner's displays are downloaded. The transfer uses content-addressed chunk storage with Blake3 hashing for automatic deduplication, two concurrent download workers per Runner, and a substitution mechanism that keeps existing content playing while new versions download.
+**When a show goes online, WATCHOUT automatically distributes optimized media to every display server (Runner) in the system over the network.** Each Runner receives only the assets it actually needs — based on which cues are assigned to its displays — so a Runner driving a single LED wall does not download media meant for a different projector across the venue. When you update a show and go online again, only the changed or newly added media is transferred; assets that already exist on a Runner are skipped automatically.
 
-### How It Works
+This transfer process is what connects the media preparation you do in the Asset Manager to the actual playback on your display hardware. Understanding how it works helps you plan network infrastructure, estimate setup time at a venue, and troubleshoot situations where media is not appearing as expected.
 
-Asset transfer is a pull-based system: Runners request files from the Asset Server (port 3023) rather than the server pushing files out. The process follows a priority-ordered worker loop:
+### What Happens When You Go Online
 
-| Priority | Action | Description |
-|----------|--------|-------------|
-| 1 | **GetFileInfo** | Query the Asset Server for the file list and sizes of an asset part |
-| 2 | **GetThumbnail** | Download the preview thumbnail for an asset |
-| 3 | **GetFile** | Download an actual asset file (chunk or unique file) |
-| 4 | **Idle** | No work available; wait 1 second before checking again |
+When you take a show online, the following sequence occurs for each Runner:
 
-Each Runner runs **2 concurrent download workers** that independently pick the highest-priority available action. Workers cycle continuously, checking for new work after each completed action.
+1. **Asset selection.** The Runner determines which assets it needs by examining which cues are visible on its assigned displays. This includes media cues, display-related data (warp meshes, blend configurations, masks), and audio assets routed to that Runner.
+2. **Transfer.** The Runner downloads the required optimized media from the Asset Manager over the network. Files that already exist on the Runner from a previous session are skipped.
+3. **Playback readiness.** Once all required assets are downloaded, the Runner is fully loaded and ready for playback.
 
-### The Download Pipeline
+If an asset is still being optimized when the Runner requests it, the Runner waits and retries automatically until the optimized version is available. Large assets (high-resolution video, long image sequences) may take time to optimize before they can be transferred.
 
-When the Runner determines it needs an asset, the download progresses through these states:
-
-| State | Description |
-|-------|-------------|
-| **NeedsFileInfo** | Initial state — the Runner needs to query the Asset Server for this asset's file manifest |
-| **DownloadingFileInfo** | File info request is in progress |
-| **Downloading** | File manifest received; workers are downloading individual files |
-| **Ok** | All files downloaded successfully |
-| **Failed** | A permanent error occurred (asset not found, server error) |
-
-If the asset is still being optimized on the Asset Server, the file info response returns a "working" status, and the Runner rechecks every **5 seconds** until the asset is ready.
-
-:::warning
-**IO errors trigger a 10-second retry delay.** If a download fails due to a network or disk error, the worker waits 10 seconds before retrying. There is no exponential backoff — all retries use the same fixed interval.
+:::note
+Runners only download assets they need for their assigned displays. If you reassign displays to different Runners or change which cues appear on which displays, the asset requirements for each Runner update accordingly the next time you go online.
 :::
 
-### Content-Addressed Storage
+### Automatic Deduplication
 
-Both the Asset Server and Runners store optimized media using a **content-addressed chunk system**:
+WATCHOUT uses a storage system that avoids transferring or storing duplicate data. When the same media file appears in multiple places in a show — for example, a logo used on several timelines — the underlying data is stored only once. When you update a show and go online again, only the files that have actually changed are transferred. Media that has not changed since the last transfer is recognized automatically and skipped.
 
-- Optimized assets are split into chunks during optimization (default chunk size: 512 MB).
-- Each chunk's filename is the **RFC 4648 Base32-encoded Blake3 hash** of its contents.
-- Chunks are stored in a `shared/` folder, separate from asset-specific files.
-- When two assets contain identical data (e.g., same video used in different folders), their chunks share the same hash — the file is stored only once.
+This means that updating a show with minor changes (swapping a few videos, adjusting graphics) results in a fast incremental transfer rather than a full re-download of the entire media library.
 
-**Folder structure on disk:**
+### Seamless Version Swapping
 
-```
-/
-  shared/                        # Content-addressed chunks
-    <blake3-hash-1>.chunk
-    <blake3-hash-2>.chunk
-    ...
-  <asset-uuid-1>/                # Asset-specific files
-    asset.json                   # Default part descriptor
-    asset_preview.json           # Preview part descriptor (if applicable)
-    <local data files>
-  <asset-uuid-2>/
-    ...
-```
+When a [Dynamic Asset](./06-dynamic-assets.md) is updated with a new version while a show is running, the Runner handles the transition smoothly:
 
-Each download file is classified as either **Shared** (a `.chunk` file in `shared/`) or **Unique** (an asset-specific file in the UUID folder). The downloader constructs HTTP requests accordingly:
+1. The current version continues playing without interruption while the new version downloads in the background.
+2. Once the new version is fully downloaded, playback switches to it seamlessly.
+3. If another update arrives while a previous one is still downloading, the Runner continues using the last fully downloaded version until the newest version finishes transferring.
 
-- Shared: `GET /assets/shared/<hash>.chunk`
-- Unique: `GET /assets/<asset-id>/<filename>`
-
-:::info
-**Deduplication is automatic.** If a shared chunk file already exists locally with the correct hash, it is not re-downloaded. This means transferring an updated show that reuses most of its media only transfers the changed chunks.
-:::
-
-### Active Asset Selection
-
-Runners do not download every asset in the show — they use **visibility culling** to determine which assets are needed:
-
-1. **Cue visibility** — the Runner calculates which cues are potentially visible on its assigned physical displays.
-2. **Asset collection** — assets referenced by visible cues are collected, along with display assets (warp/blend data, masks) and audio assets routed to the Runner.
-3. **Version upgrades** — if the Director has sent asset upgrade mappings, the new version IDs are added to the active set. Old versions are removed once the upgrade is downloaded.
-4. **Downloader activation** — the final set of asset IDs is passed to the downloader, which starts or continues downloads as needed.
-
-Assets that are no longer active (e.g., after a show change removes a cue) have their downloads discarded and their HTTP requests aborted.
-
-### Asset Substitution During Upgrades
-
-When a [Dynamic Asset](./06-dynamic-assets.md) version is swapped, the Runner does not interrupt playback:
-
-1. The **old version** continues playing while the new version downloads.
-2. Once the new version is fully downloaded, it becomes the **active substitution** and playback switches seamlessly.
-3. If a third version arrives while the second is still downloading, the Runner keeps using the first (completed) version until the third finishes.
-4. **Preview thumbnails** always use the latest version immediately, regardless of download status.
-
-[[WIDGET: interactive-asset-transfer-flow — animated diagram showing the download pipeline from Runner visibility culling through worker priority loop to chunk storage]]
+This means you can update dynamic content (live data feeds, sponsor graphics, schedule boards) without visible interruptions to the audience.
 
 ### Transfer Monitoring
 
-The Asset Manager tracks transfer progress with detailed metrics:
+You can monitor transfer progress in the **Node Info** panel, which shows detailed metrics for each Runner:
 
-- **Files total / copied / skipped** — total file count, how many were transferred, and how many already existed on the Runner.
-- **Bytes total / copied / skipped** — the same breakdown by data volume.
-- **Download speed** — measured every 2 seconds based on accumulated bytes.
-- **ETA** — after 1 GB of data has been transferred, the system calculates an estimated completion time based on the current transfer rate.
-- **Errors** — transfer errors are collected and displayed. Up to 100 unique error messages are retained per job.
+- **Progress percentage** — overall completion of the transfer
+- **Data copied and skipped** — how much data was transferred versus how much was already present on the Runner
+- **Files copied and skipped** — the same breakdown by file count
+- **Download speed** — the current transfer rate
+- **Estimated time remaining** — an estimate of when the transfer will complete (shown once enough data has been transferred to calculate a reliable estimate)
+- **Errors** — any transfer errors are collected and displayed with details
 
-### Transfer States (Server-Side)
+### Pre-Downloading Assets to Runners
 
-When using the [Import/Export](./12-import-export-and-mapping.md) or pre-cache features, transfers are tracked with these server-side states:
+For shows with large media libraries (tens or hundreds of gigabytes), you can push assets to specific Runners before going online. This significantly reduces the time needed when the show actually goes online, because the media is already in place.
 
-| State | Description |
-|-------|-------------|
-| **Pending** | Job is queued but has not started |
-| **Scanning** | Comparing local and remote asset inventories |
-| **Transferring** | Files are being sent |
-| **Waiting** | Paused (e.g., waiting for Runner availability) |
-| **Success** | All files transferred successfully |
-| **Cancelled** | Transfer stopped by the user |
+1. In the Assets window, select the assets you want to pre-download.
+2. Right-click and choose **Transfer Assets > Download to Runners**.
+3. In the dialog, select one or more Runners to receive the assets. Use **Select All** or **Clear** to manage the selection.
+4. Click **Ok** to start the transfer.
 
-### Pre-Caching Assets on Runners
+:::warning
+Pre-downloading transfers media over the network while the system is offline. If a show is already running, this operation may temporarily affect playback performance and may interfere with automatic transfers. Plan pre-downloads during non-critical periods — ideally before the show goes online for the first time.
+:::
 
-For large shows, you can pre-cache assets onto specific Runners before going fully online:
+For details on packaging assets for portable transfer between systems (via USB drives or external storage), see [Import, Export, and Mapping](./12-import-export-and-mapping.md).
 
-1. In the Assets window, select the assets you want to pre-cache.
-2. Right-click and choose **Transfer Assets → Cache Selected Assets**.
-3. Select the Runner(s) to cache the assets on.
-4. Click **OK** to begin the transfer.
+### Bandwidth Management
 
-<!-- screenshot: Pre-download Runner Assets dialog showing runner selection -->
-
-This is useful when you need to transfer large volumes of media (tens or hundreds of gigabytes) before a show, without waiting for the full online process.
-
-### Best Practices
-
-- **Use high-speed networking** — 1 Gbps minimum, 10 Gbps recommended for large shows. The 2-worker design benefits from low-latency connections.
-- **Dedicate the network** — isolate WATCHOUT traffic from other network data to avoid contention. The downloader does not implement bandwidth throttling.
-- **Pre-cache before showtime** — for shows with hundreds of gigabytes of media, start transfers well in advance. Monitor progress to ensure completion.
-- **Leverage deduplication** — when updating a show, reuse existing assets where possible. Content-addressed chunks mean unchanged media is never re-transferred.
-- **Monitor disk space** — the downloader does not check available disk space before writing. Ensure Runners have sufficient storage for all active assets plus the `shared/` chunk folder.
-- **Plan for optimization timing** — assets still being optimized return a "working" status. Runners poll every 5 seconds until the asset is ready, but large assets may take significant time to optimize before transfer can begin.
-- **Use quality switches** — managed switches with sufficient backplane bandwidth prevent bottlenecks when multiple Runners download simultaneously.
+Asset transfers can consume significant network bandwidth, especially for large shows. WATCHOUT provides a **Bandwidth Limit** setting in the [Asset Manager Settings](./11-asset-manager-settings.md) dialog that caps the transfer rate in Mbit/s. Set this when WATCHOUT shares the network with other traffic (lighting control, audio, show control). On a dedicated WATCHOUT network, leave it at the default (unlimited) for the fastest possible transfers.
 
 ### Storage Footprint
 
-Each asset's disk usage is reported as a **footprint** with two components:
+Each asset's disk usage on a Runner is reported with two components:
 
 | Component | Description |
-|-----------|-------------|
-| **Exclusive** | Bytes of files owned only by this asset (asset.json, local data files in the UUID folder) |
-| **Shared** | Bytes of chunk files in `shared/` referenced by this asset |
-| **Total** | Sum of exclusive + shared |
+|---|---|
+| **Exclusive** | Storage used by files unique to this asset (metadata, thumbnails) |
+| **Shared** | Storage used by media data that may be shared with other assets through deduplication |
+| **Total** | The sum of exclusive and shared storage |
 
-Since shared chunks may be referenced by multiple assets, the sum of all asset footprints can exceed the actual disk usage. Garbage collection removes unreferenced chunks from the `shared/` folder.
+Because shared data may be referenced by multiple assets, adding up the total footprint of every asset can exceed the actual disk usage on the Runner. The system automatically cleans up shared data that is no longer referenced by any asset.
+
+:::tip
+Monitor disk space on your Runners before going online with a large show. Ensure each Runner has enough free storage to hold all the assets assigned to its displays, plus some headroom for temporary files during transfer.
+:::
+
+### Best Practices
+
+- **Use high-speed networking.** 1 Gbps is the minimum for production use; 10 Gbps is recommended for large shows with high-resolution or high-frame-rate media. Low-latency, dedicated network connections produce the best transfer performance.
+
+- **Dedicate the network.** Isolate WATCHOUT traffic from other network data (office internet, streaming, file sharing) to avoid contention that slows transfers and can affect playback reliability.
+
+- **Pre-download before showtime.** For shows with hundreds of gigabytes of media, start pre-downloading to Runners well in advance. Use the Node Info panel to monitor progress and confirm completion before the audience arrives.
+
+- **Reuse assets when updating shows.** When updating a show, keep unchanged media in place rather than deleting and re-adding it. The deduplication system ensures that only genuinely new or modified media is transferred.
+
+- **Use managed network switches.** Quality switches with sufficient backplane bandwidth prevent bottlenecks when multiple Runners are downloading simultaneously. Avoid consumer-grade equipment for production deployments.
+
+- **Allow time for optimization.** Assets must finish optimizing before they can be transferred. If you add large video files shortly before going online, factor in optimization time on top of transfer time. Check the Assets window for optimization progress.
+
+- **Keep codec and quality settings consistent.** If you change codec mappings or quality levels in [Asset Manager Settings](./11-asset-manager-settings.md) between show versions, the optimized output changes and previously transferred media cannot be reused. Set your optimization settings before importing content to avoid unnecessary re-transfers.
 
 ### Troubleshooting
 
 | Problem | Cause | Fix |
-|---------|-------|-----|
-| Transfer stalls at 0% | Asset still optimizing on the Asset Server | Wait for optimization to complete; check [Asset Manager](./01-asset-manager.md) status |
-| Slow transfer speed | Network congestion or insufficient bandwidth | Use dedicated network; upgrade to 10 Gbps; check switch backplane capacity |
-| "Unknown asset id" error | Asset was deleted or show changed during transfer | Restart the transfer; verify the asset exists in the Asset Manager |
-| Runner disk full | No disk space check before download | Free space on the Runner; remove unused cached assets via garbage collection |
-| Asset shows on wrong Runner | Visibility culling assigns assets based on display configuration | Verify display-to-Runner assignments in the show configuration |
-| Download retries every 10 seconds | IO error on network or disk | Check network connectivity; verify disk health; review Runner logs for specific error |
-| Old content still playing after version swap | New version not yet fully downloaded | Check download progress; the Runner switches automatically when the download completes |
-| Chunks not deduplicated | Different optimization settings produced different output | Use consistent [Asset Manager Settings](./11-asset-manager-settings.md) across versions |
+|---|---|---|
+| Transfer stalls at 0% | The asset is still being optimized and is not yet available for transfer | Wait for optimization to complete; check progress in the Assets window |
+| Slow transfer speed | Network congestion, insufficient bandwidth, or low-quality network equipment | Use a dedicated network; upgrade to 10 Gbps; check that switches have adequate backplane capacity |
+| Asset not found error | The asset was deleted or the show was modified during transfer | Verify the asset still exists in the Asset Manager; restart the transfer |
+| Runner runs out of disk space | Not enough free storage on the Runner for the required assets | Free space on the Runner by removing unused local assets, or add storage capacity |
+| Asset appears on the wrong Runner | The display-to-Runner assignment does not match expectations | Check display assignments in the show configuration to verify which Runner drives which displays |
+| Transfer keeps retrying | A network or disk error is preventing the download from completing | Check network connectivity between the Runner and the Asset Manager; verify disk health on the Runner |
+| Old content still playing after a dynamic asset update | The new version has not finished downloading yet | Check transfer progress in the Node Info panel; the Runner switches automatically when the download completes |
+| Previously transferred media is being re-downloaded | Optimization settings were changed, producing different output files | Use consistent [Asset Manager Settings](./11-asset-manager-settings.md) across show versions to preserve deduplication |
 
 ### See Also
 
-- [Asset Manager](./01-asset-manager.md) — optimization pipeline that prepares assets before transfer
-- [Asset Properties](./03-asset-properties.md) — understanding footprint, state, and codec metadata
-- [Dynamic Assets](./06-dynamic-assets.md) — version swapping and the substitution mechanism during transfers
-- [Asset Manager Settings](./11-asset-manager-settings.md) — quality and codec settings that affect transfer sizes
-- [Import, Export, and Mapping](./12-import-export-and-mapping.md) — packaging assets for offline transfer between systems
+- [Asset Manager](./01-asset-manager.md) — the optimization pipeline that prepares assets before transfer
+- [Asset Properties](./03-asset-properties.md) — understanding asset status, storage footprint, and codec metadata
+- [Dynamic Assets](./06-dynamic-assets.md) — version swapping and how content updates are handled during playback
+- [Asset Manager Settings](./11-asset-manager-settings.md) — codec mapping, quality levels, bandwidth limits, and track management
+- [Import, Export, and Mapping](./12-import-export-and-mapping.md) — packaging assets for portable transfer between systems

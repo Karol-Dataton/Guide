@@ -57,7 +57,7 @@ To assign a cue to a cue set:
 2. In the **Cue Properties** panel, find the **Cue Set** field
 3. Select the desired cue set from the dropdown
 
-When you assign a cue to a set, WATCHOUT creates a **media mapping** for that cue — an internal lookup table that maps each variant to a media source. Initially, all variants point to the cue's current media source. You can then change individual variant mappings by dragging different assets onto the cue while a specific variant is active.
+When you assign a cue to a set, WATCHOUT creates a **media mapping** for that cue — a table that maps each variant to a media source. Initially, all variants point to the cue's current media source. You can then change individual variant mappings by dragging different assets onto the cue while a specific variant is active.
 
 To remove a cue from a cue set, set the Cue Set field back to **None**.
 
@@ -72,7 +72,7 @@ You can switch the active variant in several ways:
 - **Click the variant header** in the Cue Sets panel to activate it immediately
 - **Use the HTTP API** to select a variant programmatically at runtime (e.g. from an external control system)
 
-When you switch the active variant, all cues assigned to that cue set immediately update their rendered content to display the media source mapped to the new variant. This switch is atomic — all affected cues change simultaneously.
+When you switch the active variant, all cues assigned to that cue set immediately update their rendered content to display the media source mapped to the new variant. This switch is instantaneous — all affected cues change simultaneously.
 
 The active variant state is treated as transient data (like show variables), meaning variant switches are not recorded in the undo history.
 

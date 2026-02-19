@@ -90,9 +90,9 @@ You can set any combination of the three triggers on a single timeline. For exam
 
 | Property | Expression Type | Default | Purpose |
 |----------|----------------|---------|---------|
-| **trigger_play** | Trigger Expression | Empty (no trigger) | When the expression evaluates to true, the timeline begins or resumes playback |
-| **trigger_pause** | Trigger Expression | Empty (no trigger) | When the expression evaluates to true, the timeline pauses at its current position |
-| **trigger_stop** | Trigger Expression | Empty (no trigger) | When the expression evaluates to true, the timeline stops and resets |
+| **Play Expression** | Trigger Expression | Empty (no trigger) | When the expression evaluates to true, the timeline begins or resumes playback |
+| **Pause Expression** | Trigger Expression | Empty (no trigger) | When the expression evaluates to true, the timeline pauses at its current position |
+| **Stop Expression** | Trigger Expression | Empty (no trigger) | When the expression evaluates to true, the timeline stops and resets |
 
 An empty expression means no trigger is active for that action — the timeline's playback state is not affected by that trigger slot.
 
@@ -138,14 +138,14 @@ The reservation check is **case-insensitive** — you cannot create a show varia
 
 ### Auto-Run vs. Triggers
 
-Timelines have an **auto_run** property (default: false) that is separate from trigger expressions. Understanding the difference is important:
+Timelines have an **Auto Run** property (disabled by default) that is separate from trigger expressions. Understanding the difference is important:
 
 | Mechanism | When It Activates | Behavior | Continuous? |
 |-----------|-------------------|----------|-------------|
 | **Auto-run** | On show load | Starts the timeline automatically when the show is loaded or opened | No — fires once at load time |
 | **Trigger expressions** | During show runtime | Starts, pauses, or stops the timeline whenever the expression evaluates to true | Yes — evaluated continuously |
 
-Auto-run and triggers are independent and can be used together. A timeline with `auto_run` enabled will start on show load. If the same timeline also has trigger expressions, those triggers continue to evaluate during playback and can pause or stop the timeline based on variable state.
+Auto-run and triggers are independent and can be used together. A timeline with **Auto Run** enabled will start on show load. If the same timeline also has trigger expressions, those triggers continue to evaluate during playback and can pause or stop the timeline based on variable state.
 
 :::note
 Auto-run is a one-time event at show load. If a timeline is stopped by a trigger or control cue after auto-run starts it, auto-run does not re-fire. Only the play trigger expression (or a control cue) can restart it.
@@ -206,13 +206,13 @@ If you need conditional behavior within a composition, use [Conditional Cues](17
 | Timeline starts but immediately stops | Both play and stop trigger expressions are true; stop takes priority | Ensure the stop trigger expression is false when the play trigger is true. Use mutually exclusive variable ranges. |
 | Expression validation rejects a valid-looking expression | Referenced variable was renamed or deleted from the show | Re-add the variable or update the expression to reference the current variable name. |
 | Cannot find trigger settings | Looking at a composition instead of a timeline | Triggers are timeline-only. Open the parent timeline's properties instead. See [Compositions](10-compositions.md). |
-| Timeline does not auto-start on show load | Auto-run is not enabled; trigger expressions only evaluate during runtime | Enable the `auto_run` property in timeline properties if the timeline should start at show load. |
+| Timeline does not auto-start on show load | Auto Run is not enabled; trigger expressions only evaluate during runtime | Enable the **Auto Run** property in timeline properties if the timeline should start at show load. |
 | Variable name rejected when creating a variable | Name conflicts with a reserved expression variable | Choose a different name. Reserved names are: tweenValue, cueVolume, masterVolume (case-insensitive). |
 | Expression works in one trigger but not another | Expression is correct but the wrong trigger field was populated | Verify the expression is entered in the correct field (play, pause, or stop). |
 
 ### See Also
 
 - [Variables and Variable Cues](08-variables-and-variable-cues.md) — show variables that drive trigger expressions
-- [Conditional Cues](17-conditional-cues.md) — per-cue condition expressions using CueExpression
+- [Conditional Cues](17-conditional-cues.md) — per-cue condition expressions for conditional rendering and triggering
 - [Control Cues](05-control-cues.md) — cue-based alternative for controlling timeline playback state
 - [Compositions](10-compositions.md) — reusable content blocks (triggers are not available for compositions)

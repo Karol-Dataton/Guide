@@ -55,7 +55,7 @@ Countdown and count-up timers are operator-facing timing references. They do not
 
 ### Markers as Jump Targets
 
-One of the most important roles of marker cues is serving as **named jump targets**. When a marker cue has a name, WATCHOUT registers it in the internal jump target lookup table alongside named control cues. Any control cue configured with "jump to cue" behavior can specify a target cue name, and the playhead will jump to the position of the matching marker.
+One of the most important roles of marker cues is serving as **named jump targets**. When a marker cue has a name, WATCHOUT registers it as a jump target alongside named control cues. Any control cue configured with "jump to cue" behavior can specify a target cue name, and the playhead will jump to the position of the matching marker.
 
 This mechanism works as follows:
 

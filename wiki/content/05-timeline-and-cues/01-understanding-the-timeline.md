@@ -23,7 +23,7 @@ Opening a timeline (by double-clicking it in the Timelines panel) reveals the **
 
 **Transport Controls.** The bottom-left corner of the Timeline window contains the transport controls: **Play**, **Pause**, and **Stop** buttons that control the timeline's playback state. These correspond to the three playback states described in the Playback section below.
 
-**Zoom Controls.** The bottom bar provides zoom in, zoom out, and zoom-to-fit buttons. You can also use **Numpad +** and **Numpad −** to zoom in and out, or **Numpad *** to zoom to fit the entire timeline duration in the visible area. The zoom level is remembered independently for each timeline.
+**Zoom Controls.** The bottom bar provides zoom in, zoom out, and zoom-to-fit buttons. You can also use **Numpad +** and **Numpad −** to zoom in and out, or **Numpad &ast;** to zoom to fit the entire timeline duration in the visible area. The zoom level is remembered independently for each timeline.
 
 **Minimap.** A compact overview strip at the bottom of the window showing the entire timeline duration at a glance. The visible portion of the timeline is highlighted, giving you spatial context when zoomed in to a small section. Click the minimap to jump the viewport to a different part of the timeline.
 
@@ -52,7 +52,7 @@ Zoom controls how much of the timeline is visible in the window at once. At mini
 
 - **Numpad +** — zoom in (doubles the magnification)
 - **Numpad −** — zoom out (halves the magnification)
-- **Numpad *** — zoom to fit the entire timeline in the visible area
+- **Numpad &ast;** — zoom to fit the entire timeline in the visible area
 
 The zoom level persists per-timeline, so switching between timelines restores each one's last zoom setting.
 

@@ -246,7 +246,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderTocPreview();
     setupDiagramTheme();
+    setupTabs();
 });
+
+// Tab functionality
+function setupTabs() {
+    const tabButtons = document.querySelectorAll('.tab-btn');
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.preventDefault();
+            const tabId = btn.getAttribute('data-tab');
+            const container = btn.closest('.tab-container');
+
+            if (!container) return;
+
+            // Deactivate all in this container
+            container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            container.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+
+            // Activate clicked
+            btn.classList.add('active');
+            const content = container.querySelector(`.tab-content[id="${tabId}"]`);
+            if (content) {
+                content.classList.add('active');
+            }
+        });
+    });
+}
 
 // Make chapter-landing list items fully clickable + assign section indices for rail
 function setupChapterLanding() {
@@ -593,11 +620,22 @@ function setupSidebar() {
             </a>
             ${chapter.subsections.length > 0 ? `
                 <div class="toc-subsections">
-                    ${chapter.subsections.map(sub => `
+                    ${(() => {
+                        let currentGroup = null;
+                        return chapter.subsections.map(sub => {
+                            let groupLabel = '';
+                            if (sub.group && sub.group !== currentGroup) {
+                                currentGroup = sub.group;
+                                groupLabel = `<div class="toc-group-label">${sub.group}</div>`;
+                            }
+
+                            return `${groupLabel}
                         <a class="toc-subsection" href="${chapterSlug}/${slugify(sub.title)}.html">
                             ${sub.title}
                         </a>
-                    `).join('')}
+                    `;
+                        }).join('');
+                    })()}
                 </div>
             ` : ''}
         </div>

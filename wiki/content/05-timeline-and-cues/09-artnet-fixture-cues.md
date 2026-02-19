@@ -28,12 +28,12 @@ The fixture definition contains:
 
 | Field | Purpose |
 |---|---|
-| **name** | Fixture name |
-| **long_name** | Descriptive long name |
-| **short_name** | Abbreviated name for compact UI display |
-| **description** | Fixture description |
-| **fixture_type_id** | UUID identifying the fixture type |
-| **modes** | List of available fixture modes |
+| **Name** | Fixture name |
+| **Long Name** | Descriptive long name |
+| **Short Name** | Abbreviated name for compact UI display |
+| **Description** | Fixture description |
+| **Fixture Type ID** | Unique identifier for the fixture type |
+| **Modes** | List of available fixture modes |
 
 Each **ArtNetFixtureMode** defines:
 
@@ -48,10 +48,10 @@ Each **ArtNetFixtureMode** defines:
 
 WATCHOUT ships with two built-in fixture presets:
 
-| Preset | Internal ID | Modes |
-|---|---|---|
-| **1ch Generic** | `GenericOneChannel` | Coarse (8bit), Fine (16bit), Ultra (24bit), Uber (32bit) |
-| **10ch Generic** | `GenericTenChannel` | Coarse (8bit), Fine (16bit), Ultra (24bit), Uber (32bit) |
+| Preset | Modes |
+|---|---|
+| **1ch Generic** | Coarse (8bit), Fine (16bit), Ultra (24bit), Uber (32bit) |
+| **10ch Generic** | Coarse (8bit), Fine (16bit), Ultra (24bit), Uber (32bit) |
 
 The 1-channel generic is useful for single-parameter devices such as dimmers or simple relay triggers. The 10-channel generic covers fixtures that need multiple independently controlled parameters. Both presets expose all four resolution modes, allowing you to select the precision appropriate for your device.
 
@@ -72,7 +72,7 @@ Each channel (regardless of resolution) carries common properties:
 | Property | Purpose |
 |---|---|
 | **offset** | DMX address offset(s) within the fixture's footprint |
-| **pretty_name** | Display name shown in the UI |
+| **Display Name** | Name shown in the UI |
 | **name** | Internal identifier |
 | **default** | Default channel value |
 | **highlight** | Highlight value (used for identification during setup) |
@@ -125,15 +125,9 @@ When a cue references an Art-Net Fixture asset, the following Art-Net settings a
 
 ### Universe Addressing
 
-WATCHOUT uses an **absolute universe number** (range 0--32767) for Art-Net addressing. This single value maps to the standard Art-Net hierarchy of Net, Sub-Net, and Universe as follows:
+WATCHOUT uses an **absolute universe number** (range 0--32767) for Art-Net addressing. This single value maps to the standard Art-Net hierarchy of Net, Sub-Net, and Universe:
 
-```
-Universe    = absolute_universe mod 16
-Sub-Net     = (absolute_universe / 16) mod 16
-Net         = absolute_universe / 256
-```
-
-| Component | Range | How to Calculate |
+| Component | Range | Calculation from Absolute Value |
 |---|---|---|
 | **Universe** | 0--15 | Absolute value mod 16 |
 | **Sub-Net** | 0--15 | (Absolute value / 16) mod 16 |
@@ -168,25 +162,19 @@ ArtNet Recording assets capture live DMX data for playback on the timeline. This
 
 #### Recording Format
 
-Recordings are stored in **JSONL format** (one JSON object per line):
+Recordings capture a sequence of DMX frames with precise timestamps:
 
-- **Line 1 (header)**-metadata describing the recording session.
-- **Subsequent lines (frames)**-one line per captured frame, each with a **microsecond timestamp** and the channel values for that frame.
+- **Header** — metadata describing the recording session (source universes, channel count, etc.)
+- **Frames** — one entry per captured frame, each with a timestamp and the channel values at that moment.
 
-During optimization, the raw recording is parsed into a `frames.json` file for efficient playback.
+During optimization, the raw recording is processed into an efficient playback format. You do not need to manage these files directly — WATCHOUT handles the conversion automatically.
 
 #### How Recorded Values Combine with Tweens
 
-Recorded values do not replace tween automation-they **multiply** with it. The output formula is:
+Recorded values do not replace tween automation — they **multiply** with it. The tween value acts as a scaling factor for the recorded data:
 
-```
-output = cue_tween_value * recorded_value / 255
-```
-
-This means:
-
-- A tween value of **255** (full) passes the recorded value through unchanged.
-- A tween value of **128** (half) halves the recorded value.
+- A tween value at **full** (255 for 8-bit) passes the recorded value through unchanged.
+- A tween value at **half** (128) halves the recorded value.
 - A tween value of **0** suppresses the recorded value entirely, regardless of what was captured.
 
 This multiplicative relationship lets you use tween keyframes as a master intensity control over recorded data.

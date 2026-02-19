@@ -3,7 +3,6 @@ const wikiConfig = {
     // Add exact chapter titles to disable them
     // Example: "1. Getting Started"
     disabledChapters: [
-        "6. Effects and Tweens",
         "7. Playback",
         "8. The Interface",
         "9. Network Setup",

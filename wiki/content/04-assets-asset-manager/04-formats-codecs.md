@@ -83,6 +83,7 @@ When the source has an alpha channel and the output codec supports it, transpare
 If you need transparent video overlays on the timeline, verify that your codec mapping preserves alpha. Check the output codec in the asset's Properties panel after optimization — if it shows a non-alpha codec (e.g., "HAP" instead of "HAP Alpha"), the transparency has been lost.
 :::
 
+::: tabs
 ### Container Formats
 
 WATCHOUT supports the following video container formats:
@@ -125,6 +126,8 @@ WATCHOUT supports the following video container formats:
 | ADPCM | `.wav` | Lossy | Legacy compressed WAV |
 
 Audio codecs are supported in the following containers: WAV, ISO/MP4, MKV/WebM, and OGG.
+:::
+
 
 ### The Optimization Pipeline
 
