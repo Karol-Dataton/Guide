@@ -397,16 +397,20 @@ function filenameToTitle(filename) {
 }
 
 // Parse grouped links from chapter _index.md files.
-// Returns Map<sectionFilename, groupName>.
+// Returns Map<sectionFilename, { group, groupOrder, groupItemOrder }>.
 function parseIndexGroups(markdown) {
     const groups = new Map();
     const lines = markdown.split(/\r?\n/);
     let currentGroup = null;
+    let currentGroupOrder = -1;
+    let currentGroupItemOrder = 0;
 
     lines.forEach(line => {
         const headingMatch = line.match(/^###\s+(.+)$/);
         if (headingMatch) {
             currentGroup = headingMatch[1].trim();
+            currentGroupOrder += 1;
+            currentGroupItemOrder = 0;
             return;
         }
 
@@ -415,7 +419,12 @@ function parseIndexGroups(markdown) {
         const linkMatch = line.match(/^\s*[-*]\s+\[[^\]]+\]\(([^)#]+\.md)(?:#[^)]+)?\)/);
         if (linkMatch) {
             const filename = path.basename(linkMatch[1].trim());
-            groups.set(filename, currentGroup);
+            groups.set(filename, {
+                group: currentGroup,
+                groupOrder: currentGroupOrder,
+                groupItemOrder: currentGroupItemOrder
+            });
+            currentGroupItemOrder += 1;
         }
     });
 
@@ -517,7 +526,7 @@ function buildContent() {
                 title: sectionTitle,
                 page: pageCounter++,
                 description: sectionDescription,
-                ...(sectionGroup ? { group: sectionGroup } : {})
+                ...(sectionGroup || {})
             });
 
             console.log(`    - ${sectionTitle}`);
@@ -587,7 +596,11 @@ function getIcon(iconName) {
                 title: sub.title,
                 page: sub.page,
                 description: sub.description,
-                ...(sub.group ? { group: sub.group } : {})
+                ...(sub.group ? {
+                    group: sub.group,
+                    groupOrder: sub.groupOrder,
+                    groupItemOrder: sub.groupItemOrder
+                } : {})
             });
         });
     });

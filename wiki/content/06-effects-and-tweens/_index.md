@@ -19,7 +19,7 @@ Understand how tweens work before diving into specific effect types.
 Animate position, size, and rotation for motion graphics and spatial composition.
 
 - [Position and Movement](02-position-and-movement.md) - animating cue placement on Stage for slide-ins, tracking moves, and camera-like pan effects
-- [Scale and Size](03-scale-and-size.md) - scale modes (explicit, factor, media-based) and scale tweens for growth, shrink, and zoom effects
+- [Scale and Size](03-scale-and-size.md) - X/Y scale tweens with maintain-proportions control, pixel value display, and zoom effects
 - [Rotation Effects](04-rotation-effects.md) - rotation across three axes: Z (2D spin), Y (horizontal 3D turn), X (vertical 3D tilt)
 
 ### Visual Effects
@@ -39,9 +39,9 @@ Shape, color-correct, and blend your content.
 
 Specialized tools for distortion, compositing, and data-driven animation.
 
-- [Corner Pinning](10-corner-pinning.md) - per-cue perspective distortion via independent corner repositioning using a homography projection matrix
+- [Corner Pinning](10-corner-pinning.md) - per-cue perspective distortion via independent corner repositioning
 - [Linear Wipe](11-linear-wipe.md) - directional reveal/hide transitions with angle, location, feather, and completion controls
 - [Frame Blending](13-frame-blending.md) - temporal interpolation between adjacent video frames to smooth mismatched frame rates
-- [Chroma Key](14-chroma-key.md) - per-cue green/blue screen compositing operating in Rec. 2020 YCbCr color space
+- [Chroma Key](14-chroma-key.md) - per-cue green/blue screen compositing with wide-gamut color matching
 - [Key and Fill](15-key-and-fill.md) - layer-level compositing where one layer generates a transparency mask for another
 - [Tween Expressions](16-tween-expressions.md) - driving any tween property with mathematical expressions for interactive, variable-driven, and externally controllable animations

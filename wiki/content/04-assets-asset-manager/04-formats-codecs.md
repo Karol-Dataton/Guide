@@ -30,26 +30,6 @@ You can override any row in this table through the [Asset Manager Settings](11-a
 If your content pipeline already outputs HAP or NotchLC, the optimizer simply copies the data without re-encoding — this saves significant time. Coordinate with your content creators to deliver in the target codec whenever possible.
 :::
 
-### Video Codec Comparison
-
-| Codec | Decode Method | Alpha Support | Relative File Size | Scrub Performance | Best For |
-|---|---|---|---|---|---|
-| **HAP** | GPU (DXT1) | No | Large (5–10× H.264) | Excellent — every frame independent | Most standard video content |
-| **HAP Alpha** | GPU (DXT5) | Yes | Large | Excellent | Transparent video overlays |
-| **HAP Q** | GPU (BC7) | No | Very large | Excellent | High-quality content where visual fidelity matters |
-| **HAP Q Alpha** | GPU (BC7 + DXT5) | Yes | Very large | Excellent | High-quality transparent content |
-| **NotchLC Opaque** | GPU | No | Medium-large | Excellent | ProRes replacement; high quality, smaller than HAP |
-| **NotchLC Alpha** | GPU | Yes | Medium-large | Excellent | ProRes 4444 replacement with alpha |
-| **HEVC 4:2:0** | GPU (HW accel) | No | Small | Good — some seek latency | Standard video when file size matters |
-| **HEVC X010** | GPU (HW accel) | No | Small | Good | 10-bit color depth content |
-| **ProRes 422** | CPU | No | Medium | Good | Intermediate editing codec |
-| **ProRes 4444** | CPU | Yes | Large | Good | High-quality with alpha |
-| **H.264** | CPU | No | Small | Moderate — GOP-based | Source delivery; not recommended as output |
-| **MPEG-2** | CPU | No | Medium | Moderate | Legacy broadcast sources |
-| **Raw RGB 8-bit** | None (direct) | No | Very large | Instant | Uncompressed texture data |
-| **Raw RGBA 8-bit** | None (direct) | Yes | Very large | Instant | Uncompressed with alpha |
-| **Raw RGB 10-bit** | None (direct) | No | Very large | Instant | 10-bit uncompressed |
-
 ### Why HAP is Recommended
 
 HAP is the default optimization target because it decodes entirely on the GPU using DXT texture compression:
@@ -151,20 +131,6 @@ For source files that contain both video and audio tracks, the optimizer offers 
 | **Skip Video** | Optimize only the audio track; discard video |
 | **Composition** | Keep both tracks as a single composition asset (video + audio in sync) |
 | **Individual Assets** | Split video and audio into separate, independent assets |
-
-### Quality Levels
-
-For codecs that support quality settings, the optimizer provides five levels:
-
-| Level | Quality | File Size | When to Use |
-|---|---|---|---|
-| **Good** | Lower | Smallest | Previews, rehearsal content, when storage is limited |
-| **Very Good** | Balanced | Moderate | Default for most content |
-| **Excellent** | High | Larger | Production content with fine detail |
-| **Optimal** | Very high | Large | Critical visual content |
-| **Best** | Maximum | Largest | Final mastering, archival |
-
-Quality is specified as a numeric value internally (0 = lowest, increasing = better). Not all codecs expose a quality setting — pass-through formats and some GPU codecs produce a fixed output regardless of the quality parameter.
 
 ### Bandwidth Limit
 

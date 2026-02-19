@@ -7,7 +7,7 @@ title: "Corner Pinning"
 
 Corner pinning is a per-cue distortion effect that lets you independently reposition each of the four corners of a media cue. By moving corners away from their default positions, you can create perspective distortion, trapezoid correction, and arbitrary quadrilateral deformations — all without modifying the source media.
 
-Internally, WATCHOUT computes a **homography projection matrix** from the four corner positions. This matrix maps every pixel from the original rectangular cue into the new quadrilateral shape in a single GPU pass, preserving smooth interpolation across the entire surface.
+WATCHOUT maps every pixel from the original rectangular cue into the new quadrilateral shape in a single GPU pass, preserving smooth interpolation across the entire surface.
 
 ### Corner Tween Channels
 
@@ -48,7 +48,7 @@ By placing keyframes at different times with different corner positions, you can
 
 ### Convexity Constraint
 
-WATCHOUT automatically enforces a **convexity constraint** on the resulting quadrilateral. If you move corners into a configuration that would create a concave (self-intersecting) shape, the system subtly adjusts the offending corner to maintain a valid convex quadrilateral. This ensures the homography transform always produces a reasonable, artifact-free result.
+WATCHOUT automatically enforces a **convexity constraint** on the resulting quadrilateral. If you move corners into a configuration that would create a concave (self-intersecting) shape, the system subtly adjusts the offending corner to maintain a valid convex quadrilateral. This ensures the corner pin always produces a reasonable, artifact-free result.
 
 :::note
 The convexity adjustment is minimal and designed to be visually imperceptible in most cases. However, extreme corner configurations may result in slightly different positions than the values you entered.

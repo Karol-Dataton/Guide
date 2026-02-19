@@ -91,6 +91,24 @@ function processHierarchy(flatData) {
 }
 
 const chapters = processHierarchy(tocData);
+
+function getSidebarSubsections(subsections) {
+    return [...subsections].sort((a, b) => {
+        const aGrouped = Number.isInteger(a.groupOrder);
+        const bGrouped = Number.isInteger(b.groupOrder);
+
+        if (aGrouped && bGrouped) {
+            if (a.groupOrder !== b.groupOrder) return a.groupOrder - b.groupOrder;
+            if (a.groupItemOrder !== b.groupItemOrder) return a.groupItemOrder - b.groupItemOrder;
+            return a.page - b.page;
+        }
+
+        if (aGrouped !== bGrouped) return aGrouped ? -1 : 1;
+
+        return a.page - b.page;
+    });
+}
+
 const ASSETS_TO_COPY = [
     { from: path.join(WIKI_ROOT, 'widgets', 'cie_1931_chromaticity_diagram.png'), to: path.join(OUTPUT_DIR, 'cie_1931_chromaticity_diagram.png') }
 ];
@@ -359,8 +377,9 @@ function generateSidebar(activeSlug, depth) {
     const relPath = getRelativePath(depth);
 
     return chapters.map((chapter, index) => {
+        const sidebarSubsections = getSidebarSubsections(chapter.subsections);
         const chapterUrl = `${relPath}${chapter.slug}/index.html`;
-        const isActiveChapter = chapter.slug === activeSlug || chapter.subsections.some(sub => sub.slug === activeSlug);
+        const isActiveChapter = chapter.slug === activeSlug || sidebarSubsections.some(sub => sub.slug === activeSlug);
         const expandedClass = isActiveChapter ? 'expanded' : '';
         const activeClass = (chapter.slug === activeSlug) ? 'active' : '';
         const disabledClass = chapter.disabled ? 'disabled' : '';
@@ -371,17 +390,17 @@ function generateSidebar(activeSlug, depth) {
             <a href="${chapterUrl}" class="toc-chapter-header ${activeClass} ${expandedClass}" style="text-decoration: none; display: flex;">
                 <span class="toc-chapter-icon">${iconSvg}</span>
                 <span class="toc-chapter-title">${chapter.title}</span>
-                ${chapter.subsections.length > 0 ? `
+                ${sidebarSubsections.length > 0 ? `
                     <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
                 ` : ''}
             </a>
-            ${chapter.subsections.length > 0 ? `
+            ${sidebarSubsections.length > 0 ? `
                 <div class="toc-subsections ${expandedClass}">
                     ${(() => {
             let currentGroup = null;
-            return chapter.subsections.map(sub => {
+            return sidebarSubsections.map(sub => {
                 const subUrl = `${relPath}${chapter.slug}/${sub.slug}.html`;
                 const subActive = sub.slug === activeSlug ? 'active' : '';
                 let groupLabel = '';

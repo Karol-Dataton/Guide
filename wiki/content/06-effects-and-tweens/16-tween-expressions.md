@@ -13,7 +13,7 @@ This is one of the most powerful features in WATCHOUT for creating interactive, 
 
 Every tween in WATCHOUT has an **expression field** alongside its keyframe data. At runtime, the system first interpolates the keyframe curve at the current time to produce a base value called `tweenValue`. This value is then passed into the expression, which can transform, replace, or augment it.
 
-The expression language is a mathematical formula evaluator (powered by the [fasteval](https://crates.io/crates/fasteval) library) that supports standard arithmetic, mathematical functions, and variable references. The expression must resolve to a single numeric value, which becomes the final tween output for that frame.
+The expression language is a mathematical formula evaluator that supports standard arithmetic, mathematical functions, and variable references. The expression must resolve to a single numeric value, which becomes the final tween output for that frame.
 
 ### Setting an Expression
 

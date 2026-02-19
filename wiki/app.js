@@ -595,6 +595,23 @@ function renderTocPreview() {
     `).join('');
 }
 
+function getSidebarSubsections(subsections) {
+    return [...subsections].sort((a, b) => {
+        const aGrouped = Number.isInteger(a.groupOrder);
+        const bGrouped = Number.isInteger(b.groupOrder);
+
+        if (aGrouped && bGrouped) {
+            if (a.groupOrder !== b.groupOrder) return a.groupOrder - b.groupOrder;
+            if (a.groupItemOrder !== b.groupItemOrder) return a.groupItemOrder - b.groupItemOrder;
+            return a.page - b.page;
+        }
+
+        if (aGrouped !== bGrouped) return aGrouped ? -1 : 1;
+
+        return a.page - b.page;
+    });
+}
+
 function setupSidebar() {
     const tocNav = document.getElementById('toc-nav');
 
@@ -606,23 +623,24 @@ function setupSidebar() {
 
     tocNav.innerHTML = chaptersData.map(chapter => {
         const chapterSlug = slugify(chapter.title);
+        const sidebarSubsections = getSidebarSubsections(chapter.subsections);
 
         return `
         <div class="toc-chapter ${chapter.disabled ? 'disabled' : ''}">
             <a href="${chapterSlug}/index.html" class="toc-chapter-header" style="text-decoration: none; display: flex;">
                 <span class="toc-chapter-icon">${getIcon(chapter.icon)}</span>
                 <span class="toc-chapter-title">${chapter.title}</span>
-                 ${chapter.subsections.length > 0 ? `
+                 ${sidebarSubsections.length > 0 ? `
                     <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <polyline points="9 18 15 12 9 6"></polyline>
                     </svg>
                 ` : ''}
             </a>
-            ${chapter.subsections.length > 0 ? `
+            ${sidebarSubsections.length > 0 ? `
                 <div class="toc-subsections">
                     ${(() => {
                         let currentGroup = null;
-                        return chapter.subsections.map(sub => {
+                        return sidebarSubsections.map(sub => {
                             let groupLabel = '';
                             if (sub.group && sub.group !== currentGroup) {
                                 currentGroup = sub.group;

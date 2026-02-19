@@ -7,7 +7,7 @@ title: "Chroma Key"
 
 Chroma Key is a per-cue compositing technique that removes a specific color from a cue's rendered output, making those areas transparent. This is commonly used to remove green screen or blue screen backgrounds from video footage, allowing the foreground subject to be composited over other content in the show.
 
-WATCHOUT performs chroma keying in the renderer's color pipeline, operating in a wide-gamut color space (Rec. 2020 YCbCr) for accurate color matching regardless of the source media's color standard.
+WATCHOUT performs chroma keying in a wide-gamut color space for accurate color matching regardless of the source media's color standard.
 
 ### Enabling Chroma Key
 
