@@ -9,6 +9,11 @@
 </head>
 
 <body>
+    <svg style="position: absolute; width: 0; height: 0; pointer-events: none;">
+        <filter id="carousel-motion-blur" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur id="carousel-blur-amount" stdDeviation="0 0" edgeMode="duplicate" />
+        </filter>
+    </svg>
     <div id="presentation">
         <!-- Title Slide -->
         <section class="slide active" id="slide-title">
@@ -603,6 +608,56 @@
             let wordCloudUnblurStep = 0;
             const TOTAL_UNBLUR_STEPS = 4;
 
+            let trackingBlur = false;
+            let trackingBlurTimeout = null;
+
+            function applyMotionBlur(track) {
+                if (trackingBlur) {
+                    clearTimeout(trackingBlurTimeout);
+                    trackingBlurTimeout = setTimeout(() => { trackingBlur = false; }, 850);
+                    return;
+                }
+                trackingBlur = true;
+                const filter = document.getElementById('carousel-blur-amount');
+                if (!filter) return;
+
+                track.style.filter = 'url(#carousel-motion-blur)';
+                let lastTime = performance.now();
+                let lastX = null;
+
+                function loop(time) {
+                    if (!trackingBlur) {
+                        track.style.filter = 'none';
+                        filter.setAttribute('stdDeviation', '0 0');
+                        return;
+                    }
+
+                    const style = window.getComputedStyle(track);
+                    const matrix = new DOMMatrixReadOnly(style.transform);
+                    const currentX = matrix.m41;
+
+                    if (lastX !== null) {
+                        const dt = Math.max(time - lastTime, 1);
+                        const dx = Math.abs(currentX - lastX);
+                        const velocity = dx / dt; // px per ms
+                        const blurValue = Math.min(velocity * 12, 100);
+
+                        filter.setAttribute('stdDeviation', `${blurValue} 0`);
+                    }
+
+                    lastX = currentX;
+                    lastTime = time;
+                    requestAnimationFrame(loop);
+                }
+
+                requestAnimationFrame(loop);
+
+                clearTimeout(trackingBlurTimeout);
+                trackingBlurTimeout = setTimeout(() => {
+                    trackingBlur = false;
+                }, 850);
+            }
+
             function updateCarouselState(slide) {
                 const stops = Array.from(slide.querySelectorAll('.carousel-item.stop'));
                 const activeIndex = stops.findIndex(item => item.classList.contains('active'));
@@ -619,6 +674,9 @@
                 const clampedOffset = Math.min(Math.max(rawOffset, 0), maxOffset);
 
                 track.style.transform = `translateX(-${clampedOffset}px)`;
+                if (track.style.transition !== 'none') {
+                    applyMotionBlur(track);
+                }
 
                 const indicators = slide.querySelectorAll('.indicator');
                 indicators.forEach((ind, index) => {
