@@ -1,6 +1,173 @@
 {
   "commits": [
     {
+      "hash": "6285258",
+      "parents": [
+        "345e55d"
+      ],
+      "author": "karol",
+      "date": "2026-02-23",
+      "message": "glossary",
+      "refs": [
+        "HEAD -> main",
+        "origin/main",
+        "origin/HEAD"
+      ]
+    },
+    {
+      "hash": "345e55d",
+      "parents": [
+        "093561f"
+      ],
+      "author": "karol",
+      "date": "2026-02-23",
+      "message": "audit comparing to old guide",
+      "refs": []
+    },
+    {
+      "hash": "093561f",
+      "parents": [
+        "cd1882e"
+      ],
+      "author": "Karol",
+      "date": "2026-02-19",
+      "message": "reload",
+      "refs": []
+    },
+    {
+      "hash": "cd1882e",
+      "parents": [
+        "9c091ef"
+      ],
+      "author": "Karol",
+      "date": "2026-02-19",
+      "message": "fix: fractional pixel jump on active sidebar links",
+      "refs": []
+    },
+    {
+      "hash": "9c091ef",
+      "parents": [
+        "8460fee"
+      ],
+      "author": "Karol",
+      "date": "2026-02-19",
+      "message": "fix: prevent 1px layout shift in sidebar",
+      "refs": []
+    },
+    {
+      "hash": "8460fee",
+      "parents": [
+        "23adcda"
+      ],
+      "author": "Karol",
+      "date": "2026-02-19",
+      "message": "chore: remove sidebar animations",
+      "refs": []
+    },
+    {
+      "hash": "9bb336a",
+      "parents": [
+        "23adcda",
+        "3aa7377"
+      ],
+      "author": "karol",
+      "date": "2026-02-20",
+      "message": "WIP on main: 23adcda more content",
+      "refs": [
+        "refs/stash"
+      ]
+    },
+    {
+      "hash": "3aa7377",
+      "parents": [
+        "23adcda"
+      ],
+      "author": "karol",
+      "date": "2026-02-20",
+      "message": "index on main: 23adcda more content",
+      "refs": []
+    },
+    {
+      "hash": "23adcda",
+      "parents": [
+        "a7931ee"
+      ],
+      "author": "karol",
+      "date": "2026-02-19",
+      "message": "more content",
+      "refs": []
+    },
+    {
+      "hash": "a7931ee",
+      "parents": [
+        "ae63ae7"
+      ],
+      "author": "karol",
+      "date": "2026-02-19",
+      "message": "more content",
+      "refs": []
+    },
+    {
+      "hash": "ae63ae7",
+      "parents": [
+        "23d5fd5"
+      ],
+      "author": "karol",
+      "date": "2026-02-19",
+      "message": "content updates",
+      "refs": []
+    },
+    {
+      "hash": "23d5fd5",
+      "parents": [
+        "0afeddf"
+      ],
+      "author": "karol",
+      "date": "2026-02-19",
+      "message": "content changes",
+      "refs": []
+    },
+    {
+      "hash": "0afeddf",
+      "parents": [
+        "1ab6db3"
+      ],
+      "author": "karol",
+      "date": "2026-02-19",
+      "message": "tabbed panel",
+      "refs": []
+    },
+    {
+      "hash": "1ab6db3",
+      "parents": [
+        "2d927df"
+      ],
+      "author": "karol",
+      "date": "2026-02-18",
+      "message": "single dashes",
+      "refs": []
+    },
+    {
+      "hash": "2d927df",
+      "parents": [
+        "a1bc9c5"
+      ],
+      "author": "karol",
+      "date": "2026-02-18",
+      "message": "edits to content",
+      "refs": []
+    },
+    {
+      "hash": "a1bc9c5",
+      "parents": [
+        "b3deab9"
+      ],
+      "author": "karol",
+      "date": "2026-02-18",
+      "message": "git float",
+      "refs": []
+    },
+    {
       "hash": "b3deab9",
       "parents": [
         "0040293",
@@ -9,11 +176,7 @@
       "author": "Karol-Dataton",
       "date": "2026-02-18",
       "message": "Merge pull request #1 from Karol-Dataton/prez",
-      "refs": [
-        "HEAD -> main",
-        "origin/main",
-        "origin/HEAD"
-      ]
+      "refs": []
     },
     {
       "hash": "b2a3197",
@@ -111,39 +274,6 @@
       "refs": []
     },
     {
-      "hash": "f313670",
-      "parents": [
-        "322ad38"
-      ],
-      "author": "Karol",
-      "date": "2026-02-17",
-      "message": "last",
-      "refs": []
-    },
-    {
-      "hash": "2677bf5",
-      "parents": [
-        "9562bba",
-        "6b0222c"
-      ],
-      "author": "karol",
-      "date": "2026-02-18",
-      "message": "WIP on nodes: 9562bba fix submodules",
-      "refs": [
-        "refs/stash"
-      ]
-    },
-    {
-      "hash": "6b0222c",
-      "parents": [
-        "9562bba"
-      ],
-      "author": "karol",
-      "date": "2026-02-18",
-      "message": "index on nodes: 9562bba fix submodules",
-      "refs": []
-    },
-    {
       "hash": "9562bba",
       "parents": [
         "dc19171"
@@ -203,6 +333,16 @@
       "author": "karol",
       "date": "2026-02-17",
       "message": "revert svg",
+      "refs": []
+    },
+    {
+      "hash": "f313670",
+      "parents": [
+        "322ad38"
+      ],
+      "author": "Karol",
+      "date": "2026-02-17",
+      "message": "last",
       "refs": []
     },
     {
@@ -1458,7 +1598,7 @@
   "branches": [
     {
       "name": "main",
-      "tip": "b3deab9",
+      "tip": "6285258",
       "remote": false
     },
     {
@@ -1473,7 +1613,7 @@
     },
     {
       "name": "origin/HEAD",
-      "tip": "b3deab9",
+      "tip": "6285258",
       "remote": true
     },
     {
@@ -1498,7 +1638,7 @@
     },
     {
       "name": "origin/main",
-      "tip": "b3deab9",
+      "tip": "6285258",
       "remote": true
     },
     {
@@ -1538,6 +1678,6 @@
       "tip": "417baff"
     }
   ],
-  "generated": "2026-02-18T12:51:48.968Z",
+  "generated": "2026-02-23T14:10:06.121Z",
   "repoName": "WO_keys"
 }

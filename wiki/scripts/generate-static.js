@@ -829,6 +829,10 @@ function generateStatsPage() {
                 <div class="counter" data-target="${totalWords}" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-tertiary);">0</div>
                 <div style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Total Words</div>
             </div>
+            <div class="stat-card" style="background: var(--bg-secondary); padding: 20px; border-radius: var(--border-radius); border: 1px solid var(--border-subtle); text-align: center;">
+                <div class="counter" data-target="${widgetCount}" style="font-size: 2.5rem; font-weight: 700; color: var(--accent-primary);">0</div>
+                <div style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Interactive Widgets</div>
+            </div>
         </div>
 
         <h2>Word Cloud</h2>
@@ -864,11 +868,6 @@ function generateStatsPage() {
                 <div style="font-size: 2rem; margin-bottom: 10px;">⚖️</div>
                 <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">${avgSentenceLength}</div>
                 <div style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Avg. Sentence Length</div>
-            </div>
-            <div class="stat-card" style="background: var(--bg-secondary); padding: 20px; border-radius: var(--border-radius); border: 1px solid var(--border-subtle); text-align: center;">
-                <div style="font-size: 2rem; margin-bottom: 10px;">🧩</div>
-                <div style="font-size: 1.5rem; font-weight: 700; color: var(--text-primary);">${widgetCount}</div>
-                <div style="color: var(--text-secondary); text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;">Interactive Widgets</div>
             </div>
         </div>
 

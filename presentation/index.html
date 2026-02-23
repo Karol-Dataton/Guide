@@ -9,24 +9,188 @@
 </head>
 
 <body>
-    <header class="page-header">
-        <div class="page-title">WO_keys</div>
-        <div class="page-subtitle">Git commit history — <span id="stats"></span></div>
-        <div class="branch-legend" id="legend"></div>
-    </header>
+    <div id="presentation">
+        <!-- Title Slide -->
+        <section class="slide active" id="slide-title">
+            <div class="title-slide-content">
+                <h1 class="page-title" style="display: block;">Making the ultimate WATCHOUT handbook</h1>
+                <p class="page-subtitle">Press <kbd
+                        style="color:var(--text-primary); font-family:var(--font-mono); background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px;">Space</kbd>
+                    or <kbd
+                        style="color:var(--text-primary); font-family:var(--font-mono); background:rgba(255,255,255,0.1); padding:2px 8px; border-radius:4px;">Right
+                        Arrow</kbd> to start</p>
+            </div>
+        </section>
 
-    <div class="tree-container" id="treeContainer">
-        <table class="tree-table" id="treeTable">
-            <colgroup>
-                <col class="col-meta">
-                <col class="col-graph" id="colGraph">
-                <col class="col-message">
-            </colgroup>
-            <tbody id="treeBody"></tbody>
-        </table>
+        <!-- Book Slide -->
+        <section class="slide" id="slide-book">
+            <div class="book-container">
+                <img src="book.JPG" alt="Where it started..." class="book-image">
+                <h2 class="book-caption">Where it started...</h2>
+            </div>
+        </section>
+
+        <!-- Construct Slide -->
+        <section class="slide" id="slide-construct">
+            <h1 class="construct-title">New modern look</h1>
+            <div class="window-mockup construct-mockup">
+                <div class="window-header">
+                    <span class="window-btn close"></span>
+                    <span class="window-btn min"></span>
+                    <span class="window-btn max"></span>
+                </div>
+                <div class="window-body construct-body">
+                    <div class="wiki-sidebar">
+                        <div class="wiki-sidebar-header"></div>
+                        <div class="wiki-search"></div>
+                        <div class="wiki-nav-item"></div>
+                        <div class="wiki-nav-item"></div>
+                        <div class="wiki-nav-item" style="width: 60%"></div>
+                        <div class="wiki-nav-item" style="margin-top: 20px"></div>
+                        <div class="wiki-nav-item"></div>
+                        <div class="wiki-nav-item" style="width: 75%"></div>
+                    </div>
+                    <div class="wiki-main">
+                        <div class="wiki-header"></div>
+                        <div class="wiki-hero">
+                            <div class="wiki-hero-title"></div>
+                            <div class="wiki-hero-sub"></div>
+                        </div>
+                        <div class="wiki-grid">
+                            <div class="wiki-card"></div>
+                            <div class="wiki-card"></div>
+                            <div class="wiki-card"></div>
+                            <div class="wiki-card"></div>
+                            <div class="wiki-card"></div>
+                            <div class="wiki-card"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wiki Showcase Slide -->
+        <section class="slide" id="slide-wiki">
+            <div class="window-mockup">
+                <div class="window-header">
+                    <span class="window-btn close"></span>
+                    <span class="window-btn min"></span>
+                    <span class="window-btn max"></span>
+                </div>
+                <div class="window-body">
+                    <iframe src="https://karol-dataton.github.io/Guide/wiki/index.html" frameborder="0"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <!-- Screenshot Slide -->
+        <section class="slide" id="slide-screenshot">
+            <div class="screenshot-container">
+                <div class="screenshot-wrapper" style="transform: translate(-10px, -10px);">
+                    <div class="screenshot-half top-left"></div>
+                </div>
+
+                <div class="screenshot-text-wrapper slide-text">
+                    <h2>Asset Manager</h2>
+                    <p><strong>The Asset Manager is the centralized service that handles the entire lifecycle of media
+                            in a WATCHOUT 7 show</strong> — from ingesting source files, through optimization
+                        (transcoding to GPU-friendly playback codecs), to distributing the results across every display
+                        server on the network.</p>
+                    <div class="pipeline-text">
+                        <h3>How the Asset Pipeline Works</h3>
+                        <ol>
+                            <li><strong>Upload</strong> — files tracked as they are safely organized internally.</li>
+                            <li><strong>Optimization</strong> — GPU-friendly transcoding using HAP codecs.</li>
+                            <li><strong>Storage</strong> — sources retained & seamlessly deduplicated.</li>
+                            <li><strong>Distribution</strong> — optimized assets transferred to each Runner.</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparison Slide -->
+        <section class="slide" id="slide-comparison">
+            <h1 class="comparison-title">User Guide over the years...</h1>
+
+            <div class="comparison-grid">
+                <!-- WO6 -->
+                <div class="stat-card">
+                    <div class="stat-header">WATCHOUT 6</div>
+                    <div class="stat-body">
+                        <div class="stat-item">
+                            <span class="stat-value" data-target="110">0</span>
+                            <span class="stat-label">Chapters</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" data-target="60722">0</span>
+                            <span class="stat-label">Words</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- WO7 -->
+                <div class="stat-card">
+                    <div class="stat-header">WATCHOUT 7</div>
+                    <div class="stat-body">
+                        <div class="stat-item">
+                            <span class="stat-value" data-target="100">0</span>
+                            <span class="stat-label">Chapters</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value" data-target="49629">0</span>
+                            <span class="stat-label">Words</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NEW -->
+                <div class="stat-card highlight">
+                    <div class="stat-header highlight-header">NEW GUIDE</div>
+                    <div class="stat-body">
+                        <div class="stat-item">
+                            <span class="stat-value highlight-val" data-target="118">0</span>
+                            <span class="stat-label">Chapters</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value highlight-val" data-target="138478">0</span>
+                            <span class="stat-label">Words</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Tree Slide -->
+        <section class="slide" id="slide-tree">
+            <header class="page-header">
+                <div class="page-title">WO_keys</div>
+                <div class="page-subtitle">Git commit history — <span id="stats"></span></div>
+                <div class="branch-legend" id="legend"></div>
+            </header>
+
+            <div class="tree-container" id="treeContainer">
+                <div class="publish-header">
+                    <h1>Publish in April</h1>
+                    <div class="publish-dots">
+                        <span class="dot-lg"></span>
+                        <span class="dot-lg"></span>
+                        <span class="dot-lg"></span>
+                    </div>
+                </div>
+                <table class="tree-table" id="treeTable">
+                    <colgroup>
+                        <col class="col-meta">
+                        <col class="col-graph" id="colGraph">
+                        <col class="col-message">
+                    </colgroup>
+                    <tbody id="treeBody"></tbody>
+                </table>
+            </div>
+
+            <footer class="page-footer" id="footer"></footer>
+        </section>
     </div>
-
-    <footer class="page-footer" id="footer"></footer>
 
     <script type="module">
         (function () {
@@ -74,16 +238,151 @@
             ];
 
             // ── State ────────────────────────────────────────────────────────
-    let data = null;
-    let introPlayed = false;
-    let dateBreakCells = [];
-    let dateBreakAlphaRaf = 0;
-    const dateBreakMaxAlpha = new WeakMap();
+            let data = null;
+            let introPlayed = false;
+            let dateBreakCells = [];
+            let dateBreakAlphaRaf = 0;
+            const dateBreakMaxAlpha = new WeakMap();
+
+            // ── Slide Logic ──────────────────────────────────────────────────
+            let currentSlide = 0;
+            let treeInitialized = false;
+
+            function animateComparisonSequence() {
+                const cards = document.querySelectorAll('#slide-comparison .stat-card');
+                if (!cards.length) return;
+
+                // Reset step
+                cards.forEach(c => {
+                    c.classList.remove('in-view');
+                    c.querySelectorAll('.stat-value').forEach(el => el.textContent = '0');
+                });
+
+                const animateValue = (el, target, duration, startDelay) => {
+                    return new Promise(resolve => {
+                        setTimeout(() => {
+                            let start = null;
+                            const step = (timestamp) => {
+                                if (!start) start = timestamp;
+                                const progress = Math.min((timestamp - start) / duration, 1);
+                                // easeOut effect
+                                const easeProgress = 1 - Math.pow(1 - progress, 3);
+                                const current = Math.floor(easeProgress * target);
+                                el.textContent = current.toLocaleString();
+                                if (progress < 1) {
+                                    requestAnimationFrame(step);
+                                } else {
+                                    el.textContent = target.toLocaleString();
+                                    resolve();
+                                }
+                            };
+                            requestAnimationFrame(step);
+                        }, startDelay);
+                    });
+                };
+
+                const sequence = async () => {
+                    for (let i = 0; i < cards.length; i++) {
+                        const card = cards[i];
+                        card.classList.add('in-view');
+                        const values = card.querySelectorAll('.stat-value');
+
+                        // Wait for slide CSS animation (0.6s) before number tracking starts
+                        const promises = Array.from(values).map(v => {
+                            const target = parseInt(v.getAttribute('data-target'), 10);
+                            return animateValue(v, target, 1200, 500);
+                        });
+
+                        await Promise.all(promises);
+
+                        // Pause before sliding in the next panel
+                        await new Promise(r => setTimeout(r, 500));
+                    }
+                };
+
+                sequence();
+            }
+
+            function goToNextSlide() {
+                const slides = document.querySelectorAll('.slide');
+
+                if (slides[currentSlide].id === 'slide-book') {
+                    const bookImage = slides[currentSlide].querySelector('.book-image');
+                    if (bookImage && !bookImage.classList.contains('unblurred')) {
+                        bookImage.classList.add('unblurred');
+                        return;
+                    }
+                }
+
+                if (currentSlide < slides.length - 1) {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide++;
+                    slides[currentSlide].classList.add('active');
+
+                    if (slides[currentSlide].id === 'slide-tree' && !treeInitialized && data) {
+                        treeInitialized = true;
+                        init();
+                    }
+
+                    if (slides[currentSlide].id === 'slide-comparison') {
+                        animateComparisonSequence();
+                    }
+                }
+            }
+
+            function goToPrevSlide() {
+                const slides = document.querySelectorAll('.slide');
+
+                if (slides[currentSlide].id === 'slide-book') {
+                    const bookImage = slides[currentSlide].querySelector('.book-image');
+                    if (bookImage && bookImage.classList.contains('unblurred')) {
+                        bookImage.classList.remove('unblurred');
+                        return;
+                    }
+                }
+
+                if (currentSlide > 0) {
+                    slides[currentSlide].classList.remove('active');
+                    currentSlide--;
+                    slides[currentSlide].classList.add('active');
+
+                    if (slides[currentSlide].id === 'slide-comparison') {
+                        animateComparisonSequence();
+                    }
+                }
+            }
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'Enter') {
+                    e.preventDefault();
+                    goToNextSlide();
+                } else if (e.key === 'ArrowLeft') {
+                    e.preventDefault();
+                    goToPrevSlide();
+                }
+            });
+
+            document.addEventListener('click', (e) => {
+                // Ignore clicks on links
+                if (e.target.closest('a') !== null) return;
+
+                // Allow advancing from the title slide by clicking anywhere
+                if (currentSlide === 0) {
+                    goToNextSlide();
+                }
+            });
 
             // ── Load data ────────────────────────────────────────────────────
             fetch('git-data.json')
                 .then(r => r.json())
-                .then(d => { data = d; init(); })
+                .then(d => {
+                    data = d;
+                    const slides = document.querySelectorAll('.slide');
+                    if (slides[currentSlide].id === 'slide-tree' && !treeInitialized) {
+                        treeInitialized = true;
+                        init();
+                    }
+                })
                 .catch(err => {
                     document.getElementById('stats').textContent = 'Error loading git-data.json';
                     console.error(err);
@@ -757,28 +1056,43 @@
                 const maxDistance = viewportHeight * 0.5;
                 const minAlpha = 0.01;
 
-        dateBreakCells.forEach(cell => {
-            const rect = cell.getBoundingClientRect();
-            const centerY = rect.top + rect.height / 2;
-            const distance = Math.abs(centerY - focusY);
-            const normalized = Math.max(0, 1 - (distance / maxDistance));
-            const shaped = normalized * normalized;
-            const alpha = minAlpha + shaped * (1 - minAlpha);
-            const maxAlphaSoFar = dateBreakMaxAlpha.get(cell) || minAlpha;
-            const nextAlpha = Math.max(maxAlphaSoFar, alpha);
-            dateBreakMaxAlpha.set(cell, nextAlpha);
-            cell.style.opacity = nextAlpha.toFixed(3);
-        });
-    }
+                dateBreakCells.forEach(cell => {
+                    const rect = cell.getBoundingClientRect();
+                    const centerY = rect.top + rect.height / 2;
+                    const distance = Math.abs(centerY - focusY);
+                    const normalized = Math.max(0, 1 - (distance / maxDistance));
+                    const shaped = normalized * normalized;
+                    const alpha = minAlpha + shaped * (1 - minAlpha);
+                    const maxAlphaSoFar = dateBreakMaxAlpha.get(cell) || minAlpha;
+                    const nextAlpha = Math.max(maxAlphaSoFar, alpha);
+                    dateBreakMaxAlpha.set(cell, nextAlpha);
+                    cell.style.opacity = nextAlpha.toFixed(3);
+                });
+            }
 
             async function fireConfetti() {
                 const confetti = await confettiLoader;
                 if (!confetti) return;
 
-                const defaults = { zIndex: 3000, ticks: 220, gravity: 0.95 };
-                confetti({ ...defaults, particleCount: 140, spread: 78, startVelocity: 58, origin: { x: 0.5, y: 0.16 } });
-                confetti({ ...defaults, particleCount: 70, spread: 62, startVelocity: 48, angle: 60, origin: { x: 0.02, y: 0.72 } });
-                confetti({ ...defaults, particleCount: 70, spread: 62, startVelocity: 48, angle: 120, origin: { x: 0.98, y: 0.72 } });
+                var duration = 3 * 1000;
+                var animationEnd = Date.now() + duration;
+                var defaults = { startVelocity: 30, spread: 360, ticks: 60, zIndex: 9999 };
+
+                function random(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+
+                var interval = setInterval(function () {
+                    var timeLeft = animationEnd - Date.now();
+
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+
+                    var particleCount = 50 * (timeLeft / duration);
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.1, 0.3), y: Math.random() - 0.2 } }));
+                    confetti(Object.assign({}, defaults, { particleCount, origin: { x: random(0.7, 0.9), y: Math.random() - 0.2 } }));
+                }, 250);
             }
 
             // ── Utilities ────────────────────────────────────────────────────

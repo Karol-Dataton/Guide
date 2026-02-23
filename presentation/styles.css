@@ -72,6 +72,613 @@ body::before {
     z-index: -1;
 }
 
+/* ── Presentation Slides ───────────────────────────────────────── */
+
+.slide {
+    display: none;
+    width: 100%;
+}
+
+.slide.active {
+    display: block;
+    animation: fadeSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+#slide-title.active {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    animation: fadeSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeSlideIn {
+    0% {
+        opacity: 0;
+        transform: translateX(50px) scale(0.98);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+.title-slide-content h1 {
+    font-size: clamp(3rem, 6vw, 5.5rem);
+    margin-bottom: 24px;
+}
+
+.title-slide-content p {
+    font-size: clamp(1.2rem, 2vw, 1.8rem);
+}
+
+/* ── Book Slide ──────────────────────────────────────────────────── */
+
+#slide-book.active {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+    animation: fadeSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.book-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+}
+
+.book-image {
+    max-height: 70vh;
+    max-width: 90vw;
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-subtle);
+    object-fit: contain;
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+    filter: blur(20px);
+    transition: filter 1.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+#slide-book.active .book-image {
+    animation: popIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.3s forwards;
+}
+
+#slide-book.active .book-image.unblurred {
+    filter: blur(0);
+}
+
+.book-caption {
+    font-size: clamp(2rem, 4vw, 3.5rem);
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+#slide-book.active .book-caption {
+    animation: slideInDown 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.8s forwards;
+}
+
+/* ── Construct Slide ─────────────────────────────────────────────── */
+
+#slide-construct.active {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 40px;
+    gap: 30px;
+    box-sizing: border-box;
+    animation: fadeSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    position: relative;
+}
+
+.construct-title {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -70%);
+    font-size: clamp(4rem, 8vw, 7rem);
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+    opacity: 0;
+    z-index: 100;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+    text-align: center;
+    white-space: nowrap;
+}
+
+#slide-construct.active .construct-title {
+    animation: slideInDownCentered 0.8s cubic-bezier(0.16, 1, 0.3, 1) 2.6s forwards;
+}
+
+.construct-mockup {
+    background: #0f111a;
+}
+
+.construct-body {
+    display: flex;
+    overflow: hidden;
+    background: #0a0a0f;
+}
+
+.wiki-sidebar {
+    width: 280px;
+    background: #12121a;
+    border-right: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+#slide-construct.active .wiki-sidebar {
+    animation: slideInLeft 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+}
+
+.wiki-sidebar-header {
+    height: 38px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.wiki-search {
+    height: 38px;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    margin-bottom: 24px;
+}
+
+.wiki-nav-item {
+    height: 16px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 4px;
+    width: 85%;
+}
+
+.wiki-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.wiki-header {
+    height: 64px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    opacity: 0;
+    transform: translateY(-20px);
+}
+
+#slide-construct.active .wiki-header {
+    animation: slideInDown 0.6s cubic-bezier(0.16, 1, 0.3, 1) 1.2s forwards;
+}
+
+.wiki-hero {
+    padding: 80px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    opacity: 0;
+    transform: scale(0.95);
+}
+
+#slide-construct.active .wiki-hero {
+    animation: popIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) 1.5s forwards;
+}
+
+.wiki-hero-title {
+    width: 50%
+        /*400px*/
+    ;
+    max-width: 500px;
+    min-width: 300px;
+    height: 54px;
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 8px;
+}
+
+.wiki-hero-sub {
+    width: 40%
+        /*300px*/
+    ;
+    max-width: 400px;
+    min-width: 200px;
+    height: 24px;
+    background: rgba(255, 255, 255, 0.06);
+    border-radius: 6px;
+}
+
+.wiki-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    padding: 0 80px;
+}
+
+.wiki-card {
+    height: 140px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+#slide-construct.active .wiki-card:nth-child(1) {
+    animation: slideInUp 0.6s forwards 1.8s;
+}
+
+#slide-construct.active .wiki-card:nth-child(2) {
+    animation: slideInUp 0.6s forwards 1.9s;
+}
+
+#slide-construct.active .wiki-card:nth-child(3) {
+    animation: slideInUp 0.6s forwards 2.0s;
+}
+
+#slide-construct.active .wiki-card:nth-child(4) {
+    animation: slideInUp 0.6s forwards 2.1s;
+}
+
+#slide-construct.active .wiki-card:nth-child(5) {
+    animation: slideInUp 0.6s forwards 2.2s;
+}
+
+#slide-construct.active .wiki-card:nth-child(6) {
+    animation: slideInUp 0.6s forwards 2.3s;
+}
+
+@keyframes slideInLeft {
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInDown {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes popIn {
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInUp {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slideInDownCentered {
+    to {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+}
+
+/* ── Wiki Slide ────────────────────────────────────────────────── */
+
+#slide-wiki.active {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+    animation: fadeSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.window-mockup {
+    width: 100%;
+    max-width: 1300px;
+    height: 90vh;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-lg);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.window-header {
+    height: 40px;
+    background: var(--bg-tertiary);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 8px;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.window-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.window-btn.close {
+    background: #ff5f56;
+}
+
+.window-btn.min {
+    background: #ffbd2e;
+}
+
+.window-btn.max {
+    background: #27c93f;
+}
+
+.window-body {
+    flex: 1;
+    position: relative;
+}
+
+.window-body iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* ── Screenshot Slide ────────────────────────────────────────────── */
+
+#slide-screenshot.active {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+    animation: fadeSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.screenshot-container {
+    position: relative;
+    width: 100%;
+    max-width: 1300px;
+    aspect-ratio: 16 / 9;
+}
+
+.screenshot-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 20;
+    /* mask to fade edges into alpha */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 5%, black 85%, transparent),
+        linear-gradient(to bottom, transparent, black 5%, black 85%, transparent);
+    -webkit-mask-composite: source-in;
+    mask-image: linear-gradient(to right, transparent, black 5%, black 85%, transparent),
+        linear-gradient(to bottom, transparent, black 5%, black 85%, transparent);
+    mask-composite: intersect;
+}
+
+.screenshot-half {
+    width: 100%;
+    height: 100%;
+    background-image: url('screenshot.png');
+    background-size: cover;
+    background-position: top center;
+    border-radius: var(--border-radius-lg);
+    filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.4));
+}
+
+.screenshot-half.top-left {
+    clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.screenshot-text-wrapper {
+    position: absolute;
+    bottom: -15%;
+    right: 5%;
+    width: 65%;
+    text-align: right;
+    z-index: 10;
+    color: var(--text-secondary);
+    opacity: 0;
+    transform: translate(-100px, -100px);
+}
+
+#slide-screenshot.active .screenshot-text-wrapper {
+    animation: slideOutFromUnder 1s cubic-bezier(0.16, 1, 0.3, 1) 0.5s forwards;
+}
+
+@keyframes slideOutFromUnder {
+    to {
+        opacity: 1;
+        transform: translate(0, 0);
+    }
+}
+
+.screenshot-text-wrapper h2 {
+    font-size: 2.8rem;
+    color: var(--text-primary);
+    margin-bottom: 20px;
+}
+
+.screenshot-text-wrapper p {
+    font-size: 1.25rem;
+    line-height: 1.6;
+}
+
+.screenshot-text-wrapper strong {
+    color: var(--text-primary);
+}
+
+.pipeline-text {
+    margin-top: 32px;
+    text-align: left;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    padding: 24px 32px;
+    border-radius: var(--border-radius-lg);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.pipeline-text h3 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 16px;
+}
+
+.pipeline-text ol {
+    margin: 0;
+    padding-left: 20px;
+    font-size: 1.15rem;
+    line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ── Comparison Slide ────────────────────────────────────────────── */
+
+#slide-comparison.active {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px;
+    box-sizing: border-box;
+    animation: fadeSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.comparison-title {
+    font-size: clamp(3rem, 5vw, 4.5rem);
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: bold;
+    margin-bottom: 60px;
+}
+
+.comparison-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(280px, 1fr));
+    gap: 40px;
+    width: 100%;
+    max-width: 1200px;
+}
+
+.stat-card {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius-lg);
+    border: 1px solid var(--border-subtle);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transform: translateY(30px);
+}
+
+#slide-comparison.active .stat-card.in-view {
+    animation: slideInUp 0.6s forwards;
+}
+
+.stat-card.highlight {
+    background: rgba(251, 191, 36, 0.05);
+    /* golden tint */
+    border: 1px solid rgba(251, 191, 36, 0.3);
+    box-shadow: 0 0 40px rgba(251, 191, 36, 0.15), 0 10px 30px rgba(0, 0, 0, 0.2);
+    transform: scale(1.05) translateY(30px);
+}
+
+#slide-comparison.active .stat-card.highlight.in-view {
+    animation: popInHighlight 0.6s forwards;
+}
+
+@keyframes popInHighlight {
+    to {
+        opacity: 1;
+        transform: scale(1.05) translateY(0);
+    }
+}
+
+.stat-header {
+    background: var(--bg-tertiary);
+    padding: 20px;
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    border-bottom: 1px solid var(--border-subtle);
+    letter-spacing: 0.05em;
+}
+
+.stat-header.highlight-header {
+    background: rgba(251, 191, 36, 0.1);
+    color: #fbbf24;
+    border-bottom: 1px solid rgba(251, 191, 36, 0.2);
+}
+
+.stat-body {
+    padding: 40px 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.stat-value {
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    font-family: var(--font-mono);
+}
+
+.stat-value.highlight-val {
+    color: #fbbf24;
+    /* tailwind amber-400 */
+    text-shadow: 0 0 20px rgba(251, 191, 36, 0.4);
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
 /* ── Header ────────────────────────────────────────────────────── */
 
 .page-header {
@@ -159,6 +766,46 @@ body::before {
     max-width: 1280px;
     margin: 28px auto 0;
     padding: var(--intro-top-space) 24px 56px;
+}
+
+.publish-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--intro-top-space);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+}
+
+.publish-header h1 {
+    font-size: clamp(4rem, 8vw, 6rem);
+    background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 24px;
+    letter-spacing: 0.02em;
+    font-weight: bold;
+}
+
+.publish-dots {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.publish-dots .dot-lg {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--text-muted);
+    opacity: 0.6;
 }
 
 .tree-table {
