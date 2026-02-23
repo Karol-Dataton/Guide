@@ -1770,6 +1770,133 @@ button:focus-visible {
     transform: translateX(4px);
 }
 
+/* Glossary chapter exception: use plain flow (no rail/dots/cards) */
+body[data-page-id="glossary"] .chapter-landing {
+    padding-left: 0;
+}
+
+body[data-page-id="glossary"] .chapter-landing h3 {
+    margin-top: 24px;
+    padding-bottom: 0;
+}
+
+body[data-page-id="glossary"] .chapter-landing h3::before,
+body[data-page-id="glossary"] .chapter-landing h3::after,
+body[data-page-id="glossary"] .chapter-landing h3+p::before,
+body[data-page-id="glossary"] .chapter-landing ul::before,
+body[data-page-id="glossary"] .chapter-landing ul li::before {
+    content: none;
+}
+
+body[data-page-id="glossary"] .chapter-landing h3+p {
+    margin: 8px 0 16px;
+    padding-bottom: 0;
+    color: var(--text-secondary);
+}
+
+body[data-page-id="glossary"] .chapter-landing ul {
+    display: block;
+    list-style: disc;
+    margin: 8px 0 16px 22px;
+}
+
+body[data-page-id="glossary"] .chapter-landing ul li {
+    margin: 0 0 6px;
+    padding: 0;
+    background: transparent;
+    border: 0;
+    border-radius: 0;
+    cursor: default;
+    transform: none;
+}
+
+body[data-page-id="glossary"] .chapter-landing ul li:hover {
+    background: transparent;
+    border: 0;
+    transform: none;
+}
+
+body[data-page-id="glossary"] .glossary-search {
+    margin: 4px 0 20px;
+    padding: 14px;
+    border-radius: var(--border-radius);
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-subtle);
+}
+
+body[data-page-id="glossary"] .glossary-search-row {
+    display: block;
+}
+
+body[data-page-id="glossary"] .glossary-search-input-wrap {
+    position: relative;
+}
+
+body[data-page-id="glossary"] .glossary-search-input {
+    width: 100%;
+    min-width: 0;
+    padding: 10px 38px 10px 14px;
+    border-radius: 999px;
+    border: 1px solid var(--border-subtle);
+    background: var(--input-bg);
+    color: var(--text-primary);
+    font: inherit;
+}
+
+body[data-page-id="glossary"] .glossary-search-input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+    display: none;
+}
+
+body[data-page-id="glossary"] .glossary-search-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent-primary) 20%, transparent);
+}
+
+body[data-page-id="glossary"] .glossary-search-clear-x {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: 0;
+    background: transparent;
+    color: var(--text-muted);
+    padding: 0;
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 300;
+    line-height: 1;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--transition-fast), color var(--transition-fast);
+}
+
+body[data-page-id="glossary"] .glossary-search-clear-x.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+body[data-page-id="glossary"] .glossary-search-clear-x:hover {
+    color: var(--text-secondary);
+}
+
+body[data-page-id="glossary"] .glossary-search-meta {
+    margin-top: 8px;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+body[data-page-id="glossary"] .glossary-search-empty {
+    color: #f59e0b;
+    display: none;
+}
+
 /* Tools Section in Sidebar Footer */
 .sidebar-footer {
     padding: 16px;

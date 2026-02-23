@@ -243,6 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSearch();
     setupBadges();
     setupChapterLanding();
+    setupGlossarySearch();
 
     renderTocPreview();
     setupDiagramTheme();
@@ -307,6 +308,100 @@ function setupChapterLanding() {
             link.click();
         });
     });
+}
+
+function setupGlossarySearch() {
+    if (document.body.getAttribute('data-page-id') !== 'glossary') return;
+
+    const landing = document.querySelector('.chapter-landing');
+    if (!landing) return;
+
+    const blocks = [];
+    let currentBlock = null;
+
+    Array.from(landing.children).forEach((el) => {
+        if (el.classList && el.classList.contains('glossary-search')) return;
+
+        if (el.tagName === 'H3') {
+            currentBlock = {
+                title: (el.textContent || '').trim(),
+                bodyText: '',
+                elements: [el]
+            };
+            blocks.push(currentBlock);
+            return;
+        }
+
+        if (!currentBlock) return;
+
+        currentBlock.elements.push(el);
+        currentBlock.bodyText += ` ${(el.textContent || '').trim()}`;
+    });
+
+    if (blocks.length === 0) return;
+
+    const helperBlock = blocks.find((block) => block.title.toLowerCase() === 'browse terms');
+    if (helperBlock) {
+        helperBlock.elements.forEach((el) => {
+            el.style.display = 'none';
+        });
+    }
+
+    const searchableBlocks = blocks.filter((block) => block !== helperBlock);
+    if (searchableBlocks.length === 0) return;
+
+    const searchUi = document.createElement('div');
+    searchUi.className = 'glossary-search';
+    searchUi.innerHTML = `
+        <div class="glossary-search-row">
+            <div class="glossary-search-input-wrap">
+                <input type="search" class="glossary-search-input" placeholder="Search glossary terms..." aria-label="Search glossary terms">
+                <button type="button" class="glossary-search-clear-x" aria-label="Clear glossary search">&times;</button>
+            </div>
+        </div>
+        <div class="glossary-search-meta">
+            <span class="glossary-search-count"></span>
+            <span class="glossary-search-empty">No matching terms.</span>
+        </div>
+    `;
+
+    landing.prepend(searchUi);
+
+    const input = searchUi.querySelector('.glossary-search-input');
+    const clearBtn = searchUi.querySelector('.glossary-search-clear-x');
+    const count = searchUi.querySelector('.glossary-search-count');
+    const empty = searchUi.querySelector('.glossary-search-empty');
+
+    if (!input || !clearBtn || !count || !empty) return;
+
+    const render = () => {
+        const query = input.value.trim().toLowerCase();
+        let visibleCount = 0;
+
+        searchableBlocks.forEach((block) => {
+            const searchableText = `${block.title} ${block.bodyText}`.toLowerCase();
+            const visible = query.length === 0 || searchableText.includes(query);
+
+            block.elements.forEach((el) => {
+                el.style.display = visible ? '' : 'none';
+            });
+
+            if (visible) visibleCount += 1;
+        });
+
+        count.textContent = `${visibleCount} term${visibleCount === 1 ? '' : 's'}`;
+        empty.style.display = visibleCount === 0 ? 'inline' : 'none';
+        clearBtn.classList.toggle('visible', query.length > 0);
+    };
+
+    input.addEventListener('input', render);
+    clearBtn.addEventListener('click', () => {
+        input.value = '';
+        input.focus();
+        render();
+    });
+
+    render();
 }
 
 // ... existing code ...
