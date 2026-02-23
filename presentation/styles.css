@@ -760,13 +760,35 @@ body::before {
     margin: 5px 10px;
     display: inline-block;
     color: var(--text-primary);
-    transition: transform 0.3s ease, color 0.3s ease, filter 0.3s ease;
+    transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        color 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        filter 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Start completely blurred */
+    filter: blur(8px);
+    opacity: 0.2 !important;
+}
+
+.blurred-word.reveal {
+    filter: blur(0);
+    opacity: 1 !important;
+    color: var(--accent-primary);
+    transform: scale(1.15);
+}
+
+.blurred-word.reveal-all {
+    filter: blur(0);
+    opacity: 0.8 !important;
+    color: var(--text-primary);
+    transform: scale(1);
+    transition-duration: 2s;
 }
 
 .blurred-word:hover {
-    transform: scale(1.1);
-    color: var(--accent-primary);
-    filter: none;
+    transform: scale(1.1) !important;
+    color: var(--accent-primary) !important;
+    filter: none !important;
     opacity: 1 !important;
 }
 

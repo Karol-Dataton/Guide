@@ -55,59 +55,6 @@
             </div>
         </section>
 
-        <!-- Construct Slide -->
-        <section class="slide" id="slide-construct">
-            <h1 class="construct-title">New modern look</h1>
-            <div class="window-mockup construct-mockup">
-                <div class="window-header">
-                    <span class="window-btn close"></span>
-                    <span class="window-btn min"></span>
-                    <span class="window-btn max"></span>
-                </div>
-                <div class="window-body construct-body">
-                    <div class="wiki-sidebar">
-                        <div class="wiki-sidebar-header"></div>
-                        <div class="wiki-search"></div>
-                        <div class="wiki-nav-item"></div>
-                        <div class="wiki-nav-item"></div>
-                        <div class="wiki-nav-item" style="width: 60%"></div>
-                        <div class="wiki-nav-item" style="margin-top: 20px"></div>
-                        <div class="wiki-nav-item"></div>
-                        <div class="wiki-nav-item" style="width: 75%"></div>
-                    </div>
-                    <div class="wiki-main">
-                        <div class="wiki-header"></div>
-                        <div class="wiki-hero">
-                            <div class="wiki-hero-title"></div>
-                            <div class="wiki-hero-sub"></div>
-                        </div>
-                        <div class="wiki-grid">
-                            <div class="wiki-card"></div>
-                            <div class="wiki-card"></div>
-                            <div class="wiki-card"></div>
-                            <div class="wiki-card"></div>
-                            <div class="wiki-card"></div>
-                            <div class="wiki-card"></div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Wiki Showcase Slide -->
-        <section class="slide" id="slide-wiki">
-            <div class="window-mockup">
-                <div class="window-header">
-                    <span class="window-btn close"></span>
-                    <span class="window-btn min"></span>
-                    <span class="window-btn max"></span>
-                </div>
-                <div class="window-body">
-                    <iframe src="https://karol-dataton.github.io/Guide/wiki/index.html" frameborder="0"></iframe>
-                </div>
-            </div>
-        </section>
-
         <!-- Screenshot Slide -->
         <section class="slide" id="slide-screenshot">
             <div class="screenshot-container">
@@ -182,6 +129,59 @@
                             <span class="stat-label">Words</span>
                         </div>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Construct Slide -->
+        <section class="slide" id="slide-construct">
+            <h1 class="construct-title">New modern look</h1>
+            <div class="window-mockup construct-mockup">
+                <div class="window-header">
+                    <span class="window-btn close"></span>
+                    <span class="window-btn min"></span>
+                    <span class="window-btn max"></span>
+                </div>
+                <div class="window-body construct-body">
+                    <div class="wiki-sidebar">
+                        <div class="wiki-sidebar-header"></div>
+                        <div class="wiki-search"></div>
+                        <div class="wiki-nav-item"></div>
+                        <div class="wiki-nav-item"></div>
+                        <div class="wiki-nav-item" style="width: 60%"></div>
+                        <div class="wiki-nav-item" style="margin-top: 20px"></div>
+                        <div class="wiki-nav-item"></div>
+                        <div class="wiki-nav-item" style="width: 75%"></div>
+                    </div>
+                    <div class="wiki-main">
+                        <div class="wiki-header"></div>
+                        <div class="wiki-hero">
+                            <div class="wiki-hero-title"></div>
+                            <div class="wiki-hero-sub"></div>
+                        </div>
+                        <div class="wiki-grid">
+                            <div class="wiki-card"></div>
+                            <div class="wiki-card"></div>
+                            <div class="wiki-card"></div>
+                            <div class="wiki-card"></div>
+                            <div class="wiki-card"></div>
+                            <div class="wiki-card"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wiki Showcase Slide -->
+        <section class="slide" id="slide-wiki">
+            <div class="window-mockup">
+                <div class="window-header">
+                    <span class="window-btn close"></span>
+                    <span class="window-btn min"></span>
+                    <span class="window-btn max"></span>
+                </div>
+                <div class="window-body">
+                    <iframe src="https://karol-dataton.github.io/Guide/wiki/index.html" frameborder="0"></iframe>
                 </div>
             </div>
         </section>
@@ -475,6 +475,9 @@
                 sequence();
             }
 
+            let wordCloudUnblurStep = 0;
+            const TOTAL_UNBLUR_STEPS = 4;
+
             function updateCarouselState(slide) {
                 const items = Array.from(slide.querySelectorAll('.carousel-item'));
                 const activeIndex = items.findIndex(item => item.classList.contains('active'));
@@ -510,7 +513,40 @@
                     }
                 }
 
+                if (slides[currentSlide].id === 'slide-stats') {
+                    const words = Array.from(slides[currentSlide].querySelectorAll('.blurred-word'));
+                    if (wordCloudUnblurStep < TOTAL_UNBLUR_STEPS) {
+                        // Sort words by font-size descending
+                        const sortedWords = words.sort((a, b) => {
+                            const sizeA = parseFloat(a.style.fontSize);
+                            const sizeB = parseFloat(b.style.fontSize);
+                            return sizeB - sizeA;
+                        });
+
+                        if (wordCloudUnblurStep < 3) {
+                            // Unblur one per step the first 3 times
+                            sortedWords[wordCloudUnblurStep].classList.add('reveal');
+                        } else if (wordCloudUnblurStep === 3) {
+                            // On the 4th step, unblur everything
+                            sortedWords.forEach(w => w.classList.add('reveal-all'));
+                        }
+
+                        wordCloudUnblurStep++;
+                        return;
+                    }
+                }
+
                 if (currentSlide < slides.length - 1) {
+                    // Reset steps before moving right
+                    if (slides[currentSlide].id === 'slide-stats') {
+                        wordCloudUnblurStep = 0;
+                        const words = Array.from(slides[currentSlide].querySelectorAll('.blurred-word'));
+                        words.forEach(w => {
+                            w.classList.remove('reveal');
+                            w.classList.remove('reveal-all');
+                        });
+                    }
+
                     slides[currentSlide].classList.remove('active');
                     currentSlide++;
                     slides[currentSlide].classList.add('active');
@@ -548,6 +584,24 @@
                         activeItem.previousElementSibling.classList.add('active');
                         updateCarouselState(slides[currentSlide]);
                         return;
+                    }
+                }
+
+                if (slides[currentSlide].id === 'slide-stats') {
+                    if (wordCloudUnblurStep > 0) {
+                        wordCloudUnblurStep--;
+                        const words = Array.from(slides[currentSlide].querySelectorAll('.blurred-word'));
+                        const sortedWords = words.sort((a, b) => parseFloat(b.style.fontSize) - parseFloat(a.style.fontSize));
+
+                        if (wordCloudUnblurStep === 3) {
+                            // We were at step 4 (all revealed), go back to step 3 (only first 3 revealed)
+                            sortedWords.forEach(w => w.classList.remove('reveal-all'));
+                        } else if (wordCloudUnblurStep < 3) {
+                            // We were revealing individually, un-reveal the one at the current step
+                            sortedWords[wordCloudUnblurStep].classList.remove('reveal');
+                        }
+
+                        return; // stay on same slide
                     }
                 }
 
