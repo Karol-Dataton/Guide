@@ -1054,6 +1054,262 @@ body::before {
     letter-spacing: 0.1em;
 }
 
+/* ── Claude Slide ──────────────────────────────────────────────────────── */
+
+#slide-claude {
+    display: none;
+}
+
+#slide-claude.active {
+    display: flex !important;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    animation: fadeSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.claude-mockup {
+    width: min(85vw, 1200px);
+    height: 95vh;
+    max-height: 1200px;
+}
+
+.claude-body {
+    background-color: #292927;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.claude-container {
+    width: 90%;
+    max-width: 720px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 36px;
+}
+
+.claude-greeting {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.claude-greeting svg {
+    margin-top: 4px;
+}
+
+.claude-greeting h1 {
+    font-size: 3.2rem;
+    font-weight: 400;
+    color: #e5e2db;
+    margin: 0;
+    font-family: 'Georgia', serif;
+    letter-spacing: -0.02em;
+}
+
+.claude-input-box {
+    width: 100%;
+    background-color: #31302d;
+    border: 1px solid #484744;
+    border-radius: 16px;
+    padding: 20px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.claude-input-text {
+    font-size: 1.15rem;
+    color: #a8a59e;
+    display: flex;
+    align-items: center;
+}
+
+.claude-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1.15rem;
+    background-color: #d58661;
+    margin-left: 4px;
+    animation: claudeBlink 1s step-end infinite;
+}
+
+@keyframes claudeBlink {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0;
+    }
+}
+
+.claude-input-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+.claude-plus {
+    font-size: 2rem;
+    line-height: 1;
+    color: #a8a59e;
+    font-weight: 300;
+}
+
+.claude-controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.claude-model {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #d4d1cb;
+    font-size: 0.95rem;
+}
+
+.claude-model svg {
+    color: #a8a59e;
+}
+
+.claude-audio {
+    color: #a8a59e;
+    display: flex;
+    align-items: center;
+}
+
+.claude-chat {
+    width: 100%;
+    max-width: 820px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 40px;
+    overflow-y: auto;
+    max-height: 100%;
+    color: #e5e2db;
+}
+
+.claude-message.user {
+    align-self: flex-end;
+    background: #242422;
+    padding: 16px 20px;
+    border-radius: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 1.05rem;
+    max-width: 80%;
+    margin-bottom: 24px;
+    color: #e5e2db;
+}
+
+.claude-message.ai {
+    align-self: flex-start;
+    width: 100%;
+}
+
+.claude-ai-content {
+    font-family: 'Charter', 'Georgia', serif;
+    font-size: 1.15rem;
+    line-height: 1.6;
+}
+
+.claude-ai-content p {
+    margin-bottom: 24px;
+}
+
+.claude-ai-content h3 {
+    font-family: 'Charter', 'Georgia', serif;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #fcebd2;
+    /* slight warm tint for headers */
+    margin: 32px 0 16px 0;
+}
+
+.claude-ai-content ol,
+.claude-ai-content ul {
+    margin-left: 0;
+    padding-left: 24px;
+    margin-bottom: 24px;
+}
+
+.claude-ai-content ul {
+    list-style-type: disc;
+}
+
+.claude-ai-content li {
+    margin-bottom: 8px;
+    padding-left: 4px;
+}
+
+.claude-ai-content strong {
+    font-weight: 600;
+    color: #fcebd2;
+    /* matches bold text color from ref */
+}
+
+/* ── Claude Overlays ──────────────────────────────────────────────────────── */
+
+.claude-section {
+    position: relative;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin: -8px -12px 16px -12px;
+}
+
+.claude-overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+    backdrop-filter: blur(2px);
+    z-index: 10;
+}
+
+.claude-overlay.active {
+    opacity: 1;
+    animation: overlayPopIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+.overlay-green {
+    background: rgba(34, 197, 94, 0.12);
+    border: 2px solid rgba(34, 197, 94, 0.5);
+    color: #22c55e;
+}
+
+.overlay-red {
+    background: rgba(239, 68, 68, 0.12);
+    border: 2px solid rgba(239, 68, 68, 0.5);
+    color: #ef4444;
+}
+
+@keyframes overlayPopIn {
+    0% {
+        transform: scale(0.98);
+        opacity: 0;
+    }
+
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 /* ── Header ────────────────────────────────────────────────────── */
 
 .page-header {
