@@ -18,7 +18,7 @@
         })();
     </script>
 </head>
-<body data-page-id="introduction-to-watchpax-64">
+<body data-page-id="introduction-to-watchpax-64" data-canonical-path="introduction/introduction-to-watchpax-64.html">
     <div class="app">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
@@ -164,6 +164,11 @@
                             Miscellaneous
                         </a>
                         
+                        
+                        <a class="toc-subsection " href="../installation-and-operation/dante-license-activation.html">
+                            Dante License Activation
+                        </a>
+                        
                     </div>
                 </div>
             
@@ -247,6 +252,7 @@
             <div class="sidebar-footer">
                 <div class="tools-section">
                     <div class="tools-buttons">
+
                         <button class="tools-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
                              <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -315,12 +321,63 @@
                 <div class="section-content" style="display: block;">
                     <div class="section-content-body"><h2>Introduction to WATCHPAX 64</h2>
 
-<p><strong>WATCHPAX 64 is a dedicated media server for use with Dataton WATCHOUT.</strong> Each unit has a built-in WATCHOUT license and a strong standard specification. In addition, the WATCHPAX 64 offers configuration options on three slots for ST2110, SDI, HDMI, as well as optional sync and SSD size on order.</p>
+<p><strong>WATCHPAX 64 is a dedicated media server for use with Dataton WATCHOUT.</strong> Each unit ships with a built-in WATCHOUT 7 license, a locked-down operating system, and a high-performance NVIDIA GPU driving four DisplayPort 1.4 outputs. In addition, the WATCHPAX 64 offers configuration options on three slots for ST2110, SDI, and HDMI capture, as well as optional sync and SSD size on order.</p>
 
 <p>The WATCHPAX 64 gives you all the advantages of Dataton's range of dedicated locked-down media servers with the benefits of a configurable unit. Designed to make your WATCHOUT shows shine, the WATCHPAX 64 is a stylish and robust aluminium unit manufactured to a high quality specification. You choose the slot configuration on order, tailoring the unit to your needs. And if those needs change further down the line, there's also the possibility of revising those options.</p>
 
 <img src="../media/wp64/introduction_01.jpg" alt="WATCHPAX 64" class="content-image">
-Size reference.</div><div class="section-nav">
+Size reference.
+
+<h3>Key Specifications</h3>
+
+<table>
+<tr><th>Category</th><th>Specification</th></tr>
+<tr><td>Display outputs</td><td>4 x DisplayPort 1.4 (HDMI 2.0b via included adapters)</td></tr>
+<tr><td>GPU synchronization</td><td>Optional NVIDIA Quadro Sync II card (frame lock across multiple units)</td></tr>
+<tr><td>Networking</td><td>2 x 10 GbE RJ45 Ethernet</td></tr>
+<tr><td>USB</td><td>2 x USB 2.0, 2 x USB 3.0</td></tr>
+<tr><td>Audio</td><td>Multi-channel 7.1 LPCM embedded via DisplayPort/HDMI; Dante-ready (license sold separately)</td></tr>
+<tr><td>Power</td><td>IEC 60320 C14 inlet, 100–240V AC 50/60Hz, max 500 W</td></tr>
+<tr><td>Dimensions</td><td>446 x 88 x 336 mm (W x H x D)</td></tr>
+<tr><td>Weight</td><td>Approx. 10 kg (22 lbs)</td></tr>
+<tr><td>Operating temperature</td><td>0°C to +35°C (optimal 21°C–23°C)</td></tr>
+<tr><td>Software</td><td>WATCHOUT 7 (built-in license, not compatible with WATCHOUT 6)</td></tr>
+</table>
+
+<h3>Configurable I/O Slots</h3>
+
+<p>The rear panel has three configurable I/O slots (labeled B, C, and D) plus an optional sync card slot (A). Each configurable slot can be fitted with one of the following at order time:</p>
+
+<ul>
+<li><strong>Dual HDMI capture</strong> — two HDMI input channels per slot.</li>
+<li><strong>Bi-directional SDI</strong> — configurable as 2 x 12G SDI, 8 x 3G SDI, or 1 x 12G SDI + 4 x 3G SDI (micro BNC connectors).</li>
+<li><strong>Bi-directional ST2110</strong> — IP-based video capture and output over 10 GbE.</li>
+
+</ul>
+
+<p>Slot A can house an <strong>NVIDIA Quadro Sync II</strong> card for hardware frame-lock synchronization across a cluster of WATCHPAX 64 units. See <a href="connectors.html">Connectors</a> for the full connector reference and <a href="../synchronization/hardware-sync.html">Hardware Sync</a> for configuration instructions.</p>
+
+<div class='info-box'><p>Connector availability on the rear panel depends on the I/O configuration selected when the unit is ordered. Slots that are not populated will not have the related connectors present.
+</p></div>
+
+<h3>GPU and Display Pipeline</h3>
+
+<p>The WATCHPAX 64 uses an NVIDIA professional GPU to drive its four DisplayPort 1.4 outputs. The GPU supports:</p>
+
+<ul>
+<li><strong>NVIDIA Mosaic</strong> — combine multiple physical outputs into a single unified canvas (e.g., four HD outputs merged into one 4K surface). See <a href="../synchronization/enabling-mosaic.html">Enabling Mosaic</a>.</li>
+<li><strong>EDID emulation</strong> — override native display identification data to ensure all outputs report identical capabilities. See <a href="../synchronization/setting-up-edid-emulation.html">Setting Up EDID Emulation</a>.</li>
+<li><strong>Hardware-accelerated decoding</strong> — GPU-accelerated playback of supported codecs for smooth, high-resolution media output.</li>
+
+</ul>
+
+<p>GPU topology and display configuration are managed through <a href="../02-installation-and-operation/06-miscellaneous.md#watchpax-config">WATCHPAX Config</a>, a browser-based interface accessible on the same network.</p>
+
+<h3>Terminology</h3>
+
+<p><strong>ST2110 (SMPTE ST 2110)</strong> is a suite of standards for transporting professional media (video, audio, and ancillary data) as separate IP streams over standard Ethernet networks. Unlike SDI, which uses dedicated coaxial cabling, ST2110 routes signals through existing IP infrastructure, making it well suited for large-scale or facility-wide installations.</p>
+
+<p><strong>SDI (Serial Digital Interface)</strong> is a family of standards for carrying uncompressed digital video over coaxial cable using BNC (or micro BNC) connectors. SDI is widely used in broadcast and live-event production. The WATCHPAX 64 supports up to 12G-SDI, which can carry a single uncompressed 4K signal on one cable.</p></div><div class="section-nav">
                 <a href="welcome-to-watchpax-64.html" class="nav-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

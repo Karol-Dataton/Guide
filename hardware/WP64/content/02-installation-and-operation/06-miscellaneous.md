@@ -8,9 +8,11 @@ title: "Miscellaneous"
 
 ### Audio
 
-The WATCHPAX 64 is Dante® ready, meaning that a Dante® license can be purchased and activated on the unit, by the user. Instructions for this can be found in the knowledge base on the Dataton website.
+The WATCHPAX 64 is Dante ready, meaning that a Dante license can be purchased and activated by the user.
 
-![Dante](../media/wp64/installation_07.jpg)
+For step-by-step instructions, see [Dante License Activation](07-dante-license-activation.md).
+
+Reference article: [How to activate Dante license on my WATCHOUT 7 media server](https://knowledge.dataton.com/knowledge/how-to-activate-dante-license-on-my-watchpax-media-server).
 
 #### Digital Audio Output Formats
 

@@ -18,7 +18,7 @@
         })();
     </script>
 </head>
-<body data-page-id="accessing-watchpax-config">
+<body data-page-id="accessing-watchpax-config" data-canonical-path="synchronization/accessing-watchpax-config.html">
     <div class="app">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
@@ -164,6 +164,11 @@
                             Miscellaneous
                         </a>
                         
+                        
+                        <a class="toc-subsection " href="../installation-and-operation/dante-license-activation.html">
+                            Dante License Activation
+                        </a>
+                        
                     </div>
                 </div>
             
@@ -247,6 +252,7 @@
             <div class="sidebar-footer">
                 <div class="tools-section">
                     <div class="tools-buttons">
+
                         <button class="tools-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
                              <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -315,33 +321,67 @@
                 <div class="section-content" style="display: block;">
                     <div class="section-content-body"><h2>Accessing WATCHPAX Config</h2>
 
-<p><strong>Start by finding the IP address of the WATCHPAX 64.</strong> It should show on the WATCHOUT splash screen, but if that is unavailable, the IP address can also be found in the <em>Nodes</em> window in the Producer software on the production computer. The WATCHPAX name will be displayed, with its IP address right below it.</p>
+<p><strong>WATCHPAX Config</strong> is a lightweight web application that runs directly on the WATCHPAX 64 and is accessed from any computer on the same network through a standard web browser. It provides a visual overview of all connected display outputs and their current status, and is the central tool for configuring EDID emulation, creating mosaic grids, and setting up hardware synchronization between multiple units. No software installation is required on the production computer -- the interface is served by the WATCHPAX 64 itself on port 3024.</p>
 
-<img src="../media/wp64/synchronization_01.jpg" alt="WATCHPAX Config - Nodes Window" class="content-image">
+<p>Follow the steps below to access it.</p>
 
-<p>Open up a web browser and visit the server address with port 3024. The WATCHPAX 64 and the production computer both need to be on the same network for WATCHPAX Config to be accessed.</p>
-
-<img src="../media/wp64/synchronization_02.jpg" alt="WATCHPAX Config - Browser" class="content-image">
-
-<p>A user interface will be displayed, showing information about all connected outputs.</p>
-
-<img src="../media/wp64/synchronization_03.jpg" alt="WATCHPAX Config - User Interface" class="content-image">
-
-<p>All channels should show a display connected under the 'Channel' label, as well as the current resolution and refresh rate.</p>
-
-<img src="../media/wp64/synchronization_04.jpg" alt="WATCHPAX Config - Channel Status" class="content-image">
-
-<div class='info-box'><p>In the case of using mosaic clusters with several WATCHPAX units, each server must be set up separately.
-</p></div>
-
-<div class='warning-box'><p>Hardware synchronization functions will only work if the system is set up in the correct sequence, as below.
+<div class='warning-box'><p>Hardware synchronization functions will only work if the system is set up in the correct sequence:
 <ol>
 <li>EDID emulation needs to be handled first.</li>
 <li>Mosaic grid should follow.</li>
 <li>Hardware sync is the last one to be enabled.</li>
 </ol>
 
-<p></p></div></p></div><div class="section-nav">
+<p></p></div></p>
+
+<div class="carousel" data-carousel="1" data-total="4">
+<div class="carousel-viewport">
+<div class="carousel-track">
+<div class="carousel-slide active" data-slide="0"><div class="carousel-slide-header"><span class="carousel-step-number">1</span><h3 class="carousel-step-title">Find the IP Address</h3></div><div class="carousel-slide-body">
+
+<p>Start by finding the IP address of the WATCHPAX 64. It is displayed on the WATCHOUT splash screen during startup. If the splash screen is not visible, you can also find the IP address in the <strong>Nodes</strong> window in the WATCHOUT Producer software on the production computer. The WATCHPAX name will be listed with its IP address directly below it. Make a note of this address -- you will need it in the next step.</p>
+
+<img src="../media/wp64/synchronization_01.jpg" alt="WATCHPAX Config - Nodes Window" class="content-image">
+
+</div></div>
+<div class="carousel-slide" data-slide="1"><div class="carousel-slide-header"><span class="carousel-step-number">2</span><h3 class="carousel-step-title">Open WATCHPAX Config in a Browser</h3></div><div class="carousel-slide-body">
+
+<p>Open a web browser on the production computer and navigate to the WATCHPAX 64's IP address with port <strong>3024</strong> appended (for example, <code>http://192.168.1.100:3024</code>). The production computer and the WATCHPAX 64 must be on the same network for the connection to succeed. If the page does not load, verify that both devices are on the same subnet and that no firewall is blocking port 3024.</p>
+
+<img src="../media/wp64/synchronization_02.jpg" alt="WATCHPAX Config - Browser" class="content-image">
+
+</div></div>
+<div class="carousel-slide" data-slide="2"><div class="carousel-slide-header"><span class="carousel-step-number">3</span><h3 class="carousel-step-title">Review the Display Overview</h3></div><div class="carousel-slide-body">
+
+<p>The WATCHPAX Config user interface will load, showing information about all connected display outputs. Each output is listed with its channel number, connection status, and current display mode. This overview is the starting point for all configuration tasks including EDID emulation, mosaic setup, and hardware synchronization.</p>
+
+<img src="../media/wp64/synchronization_03.jpg" alt="WATCHPAX Config - User Interface" class="content-image">
+
+</div></div>
+<div class="carousel-slide" data-slide="3"><div class="carousel-slide-header"><span class="carousel-step-number">4</span><h3 class="carousel-step-title">Verify Channel Status</h3></div><div class="carousel-slide-body">
+
+<p>Confirm that all channels show a display connected under the <strong>Channel</strong> label, along with the current resolution and refresh rate. If a channel shows as disconnected or reports an unexpected resolution, check the physical cable connection and ensure the display is powered on and set to the correct input. All channels must report the correct status before proceeding with any synchronization configuration.</p>
+
+<img src="../media/wp64/synchronization_04.jpg" alt="WATCHPAX Config - Channel Status" class="content-image">
+
+<div class='info-box'><p>In the case of using mosaic clusters with several WATCHPAX units, each server must be set up separately.
+</p></div>
+
+</div></div>
+</div>
+</div>
+<div class="carousel-controls">
+<button class="carousel-prev" aria-label="Previous step" disabled><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+<div class="carousel-dots">
+<button class="carousel-dot active" data-slide="0" aria-label="Go to step 1"></button>
+<button class="carousel-dot" data-slide="1" aria-label="Go to step 2"></button>
+<button class="carousel-dot" data-slide="2" aria-label="Go to step 3"></button>
+<button class="carousel-dot" data-slide="3" aria-label="Go to step 4"></button>
+</div>
+<button class="carousel-next" aria-label="Next step"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+</div>
+<div class="carousel-counter"><span class="carousel-counter-current">1</span> / 4</div>
+</div></div><div class="section-nav">
                 <a href="index.html" class="nav-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

@@ -295,7 +295,7 @@ function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs, extra
             <div class="sidebar-footer">
                 <div class="tools-section">
                     <div class="tools-buttons">
-                        <a href="${languageSwitchHref}" class="tools-btn" title="${T.languageSwitchTitle}">${T.languageSwitchLabel}</a>
+
                         <button class="tools-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
                              <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

@@ -18,7 +18,7 @@
         })();
     </script>
 </head>
-<body data-page-id="setting-up-edid-emulation">
+<body data-page-id="setting-up-edid-emulation" data-canonical-path="synchronization/setting-up-edid-emulation.html">
     <div class="app">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
@@ -164,6 +164,11 @@
                             Miscellaneous
                         </a>
                         
+                        
+                        <a class="toc-subsection " href="../installation-and-operation/dante-license-activation.html">
+                            Dante License Activation
+                        </a>
+                        
                     </div>
                 </div>
             
@@ -247,6 +252,7 @@
             <div class="sidebar-footer">
                 <div class="tools-section">
                     <div class="tools-buttons">
+
                         <button class="tools-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
                              <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -317,32 +323,58 @@
 
 <p><strong>EDID emulation ensures consistent display identification across all connected outputs.</strong></p>
 
-<ol>
-<li>Download the EDID from a display.</li>
+<p>EDID (Extended Display Identification Data) is a data structure that every display sends to the GPU over the video cable, describing its capabilities -- supported resolutions, refresh rates, color depth, and timing parameters. The GPU uses this information to decide what signal to output. In multi-display setups, different displays may report different capabilities, which can cause the GPU to choose mismatched resolutions or refresh rates across outputs. EDID emulation solves this by overriding the native EDID on every channel with a single, known-good EDID file. This is particularly important before setting up mosaic grids or hardware sync, where all outputs must operate at identical settings.</p>
 
-</ol>
+<p>By forcing the same EDID on every channel, you guarantee that the GPU treats all outputs identically -- regardless of the physical display connected. Follow the steps below to download an EDID from one display and apply it to all channels.</p>
 
-<p>Select the display in the list and choose the <em>Download EDID</em> option.</p>
+<div class="carousel" data-carousel="1" data-total="4">
+<div class="carousel-viewport">
+<div class="carousel-track">
+<div class="carousel-slide active" data-slide="0"><div class="carousel-slide-header"><span class="carousel-step-number">1</span><h3 class="carousel-step-title">Download an EDID from a Display</h3></div><div class="carousel-slide-body">
+
+<p>In WATCHPAX Config, select a single display from the list that has the desired resolution and refresh rate capabilities. Click the <strong>Download EDID</strong> option in the toolbar. The EDID file will be saved to your local machine through the browser's download dialog. This file contains the display's identification data, including its supported resolutions and timing information. You will upload this same file to all channels in the next steps.</p>
 
 <img src="../media/wp64/synchronization_05.jpg" alt="Download EDID" class="content-image">
 
-<div class='info-box'><p>The web browser may consider the downloaded file insecure and might require additional actions to approve it.
+<div class='info-box'><p>The web browser may consider the downloaded file insecure and might require additional actions to approve it. Check your browser's download bar or notification area if the file does not appear immediately.
 </p></div>
 
-<ol>
-<li>Select all displays and choose EDID FROM FILE.</li>
+</div></div>
+<div class="carousel-slide" data-slide="1"><div class="carousel-slide-header"><span class="carousel-step-number">2</span><h3 class="carousel-step-title">Select All Displays and Choose EDID From File</h3></div><div class="carousel-slide-body">
 
-</ol>
+<p>Back in WATCHPAX Config, select <strong>all</strong> display channels in the list. You can hold <strong>Ctrl</strong> and click each channel, or use a select-all option if available. Once all channels are highlighted, click the <strong>EDID From File</strong> option in the toolbar. This tells the system you want to override the native EDID on every selected channel with an EDID file from disk.</p>
 
 <img src="../media/wp64/synchronization_06.jpg" alt="Select EDID From File" class="content-image">
 
-<p>A new menu will appear, allowing you to upload the previously downloaded EDID to all display channels. Browse to the downloaded file.</p>
+</div></div>
+<div class="carousel-slide" data-slide="2"><div class="carousel-slide-header"><span class="carousel-step-number">3</span><h3 class="carousel-step-title">Upload the EDID File</h3></div><div class="carousel-slide-body">
+
+<p>A new menu will appear, allowing you to upload the previously downloaded EDID file to all selected display channels. Click <strong>Browse</strong> and navigate to the EDID file you saved in Step 1. Select the file and confirm the upload. The system will write the EDID data to each channel, forcing them all to report identical display capabilities to the GPU.</p>
 
 <img src="../media/wp64/synchronization_07.jpg" alt="Upload EDID" class="content-image">
 
-<p>After uploading the EDID, all channels should show the <em>Forced EDID</em> label under their status.</p>
+</div></div>
+<div class="carousel-slide" data-slide="3"><div class="carousel-slide-header"><span class="carousel-step-number">4</span><h3 class="carousel-step-title">Verify Forced EDID Status</h3></div><div class="carousel-slide-body">
 
-<img src="../media/wp64/synchronization_08.jpg" alt="Forced EDID Status" class="content-image"></div><div class="section-nav">
+<p>After the upload completes, all channels should now show the <strong>Forced EDID</strong> label under their status in the WATCHPAX Config display overview. This confirms that the native EDID has been overridden and every output is using the same display identification data. If any channel does not show the Forced EDID label, repeat the upload process for that channel individually.</p>
+
+<img src="../media/wp64/synchronization_08.jpg" alt="Forced EDID Status" class="content-image">
+
+</div></div>
+</div>
+</div>
+<div class="carousel-controls">
+<button class="carousel-prev" aria-label="Previous step" disabled><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+<div class="carousel-dots">
+<button class="carousel-dot active" data-slide="0" aria-label="Go to step 1"></button>
+<button class="carousel-dot" data-slide="1" aria-label="Go to step 2"></button>
+<button class="carousel-dot" data-slide="2" aria-label="Go to step 3"></button>
+<button class="carousel-dot" data-slide="3" aria-label="Go to step 4"></button>
+</div>
+<button class="carousel-next" aria-label="Next step"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+</div>
+<div class="carousel-counter"><span class="carousel-counter-current">1</span> / 4</div>
+</div></div><div class="section-nav">
                 <a href="accessing-watchpax-config.html" class="nav-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

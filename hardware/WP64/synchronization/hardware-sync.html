@@ -18,7 +18,7 @@
         })();
     </script>
 </head>
-<body data-page-id="hardware-sync">
+<body data-page-id="hardware-sync" data-canonical-path="synchronization/hardware-sync.html">
     <div class="app">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
@@ -164,6 +164,11 @@
                             Miscellaneous
                         </a>
                         
+                        
+                        <a class="toc-subsection " href="../installation-and-operation/dante-license-activation.html">
+                            Dante License Activation
+                        </a>
+                        
                     </div>
                 </div>
             
@@ -247,6 +252,7 @@
             <div class="sidebar-footer">
                 <div class="tools-section">
                     <div class="tools-buttons">
+
                         <button class="tools-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
                              <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -317,6 +323,8 @@
 
 <p><strong>Configure hardware synchronization between multiple WATCHPAX 64 units using the NVIDIA Quadro Sync II card.</strong></p>
 
+<p>Hardware sync ensures that all GPU outputs across multiple WATCHPAX 64 units refresh at exactly the same time, eliminating visible tearing or frame offset between displays. This is essential in multi-server video wall setups where content spans across outputs driven by different machines -- without hardware sync, each GPU runs on its own internal clock and frames will drift apart over time, causing noticeable visual seams. The NVIDIA Quadro Sync II card connects the units via dedicated sync cables and designates one output as the timing source that all others lock to.</p>
+
 <h3>Physical Setup</h3>
 
 <p>Before configuring the sync settings, make sure the servers are correctly connected together.</p>
@@ -338,37 +346,66 @@
 
 <h3>Configuring Sync Settings</h3>
 
-<ol>
-<li>Use the <em>SETUP SYNC</em> option to create the hardware sync settings.</li>
+<p>Follow the steps below to configure hardware synchronization across your WATCHPAX 64 cluster. Start with the unit that will serve as the timing source, then repeat the client steps on all remaining units.</p>
 
-</ol>
+<div class="carousel" data-carousel="1" data-total="5">
+<div class="carousel-viewport">
+<div class="carousel-track">
+<div class="carousel-slide active" data-slide="0"><div class="carousel-slide-header"><span class="carousel-step-number">1</span><h3 class="carousel-step-title">Open the Setup Sync Menu</h3></div><div class="carousel-slide-body">
 
-<img src="../media/wp64/synchronization_14.jpg" alt="Setup Sync Option" class="content-image">
+<p>In WATCHPAX Config, select the <strong>Setup Sync</strong> option from the toolbar. This opens the Configure Hardware Sync window where you can assign timing roles to each display output. You must configure sync settings on each WATCHPAX 64 unit individually -- start with the unit that will act as the timing source before moving to the client units.</p>
 
-<div class='info-box'><p>Set up the machine that includes the <em>timing server</em> first. Only one output on one server can become the timing source, all other outputs should be set up as <em>clients</em>.
+<div style="text-align: center; margin: 24px 0;">
+  <span style="display: inline-block; padding: 8px 16px; border: 2px solid #5c6bc0; border-radius: 4px; color: #5c6bc0; font-weight: 600; font-size: 1.1em; letter-spacing: 1px; user-select: none;">SETUP SYNC</span>
+</div>
+
+<div class='info-box'><p>Set up the machine that includes the timing server first. Only one output on one server can become the timing source -- all other outputs across all units should be set up as clients.
 </p></div>
 
 <img src="../media/wp64/synchronization_15.jpg" alt="Configure Hardware Sync Window" class="content-image">
-Example of the Configure Hardware Sync window.
 
-<ol>
-<li>On the server that will serve as the signal source, select the timing source display. Skip this step on the rest of the servers.</li>
+</div></div>
+<div class="carousel-slide" data-slide="1"><div class="carousel-slide-header"><span class="carousel-step-number">2</span><h3 class="carousel-step-title">Select the Timing Source</h3></div><div class="carousel-slide-body">
 
-<p><li>Select all remaining displays as clients.</li></p>
+<p>On the server that will serve as the signal source, select the display output that will act as the <strong>timing source</strong>. This output generates the synchronization signal that all other displays will follow. Only one display on one server in the entire cluster can be the timing source. If you are configuring a client unit (not the source), skip this step and proceed to the next slide.</p>
 
-<p><li>Click <em>Apply sync</em> and wait for a confirmation message.</li></p>
+</div></div>
+<div class="carousel-slide" data-slide="2"><div class="carousel-slide-header"><span class="carousel-step-number">3</span><h3 class="carousel-step-title">Set Remaining Displays as Clients</h3></div><div class="carousel-slide-body">
 
-</ol>
+<p>Select all remaining display outputs and set them as <strong>clients</strong>. Client displays receive and lock to the timing signal from the source. This applies to every output on the source server that is not the timing source, as well as every output on all other servers in the cluster. Make sure no display is left unconfigured -- any output without a sync role may drift out of alignment.</p>
+
+</div></div>
+<div class="carousel-slide" data-slide="3"><div class="carousel-slide-header"><span class="carousel-step-number">4</span><h3 class="carousel-step-title">Apply Sync and Confirm</h3></div><div class="carousel-slide-body">
+
+<p>Click <strong>Apply Sync</strong> to write the synchronization configuration to the hardware. Wait for a confirmation message to appear indicating that the settings were applied successfully. If the confirmation does not appear, verify that the physical cabling is correct and that the Quadro Sync card LEDs are active. Repeat the configuration process on each remaining WATCHPAX 64 unit in the cluster, setting all their outputs as clients.</p>
 
 <img src="../media/wp64/synchronization_16.jpg" alt="Apply Sync Confirmation" class="content-image">
 
-<p>Typical setup for 4 display servers:</p>
+</div></div>
+<div class="carousel-slide" data-slide="4"><div class="carousel-slide-header"><span class="carousel-step-number">5</span><h3 class="carousel-step-title">Verify the Configuration</h3></div><div class="carousel-slide-body">
+
+<p>After all units have been configured, you can verify the sync status. The diagram below shows a typical setup for a 4-server cluster. The current sync configuration for each unit can be viewed in the <strong>Hardware Synchronization</strong> section of WATCHPAX Config. Confirm that one output shows as the timing source and all others show as clients with a locked status.</p>
 
 <img src="../media/wp64/synchronization_17.jpg" alt="Typical 4-Server Setup" class="content-image">
 
-<p>Current sync configuration can be viewed in the Hardware Synchronization section:</p>
+<img src="../media/wp64/synchronization_18.jpg" alt="Hardware Synchronization Status" class="content-image">
 
-<img src="../media/wp64/synchronization_18.jpg" alt="Hardware Synchronization Status" class="content-image"></div><div class="section-nav">
+</div></div>
+</div>
+</div>
+<div class="carousel-controls">
+<button class="carousel-prev" aria-label="Previous step" disabled><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+<div class="carousel-dots">
+<button class="carousel-dot active" data-slide="0" aria-label="Go to step 1"></button>
+<button class="carousel-dot" data-slide="1" aria-label="Go to step 2"></button>
+<button class="carousel-dot" data-slide="2" aria-label="Go to step 3"></button>
+<button class="carousel-dot" data-slide="3" aria-label="Go to step 4"></button>
+<button class="carousel-dot" data-slide="4" aria-label="Go to step 5"></button>
+</div>
+<button class="carousel-next" aria-label="Next step"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+</div>
+<div class="carousel-counter"><span class="carousel-counter-current">1</span> / 5</div>
+</div></div><div class="section-nav">
                 <a href="enabling-mosaic.html" class="nav-btn">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"

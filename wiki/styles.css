@@ -15,7 +15,7 @@
     --bg-glass: rgba(30, 30, 45, 0.7);
     --accent-primary: #6B25DD;
     --accent-secondary: #8b5cf6;
-    --accent-tertiary: #a855f7;
+    --accent-tertiary: #c4b5fd;
     --accent-glow: rgba(99, 102, 241, 0.4);
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
@@ -1430,13 +1430,13 @@ button:focus-visible {
 }
 
 .section-content-body a {
-    color: var(--accent-primary);
+    color: var(--accent-secondary);
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
 .section-content-body a:hover {
-    color: var(--accent-secondary);
+    color: var(--accent-tertiary);
     text-decoration: underline;
 }
 

@@ -109,6 +109,105 @@ function markdownToHtml(markdown, options = {}) {
         return `<div class="tab-container">\n<div class="tab-buttons">\n${tabButtons}</div>\n${tabContents}</div>`;
     });
 
+    // Carousel (custom syntax: ::: carousel ... :::)
+    // Must be done BEFORE headers are processed to capture the ### structure
+    // Uses a line-by-line parser to handle nested ::: blocks (info, warning, etc.)
+    let carouselGroupCounter = 0;
+    html = (function parseCarouselBlocks(input) {
+        const lines = input.split('\n');
+        const result = [];
+        let i = 0;
+
+        while (i < lines.length) {
+            if (/^:::\s*carousel\s*$/.test(lines[i].trim())) {
+                // Found carousel opening -- collect lines until the matching :::
+                i++; // skip opening line
+                let depth = 1;
+                const carouselLines = [];
+
+                while (i < lines.length && depth > 0) {
+                    const trimmed = lines[i].trim();
+                    if (/^:::\s*\w+/.test(trimmed)) {
+                        // Opening a nested block (:::info, :::warning, etc.)
+                        depth++;
+                        carouselLines.push(lines[i]);
+                    } else if (trimmed === ':::') {
+                        depth--;
+                        if (depth === 0) {
+                            // This is the carousel closing :::
+                            break;
+                        }
+                        carouselLines.push(lines[i]);
+                    } else {
+                        carouselLines.push(lines[i]);
+                    }
+                    i++;
+                }
+                // i now points to the closing ::: line (or past end)
+                i++; // skip the closing :::
+
+                const content = carouselLines.join('\n');
+                carouselGroupCounter++;
+                const parts = content.split(/^###\s+(.+)$/gm);
+
+                let slidesHtml = '';
+                let dotsHtml = '';
+                let slideIndex = 0;
+
+                for (let j = 1; j < parts.length; j += 2) {
+                    const title = parts[j].trim();
+                    const body = parts[j + 1] ? parts[j + 1].trim() : '';
+                    const paddedBody = '\n\n' + body + '\n\n';
+
+                    const isActive = (slideIndex === 0) ? ' active' : '';
+                    const stepNum = slideIndex + 1;
+
+                    slidesHtml += `<div class="carousel-slide${isActive}" data-slide="${slideIndex}">` +
+                        `<div class="carousel-slide-header">` +
+                        `<span class="carousel-step-number">${stepNum}</span>` +
+                        `<h3 class="carousel-step-title">${title}</h3>` +
+                        `</div>` +
+                        `<div class="carousel-slide-body">${paddedBody}</div>` +
+                        `</div>\n`;
+
+                    dotsHtml += `<button class="carousel-dot${isActive}" data-slide="${slideIndex}" aria-label="Go to step ${stepNum}"></button>\n`;
+
+                    slideIndex++;
+                }
+
+                if (slideIndex === 0) {
+                    // No slides found, output original content
+                    result.push('::: carousel');
+                    result.push(content);
+                    result.push(':::');
+                } else {
+                    result.push(
+                        `<div class="carousel" data-carousel="${carouselGroupCounter}" data-total="${slideIndex}">\n` +
+                        `<div class="carousel-viewport">\n` +
+                        `<div class="carousel-track">\n${slidesHtml}</div>\n` +
+                        `</div>\n` +
+                        `<div class="carousel-controls">\n` +
+                        `<button class="carousel-prev" aria-label="Previous step" disabled>` +
+                        `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>` +
+                        `</button>\n` +
+                        `<div class="carousel-dots">\n${dotsHtml}</div>\n` +
+                        `<button class="carousel-next" aria-label="Next step">` +
+                        `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>` +
+                        `</button>\n` +
+                        `</div>\n` +
+                        `<div class="carousel-counter"><span class="carousel-counter-current">1</span> / ${slideIndex}</div>\n` +
+                        `</div>`
+                    );
+                }
+            } else {
+                result.push(lines[i]);
+                i++;
+            }
+        }
+
+        return result.join('\n');
+    })(html);
+
     // Headers
     // Handle ### headers with optional [Overrides] for the TOC label
     // We strip the [Override] part for the HTML output

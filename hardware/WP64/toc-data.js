@@ -44,7 +44,7 @@ const tocData = [
         "level": 2,
         "title": "Introduction to WATCHPAX 64",
         "page": 2,
-        "description": "WATCHPAX 64 is a dedicated media server for use with Dataton WATCHOUT. Each unit has a built-in WATCHOUT license and ...",
+        "description": "WATCHPAX 64 is a dedicated media server for use with Dataton WATCHOUT. Each unit ships with a built-in WATCHOUT 7 lic...",
         "group": "Overview",
         "groupOrder": 0,
         "groupItemOrder": 1
@@ -98,7 +98,7 @@ const tocData = [
         "level": 2,
         "title": "Connectors",
         "page": 8,
-        "description": "Overview of the WATCHPAX 64 connector panel.",
+        "description": "Overview of the WATCHPAX 64 front and rear panel connectors. Use the numbered callouts in the rear image together wit...",
         "group": "Hardware",
         "groupOrder": 1,
         "groupItemOrder": 5
@@ -173,6 +173,15 @@ const tocData = [
         "groupItemOrder": 0
     },
     {
+        "level": 2,
+        "title": "Dante License Activation",
+        "page": 7,
+        "description": "WATCHPAX 64 is Dante-ready for WATCHOUT 7. This means the Dante license must be purchased and activated by the user.",
+        "group": "Additional Features",
+        "groupOrder": 2,
+        "groupItemOrder": 1
+    },
+    {
         "level": 1,
         "title": "3. Synchronization",
         "page": 1,
@@ -182,7 +191,7 @@ const tocData = [
         "level": 2,
         "title": "Accessing WATCHPAX Config",
         "page": 1,
-        "description": "Start by finding the IP address of the WATCHPAX 64. It should show on the WATCHOUT splash screen, but if that is unav...",
+        "description": "WATCHPAX Config is a lightweight web application that runs directly on the WATCHPAX 64 and is accessed from any compu...",
         "group": "Configuration",
         "groupOrder": 0,
         "groupItemOrder": 0

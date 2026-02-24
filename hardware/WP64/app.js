@@ -256,6 +256,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupSidebarAccordion();
     setupVideoModals();
     setupImageModals();
+    setupCarousels();
     setupSearch();
     setupBadges();
     setupChapterLanding();
@@ -289,6 +290,170 @@ function setupTabs() {
                 content.classList.add('active');
             }
         });
+    });
+}
+
+// Carousel (step-by-step instruction slides) functionality
+function launchConfetti(container) {
+    // Avoid stacking multiple canvases
+    if (container.querySelector('.confetti-canvas')) return;
+
+    const canvas = document.createElement('canvas');
+    canvas.className = 'confetti-canvas';
+    canvas.style.cssText = 'position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:10;';
+    container.style.position = 'relative';
+    container.appendChild(canvas);
+
+    const ctx = canvas.getContext('2d');
+    canvas.width = container.offsetWidth;
+    canvas.height = container.offsetHeight;
+
+    const colors = ['#6b25dd', '#a855f7', '#f59e0b', '#10b981', '#3b82f6', '#ef4444', '#ec4899'];
+    const pieces = [];
+    const PIECE_COUNT = 120;
+    const GRAVITY = 0.12;
+    const DRAG = 0.98;
+
+    for (let i = 0; i < PIECE_COUNT; i++) {
+        pieces.push({
+            x: canvas.width * 0.5 + (Math.random() - 0.5) * canvas.width * 0.3,
+            y: canvas.height * 0.5,
+            vx: (Math.random() - 0.5) * 14,
+            vy: -(Math.random() * 10 + 4),
+            size: Math.random() * 6 + 3,
+            color: colors[Math.floor(Math.random() * colors.length)],
+            rotation: Math.random() * 360,
+            rotationSpeed: (Math.random() - 0.5) * 12,
+            opacity: 1,
+            shape: Math.random() > 0.5 ? 'rect' : 'circle'
+        });
+    }
+
+    let frame = 0;
+    const MAX_FRAMES = 180;
+
+    function animate() {
+        frame++;
+        if (frame > MAX_FRAMES) {
+            canvas.remove();
+            return;
+        }
+
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        pieces.forEach(p => {
+            p.vy += GRAVITY;
+            p.vx *= DRAG;
+            p.vy *= DRAG;
+            p.x += p.vx;
+            p.y += p.vy;
+            p.rotation += p.rotationSpeed;
+
+            // Fade out in the last third
+            if (frame > MAX_FRAMES * 0.66) {
+                p.opacity = Math.max(0, 1 - (frame - MAX_FRAMES * 0.66) / (MAX_FRAMES * 0.34));
+            }
+
+            ctx.save();
+            ctx.globalAlpha = p.opacity;
+            ctx.translate(p.x, p.y);
+            ctx.rotate((p.rotation * Math.PI) / 180);
+            ctx.fillStyle = p.color;
+
+            if (p.shape === 'rect') {
+                ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size * 0.6);
+            } else {
+                ctx.beginPath();
+                ctx.arc(0, 0, p.size / 2, 0, Math.PI * 2);
+                ctx.fill();
+            }
+
+            ctx.restore();
+        });
+
+        requestAnimationFrame(animate);
+    }
+
+    requestAnimationFrame(animate);
+}
+
+function setupCarousels() {
+    const carousels = document.querySelectorAll('.carousel');
+
+    carousels.forEach(carousel => {
+        const slides = carousel.querySelectorAll('.carousel-slide');
+        const dots = carousel.querySelectorAll('.carousel-dot');
+        const prevBtn = carousel.querySelector('.carousel-prev');
+        const nextBtn = carousel.querySelector('.carousel-next');
+        const counterCurrent = carousel.querySelector('.carousel-counter-current');
+        const total = slides.length;
+
+        if (total === 0) return;
+
+        let currentIndex = 0;
+
+        function goToSlide(index) {
+            if (index < 0 || index >= total) return;
+
+            // Hide current slide
+            slides[currentIndex].classList.remove('active');
+            dots[currentIndex].classList.remove('active');
+
+            // Show target slide
+            currentIndex = index;
+            slides[currentIndex].classList.add('active');
+            dots[currentIndex].classList.add('active');
+
+            // Update controls
+            prevBtn.disabled = (currentIndex === 0);
+            nextBtn.disabled = (currentIndex === total - 1);
+
+            // Update counter text
+            if (counterCurrent) {
+                counterCurrent.textContent = currentIndex + 1;
+            }
+
+            // Launch confetti on the last slide
+            if (currentIndex === total - 1) {
+                launchConfetti(carousel);
+            }
+        }
+
+        // Arrow buttons
+        prevBtn.addEventListener('click', () => goToSlide(currentIndex - 1));
+        nextBtn.addEventListener('click', () => goToSlide(currentIndex + 1));
+
+        // Dot navigation
+        dots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const slideIndex = parseInt(dot.getAttribute('data-slide'), 10);
+                goToSlide(slideIndex);
+            });
+        });
+
+        // Keyboard navigation when carousel is focused or hovered
+        carousel.setAttribute('tabindex', '0');
+        carousel.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+                e.preventDefault();
+                goToSlide(currentIndex - 1);
+            } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+                e.preventDefault();
+                goToSlide(currentIndex + 1);
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                goToSlide(0);
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                goToSlide(total - 1);
+            }
+        });
+
+        // Initialize state
+        goToSlide(0);
+
+        // Re-setup image modals for images inside carousel slides
+        setupImageModals();
     });
 }
 
