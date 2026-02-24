@@ -1,0 +1,345 @@
+<div class="interactive-widget" id="frame-blending-filmstrip-widget">
+    <div class="widget-controls" style="margin-bottom: 14px; gap: 14px; align-items: center;">
+        <label>Scenario:
+            <select id="fbfs-scenario">
+                <option value="24in60">24fps film in 60fps show</option>
+                <option value="25in60">25fps PAL in 60fps show</option>
+                <option value="30in60">30fps in 60fps show</option>
+                <option value="half">Half-speed (0.5x) in 60fps show</option>
+                <option value="quarter">Quarter-speed (0.25x) in 60fps show</option>
+            </select>
+        </label>
+
+        <label>Output Frame:
+            <input id="fbfs-frame" type="range" min="0" max="15" value="0" step="1" style="width: 140px;">
+        </label>
+
+        <button id="fbfs-play" type="button">Play</button>
+    </div>
+
+    <div id="fbfs-scenario-info" style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 10px;"></div>
+
+    <div style="overflow-x: auto; padding-bottom: 8px;">
+        <canvas id="fbfs-ticks" height="28" style="display: block; margin-bottom: 6px;"></canvas>
+
+        <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 4px;">Without Frame Blending</div>
+        <canvas id="fbfs-no-blend" height="96" style="display: block; border: 1px solid var(--border-subtle); border-radius: 6px;"></canvas>
+
+        <div style="font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); margin: 10px 0 4px 0;">With Frame Blending</div>
+        <canvas id="fbfs-blend" height="96" style="display: block; border: 1px solid var(--accent-primary); border-radius: 6px;"></canvas>
+    </div>
+
+    <div class="widget-explainer" id="fbfs-explainer" style="margin-top: 12px;"></div>
+</div>
+
+<script>
+    (function () {
+        var scenarioEl = document.getElementById('fbfs-scenario');
+        var frameEl = document.getElementById('fbfs-frame');
+        var playEl = document.getElementById('fbfs-play');
+        var infoEl = document.getElementById('fbfs-scenario-info');
+        var explainerEl = document.getElementById('fbfs-explainer');
+        var ticksCanvas = document.getElementById('fbfs-ticks');
+        var noBlendCanvas = document.getElementById('fbfs-no-blend');
+        var blendCanvas = document.getElementById('fbfs-blend');
+
+        if (!scenarioEl || !frameEl || !playEl || !infoEl || !explainerEl || !ticksCanvas || !noBlendCanvas || !blendCanvas) return;
+
+        var scenarios = {
+            '24in60': {
+                sourceFps: 24,
+                outputFps: 60,
+                label: '24 fps source -> 60 fps output (ratio 2.5:1)',
+                body: 'This mismatch creates an uneven 3:2 cadence. Some source frames are held for 3 output frames, others for 2, which causes judder.'
+            },
+            '25in60': {
+                sourceFps: 25,
+                outputFps: 60,
+                label: '25 fps source -> 60 fps output (ratio 2.4:1)',
+                body: 'A 12:5 ratio creates uneven frame holding. The repeated 2/3-hold pattern is visible as motion stutter.'
+            },
+            '30in60': {
+                sourceFps: 30,
+                outputFps: 60,
+                label: '30 fps source -> 60 fps output (ratio 2:1)',
+                body: 'Every source frame is held exactly twice. Motion updates at 30 steps per second unless blending creates interpolated in-between frames.'
+            },
+            'half': {
+                sourceFps: 60,
+                outputFps: 60,
+                speed: 0.5,
+                label: '60 fps source at 0.5x speed -> effective 30 fps in 60 fps output',
+                body: 'At half speed, each source frame spans 2 output frames. Without blending, movement freezes then jumps every other frame.'
+            },
+            'quarter': {
+                sourceFps: 60,
+                outputFps: 60,
+                speed: 0.25,
+                label: '60 fps source at 0.25x speed -> effective 15 fps in 60 fps output',
+                body: 'At quarter speed, each source frame spans 4 output frames. Blending fills three in-between frames for much smoother slow motion.'
+            }
+        };
+
+        var colors = ['#3aa0ff', '#ff6464', '#34c77b', '#f3bd37', '#b37feb', '#2ec8c8', '#ff8a3d', '#6fd05f'];
+
+        var frameCount = 16;
+        var cellW = 58;
+        var cellH = 82;
+        var gap = 6;
+        var pad = 6;
+        var stripW = pad + frameCount * (cellW + gap);
+
+        ticksCanvas.width = stripW;
+        noBlendCanvas.width = stripW;
+        noBlendCanvas.height = cellH;
+        blendCanvas.width = stripW;
+        blendCanvas.height = cellH;
+
+        var ticksCtx = ticksCanvas.getContext('2d');
+        var noCtx = noBlendCanvas.getContext('2d');
+        var blendCtx = blendCanvas.getContext('2d');
+
+        var isPlaying = false;
+        var playHandle = null;
+        var lastStepTime = 0;
+
+        function effectiveSourceFps(scenario) {
+            var speed = scenario.speed || 1;
+            return scenario.sourceFps * speed;
+        }
+
+        function mapFrames(scenario) {
+            var map = [];
+            var effSource = effectiveSourceFps(scenario);
+            var ratio = effSource / scenario.outputFps;
+            var i;
+
+            for (i = 0; i < frameCount; i++) {
+                var sourcePos = i * ratio;
+                var sourceA = Math.floor(sourcePos);
+                var sourceB = sourceA + 1;
+                var blend = sourcePos - sourceA;
+                map.push({
+                    outputIndex: i,
+                    sourcePos: sourcePos,
+                    sourceA: sourceA,
+                    sourceB: sourceB,
+                    blend: blend,
+                    holdSource: sourceA
+                });
+            }
+
+            return map;
+        }
+
+        function toMotionPosition(sourceIndex, maxSourceIndex) {
+            if (maxSourceIndex <= 0) return 0.5;
+            return sourceIndex / maxSourceIndex;
+        }
+
+        function drawFrameContent(ctx, x, y, w, h, pos, color, alpha) {
+            var barW = 11;
+            var left = x + 6;
+            var right = x + w - barW - 6;
+            var barX = left + (right - left) * pos;
+
+            ctx.save();
+            ctx.globalAlpha = alpha;
+
+            ctx.fillStyle = '#17172b';
+            ctx.fillRect(x, y, w, h);
+
+            ctx.fillStyle = color;
+            ctx.fillRect(barX, y + 7, barW, h - 18);
+
+            ctx.strokeStyle = 'rgba(255,255,255,0.12)';
+            ctx.lineWidth = 1;
+            ctx.beginPath();
+            ctx.moveTo(x + 4, y + h - 5);
+            ctx.lineTo(x + w - 4, y + h - 5);
+            ctx.stroke();
+
+            ctx.restore();
+        }
+
+        function drawTicks(scenario, map) {
+            var effSource = effectiveSourceFps(scenario);
+            var maxSource = map[map.length - 1].sourceB;
+            var s;
+
+            ticksCtx.clearRect(0, 0, ticksCanvas.width, ticksCanvas.height);
+            ticksCtx.font = '10px Inter, sans-serif';
+            ticksCtx.textAlign = 'center';
+
+            for (s = 0; s <= maxSource; s++) {
+                var outPos = s * scenario.outputFps / effSource;
+                var x = pad + outPos * (cellW + gap);
+                if (x < 0 || x > ticksCanvas.width) continue;
+
+                ticksCtx.strokeStyle = colors[s % colors.length];
+                ticksCtx.lineWidth = 1.5;
+                ticksCtx.beginPath();
+                ticksCtx.moveTo(x, 12);
+                ticksCtx.lineTo(x, 28);
+                ticksCtx.stroke();
+
+                if (s < maxSource) {
+                    var nextOutPos = (s + 1) * scenario.outputFps / effSource;
+                    var nextX = pad + nextOutPos * (cellW + gap);
+                    var labelX = x + (nextX - x) * 0.5;
+                    ticksCtx.fillStyle = colors[s % colors.length];
+                    ticksCtx.fillText('S' + (s + 1), labelX, 9);
+                }
+            }
+        }
+
+        function drawStrip(ctx, map, highlight, withBlending) {
+            var maxSource = map[map.length - 1].sourceB;
+            var i;
+
+            ctx.clearRect(0, 0, stripW, cellH);
+            ctx.fillStyle = 'rgba(0,0,0,0.24)';
+            ctx.fillRect(0, 0, stripW, cellH);
+
+            for (i = 0; i < map.length; i++) {
+                var item = map[i];
+                var x = pad + i * (cellW + gap);
+                var y = 4;
+                var h = cellH - 20;
+                var sourceA = item.sourceA;
+                var sourceB = item.sourceB;
+                var blend = item.blend;
+                var posA = toMotionPosition(sourceA, maxSource);
+                var posB = toMotionPosition(sourceB, maxSource);
+                var colorA = colors[sourceA % colors.length];
+                var colorB = colors[sourceB % colors.length];
+
+                if (!withBlending || blend < 0.001) {
+                    drawFrameContent(ctx, x, y, cellW, h, posA, colorA, 1);
+                } else {
+                    drawFrameContent(ctx, x, y, cellW, h, posA, colorA, 1 - blend);
+                    drawFrameContent(ctx, x, y, cellW, h, posB, colorB, blend);
+                }
+
+                ctx.strokeStyle = 'rgba(255,255,255,0.15)';
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y, cellW, h);
+
+                ctx.font = '8px Inter, sans-serif';
+                ctx.fillStyle = 'rgba(255,255,255,0.36)';
+                ctx.textAlign = 'center';
+                ctx.fillText(String(i + 1), x + cellW * 0.5, y + 9);
+
+                ctx.font = '8px Inter, sans-serif';
+                if (!withBlending || blend < 0.001) {
+                    ctx.fillStyle = colorA;
+                    ctx.fillText('S' + (item.holdSource + 1), x + cellW * 0.5, y + h + 10);
+
+                    if (i > 0 && map[i - 1].holdSource === item.holdSource) {
+                        ctx.fillStyle = '#e6b35a';
+                        ctx.fillText('held', x + cellW * 0.5, y + h + 18);
+                    }
+                } else {
+                    var aPct = Math.round((1 - blend) * 100);
+                    var bPct = 100 - aPct;
+                    ctx.fillStyle = 'rgba(190,230,255,0.9)';
+                    ctx.fillText(aPct + '/' + bPct, x + cellW * 0.5, y + h + 10);
+                    ctx.fillStyle = 'rgba(190,230,255,0.55)';
+                    ctx.fillText('blend', x + cellW * 0.5, y + h + 18);
+                }
+
+                if (i === highlight) {
+                    ctx.strokeStyle = '#ffd464';
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(x - 1, y - 1, cellW + 2, h + 2);
+                }
+            }
+        }
+
+        function render() {
+            var scenario = scenarios[scenarioEl.value];
+            var map = mapFrames(scenario);
+            var highlight = parseInt(frameEl.value, 10) || 0;
+            var item = map[highlight];
+            var blendPct = Math.round(item.blend * 100);
+            var holdText = item.blend < 0.001 ? 'exact source frame match' : 'held source frame S' + (item.holdSource + 1);
+
+            infoEl.textContent = scenario.label;
+            drawTicks(scenario, map);
+            drawStrip(noCtx, map, highlight, false);
+            drawStrip(blendCtx, map, highlight, true);
+
+            if (item.blend < 0.001) {
+                explainerEl.innerHTML = '<strong>Output frame ' + (highlight + 1) + ':</strong> This frame lands exactly on source frame <strong>S' + (item.sourceA + 1) + '</strong>. No interpolation is needed. ' + scenario.body;
+            } else {
+                explainerEl.innerHTML = '<strong>Output frame ' + (highlight + 1) + ':</strong> This output frame falls <strong>' + blendPct + '%</strong> between source frames <strong>S' + (item.sourceA + 1) + '</strong> and <strong>S' + (item.sourceB + 1) + '</strong>. Without blending: ' + holdText + '. With blending: crossfade at <strong>' + (100 - blendPct) + '/' + blendPct + '</strong>. ' + scenario.body;
+            }
+        }
+
+        function stopPlayback() {
+            isPlaying = false;
+            playEl.textContent = 'Play';
+            if (playHandle) cancelAnimationFrame(playHandle);
+            playHandle = null;
+        }
+
+        function runPlayback(ts) {
+            if (!isPlaying) return;
+            if (!lastStepTime) lastStepTime = ts;
+
+            if (ts - lastStepTime >= 220) {
+                var nextValue = parseInt(frameEl.value, 10) + 1;
+                if (nextValue >= frameCount) nextValue = 0;
+                frameEl.value = String(nextValue);
+                render();
+                lastStepTime = ts;
+            }
+
+            playHandle = requestAnimationFrame(runPlayback);
+        }
+
+        function togglePlayback() {
+            if (isPlaying) {
+                stopPlayback();
+                return;
+            }
+
+            isPlaying = true;
+            playEl.textContent = 'Pause';
+            lastStepTime = 0;
+            playHandle = requestAnimationFrame(runPlayback);
+        }
+
+        function clickFrame(event) {
+            var canvas = event.currentTarget;
+            var rect = canvas.getBoundingClientRect();
+            var x = (event.clientX - rect.left) * (canvas.width / rect.width);
+            var index = Math.floor((x - pad) / (cellW + gap));
+
+            if (index >= 0 && index < frameCount) {
+                stopPlayback();
+                frameEl.value = String(index);
+                render();
+            }
+        }
+
+        frameEl.addEventListener('input', function () {
+            stopPlayback();
+            render();
+        });
+
+        scenarioEl.addEventListener('change', function () {
+            stopPlayback();
+            frameEl.value = '0';
+            render();
+        });
+
+        playEl.addEventListener('click', togglePlayback);
+        noBlendCanvas.addEventListener('click', clickFrame);
+        blendCanvas.addEventListener('click', clickFrame);
+        noBlendCanvas.style.cursor = 'pointer';
+        blendCanvas.style.cursor = 'pointer';
+
+        render();
+    })();
+</script>

@@ -46,6 +46,17 @@
                 "build"
             ],
             "cwd": "${workspaceFolder}/wiki"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Build WP64 Wiki",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "build"
+            ],
+            "cwd": "${workspaceFolder}/hardware/WP64"
         }
     ]
 }

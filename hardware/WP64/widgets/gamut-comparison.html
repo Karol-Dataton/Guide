@@ -1,0 +1,94 @@
+<div class="interactive-widget" id="gamut-comparison-widget"
+    style="display: flex; flex-direction: column; align-items: center;">
+    <canvas id="gamut-canvas" width="2705" height="2970" style="width: 600px; height: auto; display: block;"></canvas>
+    <div class="widget-controls">
+        <label><input type="checkbox" id="show-srgb" checked> sRGB / Rec. 709</label>
+        <label><input type="checkbox" id="show-rec2020"> Rec. 2020</label>
+        <label><input type="checkbox" id="show-rec601"> Rec. 601</label>
+    </div>
+    <div class="widget-explainer">
+        The <strong>Rec. 2020</strong> triangle covers a significantly larger area of visible colors than the standard
+        <strong>sRGB</strong> space.
+    </div>
+</div>
+<script>
+    (function () {
+        const canvas = document.getElementById('gamut-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        const cieImage = new Image();
+        cieImage.src = '[[RELATIVE_PATH]]cie_1931_chromaticity_diagram.png';
+        cieImage.onload = () => draw();
+
+        const primaries = {
+            srgb: { r: [0.64, 0.33], g: [0.30, 0.60], b: [0.15, 0.06], color: 'rgba(255, 215, 0, 0.8)', label: 'sRGB/709' },
+            rec2020: { r: [0.708, 0.292], g: [0.170, 0.797], b: [0.131, 0.046], color: 'rgba(147, 51, 234, 0.8)', label: 'Rec.2020' },
+            rec601: { r: [0.630, 0.340], g: [0.310, 0.595], b: [0.155, 0.070], color: 'rgba(50, 150, 255, 0.8)', label: 'Rec.601' }
+        };
+
+        // Alignment values for native 2705x2970 image
+        // Calibrated on 2026-02-12
+        const scaleX = 2820;
+        const scaleY = 2820;
+        const offsetX = 312;
+        const offsetY = 2745;
+
+        function toCanvas(x, y) {
+            return { x: x * scaleX + offsetX, y: offsetY - y * scaleY };
+        }
+
+        function drawTriangle(p, style, fill) {
+            const r = toCanvas(p.r[0], p.r[1]);
+            const g = toCanvas(p.g[0], p.g[1]);
+            const b = toCanvas(p.b[0], p.b[1]);
+
+            ctx.beginPath();
+            ctx.moveTo(r.x, r.y);
+            ctx.lineTo(g.x, g.y);
+            ctx.lineTo(b.x, b.y);
+            ctx.closePath();
+
+            // Line width and points scaled for 2.7k resolution
+            ctx.lineWidth = 9;
+            ctx.strokeStyle = style;
+            ctx.stroke();
+
+            if (fill) {
+                ctx.fillStyle = style.replace('0.8', '0.15');
+                ctx.fill();
+            }
+
+            // Draw points
+            [r, g, b].forEach(pt => {
+                ctx.beginPath();
+                ctx.arc(pt.x, pt.y, 18, 0, Math.PI * 2);
+                ctx.fillStyle = style;
+                ctx.fill();
+            });
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Fill canvas background
+            ctx.fillStyle = '#111';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            // Draw CIE Diagram Image at 1:1 scale
+            if (cieImage.complete) {
+                ctx.drawImage(cieImage, 0, 0);
+            }
+
+            if (document.getElementById('show-rec2020').checked) drawTriangle(primaries.rec2020, primaries.rec2020.color, true);
+            if (document.getElementById('show-srgb').checked) drawTriangle(primaries.srgb, primaries.srgb.color, true);
+            if (document.getElementById('show-rec601').checked) drawTriangle(primaries.rec601, primaries.rec601.color, true);
+        }
+
+        ['show-srgb', 'show-rec2020', 'show-rec601'].forEach(id => {
+            document.getElementById(id).addEventListener('change', draw);
+        });
+
+        setTimeout(draw, 10);
+    })();
+</script>
