@@ -799,6 +799,33 @@
                 }, 50);
             }
 
+            const claudeFinalResponseHTML = `
+<p>In Watchout, to send/display your video to the output screens, here's the general workflow:</p>
+<div class="claude-section" id="c-sec-1">
+<h3>Basic Output Setup</h3>
+<ol>
+<li><strong>Add your media</strong> — Import your video file into the Media window (drag and drop or use the Add Media button).</li>
+<li><strong>Place it on the timeline</strong> — Drag the video clip onto a layer in the Stage window timeline.</li>
+<li><strong>Position on the virtual stage</strong> — In the Stage window, position and scale the video cue on the virtual stage to match your physical screen layout.</li>
+</ol>
+</div>
+<div class="claude-section" id="c-sec-2">
+<h3>Setting Up Display Computers</h3>
+<ol>
+<li><strong>Go to Stage > Add Display</strong> to define your output displays, mapping them to your physical screens/projectors.</li>
+<li>Each display corresponds to a connected output computer (or a secondary output on the same machine in single-system mode).</li>
+<li>Set the correct resolution and position for each display to match your physical setup.</li>
+</ol>
+</div>
+<div class="claude-section" id="c-sec-3">
+<h3>Going Live</h3>
+<ul>
+<li>Press <strong>Go Online</strong> (the network/connect button) to connect the production computer to the display computers.</li>
+<li>Once online, use the Play button or trigger your timeline cues — the video will appear on the designated screens.</li>
+</ul>
+</div>
+`;
+
             async function animateClaudeSequence() {
                 if (claudeStep !== 1) return;
                 const typedEl = document.querySelector('.claude-typed');
@@ -828,34 +855,8 @@
 
                 msgAi.style.display = 'flex';
 
-                const finalResponseHTML = `
-<p>In Watchout, to send/display your video to the output screens, here's the general workflow:</p>
-<div class="claude-section" id="c-sec-1">
-<h3>Basic Output Setup</h3>
-<ol>
-<li><strong>Add your media</strong> — Import your video file into the Media window (drag and drop or use the Add Media button).</li>
-<li><strong>Place it on the timeline</strong> — Drag the video clip onto a layer in the Stage window timeline.</li>
-<li><strong>Position on the virtual stage</strong> — In the Stage window, position and scale the video cue on the virtual stage to match your physical screen layout.</li>
-</ol>
-</div>
-<div class="claude-section" id="c-sec-2">
-<h3>Setting Up Display Computers</h3>
-<ol>
-<li><strong>Go to Stage > Add Display</strong> to define your output displays, mapping them to your physical screens/projectors.</li>
-<li>Each display corresponds to a connected output computer (or a secondary output on the same machine in single-system mode).</li>
-<li>Set the correct resolution and position for each display to match your physical setup.</li>
-</ol>
-</div>
-<div class="claude-section" id="c-sec-3">
-<h3>Going Live</h3>
-<ul>
-<li>Press <strong>Go Online</strong> (the network/connect button) to connect the production computer to the display computers.</li>
-<li>Once online, use the Play button or trigger your timeline cues — the video will appear on the designated screens.</li>
-</ul>
-</div>
-`;
                 const template = document.createElement('div');
-                template.innerHTML = finalResponseHTML.trim();
+                template.innerHTML = claudeFinalResponseHTML.trim();
 
                 async function streamNode(node, targetParent) {
                     if (claudeStep !== 1) return;
@@ -943,6 +944,17 @@
                         animateClaudeSequence();
                         return;
                     } else if (claudeStep === 1) {
+                        claudeStep = 2; // skip animation
+                        document.querySelector('.claude-typed').textContent = "How do i make my video appear on the screen in WATCHOUT?";
+                        document.querySelector('.claude-container').style.display = 'none';
+                        document.querySelector('.claude-chat').style.display = 'flex';
+                        document.querySelector('#claude-msg-ai').style.display = 'flex';
+
+                        const aiContent = document.querySelector('#claude-ai-content');
+                        aiContent.innerHTML = claudeFinalResponseHTML.trim();
+
+                        const chat = document.querySelector('.claude-chat');
+                        chat.scrollTop = chat.scrollHeight;
                         return;
                     } else if (claudeStep === 2) {
                         claudeStep = 3;
