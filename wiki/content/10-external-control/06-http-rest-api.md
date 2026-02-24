@@ -2,134 +2,106 @@
 title: "HTTP REST API"
 ---
 
-
 ## HTTP REST API
 
-WATCHOUT exposes a comprehensive HTTP REST API for programmatic control from external systems. The API provides endpoints for timeline playback control, variable input, show management, hit testing, cue set state management, and real-time event streams. It is the most feature-complete external control interface available in WATCHOUT.
+WATCHOUT exposes an HTTP API for programmatic show control, monitoring, and integration with third-party systems. This page is organized as a practical reference with one complete endpoint table and focused examples.
 
-### Base URL and Port
+### Base URLs and Ports
 
-The API is served by the Operative on **port 3019**. The base URL is:
+- **Operative API (main external control API):** `http://{host}:3019`
+- **Node Management API (per Runner node):** `http://{node_host}:3017`
+- **Asset Manager event stream (internal tooling/UI):** `http://{asset_manager_host}:3023`
 
-`http://{host}:3019`
+Replace `{host}` with the IP address or hostname of the machine running the relevant service. For local testing, use `localhost` or `127.0.0.1`.
 
-Replace `{host}` with the IP address or hostname of the machine running the Operative. For local access, use `localhost` or `127.0.0.1`.
+### Enable/Disable
 
-The API is enabled or disabled from the **Network** window using the **WATCHOUT 7 Protocol** and **Web UI** toggles.
+The HTTP API is controlled from the **Network** window. Use the **WATCHOUT 7 Protocol** and **Web UI** toggles to expose or hide HTTP-facing features.
 
-### Interactive API Documentation
+### Interactive API Docs
 
-WATCHOUT includes built-in interactive API documentation powered by RapiDoc. Access it at:
+- Interactive docs (RapiDoc): `http://{host}:3019/test`
+- OpenAPI spec: `http://{host}:3019/api-docs/openapi.json`
 
-`http://{host}:3019/test`
+### Complete Endpoint Table
 
-This page provides a browsable interface for all endpoints, including request/response schemas, example payloads, and the ability to send test requests directly from the browser. The underlying OpenAPI specification is available at `/api-docs/openapi.json`.
+The table below lists all documented HTTP endpoints in WATCHOUT.
 
-### Playback Control
+| Scope | Port | Method | Endpoint | Purpose | Notes |
+|---|---:|---|---|---|---|
+| System | 3019 | `GET` | `/info` | Get build/version info | Operative |
+| Docs | 3019 | `GET` | `/test` | Interactive API documentation UI | Operative |
+| Docs | 3019 | `GET` | `/api-docs/openapi.json` | OpenAPI schema | Operative |
+| Playback | 3019 | `GET` | `/v0/state` | Get playback state for all timelines | Operative |
+| Playback | 3019 | `POST` | `/v0/play` | Play all timelines | Legacy-compatible endpoint |
+| Playback | 3019 | `POST` | `/v0/play/{timeline_id}` | Play one timeline | `timeline_id` is numeric |
+| Playback | 3019 | `POST` | `/v0/pause/{timeline_id}` | Pause one timeline | `timeline_id` is numeric |
+| Playback | 3019 | `POST` | `/v0/stop/{timeline_id}` | Stop one timeline and reset to start | `timeline_id` is numeric |
+| Playback | 3019 | `POST` | `/v0/jump-to-time/{timeline_id}` | Jump timeline to time | Query: `time` (ms), optional `state` (`play` or `pause`, default `pause`) |
+| Playback | 3019 | `POST` | `/v0/jump-to-cue/{timeline_id}/{cue_id}` | Jump timeline to cue start | Query: optional `state` (`play` or `pause`, default `pause`) |
+| Show | 3019 | `GET` | `/v0/show` | Get full current show JSON | Operative |
+| Show | 3019 | `POST` | `/v0/show` | Load/replace show from JSON | Body: show JSON |
+| Show | 3019 | `POST` | `/v0/showfile` | Load/replace show from binary `.watch` data | Body: binary |
+| Show | 3019 | `POST` | `/v0/showfile?showName={name}` | Load `.watch` and set show name | Optional query variant |
+| Show | 3019 | `GET` | `/v0/timelines` | List timelines | Includes IDs and names |
+| Show | 3019 | `GET` | `/v0/cues/{timeline_id}` | List cues for timeline | Includes IDs and names |
+| Inputs | 3019 | `GET` | `/v0/inputs` | Get all input variable specs | Includes keys and ranges |
+| Inputs | 3019 | `POST` | `/v0/inputs` | Set multiple inputs (batch) | Body: JSON array of input updates |
+| Inputs | 3019 | `POST` | `/v0/input/{key}` | Set one input | Query: `value`, optional `duration` (ms) |
+| Cue Sets | 3019 | `GET` | `/v0/cue-group-state/by-id` | Get cue set states by IDs | Operative |
+| Cue Sets | 3019 | `POST` | `/v0/cue-group-state/by-id` | Set multiple cue set states by IDs | Body: JSON map (`groupId` -> `variantId`) |
+| Cue Sets | 3019 | `POST` | `/v0/cue-group-state/by-id/{group_id}/{variant_id}` | Set one cue set by IDs | Path params |
+| Cue Sets | 3019 | `GET` | `/v0/cue-group-state/by-name` | Get cue set states by names | Operative |
+| Cue Sets | 3019 | `POST` | `/v0/cue-group-state/by-name` | Set multiple cue set states by names | Body: JSON map (`groupName` -> `variantName`) |
+| Cue Sets | 3019 | `POST` | `/v0/cue-group-state/by-name/{group_name}/{variant_name}` | Set one cue set by names | Path params |
+| Interaction | 3019 | `POST` | `/v0/hittest` | Hit-test stage coordinates against cues | Body includes `cues`, `x`, `y` |
+| MSC | 3019 | `POST` | `/v0/msc` | Send MIDI Show Control command(s) | Body: JSON array |
+| Stream (SSE) | 3019 | `GET` | `/v0/sse` | Legacy SSE stream | Real-time updates |
+| Stream (SSE) | 3019 | `GET` | `/v1/sse` | SSE stream with initial state | Real-time updates |
+| Stream (SSE) | 3019 | `GET` | `/v2/sse` | Optimized SSE stream (diff-based playback updates) | Real-time updates |
+| Stream (NDJSON) | 3019 | `GET` | `/v0/ndjson` | Legacy NDJSON stream | Same event model as `/v0/sse` |
+| Stream (NDJSON) | 3019 | `GET` | `/v1/ndjson` | NDJSON stream with initial state | Same event model as `/v1/sse` |
+| Stream (NDJSON) | 3019 | `GET` | `/v2/ndjson` | Optimized NDJSON stream | Same event model as `/v2/sse` |
+| Node Mgmt | 3017 | `POST` | `/v0/shutdown` | Shut down target node OS | Sent to a specific node |
+| Node Mgmt | 3017 | `POST` | `/v0/reboot` | Reboot target node OS | Sent to a specific node |
+| Node Mgmt | 3017 | `POST` | `/v0/services/restart` | Restart WATCHOUT services on target node | Sent to a specific node |
+| Asset Manager | 3023 | `GET` | `/sse` | Asset-state event stream used by tooling/UI | Not part of main Operative control API |
 
-**Play a timeline:**
-`POST /v0/play/{timeline_id}`
+### Request Body Formats
 
-**Pause a timeline:**
-`POST /v0/pause/{timeline_id}`
+**Batch input update (`POST /v0/inputs`)**
 
-**Stop a timeline** (resets to beginning):
-`POST /v0/stop/{timeline_id}`
-
-**Jump to a specific time:**
-`POST /v0/jump-to-time/{timeline_id}?time={ms}&state={play|pause}`
-
-The `time` parameter is in milliseconds. The optional `state` parameter controls whether the timeline plays or pauses after jumping (default: `pause`).
-
-**Jump to a specific cue:**
-`POST /v0/jump-to-cue/{timeline_id}/{cue_id}?state={play|pause}`
-
-Jumps to the start time of the specified cue. The optional `state` parameter works the same as jump-to-time.
-
-**Get playback state:**
-`GET /v0/state`
-
-Returns the current playback state for all timelines, including positions and play/pause status.
-
-### Variable Input
-
-**Set multiple variables (batch):**
-`POST /v0/inputs`
-
-Request body is a JSON array of input objects:
-
-```json path=null start=null
+```json
 [
   {"key": "brightness", "value": 100.0, "duration": 2000},
   {"key": "volume", "value": 0.5}
 ]
 ```
 
-Each object has:
-- `key` (string, required) — The external key matching a WATCHOUT variable.
-- `value` (number, required) — The numeric value to set.
-- `duration` (number, optional) — Interpolation duration in milliseconds. If omitted, the default 50ms interpolation is used.
+- `key` (string, required): external key mapped to a WATCHOUT variable
+- `value` (number, required): numeric value to apply
+- `duration` (number, optional): interpolation duration in milliseconds
 
-**Set a single variable:**
-`POST /v0/input/{key}?value={number}&duration={ms}`
+**Single input update (`POST /v0/input/{key}`)**
 
-A simpler endpoint for setting one variable at a time via URL parameters.
+Use query parameters instead of JSON body:
 
-**Get all variables:**
-`GET /v0/inputs`
+`/v0/input/brightness?value=100&duration=2000`
 
-Returns a map of all input variable specifications including their external keys, value ranges, and defaults.
+**Cue set batch update by name (`POST /v0/cue-group-state/by-name`)**
 
-### Show Management
+```json
+{
+  "Language": "English",
+  "Sponsor": "BrandB"
+}
+```
 
-**Get current show:**
-`GET /v0/show`
+Send `{}` to reset all cue sets to default variants.
 
-Returns the complete show data including timelines, cues, inputs, and revision information.
+**Hit test (`POST /v0/hittest`)**
 
-**Upload show (JSON):**
-`POST /v0/show`
-
-Upload a new show in JSON format. Replaces the currently loaded show.
-
-**Upload show (binary):**
-`POST /v0/showfile`
-
-Upload a complete show file in WATCHOUT binary format.
-
-**Get timelines:**
-`GET /v0/timelines`
-
-Returns all timelines with their names and IDs.
-
-**Get cues for a timeline:**
-`GET /v0/cues/{timeline_id}`
-
-Returns all cues for a specific timeline including names and IDs.
-
-### Cue Set State Management
-
-Cue sets (also called cue groups) can be switched via the API:
-
-**By ID:**
-- `POST /v0/cue-group-state/by-id/{group_id}/{variant_id}` — Set a single group.
-- `POST /v0/cue-group-state/by-id` — Set multiple groups (JSON body mapping group IDs to variant IDs).
-- `GET /v0/cue-group-state/by-id` — Get current states.
-
-**By name:**
-- `POST /v0/cue-group-state/by-name/{group_name}/{variant_name}` — Set a single group.
-- `POST /v0/cue-group-state/by-name` — Set multiple groups (JSON body mapping group names to variant names).
-- `GET /v0/cue-group-state/by-name` — Get current states.
-
-### Hit Testing
-
-`POST /v0/hittest`
-
-Tests whether a coordinate point hits any of the specified cues. This is useful for interactive installations where user input (touch, pointer, etc.) needs to determine which visual element was selected.
-
-Request body:
-
-```json path=null start=null
+```json
 {
   "cues": ["1/42", "1/43"],
   "x": 960.0,
@@ -137,46 +109,105 @@ Request body:
 }
 ```
 
-The response lists which cues contain the point. Hit testing evaluates all tweens (position, scale, rotation, corner pinning) at the current playback time for accurate results with animated content.
+Response includes `hit_cues` with IDs that contain the given point.
 
-:::note
-Hit testing only supports visual media cues on timelines. Audio, control, output, variable, and comment cues are not supported. Cues with conditional rendering are also rejected.
-:::
+```json
+{
+  "hit_cues": ["1/42"]
+}
+```
 
-### Real-Time Event Streams
+**MIDI Show Control (`POST /v0/msc`)**
 
-WATCHOUT provides Server-Sent Events (SSE) and Newline-Delimited JSON (NDJSON) streams for receiving real-time updates:
+```json
+[
+  {"command": {"go": {}}}
+]
+```
 
-**SSE endpoints:**
-- `/v0/sse` — Legacy event stream.
-- `/v1/sse` — Includes initial state on connect, excludes countdown and diff events.
-- `/v2/sse` — Optimized stream with diff-based playback updates and interpolated variable values.
+### Event Streams
 
-**NDJSON endpoints:**
-- `/v0/ndjson`, `/v1/ndjson`, `/v2/ndjson` — Same event data as their SSE counterparts, delivered as newline-delimited JSON.
+WATCHOUT provides SSE and NDJSON endpoints for real-time updates.
 
-The event streams emit the following event types:
-- **PlaybackState** — Current playback state for all timelines.
-- **Inputs** — Variable value changes.
-- **ShowRevision** — Notifications when the show is updated.
-- **TimelineCountdowns** — Countdown information for upcoming cues.
-- **CueVisibility** — Cue enter/exit events.
+| Stream | Endpoint | Typical events |
+|---|---|---|
+| SSE v0 | `/v0/sse` | `PlaybackState`, `CueVisibility` |
+| SSE v1 | `/v1/sse` | `PlaybackState`, `Inputs`, `ShowRevision`, `CueVisibility` |
+| SSE v2 | `/v2/sse` | `PlaybackState` (diff), `TimelineCountdowns`, `Inputs`, `ShowRevision`, `CueVisibility` |
+| NDJSON v0 | `/v0/ndjson` | Same as SSE v0 |
+| NDJSON v1 | `/v1/ndjson` | Same as SSE v1 |
+| NDJSON v2 | `/v2/ndjson` | Same as SSE v2 |
 
-The v1 and v2 streams include the initial show state when a client connects, making them suitable for dashboards and monitoring applications.
+### Timeline and Cue IDs
 
-### System Information
+Many endpoints require numeric `timeline_id` and `cue_id` values. Use **Copy ID** from timeline/cue context menus in Producer to retrieve stable IDs.
 
-`GET /info`
+### curl Examples
 
-Returns build information about the WATCHOUT system.
+**Get system info**
 
-### Authentication
+```bash
+curl http://localhost:3019/info
+```
 
-The HTTP API does not require authentication by default. All endpoints are accessible to any client that can reach the Operative's port. If the API is exposed on an untrusted network, consider using firewall rules to restrict access.
+**Play a timeline**
 
-### Use Cases
+```bash
+curl -X POST http://localhost:3019/v0/play/0
+```
 
-- **Web-based control panels** — Build browser-based dashboards that monitor and control WATCHOUT playback using the REST API and SSE streams.
-- **Custom automation scripts** — Use `curl`, Python `requests`, or any HTTP client to script show control sequences.
-- **Interactive installations** — Combine hit testing with variable input to create touch-reactive or pointer-reactive experiences.
-- **Third-party integration** — Connect show control systems, building management systems, or IoT platforms that speak HTTP/JSON.
+**Jump timeline and continue playing**
+
+```bash
+curl -X POST "http://localhost:3019/v0/jump-to-time/0?time=6000&state=play"
+```
+
+**Set one input**
+
+```bash
+curl -X POST "http://localhost:3019/v0/input/Brightness?value=0.8&duration=500"
+```
+
+**Set multiple inputs**
+
+```bash
+curl -X POST -H "Content-Type: application/json" http://localhost:3019/v0/inputs --data '[{"key":"Brightness","value":0.8},{"key":"Volume","value":0.5}]'
+```
+
+**Read cue set states by name**
+
+```bash
+curl http://localhost:3019/v0/cue-group-state/by-name
+```
+
+**Switch one cue set by name**
+
+```bash
+curl -X POST http://localhost:3019/v0/cue-group-state/by-name/Language/English
+```
+
+**Read v2 SSE stream**
+
+```bash
+curl http://localhost:3019/v2/sse
+```
+
+**Node reboot (target node API on port 3017)**
+
+```bash
+curl -X POST http://192.168.1.12:3017/v0/reboot
+```
+
+### Security and Access
+
+By default, the HTTP API does not require authentication. Any client that can reach the service port can call endpoints.
+
+- Keep control ports on a trusted network.
+- Use firewall rules to restrict access.
+- Avoid exposing ports 3019/3017 directly to untrusted networks.
+
+### Notes
+
+- Inbound control endpoints are documented as `GET` and `POST`.
+- `PUT`/`DELETE` are not part of the documented inbound control API.
+- HTTP Output cues can send outbound `GET`/`POST`/`PUT` requests to external systems, which is separate from the inbound REST API described here.

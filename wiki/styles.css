@@ -49,6 +49,7 @@
     --table-header-bg: rgba(107, 37, 221, 0.15);
     --table-row-hover: rgba(107, 37, 221, 0.1);
     --code-bg: rgba(139, 92, 246, 0.2);
+    --surface-elevated: #1a1a25;
 }
 
 /* Light Theme */
@@ -1396,7 +1397,7 @@ button:focus-visible {
 }
 
 .section-content-body code {
-    background: var(--surface-elevated);
+    background: var(--code-bg);
     padding: 2px 6px;
     border-radius: 4px;
     font-family: 'SF Mono', Monaco, 'Cascadia Code', monospace;
@@ -1461,7 +1462,7 @@ button:focus-visible {
 }
 
 .section-content-body th {
-    background: var(--surface-elevated);
+    background: var(--table-header-bg);
     font-weight: 600;
     color: var(--text-primary);
 }
@@ -1472,6 +1473,10 @@ button:focus-visible {
 
 .section-content-body tr:nth-child(even) td {
     background: rgba(255, 255, 255, 0.02);
+}
+
+.section-content-body tr:hover td {
+    background: var(--table-row-hover);
 }
 
 .section-content-body img {

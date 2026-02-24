@@ -1,6 +1,80 @@
 {
   "commits": [
     {
+      "hash": "a3bc76e",
+      "parents": [
+        "fac7038"
+      ],
+      "author": "karol",
+      "date": "2026-02-24",
+      "message": "claude part skip",
+      "refs": [
+        "HEAD -> main",
+        "origin/main",
+        "origin/HEAD"
+      ]
+    },
+    {
+      "hash": "fac7038",
+      "parents": [
+        "332a4b7"
+      ],
+      "author": "Karol",
+      "date": "2026-02-23",
+      "message": "better presentation",
+      "refs": []
+    },
+    {
+      "hash": "332a4b7",
+      "parents": [
+        "fc288a7"
+      ],
+      "author": "Karol",
+      "date": "2026-02-23",
+      "message": "motion blur",
+      "refs": []
+    },
+    {
+      "hash": "fc288a7",
+      "parents": [
+        "ef63435"
+      ],
+      "author": "Karol",
+      "date": "2026-02-23",
+      "message": "presentation changes",
+      "refs": []
+    },
+    {
+      "hash": "ef63435",
+      "parents": [
+        "eec81a4"
+      ],
+      "author": "karol",
+      "date": "2026-02-23",
+      "message": "update",
+      "refs": []
+    },
+    {
+      "hash": "eec81a4",
+      "parents": [
+        "0b0ecdd"
+      ],
+      "author": "karol",
+      "date": "2026-02-23",
+      "message": "more progress",
+      "refs": []
+    },
+    {
+      "hash": "0b0ecdd",
+      "parents": [
+        "6285258"
+      ],
+      "author": "karol",
+      "date": "2026-02-23",
+      "message": "presentation progress",
+      "refs": []
+    },
+    {
       "hash": "6285258",
       "parents": [
         "345e55d"
@@ -8,11 +82,7 @@
       "author": "karol",
       "date": "2026-02-23",
       "message": "glossary",
-      "refs": [
-        "HEAD -> main",
-        "origin/main",
-        "origin/HEAD"
-      ]
+      "refs": []
     },
     {
       "hash": "345e55d",
@@ -1598,7 +1668,7 @@
   "branches": [
     {
       "name": "main",
-      "tip": "6285258",
+      "tip": "a3bc76e",
       "remote": false
     },
     {
@@ -1613,7 +1683,7 @@
     },
     {
       "name": "origin/HEAD",
-      "tip": "6285258",
+      "tip": "a3bc76e",
       "remote": true
     },
     {
@@ -1638,7 +1708,7 @@
     },
     {
       "name": "origin/main",
-      "tip": "6285258",
+      "tip": "a3bc76e",
       "remote": true
     },
     {
@@ -1678,6 +1748,6 @@
       "tip": "417baff"
     }
   ],
-  "generated": "2026-02-23T14:10:06.121Z",
+  "generated": "2026-02-24T14:18:32.192Z",
   "repoName": "WO_keys"
 }

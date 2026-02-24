@@ -5,87 +5,149 @@ title: "WATCHOUT 6 Protocol"
 
 ## WATCHOUT 6 Protocol
 
-WATCHOUT 7 includes a backward-compatible TCP control interface that accepts commands in the WATCHOUT 6 protocol format. This allows existing integrations — Crestron modules, AMX programs, Extron scripts, and other control system code written for WATCHOUT 6 — to work with WATCHOUT 7 without modification.
+WATCHOUT 7 includes a backward-compatible WATCHOUT 6 command interface. It is intended for existing integrations (Crestron, AMX, Extron, custom scripts) that already speak WO6 command syntax.
 
-### Enabling the WO6 Protocol
+This page documents behavior as implemented in the current WO6 compatibility source code.
 
-The WATCHOUT 6 protocol is enabled or disabled from the **Network** window in Producer using the **WATCHOUT 6 Protocol** toggle. This toggle is independent of the **WATCHOUT 7 Protocol** toggle — you can run both simultaneously, only one, or neither.
+### Transport and Framing
 
-When enabled, the Operative starts a TCP server that accepts connections in the WATCHOUT 6 text-based command format.
+- **Ports:** `3040` (WATCHMAKER) and `3039` (WATCHPOINT)
+- **Protocols:** TCP and UDP listeners are started on both ports
+- **Frame delimiter:** `\r\n` (CRLF)
+- **Max incoming frame size:** 4096 bytes
+- **Text format:** command-oriented text protocol, one command per frame
 
-### Connection Details
+Use CRLF in clients even if some line-ending variants may be tolerated.
 
-The WO6 compatibility layer listens on:
+### Request IDs (`[id]` Prefix)
 
-- **TCP port 3040** — The production control port (equivalent to the WATCHOUT 6 "watchmaker" port).
-- **TCP port 3039** — The display computer port (equivalent to the WATCHOUT 6 "watchpoint" port).
+Commands may be prefixed with an ID tag: `[my-id]ping`
 
-Connections use the same text-based, newline-delimited command/response protocol as WATCHOUT 6. Commands are sent as ASCII text terminated by a newline, and responses follow the same format.
+- TCP replies echo this prefix: `[my-id]Ready ...`
+- For commands that return an empty success payload, the response is just the tag plus CRLF: `[my-id]\r\n`
+- For subscription commands with IDs, the first tagged response is empty acknowledgement; streamed updates then arrive untagged
 
-### The Main Timeline
+### Main Timeline Behavior
 
-Several WO6 commands operate on the "main timeline" by default. In WATCHOUT 7, this requires a timeline named **"Main Timeline"** to exist in the show. Commands that reference no specific timeline (like `run`, `halt`, and `getStatus`) will target this timeline.
+Commands that omit a timeline name target a timeline named exactly `Main Timeline`.
 
-:::note
-If your show does not have a timeline named "Main Timeline", commands that default to the main timeline will fail. Either create a timeline with this name or use commands that explicitly specify a timeline name.
-:::
+If that timeline does not exist, those commands fail with runtime error responses.
 
-### Supported Commands
+### Syntax Rules
 
-The following WATCHOUT 6 commands are supported in the compatibility layer:
+- Command names are case-sensitive (`getStatus`, not `getstatus`)
+- Boolean arguments are `true` or `false`
+- Names containing spaces must be quoted
+- Extra unexpected tokens cause parse/runtime errors
+- Time values accept:
+  - milliseconds: `5000`
+  - timestamp: `HH:MM:SS.FFF`
+  - Medialon style: `HH:MM:SS/FFF`
 
-**Authentication and status:**
-- **authenticate** — Authenticates the connection. WATCHOUT 7 always accepts authentication (license check is not enforced at this level).
-- **ping** — Returns the system's ready status and version string.
-- **getStatus** — Returns the current show status (loaded show name, busy state, timeline information).
+### Response Formats
 
-**Timeline playback:**
-- **run** — Starts playback of the main timeline or a named auxiliary timeline.
-- **halt** — Pauses the main timeline or a named auxiliary timeline.
-- **kill** — Stops a named timeline (resets to beginning).
-- **gotoTime** — Jumps to a specific time position on the main timeline or a named timeline. Maintains the current play/pause state.
-- **gotoControlCue** — Jumps to a named control cue, searching forward from the current position (or backward if not found ahead). Maintains the current play/pause state.
-- **reset** — Stops all auxiliary timelines and resets the main timeline to the beginning in a paused state.
+| Type | Wire format | Used by |
+|---|---|---|
+| `Ready` | `Ready "&lt;version&gt;" "WATCHMAKER" "&lt;OS&gt;" &lt;bool&gt;` | `ping`, `authenticate`, final phase of `load` |
+| `Status` (old style) | `Reply ...` | `getStatus` (no args) |
+| `Status` (new style) | `Status "" ...` | `getStatus 1/2` (general) |
+| `Timeline status` | `Status "TaskList:mItemList:mItems:TimelineTask \"&lt;name&gt;\"" &lt;state&gt; &lt;pos&gt; &lt;world_clock&gt;` | timeline variant of `getStatus` |
+| `Busy` | `Busy "Open" "" 0` | first phase of `load` |
+| `Reply JSON` | `Reply { ... }` | `getInputs`, `getAuxTimelines`, `getControlCues` |
+| `Empty` | empty payload (blank line) | most action commands on success |
+| `Error` | `Error &lt;code 1-8&gt; 0 "&lt;message&gt;"` | parse/runtime/auth/unsupported failures |
 
-**Timeline information:**
-- **getAuxTimelines** / **getAuxTimelinesTree** — Returns a list of all auxiliary timelines with names and durations.
-- **getTimelineStatus** — Returns the current playback status for a named timeline.
-- **subscribeStatus** / **unsubscribeStatus** — Subscribe to or unsubscribe from real-time status updates for the show.
-- **subscribeTimelineStatus** / **unsubscribeTimelineStatus** — Subscribe to or unsubscribe from real-time status updates for a specific timeline.
-- **getControlCues** — Returns a list of control cues for a timeline.
+### getStatus Modes
 
-**Variable/input control:**
-- **getInputs** — Returns the current value of one or all input variables.
-- **setInput** — Sets a single input variable to a value, optionally with a transition rate for smooth fading.
-- **setInputs** — Sets multiple input variables simultaneously with a shared transition rate. When a transition rate is specified, values are smoothly interpolated at the show's frame rate.
+`getStatus` is one command with multiple modes (including timeline status and subscriptions).
 
-**Show management:**
-- **loadShow** — Loads a show file by path. Relative paths are resolved against the configured show directory.
-- **online** — Accepted but has no effect (WATCHOUT 7 is always "online").
+| Request | Behavior | Response |
+|---|---|---|
+| `getStatus` | old WO6 polling style | one `Reply ...` |
+| `getStatus 2` | one-shot general status | one `Status "" ...` |
+| `getStatus 1` | subscribe general status | status stream (`Status "" ...`) |
+| `getStatus 0` | unsubscribe general status | empty |
+| `getStatus 2 "TaskList:mItemList:mItems:TimelineTask \"Timeline 1\""` | one-shot timeline status | one timeline `Status ...` |
+| `getStatus 1 "TaskList:mItemList:mItems:TimelineTask \"Timeline 1\""` | subscribe timeline status | timeline status stream |
+| `getStatus 0 "TaskList:mItemList:mItems:TimelineTask \"Timeline 1\""` | unsubscribe timeline status | empty |
 
-**Not supported:**
-- **hitTest** — Returns an "unimplemented" error. Use the HTTP REST API's `/v0/hittest` endpoint instead for hit testing.
+Timeline state values in timeline-status responses are:
 
-### Differences from WATCHOUT 6
+- `0` = stopped
+- `1` = paused
+- `2` = running
 
-While the compatibility layer aims to be transparent, there are some behavioral differences:
+### Implemented Commands
 
-- WATCHOUT 7 is always online — the `online` command is accepted but ignored.
-- Timeline identification uses names rather than numeric indices. Ensure timeline names match what your control system expects.
-- The main timeline must be explicitly named "Main Timeline".
-- Input variable fading (via `setInput` with a transition rate) is implemented by streaming interpolated values at the show's frame rate, which closely mimics WO6 behavior.
+| Command | Syntax | Success response | Notes |
+|---|---|---|---|
+| `authenticate` | `authenticate &lt;level&gt;` | `Ready ...` | level is accepted; current implementation always returns ready |
+| `ping` | `ping` | `Ready ...` | keepalive/version check |
+| `run` | `run [timeline_name]` | empty | no name = `Main Timeline` |
+| `halt` | `halt [timeline_name]` | empty | no name = `Main Timeline` |
+| `kill` | `kill &lt;timeline_name&gt;` | empty | timeline name required |
+| `reset` | `reset` | empty | stops aux timelines, sets main timeline to paused at time 0 |
+| `getStatus` | see mode table above | `Reply ...` / `Status ...` / stream / empty | replaces separate legacy status commands |
+| `gotoTime` | `gotoTime &lt;time&gt; [timeline_name]` | empty | preserves run/pause state; stopped timelines are resumed as paused after jump |
+| `gotoControlCue` | `gotoControlCue &lt;cue_name&gt; [reverse_only] [timeline_name]` | empty | default search is forward then backward fallback |
+| `setInput` | `setInput &lt;input_name&gt; &lt;value_or_delta&gt; [transition_ms]` | empty | `+x`/`-x` are relative changes |
+| `setInputs` | `setInputs &lt;transition_ms&gt; &lt;input_name&gt; &lt;value_or_delta&gt; ...` | empty | transition is required; use `0` for immediate |
+| `getInputs` | `getInputs [input_name]` | `Reply {"Inputs":...}` | returns one or all mapped inputs |
+| `getAuxTimelines` | `getAuxTimelines [tree]` | `Reply { ... }` | `tree` selects tree-shaped reply payload |
+| `getControlCues` | `getControlCues &lt;filter 0-7&gt; [timeline_name]` | `Reply {"Layers":...}` | filter bitmask: 1 no-op, 2 cross-timeline target, 4 unnamed |
+| `load` | `load &lt;path&gt; [condition] [go_online]` | `Busy ...` then `Ready ...` | `condition`/`go_online` are parsed for compatibility; relative paths resolve via configured show directory |
+| `online` | `online &lt;bool&gt;` | empty | accepted for compatibility; currently no-op |
+
+`setInput` and `setInputs` value syntax:
+
+- absolute: `1.0`
+- relative increase: `+0.5`
+- relative decrease: `-0.5`
+
+### Parsed but Not Implemented
+
+These commands are parsed, but currently return runtime unimplemented errors (`Error 7 0 "Request ... is not implemented in WATCHOUT 7 yet."`) on TCP:
+
+- `hitTest &lt;x&gt; &lt;y&gt;`
+- `list &lt;magic_path&gt; [depth]`
+- `getStage`
+- `standBy &lt;bool&gt; [transition_ms]`
+- `setRate &lt;float&gt;`
+- `timecodeMode &lt;option&gt; [offset]`
+- `powerDown`
+- `setLogoString &lt;string&gt;`
+- `getFile [look_in_shows] &lt;magic_path&gt;`
+- `serialPort &lt;open&gt; &lt;name&gt; [protocol] [baud] [data_bits] [stop_bits] [parity]`
+- `enableLayerCond &lt;condition&gt;`
+- `wait`
+
+### Discover Compatibility Command
+
+`discover &lt;digits&gt;` is accepted for legacy compatibility traffic.
+
+- TCP: returns empty response
+- UDP: ignored (no response)
+
+### UDP Behavior
+
+UDP support is fire-and-forget: no responses are sent.
+
+- Side-effect commands (for example `run`, `halt`, `gotoTime`, `setInput`) are executed
+- Response-oriented commands are ignored on UDP, including `getStatus`, `getInputs`, `getAuxTimelines`, `getControlCues`, `list`, `getStage`, `getFile`, and `hitTest`
+
+### Differences from Older WO6 Integrations
+
+- `getTimelineStatus`, `subscribeStatus`, and related timeline-subscribe commands are represented through `getStatus` mode variants
+- `loadShow` is `load`
+- `online` is accepted but does not change runtime behavior
+- Main-timeline defaults require a timeline named `Main Timeline`
+- `hitTest` is not implemented in this protocol path
 
 ### Migration Guidance
 
-The WO6 protocol is ideal for maintaining compatibility with existing control system integrations during a transition to WATCHOUT 7. However, for new integrations, consider using:
+Use WO6 protocol compatibility to keep existing control systems running, but prefer newer interfaces for new development:
 
-- **HTTP REST API** — For the most complete feature set, including cue set management, hit testing, show upload, and real-time event streams.
-- **OSC** — For show controllers and creative applications that natively support OSC.
+- [HTTP REST API](06-http-rest-api.md) for complete control surface and modern integrations
+- [OSC Protocol](03-osc-protocol.md) for OSC-native show control systems
 
-The WO6 protocol does not expose WATCHOUT 7-specific features like cue sets, SSE event streams, or the extended input API with custom interpolation durations.
-
-### Use Cases
-
-- **Crestron / AMX / Extron integration** — Existing control system programs written for WATCHOUT 6 continue to work without reprogramming.
-- **Legacy show control** — Third-party show control systems that have WATCHOUT 6 drivers or modules can control WATCHOUT 7 without updates.
-- **Gradual migration** — Run the WO6 and WO7 protocols simultaneously while transitioning control systems to the newer HTTP API.
+The WO6 layer is a compatibility bridge, not a full feature surface for WATCHOUT 7-specific workflows.
