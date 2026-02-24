@@ -152,9 +152,14 @@ function markdownToHtml(markdown, options = {}) {
     html = html.replace(/\[(.*?)\]\((.*?)\)/g, (match, text, url) => {
         // specific fix for .md links to .html
         let href = url;
-        if (href.endsWith('.md') && !href.startsWith('http')) {
-            href = normalizeMdLink(href);
-        } else if (!href.startsWith('http')) {
+        if (!href.startsWith('http')) {
+            const [pathPart] = href.split('#');
+            if (pathPart.endsWith('.md')) {
+                href = normalizeMdLink(href);
+            } else {
+                href = normalizeAssetPath(href, assetPathPrefix);
+            }
+        } else {
             href = normalizeAssetPath(href, assetPathPrefix);
         }
         return `<a href="${href}">${text}</a>`;

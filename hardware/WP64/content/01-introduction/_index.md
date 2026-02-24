@@ -9,7 +9,7 @@ icon: "book"
 
 ### Overview
 
-- [Welcome to WATCHPAX 64](01-welcome.md) - Cover page and preface information
+- [Welcome to WATCHPAX 64](welcome-to-watchpax-64.html) - Cover page and preface information
 - [Introduction to WATCHPAX 64](02-introduction-to-watchpax-64.md) - Product overview and key features
 
 ### Hardware

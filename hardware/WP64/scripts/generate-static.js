@@ -84,8 +84,17 @@ function getLanguageSwitchHref(canonicalPath) {
 // But content-data.js has huge string literals.
 
 function loadConfig() {
-    if (!fs.existsSync(CONFIG_PATH)) return { disabledChapters: [] };
-    const raw = fs.readFileSync(CONFIG_PATH, 'utf8');
+    let configPath = CONFIG_PATH;
+    if (!fs.existsSync(configPath)) {
+        const fallback = path.join(WIKI_ROOT, 'config.js');
+        if (fs.existsSync(fallback)) {
+            configPath = fallback;
+        } else {
+            return { disabledChapters: [] };
+        }
+    }
+
+    const raw = fs.readFileSync(configPath, 'utf8');
     const match = raw.match(/const wikiConfig = ({[\s\S]*?});/);
     if (!match) return { disabledChapters: [] };
     return eval('(' + match[1] + ')');

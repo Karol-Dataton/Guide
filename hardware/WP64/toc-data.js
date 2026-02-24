@@ -35,10 +35,7 @@ const tocData = [
         "level": 2,
         "title": "Welcome to WATCHPAX 64",
         "page": 1,
-        "description": "WATCHPAX 64 User's Guide -- your complete reference for the Dataton WATCHPAX 64 dedicated media server.",
-        "group": "Overview",
-        "groupOrder": 0,
-        "groupItemOrder": 0
+        "description": "WATCHPAX 64 User's Guide -- your complete reference for the Dataton WATCHPAX 64 dedicated media server."
     },
     {
         "level": 2,
@@ -47,7 +44,7 @@ const tocData = [
         "description": "WATCHPAX 64 is a dedicated media server for use with Dataton WATCHOUT. Each unit has a built-in WATCHOUT license and ...",
         "group": "Overview",
         "groupOrder": 0,
-        "groupItemOrder": 1
+        "groupItemOrder": 0
     },
     {
         "level": 2,

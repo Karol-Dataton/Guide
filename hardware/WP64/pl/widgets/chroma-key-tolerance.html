@@ -1,0 +1,501 @@
+<div class="interactive-widget" id="chroma-tolerance-widget">
+    <div style="display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap;">
+        <!-- Left Column: Controls & Preview Strip -->
+        <div style="flex: 1; min-width: 250px;">
+            <div class="widget-controls" style="margin-bottom: 20px;">
+                <div class="control-group" style="margin-bottom: 20px;">
+                    <label style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>Target Chroma (Hue)</span>
+                        <span id="hue-val" style="color: var(--accent-primary); font-family: monospace;">120°</span>
+                    </label>
+                    <input type="range" id="hue-input" min="0" max="360" value="120" style="width: 100%;">
+                    <div
+                        style="margin-top: 8px; font-size: 0.8em; color: var(--text-muted); display: flex; align-items: center; gap: 8px;">
+                        <div id="target-color-preview"
+                            style="width: 20px; height: 20px; border-radius: 50%; background-color: lime; border: 1px solid var(--border-subtle);">
+                        </div>
+                        Target Color
+                    </div>
+                </div>
+
+                <div class="control-group" style="margin-bottom: 20px;">
+                    <label style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>Min Tolerance (Transparent)</span>
+                        <span id="min-val" style="color: var(--accent-primary); font-family: monospace;">20%</span>
+                    </label>
+                    <input type="range" id="min-input" min="1" max="100" value="20" style="width: 100%;">
+                </div>
+
+                <div class="control-group" style="margin-bottom: 20px;">
+                    <label style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                        <span>Max Tolerance (Opaque)</span>
+                        <span id="max-val" style="color: var(--accent-primary); font-family: monospace;">50%</span>
+                    </label>
+                    <input type="range" id="max-input" min="1" max="100" value="50" style="width: 100%;">
+                </div>
+            </div>
+
+            <div style="margin-top: 10px;">
+                <label style="display: block; margin-bottom: 8px; font-weight: 500;">Transparency Result Strip</label>
+                <div style="position: relative; height: 40px; border-radius: 6px; overflow: hidden; border: 1px solid var(--border-subtle); background: 
+                    conic-gradient(#ccc 90deg, #fff 90deg 180deg, #ccc 180deg 270deg, #fff 270deg) 0 0 / 20px 20px;">
+                    <canvas id="strip-canvas" width="400" height="40"
+                        style="width: 100%; height: 100%; display: block;"></canvas>
+                </div>
+                <div
+                    style="display: flex; justify-content: space-between; margin-top: 5px; font-size: 0.8em; color: var(--text-muted);">
+                    <span>Close Match (Transparent)</span>
+                    <span>No Match (Opaque)</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column: Visualization -->
+        <div style="flex: 0 0 auto; display: flex; flex-direction: column; align-items: center;">
+            <canvas id="wheel-canvas" width="300" height="300"
+                style="border-radius: 50%; border: 1px solid var(--border-subtle); cursor: crosshair; touch-action: none; max-width: 100%; height: auto;"></canvas>
+            <div class="widget-explainer" style="margin-top: 15px; max-width: 300px;">
+                <p style="margin-bottom: 8px;">The center point represents the <strong>Target Color</strong>.</p>
+                <p style="margin-bottom: 8px;"><strong>Inner Circle (Min):</strong> Colors inside are fully keyed out
+                    (transparent).</p>
+                <p><strong>Outer Ring (Max):</strong> Colors between circles are partially transparent (soft edge).</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const wheelCanvas = document.getElementById('wheel-canvas');
+        const stripCanvas = document.getElementById('strip-canvas');
+        if (!wheelCanvas || !stripCanvas) return;
+
+        const ctxWheel = wheelCanvas.getContext('2d');
+        const ctxStrip = stripCanvas.getContext('2d');
+
+        const hueInput = document.getElementById('hue-input');
+        const minInput = document.getElementById('min-input');
+        const maxInput = document.getElementById('max-input');
+        const minVal = document.getElementById('min-val');
+        const maxVal = document.getElementById('max-val');
+        const hueVal = document.getElementById('hue-val');
+        const targetPreview = document.getElementById('target-color-preview');
+
+        // State
+        let targetHue = 120; // Green
+        let minTol = 20;     // Percentage radius
+        let maxTol = 50;     // Percentage radius
+
+        // Constants
+        const width = wheelCanvas.width;
+        const height = wheelCanvas.height;
+        const cx = width / 2;
+        const cy = height / 2;
+        const radius = Math.min(cx, cy) - 5; // Leave some margin
+        const wheelRadius = radius;
+
+        // Colors
+        function hslToRgb(h, s, l) {
+            let r, g, b;
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                const hue2rgb = (p, q, t) => {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1 / 6) return p + (q - p) * 6 * t;
+                    if (t < 1 / 2) return q;
+                    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                    return p;
+                };
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1 / 3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1 / 3);
+            }
+            return `rgb(${Math.round(r * 255)}, ${Math.round(g * 255)}, ${Math.round(b * 255)})`;
+        }
+
+        function drawWheel() {
+            // Clear
+            ctxWheel.clearRect(0, 0, width, height);
+
+            // Draw Hue/Sat disc
+            // Optimization: Create an image data buffer for the wheel if performance is an issue, 
+            // but for 300x300 it's acceptably fast to draw per-pixel or use a gradient approximation.
+            // Let's use a simpler radial gradient approach for "Distance from Target"
+            // Actually, showing the full color wheel rotated so target is up?
+            // No, the requirement is "Color wheel... with target chroma key color shown as a dot".
+            // So we draw a static full spectrum color wheel.
+
+            // Draw Full Color Wheel
+            const imgData = ctxWheel.createImageData(width, height);
+            const data = imgData.data;
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const dx = x - cx;
+                    const dy = y - cy;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist <= wheelRadius) {
+                        // Angle in radians, mapped to 0-1 hue
+                        let angle = Math.atan2(dy, dx); // -PI to PI
+                        let hue = (angle + Math.PI) / (2 * Math.PI); // 0-1
+
+                        // We want to rotate the wheel so the Target Hue is at the top? 
+                        // Or just mark the spot?
+                        // "Target chroma key color shown as a dot".
+                        // Usually easier if the wheel is standard (Red at 0/Right or Top).
+                        // Let's align 0 rad (Right) to Red.
+
+                        const sat = dist / wheelRadius;
+                        const rgb = hslToRgbObj(hue, sat, 0.5);
+
+                        const idx = (y * width + x) * 4;
+                        data[idx] = rgb.r;
+                        data[idx + 1] = rgb.g;
+                        data[idx + 2] = rgb.b;
+                        data[idx + 3] = 255;
+                    }
+                }
+            }
+            ctxWheel.putImageData(imgData, 0, 0);
+
+            // Calculate position of target hue on the wheel
+            // Hues go 0-360. 0 is Red. In our buffer generation, 0 rad is Hue 0.5 (Cyan)?
+            // Wait, let's recheck hue logic above:
+            // atan2(dy, dx) returns angle.
+            // If angle is 0 (right), hue is 0.5.
+            // If angle is PI (left), hue is 1.0 (or 0).
+            // Let's adjust to standard wheel: Right=Red=0.
+            // atan2 returns 0 for (1,0). 
+            // We want Hue 0 at angle 0.
+            // So Hue = angle / (2PI). If negative, add 1.
+
+            // Re-draw wheel background correctly creates a lot of overhead.
+            // Instead, let's draw a pre-rendered image or just simple shapes.
+            // Or simpler: Just draw the tolerance circles centered on the canvas, 
+            // and fill the "surrounding" area with colors representing "distance" 
+            // (i.e. hue difference) from center?
+            // That might be confusing.
+
+            // Let's stick to: Background = Standard Color Wheel.
+            // Overlay = Tolerance Circles centered at the Target Hue's location.
+            // targetHue is 0-360.
+            // Position on wheel (at max saturation):
+            const hueRad = (targetHue / 360) * Math.PI * 2;
+            const targetX = cx + Math.cos(hueRad) * (wheelRadius * 0.8); // 80% saturation as "default" key point?
+            const targetY = cy + Math.sin(hueRad) * (wheelRadius * 0.8);
+
+            // Actually, typical Chroma Key picks a specific H/S point. The input is just Hue 0-360.
+            // Let's assume high saturation for the target.
+
+            // Draw circles around the target point
+            // Min Tolerance pixel radius
+            const minPx = (minTol / 100) * wheelRadius;
+            const maxPx = (maxTol / 100) * wheelRadius;
+
+            // Draw target dot
+            ctxWheel.beginPath();
+            ctxWheel.arc(targetX, targetY, 5, 0, Math.PI * 2);
+            ctxWheel.fillStyle = 'white';
+            ctxWheel.fill();
+            ctxWheel.strokeStyle = 'black';
+            ctxWheel.lineWidth = 2;
+            ctxWheel.stroke();
+
+            // Draw Min Circle (Inner)
+            ctxWheel.beginPath();
+            ctxWheel.arc(targetX, targetY, minPx, 0, Math.PI * 2);
+            ctxWheel.strokeStyle = 'rgba(255, 255, 255, 0.8)';
+            ctxWheel.lineWidth = 2;
+            ctxWheel.stroke();
+
+            // Draw Max Circle (Outer)
+            ctxWheel.beginPath();
+            ctxWheel.arc(targetX, targetY, maxPx, 0, Math.PI * 2);
+            ctxWheel.strokeStyle = 'rgba(255, 255, 255, 0.4)';
+            ctxWheel.lineWidth = 1; // dashed?
+            ctxWheel.setLineDash([4, 4]);
+            ctxWheel.stroke();
+            ctxWheel.setLineDash([]);
+
+            // Fill Inner (Fully Transparent zone)
+            ctxWheel.beginPath();
+            ctxWheel.arc(targetX, targetY, minPx, 0, Math.PI * 2);
+            ctxWheel.fillStyle = 'rgba(0, 0, 0, 0.5)'; // Darken to show "removed"
+            ctxWheel.fill();
+        }
+
+        // Helper to get RGB object
+        function hslToRgbObj(h, s, l) {
+            let r, g, b;
+
+            if (s == 0) {
+                r = g = b = l; // achromatic
+            } else {
+                const hue2rgb = function hue2rgb(p, q, t) {
+                    if (t < 0) t += 1;
+                    if (t > 1) t -= 1;
+                    if (t < 1 / 6) return p + (q - p) * 6 * t;
+                    if (t < 1 / 2) return q;
+                    if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+                    return p;
+                }
+
+                const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                const p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1 / 3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1 / 3);
+            }
+
+            return {
+                r: Math.round(r * 255),
+                g: Math.round(g * 255),
+                b: Math.round(b * 255)
+            };
+        }
+
+        // Draw the visualization strip
+        function drawStrip() {
+            const w = stripCanvas.width;
+            const h = stripCanvas.height;
+            ctxStrip.clearRect(0, 0, w, h);
+
+            // We simulate a gradient from "Exact Match" to "Far Color"
+            // Left (0) = Target Color (Distance 0)
+            // Right (100) = Opposing Color (Distance Max)
+
+            const range = 50; // Arbitrary "distance units" shown in strip
+
+            for (let x = 0; x < w; x++) {
+                const distRatio = x / w; // 0 to 1
+                const distUnits = distRatio * 100; // 0 to 100 units
+
+                // Determine Alpha based on tolerance
+                let alpha = 1.0;
+
+                if (distUnits <= minTol) {
+                    alpha = 0.0; // Fully transparent
+                }
+                else if (distUnits >= maxTol) {
+                    alpha = 1.0; // Fully opaque
+                }
+                else {
+                    // Interpolate
+                    alpha = (distUnits - minTol) / (maxTol - minTol);
+                }
+
+                // Draw Slice
+                // Color: Target hue at left, shifting hue to right
+                // Actually, let's keep Hue constant and just show Alpha effect on GREEN vs BACKGROUND?
+                // The widget says "green-screen-like gradient going from fully keyed -> partially -> fully opaque"
+
+                // Let's use the Target Hue color as the base "Screen Color"
+                // And composite it over the checkerboard background
+
+                const rgb = hslToRgbObj(targetHue / 360, 1.0, 0.5);
+
+                // If it's the screen color, we want to show it disappearing
+                // So we draw the color with 'alpha' opacity?
+                // No, Keying MAKES it transparent.
+                // So if it matches (dist < min), it is transparent (alpha 0).
+
+                ctxStrip.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${alpha})`;
+
+                // Wait, if alpha is 0 (fully keyed), we see background (checkerboard).
+                // If alpha is 1 (opaque), we see the color.
+                // Normally KEYING removes the green. 
+                // So "Transparent" means we see background.
+                // "Opaque" means we see the original green pixel.
+                // So the strip should show:
+                // Left side (Match): Transparent (Checks visible)
+                // Middle: Semi-transparent Green
+                // Right: Opaque Green (Original footage, unkeyed)
+
+                ctxStrip.fillRect(x, 0, 1, h);
+            }
+
+            // Draw markers for Min and Max on the strip
+            const minX = (minTol / 100) * w;
+            const maxX = (maxTol / 100) * w;
+
+            ctxStrip.fillStyle = 'white';
+            ctxStrip.strokeStyle = 'black';
+            ctxStrip.lineWidth = 1;
+
+            // Min Marker
+            ctxStrip.beginPath();
+            ctxStrip.moveTo(minX, 0); ctxStrip.lineTo(minX, h);
+            ctxStrip.stroke();
+
+            // Max Marker
+            ctxStrip.beginPath();
+            ctxStrip.moveTo(maxX, 0); ctxStrip.lineTo(maxX, h);
+            ctxStrip.stroke();
+
+            // Labels
+            ctxStrip.fillStyle = 'white';
+            ctxStrip.font = '10px Roboto, sans-serif';
+            ctxStrip.shadowColor = 'black';
+            ctxStrip.shadowBlur = 2;
+            if (minX > 20) ctxStrip.fillText("Min", minX - 22, 12);
+            if (maxX < w - 25) ctxStrip.fillText("Max", maxX + 5, 12);
+            ctxStrip.shadowBlur = 0;
+        }
+
+        // Optimized Wheel Background (Static)
+        // Since calculating pixel-by-pixel every frame is slow
+        let wheelCache = null;
+
+        function precomputeWheel() {
+            const tempCanvas = document.createElement('canvas');
+            tempCanvas.width = width;
+            tempCanvas.height = height;
+            const tempCtx = tempCanvas.getContext('2d');
+            const imgData = tempCtx.createImageData(width, height);
+            const data = imgData.data;
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const dx = x - cx;
+                    const dy = y - cy;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist <= wheelRadius) {
+                        const angle = Math.atan2(dy, dx);
+                        let hue = angle / (2 * Math.PI);
+                        if (hue < 0) hue += 1;
+
+                        const sat = dist / wheelRadius;
+                        const rgb = hslToRgbObj(hue, sat, 0.5);
+
+                        const idx = (y * width + x) * 4;
+                        data[idx] = rgb.r;
+                        data[idx + 1] = rgb.g;
+                        data[idx + 2] = rgb.b;
+                        data[idx + 3] = 255;
+                    }
+                    // else transparent
+                }
+            }
+            tempCtx.putImageData(imgData, 0, 0);
+            return tempCanvas;
+        }
+
+        function update() {
+            // Read inputs
+            targetHue = parseInt(hueInput.value);
+            minTol = parseInt(minInput.value);
+            maxTol = parseInt(maxInput.value);
+
+            // Constrain
+            if (minTol >= maxTol) {
+                // If user drags min past max, push max
+                // But typically we prevent cross
+                // Check who triggered? 
+                // Simple logic: min cannot exceed max-1
+                // Actually checking which element is focused or active is hard.
+                // Just clamp reasonably.
+                // Let visualization handle overlap naturally or enforce?
+                // Enforce standard behavior: Min <= Max
+                if (parseInt(minInput.value) > parseInt(maxInput.value)) {
+                    // This flickers if two sliders.
+                    // Let's just allow overlap visually but conceptually Min is start, Max is end.
+                    // If Min > Max, the falloff is negative (instant cut).
+                }
+            }
+
+            // Update Labels
+            hueVal.textContent = targetHue + '°';
+            minVal.textContent = minTol + '%';
+            maxVal.textContent = maxTol + '%';
+
+            targetPreview.style.backgroundColor = `hsl(${targetHue}, 100%, 50%)`;
+
+            // Draw
+            if (!wheelCache) wheelCache = precomputeWheel();
+
+            ctxWheel.clearRect(0, 0, width, height);
+            ctxWheel.drawImage(wheelCache, 0, 0);
+
+            // Draw Overlay
+            // Target Position
+            const hueRad = (targetHue / 360) * Math.PI * 2;
+            const distRadius = wheelRadius * 0.7; // Fixed saturation point for visualization
+            const tx = cx + Math.cos(hueRad) * distRadius;
+            const ty = cy + Math.sin(hueRad) * distRadius;
+
+            // Radii in pixels
+            // Map 0-100% tolerance to 0-WheelRadius pixels?
+            // "Tolerance" usually maps to a distance in color space.
+            // If max tolerance is 100%, it covers the whole wheel? Yes.
+            const minPx = (minTol / 100) * wheelRadius;
+            const maxPx = (maxTol / 100) * wheelRadius;
+
+            // Draw Min Circle (Inner) - Transparent Zone
+            ctxWheel.beginPath();
+            ctxWheel.arc(tx, ty, minPx, 0, Math.PI * 2);
+            ctxWheel.fillStyle = 'rgba(0,0,0,0.6)'; // Masked out
+            ctxWheel.fill();
+            ctxWheel.lineWidth = 2;
+            ctxWheel.strokeStyle = '#fff';
+            ctxWheel.stroke();
+
+            // Draw Max Circle (Outer) - Falloff limit
+            ctxWheel.beginPath();
+            ctxWheel.arc(tx, ty, maxPx, 0, Math.PI * 2);
+            ctxWheel.lineWidth = 2;
+            ctxWheel.strokeStyle = 'rgba(255, 255, 255, 0.5)';
+            ctxWheel.setLineDash([5, 5]);
+            ctxWheel.stroke();
+            ctxWheel.setLineDash([]);
+
+            // Target Dot
+            ctxWheel.beginPath();
+            ctxWheel.arc(tx, ty, 6, 0, Math.PI * 2);
+            ctxWheel.fillStyle = `hsl(${targetHue}, 100%, 50%)`;
+            ctxWheel.strokeStyle = 'white';
+            ctxWheel.lineWidth = 2;
+            ctxWheel.fill();
+            ctxWheel.stroke();
+
+            drawStrip();
+        }
+
+        hueInput.addEventListener('input', update);
+        minInput.addEventListener('input', () => {
+            if (parseInt(minInput.value) > parseInt(maxInput.value)) maxInput.value = minInput.value;
+            update();
+        });
+        maxInput.addEventListener('input', () => {
+            if (parseInt(maxInput.value) < parseInt(minInput.value)) minInput.value = maxInput.value;
+            update();
+        });
+
+        // Click interaction on wheel
+        /*
+        wheelCanvas.addEventListener('pointerdown', (e) => {
+            const rect = wheelCanvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            // Calculate angle -> Hue
+            const dx = x - cx;
+            const dy = y - cy;
+            let angle = Math.atan2(dy, dx);
+            let hue = angle / (2 * Math.PI);
+            if (hue < 0) hue += 1;
+            hue = Math.round(hue * 360);
+            
+            hueInput.value = hue;
+            update();
+        });
+        */
+        // Simple initial draw
+        update();
+
+    })();
+</script>

@@ -916,14 +916,14 @@ body::before {
     border-radius: var(--border-radius);
     margin: 16px 0;
     display: block;
-    box-shadow: 0 4px 6px var(--shadow-color);
+    filter: drop-shadow(0 8px 16px var(--shadow-color));
     cursor: zoom-in;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    transition: transform 0.2s ease, filter 0.2s ease;
 }
 
 .content-image:hover {
     transform: scale(1.01);
-    box-shadow: 0 8px 16px var(--shadow-color);
+    filter: drop-shadow(0 12px 24px var(--shadow-color));
 }
 
 .content-video {
@@ -1567,6 +1567,7 @@ button:focus-visible {
     height: auto;
     border-radius: 8px;
     margin: 16px 0;
+    filter: drop-shadow(0 8px 16px var(--shadow-color));
 }
 
 /* Section Overview (legacy fallback for chapters without grouped links) */

@@ -1,0 +1,177 @@
+<div class="interactive-widget" id="sdr-white-widget">
+    <div style="position: relative; height: 60px; background: linear-gradient(to right, #111, #fff); border-radius: 4px; margin-bottom: 30px; margin-top: 30px; width: 600px;"
+        id="nit-bar">
+        <!-- HDR Headroom Highlight -->
+        <div id="hdr-headroom"
+            style="position: absolute; right: 0; top: 0; bottom: 0; background: repeating-linear-gradient(45deg, rgba(139, 92, 246, 0.1), rgba(139, 92, 246, 0.1) 10px, rgba(139, 92, 246, 0.25) 10px, rgba(139, 92, 246, 0.25) 20px); border-left: 1px dashed rgba(255,255,255,0.3); pointer-events: none; overflow: hidden;">
+            <div
+                style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 700; letter-spacing: 1px; white-space: nowrap; text-shadow: 0 1px 2px rgba(0,0,0,0.5);">
+                HDR HEADROOM</div>
+        </div>
+
+        <!-- Markers -->
+        <div style="position: absolute; left: 0; bottom: -25px; font-size: 12px; color: #888;">0 nits (SDR Black)</div>
+        <div style="position: absolute; right: 0; bottom: -25px; font-size: 12px; color: #888;">10,000 nits</div>
+
+        <!-- Draggable Handle -->
+        <div id="white-point-handle"
+            style="position: absolute; top: -5px; bottom: -5px; width: 4px; background: var(--accent-primary); cursor: ew-resize; left: 50%; z-index: 10;">
+            <div style="position: absolute; top: -30px; left: 50%; transform: translateX(-50%); background: var(--accent-primary); color: white; padding: 2px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; white-space: nowrap; box-shadow: 0 2px 4px rgba(0,0,0,0.3);"
+                id="white-point-label">203 nits</div>
+            <div
+                style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); color: var(--text-primary); font-size: 12px; font-weight: 600; white-space: nowrap;">
+                SDR White</div>
+        </div>
+    </div>
+
+    <style>
+        #sdr-white-widget .widget-controls {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        #sdr-white-widget button {
+            padding: 10px 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            font-family: inherit;
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            background: var(--bg-tertiary, #292524);
+            color: var(--text-secondary, #a8a29e);
+            box-shadow: none;
+        }
+
+        #sdr-white-widget button:hover {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+
+        #sdr-white-widget button:active {
+            transform: translateY(1px);
+        }
+
+        #sdr-white-widget button.active {
+            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+            color: white;
+            border-color: transparent;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+
+        #sdr-white-widget button.active:hover {
+            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+        }
+    </style>
+
+    <div class="widget-controls">
+        <button data-nits="100" onclick="setNits(100)">Set 100 nits (Broadcast)</button>
+        <button data-nits="203" onclick="setNits(203)">Set 203 nits (Reference)</button>
+        <button data-nits="400" onclick="setNits(400)">Set 400 nits</button>
+    </div>
+    <div class="widget-explainer">
+        Adjust the <strong>SDR White Point</strong> to define how bright standard content appears.
+        <br>The hatched area shows the remaining <strong>HDR Headroom</strong> for highlights.
+    </div>
+</div>
+<script>
+    // We need to attach this to the window or use a closure that exposes the setter
+    (function () {
+        const bar = document.getElementById('nit-bar');
+        const handle = document.getElementById('white-point-handle');
+        const label = document.getElementById('white-point-label');
+        const headroom = document.getElementById('hdr-headroom');
+
+        // Log scale: min 1 nit (for log), max 10000
+        const minLog = Math.log10(1);
+        const maxLog = Math.log10(10000);
+        const logRange = maxLog - minLog;
+
+        // Current nits
+        let currentNits = 203;
+
+        function nitsToPercent(nits) {
+            // Avoid log(0)
+            const n = Math.max(1, nits);
+            const log = Math.log10(n);
+            return ((log - minLog) / logRange) * 100;
+        }
+
+        function percentToNits(pct) {
+            const log = (pct / 100) * logRange + minLog;
+            return Math.pow(10, log);
+        }
+
+        function updateUI() {
+            const pct = nitsToPercent(currentNits);
+            handle.style.left = pct + '%';
+            label.textContent = Math.round(currentNits) + ' nits';
+
+            // Update Headroom
+            if (headroom) {
+                headroom.style.left = pct + '%';
+            }
+
+            // Update buttons active state
+            const buttons = document.querySelectorAll('#sdr-white-widget button');
+            buttons.forEach(btn => {
+                const btnNits = parseInt(btn.getAttribute('data-nits'));
+                if (Math.round(currentNits) === btnNits) {
+                    btn.classList.add('active');
+                } else {
+                    btn.classList.remove('active');
+                }
+            });
+        }
+
+        // Global exposed function for buttons
+        window.setNits = function (n) {
+            currentNits = n;
+            updateUI();
+        };
+
+        // Dragging logic
+        let isDragging = false;
+
+        handle.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            document.body.style.userSelect = 'none';
+        });
+
+        document.addEventListener('mouseup', () => {
+            isDragging = false;
+            document.body.style.userSelect = '';
+        });
+
+        document.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const rect = bar.getBoundingClientRect();
+            let x = e.clientX - rect.left;
+            x = Math.max(0, Math.min(x, rect.width));
+            const pct = (x / rect.width) * 100;
+
+            // Clamp to SDR typical range for the handle dragging?
+            // User requirement: "SDR white point ... ranges from 80 to 500 nits" (actually 80-10000 in WATCHOUT, but handle for SDR white)
+            // The widget requirement says "draggable marker... range 80-500 nits"
+            // So we should clamp the *value* we can drag to, OR just let them drag anywhere but highlight valid range?
+            // "Draggable marker for the SDR white point (range 80–500 nits)"
+
+            let nits = percentToNits(pct);
+
+            // Clamp nits
+            nits = Math.max(80, Math.min(500, nits));
+
+            currentNits = nits;
+            updateUI();
+        });
+
+        // Init
+        updateUI();
+    })();
+</script>
