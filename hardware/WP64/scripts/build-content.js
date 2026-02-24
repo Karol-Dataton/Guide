@@ -24,8 +24,44 @@
 const fs = require('fs');
 const path = require('path');
 
+function normalizeMdLink(rawHref) {
+    const [pathPart, hashPart] = rawHref.split('#');
+    const cleanedParts = pathPart
+        .split('/')
+        .map((part, index, arr) => {
+            if (!part || part === '.' || part === '..') return part;
+
+            const isLast = index === arr.length - 1;
+            if (isLast) {
+                return part
+                    .replace(/^\d+-/, '')
+                    .replace(/\.md$/, '.html');
+            }
+
+            return part.replace(/^\d+-/, '');
+        });
+
+    const normalizedPath = cleanedParts.join('/');
+    return hashPart ? `${normalizedPath}#${hashPart}` : normalizedPath;
+}
+
+function normalizeAssetPath(rawPath, assetPathPrefix = '') {
+    if (!assetPathPrefix) return rawPath;
+
+    if (rawPath.startsWith('../media/') || rawPath.startsWith('../widgets/')) {
+        return `${assetPathPrefix}${rawPath}`;
+    }
+
+    if (rawPath.startsWith('media/') || rawPath.startsWith('widgets/')) {
+        return `${assetPathPrefix}${rawPath}`;
+    }
+
+    return rawPath;
+}
+
 // Simple markdown to HTML converter (no external dependencies)
-function markdownToHtml(markdown) {
+function markdownToHtml(markdown, options = {}) {
+    const assetPathPrefix = options.assetPathPrefix || '';
     let html = markdown;
 
     // Escape HTML entities in code blocks first (protect them)
@@ -106,7 +142,10 @@ function markdownToHtml(markdown) {
     html = html.replace(/(?<!\*)\*([^\*\n]+?)\*(?!\*)/g, '<em>$1</em>');
 
     // Images
-    html = html.replace(/!\[(.*?)\]\((.*?)\)/g, '<img src="$2" alt="$1" class="content-image">');
+    html = html.replace(/!\[(.*?)\]\((.*?)\)/g, (match, alt, src) => {
+        const normalizedSrc = normalizeAssetPath(src, assetPathPrefix);
+        return `<img src="${normalizedSrc}" alt="${alt}" class="content-image">`;
+    });
 
     // Links [text](url)
     // Must be done AFTER images to avoid matching inside image syntax
@@ -114,14 +153,9 @@ function markdownToHtml(markdown) {
         // specific fix for .md links to .html
         let href = url;
         if (href.endsWith('.md') && !href.startsWith('http')) {
-            href = href.replace(/\.md$/, '.html');
-            // Remove the numerical prefix from the filename if present
-            // e.g. 06-show-information.html -> show-information.html
-            const parts = href.split('/');
-            const filename = parts.pop();
-            const cleanFilename = filename.replace(/^\d+-/, '');
-            parts.push(cleanFilename);
-            href = parts.join('/');
+            href = normalizeMdLink(href);
+        } else if (!href.startsWith('http')) {
+            href = normalizeAssetPath(href, assetPathPrefix);
         }
         return `<a href="${href}">${text}</a>`;
     });
@@ -130,7 +164,8 @@ function markdownToHtml(markdown) {
     // Add timestamp to prevent browser caching issues
     let timestamp = Date.now();
     html = html.replace(/@\[(.*?)\]\((.*?)\)/g, (match, alt, src) => {
-        return `<video src="${src}?t=${timestamp++}" class="content-video" autoplay muted loop playsinline title="${alt}"></video>`;
+        const normalizedSrc = normalizeAssetPath(src, assetPathPrefix);
+        return `<video src="${normalizedSrc}?t=${timestamp++}" class="content-video" autoplay muted loop playsinline title="${alt}"></video>`;
     });
 
     // Widgets (custom syntax: [[WIDGET:filename]])
@@ -443,9 +478,15 @@ function parseIndexGroups(markdown) {
 }
 
 // Main build function
-function buildContent() {
-    const contentDir = path.join(__dirname, '..', 'content');
-    const outputDir = path.join(__dirname, '..');
+function buildContent(options = {}) {
+    const contentDirName = options.contentDirName || process.env.CONTENT_DIR || 'content';
+    const outputDirName = options.outputDirName || process.env.OUTPUT_DIR || '.';
+    const assetPathPrefix = options.assetPathPrefix || process.env.ASSET_PATH_PREFIX || '';
+
+    const contentDir = path.join(__dirname, '..', contentDirName);
+    const outputDir = path.join(__dirname, '..', outputDirName);
+
+    fs.mkdirSync(outputDir, { recursive: true });
 
     if (!fs.existsSync(contentDir)) {
         console.error('Content directory not found:', contentDir);
@@ -485,7 +526,7 @@ function buildContent() {
 
             if (metadata.title) chapterTitle = metadata.title;
             if (metadata.icon) chapterIcon = metadata.icon;
-            chapterOverview = markdownToHtml(content);
+            chapterOverview = markdownToHtml(content, { assetPathPrefix });
             sectionFileGroups = parseIndexGroups(content);
         }
 
@@ -529,7 +570,7 @@ function buildContent() {
                 metadataHtml += `</div>`;
             }
 
-            const sectionHtml = metadataHtml + markdownToHtml(content);
+            const sectionHtml = metadataHtml + markdownToHtml(content, { assetPathPrefix });
             const sectionGroup = sectionFileGroups.get(sectionFile);
 
             sections[sectionTitle] = sectionHtml;

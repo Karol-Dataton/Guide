@@ -6,6 +6,22 @@
     document.documentElement.setAttribute('data-theme', savedTheme);
 })();
 
+const UI_STRINGS = {
+    en: {
+        overview: 'Overview',
+        noResults: 'No results found',
+        searchResults: 'Search Results'
+    },
+    pl: {
+        overview: 'Przeglad',
+        noResults: 'Brak wynikow',
+        searchResults: 'Wyniki wyszukiwania'
+    }
+};
+
+const currentLang = ((document.documentElement.getAttribute('lang') || 'en').toLowerCase().startsWith('pl')) ? 'pl' : 'en';
+const ui = UI_STRINGS[currentLang] || UI_STRINGS.en;
+
 const BADGE_STORAGE_PREFIX = 'watchout-wiki-badges-';
 const DEFAULT_BADGE_TABLE = 'wiki_badge_states';
 
@@ -233,7 +249,6 @@ window.watchoutBadgeStore = watchoutBadgeStore;
 
 document.addEventListener('DOMContentLoaded', () => {
     setupSidebar();
-    setupSidebarTools();
     setupThemeToggle();
     setupMobileMenu();
     setupHeroVideo();
@@ -704,41 +719,6 @@ function setupSidebarAccordion() {
     });
 }
 
-function setupSidebarTools() {
-    const toolsContainer = document.querySelector('.tools-buttons');
-    if (!toolsContainer) return;
-
-    const existingDashboard = toolsContainer.querySelector('a[href*="dashboard/index.html"]');
-    if (existingDashboard) return;
-
-    const shortcutLink = toolsContainer.querySelector('a[href*="shortcuts/index.html"]');
-    const templateHref = shortcutLink ? shortcutLink.getAttribute('href') : '../shortcuts/index.html';
-    const dashboardHref = templateHref.replace('shortcuts/index.html', 'dashboard/index.html');
-
-    const dashboardLink = document.createElement('a');
-    dashboardLink.href = dashboardHref;
-    dashboardLink.className = 'tools-btn';
-    dashboardLink.title = 'Director Dashboard';
-    dashboardLink.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path d="M12 2v6"></path>
-            <path d="M5 7h14"></path>
-            <path d="M5 11h14"></path>
-            <path d="M5 15h10"></path>
-            <path d="M5 19h6"></path>
-        </svg>
-    `;
-
-    const themeToggle = toolsContainer.querySelector('#theme-toggle');
-    if (themeToggle) {
-        toolsContainer.insertBefore(dashboardLink, themeToggle);
-    } else {
-        toolsContainer.appendChild(dashboardLink);
-    }
-}
-
 function renderTocPreview() {
     const tocPreviewGrid = document.getElementById('toc-preview-grid');
     if (!tocPreviewGrid || typeof chaptersData === 'undefined') return;
@@ -970,7 +950,7 @@ function performSearch(query) {
             if (text.toLowerCase().includes(lowerQuery) || chapterTitle.toLowerCase().includes(lowerQuery)) {
                 results.push({
                     title: chapterTitle,
-                    subtitle: "Overview",
+                    subtitle: ui.overview,
                     url: `${rootPrefix}${chapterSlug}/index.html`,
                     snippet: getSnippet(text, lowerQuery),
                     score: chapterTitle.toLowerCase().includes(lowerQuery) ? 10 : 5 // Simple scoring
@@ -1015,12 +995,12 @@ function getSnippet(text, query) {
 
 function renderSearchResults(results, container) {
     if (results.length === 0) {
-        container.innerHTML = `<div class="search-no-results">No results found</div>`;
+        container.innerHTML = `<div class="search-no-results">${ui.noResults}</div>`;
         return;
     }
 
     container.innerHTML = `
-        <div class="search-results-header">Search Results (${results.length})</div>
+        <div class="search-results-header">${ui.searchResults} (${results.length})</div>
         <div class="search-results-list">
             ${results.map(result => `
                 <a href="${result.url}" class="search-result-item">

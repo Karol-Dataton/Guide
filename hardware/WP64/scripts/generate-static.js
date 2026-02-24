@@ -3,10 +3,53 @@ const path = require('path');
 
 // --- Configuration ---
 const WIKI_ROOT = path.resolve(__dirname, '..');
-const OUTPUT_DIR = WIKI_ROOT; // Generate in the wiki root
-const CONFIG_PATH = path.join(WIKI_ROOT, 'config.js');
-const CONTENT_DATA_PATH = path.join(WIKI_ROOT, 'content-data.js');
-const TOC_DATA_PATH = path.join(WIKI_ROOT, 'toc-data.js');
+const SITE_DIR = process.env.SITE_DIR || '.';
+const OUTPUT_DIR = path.resolve(WIKI_ROOT, SITE_DIR);
+const CONFIG_PATH = path.join(OUTPUT_DIR, 'config.js');
+const CONTENT_DATA_PATH = path.join(OUTPUT_DIR, 'content-data.js');
+const TOC_DATA_PATH = path.join(OUTPUT_DIR, 'toc-data.js');
+const LOCALE = (process.env.LOCALE || 'en').toLowerCase();
+
+const UI_TEXT = {
+    en: {
+        htmlLang: 'en',
+        guideTitle: 'WATCHPAX 64 User Guide',
+        searchPlaceholder: 'Search documentation...',
+        home: 'Home',
+        previous: 'Previous',
+        next: 'Next',
+        inThisChapter: 'In This Chapter',
+        inThisChapterDescription: 'This chapter covers the following topics. Click on any section to learn more.',
+        missingSectionContent: 'Content for this section is not available in the wiki data.',
+        footerPrefix: 'WATCHPAX 64 User Guide • Dataton Documentation • Generated',
+        languageSwitchTitle: 'Switch language',
+        languageSwitchLabel: 'PL',
+        statsPageTitle: 'Wiki Statistics',
+        statsBreadcrumb: 'Statistics',
+        versionPageTitle: 'Version Information',
+        versionBreadcrumb: 'Version'
+    },
+    pl: {
+        htmlLang: 'pl',
+        guideTitle: 'Przewodnik użytkownika WATCHPAX 64',
+        searchPlaceholder: 'Szukaj w dokumentacji...',
+        home: 'Strona główna',
+        previous: 'Poprzedni',
+        next: 'Następny',
+        inThisChapter: 'W tym rozdziale',
+        inThisChapterDescription: 'Ten rozdział obejmuje poniższe tematy. Kliknij dowolną sekcję, aby przejść dalej.',
+        missingSectionContent: 'Treść tej sekcji nie jest jeszcze dostępna.',
+        footerPrefix: 'Przewodnik użytkownika WATCHPAX 64 • Dokumentacja Dataton • Wygenerowano',
+        languageSwitchTitle: 'Przełącz język',
+        languageSwitchLabel: 'EN',
+        statsPageTitle: 'Statystyki wiki',
+        statsBreadcrumb: 'Statystyki',
+        versionPageTitle: 'Informacje o wersji',
+        versionBreadcrumb: 'Wersja'
+    }
+};
+
+const T = UI_TEXT[LOCALE] || UI_TEXT.en;
 
 // --- Helper Functions ---
 function slugify(text) {
@@ -21,6 +64,18 @@ function slugify(text) {
 function getRelativePath(depth) {
     if (depth === 0) return './';
     return '../'.repeat(depth);
+}
+
+function normalizeRelativeHref(href) {
+    if (!href || href === '') return './';
+    return href;
+}
+
+function getLanguageSwitchHref(canonicalPath) {
+    const currentPath = LOCALE === 'pl' ? path.posix.join('pl', canonicalPath) : canonicalPath;
+    const targetPath = LOCALE === 'pl' ? canonicalPath : path.posix.join('pl', canonicalPath);
+    const relative = path.posix.relative(path.posix.dirname(currentPath), targetPath);
+    return normalizeRelativeHref(relative);
 }
 
 // --- Load Data ---
@@ -173,16 +228,17 @@ const CONFETTI_SCRIPT = `
 </script>
 `;
 
-function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs, extraScripts = '') {
+function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs, extraScripts = '', canonicalPath = 'index.html') {
     const relPath = getRelativePath(depth);
+    const languageSwitchHref = getLanguageSwitchHref(canonicalPath);
 
     const htmlTemplate = `<!DOCTYPE html>
-<html lang="en">
+<html lang="${T.htmlLang}">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="WATCHPAX 64 User Guide - ${title}">
-    <title>${title} - WATCHPAX 64 User Guide</title>
+    <meta name="description" content="${T.guideTitle} - ${title}">
+    <title>${title} - ${T.guideTitle}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -196,7 +252,7 @@ function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs, extra
         })();
     </script>
 </head>
-<body data-page-id="${slugify(title)}">
+<body data-page-id="${slugify(title)}" data-canonical-path="${canonicalPath}">
     <div class="app">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
@@ -222,7 +278,7 @@ function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs, extra
                         <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                     </svg>
                 </span>
-                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <input type="text" id="search-input" class="search-input" placeholder="${T.searchPlaceholder}">
                 <button class="search-clear" id="search-clear" aria-label="Clear search">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -238,8 +294,8 @@ function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs, extra
 
             <div class="sidebar-footer">
                 <div class="tools-section">
-                    <span class="tools-label">Tools</span>
                     <div class="tools-buttons">
+                        <a href="${languageSwitchHref}" class="tools-btn" title="${T.languageSwitchTitle}">${T.languageSwitchLabel}</a>
                         <button class="tools-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
                              <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -305,7 +361,7 @@ function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs, extra
             </article>
 
             <footer class="content-footer">
-                <p>WATCHPAX 64 User Guide • Dataton Documentation • Generated ${new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
+                <p>${T.footerPrefix} ${new Date().toLocaleDateString(LOCALE === 'pl' ? 'pl-PL' : 'en-US', { month: 'long', year: 'numeric' })}</p>
             </footer>
         </main>
     </div>
@@ -423,8 +479,8 @@ chapters.forEach(chapter => {
         // Add "In This Chapter" bento grid
         if (chapter.subsections.length > 0) {
             chapterBody += `
-                <h2 style="margin-top: 32px;">In This Chapter</h2>
-                <p>This chapter covers the following topics. Click on any section to learn more.</p>
+                <h2 style="margin-top: 32px;">${T.inThisChapter}</h2>
+                <p>${T.inThisChapterDescription}</p>
                 <div class="subsection-list">
                     ${chapter.subsections.map(sub => `
                         <a href="./${sub.slug}.html" class="subsection-item" style="text-decoration: none; color: inherit; display: block;">
@@ -440,13 +496,13 @@ chapters.forEach(chapter => {
     }
 
     const breadcrumbs = `
-        <a href="../index.html" class="breadcrumb-item">Home</a>
+        <a href="../index.html" class="breadcrumb-item">${T.home}</a>
         <span class="breadcrumb-separator">›</span>
         <span class="breadcrumb-item current">${chapter.title}</span>
     `;
 
     const sidebar = generateSidebar(chapter.slug, 1);
-    const html = generatePageHtml(chapter.title, chapterBody, sidebar, 1, breadcrumbs);
+    const html = generatePageHtml(chapter.title, chapterBody, sidebar, 1, breadcrumbs, '', `${chapter.slug}/index.html`);
 
     fs.writeFileSync(path.join(chapterDir, 'index.html'), html);
     console.log(`Generated: ${chapter.slug}/index.html`);
@@ -478,7 +534,7 @@ chapters.forEach(chapter => {
         if (!subBody) {
             subBody = `
                 <h2>${sub.title}</h2>
-                <p>Content for this section is not available in the wiki data.</p>
+                <p>${T.missingSectionContent}</p>
              `;
         }
 
@@ -507,17 +563,17 @@ chapters.forEach(chapter => {
                         stroke-linejoin="round">
                         <polyline points="15 18 9 12 15 6"></polyline>
                     </svg>
-                    Previous
+                    ${T.previous}
                 </a>`;
         } else {
-            navHtml += `<button class="nav-btn" disabled>Previous</button>`;
+            navHtml += `<button class="nav-btn" disabled>${T.previous}</button>`;
         }
 
         if (next) {
             const nextUrl = next.root === chapter.slug ? (next.type === 'chapter' ? 'index.html' : `${path.basename(next.url)}`) : `../${next.url}`;
             navHtml += `
                 <a href="${nextUrl}" class="nav-btn">
-                    Next
+                    ${T.next}
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                         stroke-linejoin="round">
@@ -530,7 +586,7 @@ chapters.forEach(chapter => {
         subBody += navHtml;
 
         const subBreadcrumbs = `
-            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <a href="../index.html" class="breadcrumb-item">${T.home}</a>
             <span class="breadcrumb-separator">›</span>
             <a href="index.html" class="breadcrumb-item">${chapter.title}</a>
             <span class="breadcrumb-separator">›</span>
@@ -546,7 +602,7 @@ chapters.forEach(chapter => {
         }
 
         const subSidebar = generateSidebar(sub.slug, 1);
-        const subHtml = generatePageHtml(sub.title, subBody, subSidebar, 1, subBreadcrumbs, extraScripts);
+        const subHtml = generatePageHtml(sub.title, subBody, subSidebar, 1, subBreadcrumbs, extraScripts, `${chapter.slug}/${sub.slug}.html`);
 
         fs.writeFileSync(path.join(chapterDir, `${sub.slug}.html`), subHtml);
         console.log(`Generated: ${chapter.slug}/${sub.slug}.html`);
@@ -767,7 +823,7 @@ function generateStatsPage() {
 
     // Build HTML Content
     const statsBody = `
-        <h1>Wiki Statistics</h1>
+        <h1>${T.statsPageTitle}</h1>
         
         <div class="stats-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px;">
             <div class="stat-card" style="background: var(--bg-secondary); padding: 20px; border-radius: var(--border-radius); border: 1px solid var(--border-subtle); text-align: center;">
@@ -1011,15 +1067,15 @@ function generateStatsPage() {
     `;
 
     const breadcrumbs = `
-        <a href="index.html" class="breadcrumb-item">Home</a>
+        <a href="index.html" class="breadcrumb-item">${T.home}</a>
         <span class="breadcrumb-separator">›</span>
-        <span class="breadcrumb-item current">Statistics</span>
+        <span class="breadcrumb-item current">${T.statsBreadcrumb}</span>
     `;
 
     // Generate page with Sidebar (active chapter none)
     // We can pick a random slug or empty string for sidebar generation
     const sidebar = generateSidebar('', 0);
-    const html = generatePageHtml("Wiki Statistics", statsBody, sidebar, 0, breadcrumbs);
+    const html = generatePageHtml(T.statsPageTitle, statsBody, sidebar, 0, breadcrumbs, '', 'stats.html');
 
     fs.writeFileSync(path.join(OUTPUT_DIR, 'stats.html'), html);
     console.log("Generated: stats.html");
@@ -1054,11 +1110,11 @@ function generateVersionPage() {
     }
 
     const versionBody = `
-        <h1>Version Information</h1>
+        <h1>${T.versionPageTitle}</h1>
         <div class="version-card" style="background: var(--bg-secondary); padding: 40px; border-radius: var(--border-radius); border: 1px solid var(--border-subtle); text-align: center; margin-bottom: 40px;">
-            <div style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 10px;">Current Version</div>
+            <div style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 10px;">${LOCALE === 'pl' ? 'Aktualna wersja' : 'Current Version'}</div>
             <div style="font-size: 4rem; font-weight: 700; color: var(--accent-primary); font-family: 'Futura Now Headline', sans-serif;">v${packageJson.version}</div>
-            <div style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">Build Date: ${new Date().toISOString().split('T')[0]}</div>
+            <div style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">${LOCALE === 'pl' ? 'Data kompilacji' : 'Build Date'}: ${new Date().toISOString().split('T')[0]}</div>
         </div>
 
         <div class="changelog-container" style="background: var(--bg-secondary); padding: 40px; border-radius: var(--border-radius); border: 1px solid var(--border-subtle);">
@@ -1067,13 +1123,13 @@ function generateVersionPage() {
     `;
 
     const breadcrumbs = `
-        <a href="index.html" class="breadcrumb-item">Home</a>
+        <a href="index.html" class="breadcrumb-item">${T.home}</a>
         <span class="breadcrumb-separator">›</span>
-        <span class="breadcrumb-item current">Version</span>
+        <span class="breadcrumb-item current">${T.versionBreadcrumb}</span>
     `;
 
     const sidebar = generateSidebar('', 0);
-    const html = generatePageHtml("Version Info", versionBody, sidebar, 0, breadcrumbs);
+    const html = generatePageHtml(T.versionPageTitle, versionBody, sidebar, 0, breadcrumbs, '', 'version.html');
 
     fs.writeFileSync(path.join(OUTPUT_DIR, 'version.html'), html);
     console.log("Generated: version.html");
