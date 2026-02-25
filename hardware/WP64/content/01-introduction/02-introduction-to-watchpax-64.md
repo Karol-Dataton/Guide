@@ -50,8 +50,4 @@ The WATCHPAX 64 uses an NVIDIA professional GPU to drive its four DisplayPort 1.
 
 GPU topology and display configuration are managed through [WATCHPAX Config](../02-installation-and-operation/06-miscellaneous.md#watchpax-config), a browser-based interface accessible on the same network.
 
-### Terminology
-
-**ST2110 (SMPTE ST 2110)** is a suite of standards for transporting professional media (video, audio, and ancillary data) as separate IP streams over standard Ethernet networks. Unlike SDI, which uses dedicated coaxial cabling, ST2110 routes signals through existing IP infrastructure, making it well suited for large-scale or facility-wide installations.
-
-**SDI (Serial Digital Interface)** is a family of standards for carrying uncompressed digital video over coaxial cable using BNC (or micro BNC) connectors. SDI is widely used in broadcast and live-event production. The WATCHPAX 64 supports up to 12G-SDI, which can carry a single uncompressed 4K signal on one cable.
+For definitions of technical terms used on this page and throughout the documentation, see the [Glossary](../05-glossary/01-glossary.md).

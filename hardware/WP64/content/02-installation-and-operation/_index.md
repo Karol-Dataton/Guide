@@ -20,5 +20,5 @@ icon: "settings"
 
 ### Additional Features
 
-- [Miscellaneous](06-miscellaneous.md) - Audio output and WATCHPAX Config
+- [Audio Output and WATCHPAX Config](06-miscellaneous.md) - Audio output options and the WATCHPAX Config interface
 - [Dante License Activation](07-dante-license-activation.md) - Purchase and activate Dante on WATCHPAX 64

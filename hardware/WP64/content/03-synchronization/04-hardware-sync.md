@@ -12,11 +12,11 @@ Hardware sync ensures that all GPU outputs across multiple WATCHPAX 64 units ref
 
 Before configuring the sync settings, make sure the servers are correctly connected together.
 
-* Use CAT6 or better ethernet cables.
+* Use CAT6 or better cables for sync connections. These carry sync data only — do not connect them to a network switch, router, or network jack.
 * Status LEDs on Quadro Sync cards should be active (either orange or green color).
 * Cable length should be short and of high signal integrity.
 * Do not make signal loops. This is a linear chain.
-* It is possible to use either of the two ethernet ports on the card when connecting the units with a cable.
+* Either of the two RJ45 ports on the Quadro Sync II card can be used when chaining units together (see connectors 14 and 15 in [Connectors](../01-introduction/08-connectors.md)).
 
 The sync signal should be structured in the following manner, with the signal source in the middle of the cluster:
 

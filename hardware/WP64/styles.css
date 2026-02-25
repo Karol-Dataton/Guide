@@ -1497,13 +1497,17 @@ button:focus-visible {
     color: var(--text-secondary);
 }
 
-.section-content-body a {
+.section-content-body a,
+.chapter-landing a,
+.section-overview a {
     color: var(--accent-secondary);
     text-decoration: none;
     transition: color 0.2s ease;
 }
 
-.section-content-body a:hover {
+.section-content-body a:hover,
+.chapter-landing a:hover,
+.section-overview a:hover {
     color: var(--accent-tertiary);
     text-decoration: underline;
 }
