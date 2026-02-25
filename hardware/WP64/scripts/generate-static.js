@@ -786,7 +786,6 @@ function generateStatsPage() {
     });
 
     // Fun Fact Calculations
-    extendedStats.longestWord = 'responsibilities';
     const wpm = 200;
     const readingTimeMinutes = Math.ceil(totalWords / wpm);
     const readingHours = Math.floor(readingTimeMinutes / 60);
