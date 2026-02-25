@@ -634,12 +634,27 @@ function generateStatsPage() {
         'the', 'of', 'and', 'to', 'a', 'in', 'is', 'that', 'for', 'it', 'as', 'was', 'with', 'on', 'by', 'be', 'at', 'this', 'are', 'we', 'you', 'or', 'an', 'your', 'from', 'can', 'which', 'if', 'will', 'not', 'use', 'has', 'have', 'but', 'more', 'when', 'all', 'one', 'new', 'their', 'other', 'also', 'time', 'into', 'up', 'out', 'so', 'what', 'some', 'see', 'only', 'do', 'its', 'them', 'two', 'then', 'over', 'may', 'no', 'there', 'any', 'after', 'how', 'most', 'such', 'these', 'used', 'using', 'way', 'about', 'get', 'than', 'just', 'make', 'where', 'like', 'should'
     ]);
 
-    // Calculate Widget Count
-    const widgetsDir = path.join(WIKI_ROOT, 'widgets');
-    let widgetCount = 0;
-    if (fs.existsSync(widgetsDir)) {
-        widgetCount = fs.readdirSync(widgetsDir).filter(file => file.endsWith('.html')).length;
+    // Calculate Widget Count — count unique widgets actually referenced in content
+    const contentDirName = process.env.CONTENT_DIR || 'content';
+    const contentDirForWidgets = path.join(WIKI_ROOT, contentDirName);
+    const usedWidgets = new Set();
+    function scanDirForWidgets(dir) {
+        if (!fs.existsSync(dir)) return;
+        fs.readdirSync(dir).forEach(item => {
+            const itemPath = path.join(dir, item);
+            if (fs.statSync(itemPath).isDirectory()) {
+                scanDirForWidgets(itemPath);
+            } else if (item.endsWith('.md')) {
+                const md = fs.readFileSync(itemPath, 'utf-8');
+                const matches = md.matchAll(/\[\[WIDGET:(.*?)\]\]/g);
+                for (const m of matches) {
+                    usedWidgets.add(m[1].trim());
+                }
+            }
+        });
     }
+    scanDirForWidgets(contentDirForWidgets);
+    let widgetCount = usedWidgets.size;
 
     function analyzeText(html, trackFrequency = false) {
         if (!html) return 0;
