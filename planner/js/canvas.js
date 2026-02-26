@@ -183,7 +183,17 @@ export function zoomFit() {
 }
 
 function setZoom(newScale) {
+    const oldScale = state.scale;
     state.scale = Math.max(0.1, Math.min(newScale, 4));
+
+    // Adjust pan so the viewport center stays fixed
+    const cx = container.clientWidth / 2;
+    const cy = container.clientHeight / 2;
+    const worldX = (cx - state.pan.x) / oldScale;
+    const worldY = (cy - state.pan.y) / oldScale;
+    state.pan.x = cx - worldX * state.scale;
+    state.pan.y = cy - worldY * state.scale;
+
     applyPanZoom();
     saveState();
 }

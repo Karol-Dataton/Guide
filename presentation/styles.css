@@ -31,7 +31,7 @@
     --text-muted: #8494a7;
     --border-subtle: rgba(255, 255, 255, 0.06);
     --font-family: 'Futura Now Text', -apple-system, BlinkMacSystemFont, sans-serif;
-    --font-date: 'Futura Now Headline Thin', 'Futura Now Text', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-date: 'Futura Now Headline', 'Futura Now Text', -apple-system, BlinkMacSystemFont, sans-serif;
     --font-mono: 'SF Mono', 'Cascadia Code', 'Fira Code', 'JetBrains Mono', monospace;
     --border-radius: 10px;
     --border-radius-lg: 16px;
@@ -819,19 +819,19 @@ body::before {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 60px;
+    padding: 30px;
     box-sizing: border-box;
     animation: fadeSlideIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .stats-title {
-    font-size: clamp(3rem, 5vw, 4.5rem);
+    font-size: clamp(2.5rem, 5vw, 3.8rem);
     background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
     font-weight: bold;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .stats-container {
@@ -839,7 +839,7 @@ body::before {
     max-width: 1200px;
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: 20px;
 }
 
 .stats-grid {
@@ -849,7 +849,7 @@ body::before {
 }
 
 #slide-stats .stat-card {
-    padding: 30px 20px;
+    padding: 24px 16px;
     text-align: center;
     justify-content: center;
 }
@@ -889,7 +889,7 @@ body::before {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    padding: 40px;
+    padding: 24px 40px;
     background: var(--bg-secondary);
     border-radius: var(--border-radius-lg);
     border: 1px solid var(--border-subtle);
@@ -1071,8 +1071,8 @@ body::before {
 
 .claude-mockup {
     width: min(85vw, 1200px);
-    height: 95vh;
-    max-height: 1200px;
+    height: 85vh;
+    max-height: 920px;
 }
 
 .claude-body {
@@ -1089,7 +1089,7 @@ body::before {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 36px;
+    gap: 24px;
 }
 
 .claude-greeting {
@@ -1116,10 +1116,10 @@ body::before {
     background-color: #31302d;
     border: 1px solid #484744;
     border-radius: 16px;
-    padding: 20px 24px;
+    padding: 16px 20px;
     display: flex;
     flex-direction: column;
-    gap: 48px;
+    gap: 32px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
@@ -1264,7 +1264,6 @@ body::before {
 .claude-section {
     position: relative;
     border-radius: 8px;
-    padding: 8px 12px;
     margin: -8px -12px 16px -12px;
 }
 
@@ -1446,6 +1445,7 @@ body::before {
     table-layout: fixed;
     border-radius: var(--border-radius-lg);
     overflow: hidden;
+    font-weight: 400;
 }
 
 .tree-table colgroup .col-meta {
@@ -1480,7 +1480,7 @@ body::before {
 .date-separator .date-label {
     font-family: var(--font-date);
     font-size: 2.05rem;
-    font-weight: 300;
+    font-weight: 400;
     letter-spacing: 0.4px;
     white-space: nowrap;
     flex-shrink: 0;
@@ -1494,7 +1494,7 @@ body::before {
 
 .date-separator .date-label .date-rest {
     color: var(--text-secondary);
-    font-weight: 300;
+    font-weight: 400;
 }
 
 .date-separator .date-line {

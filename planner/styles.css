@@ -300,12 +300,11 @@ body {
     top: 0;
     left: 0;
     width: 100%;
-    /* Will need to be essentially infinite/managed by JS for panning */
     height: 100%;
     pointer-events: none;
-    /* Let clicks pass through to container/nodes */
     z-index: 0;
     overflow: visible;
+    transform-origin: 0 0;
 }
 
 .connection-line {
@@ -338,8 +337,8 @@ body {
     width: 100%;
     height: 100%;
     pointer-events: none;
-    /* Individual nodes will have pointer-events: auto */
     z-index: 1;
+    transform-origin: 0 0;
 }
 
 .node {
@@ -604,6 +603,26 @@ body {
 
 .connection-item .connection-target {
     color: var(--text-secondary);
+}
+
+/* Checkbox property rows */
+.prop-row-checkbox {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.prop-row-checkbox input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    accent-color: var(--accent-primary);
+    cursor: pointer;
+}
+
+/* Enum dropdown styling */
+.prop-enum {
+    appearance: auto;
+    cursor: pointer;
 }
 
 /* Input types configuration */

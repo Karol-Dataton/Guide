@@ -10,14 +10,14 @@ import { createConnection, updateConnections } from './connections.js';
 import { reRenderGroups } from './groups.js';
 import { reRenderAnnotations } from './annotations.js';
 
-function addNode(type, x, y, nameOverride) {
+function addNode(type, x, y, nameOverride, dataOverrides = {}) {
     const def = NodeTypes[type];
     const node = {
         id: state.nextId++,
         type, x, y,
         width: def.width,
         ports: JSON.parse(JSON.stringify(def.ports)),
-        data: { ...def.data }
+        data: { ...def.data, ...dataOverrides }
     };
     if (nameOverride) node.data.name = nameOverride;
     else node.data.name = `${def.data.name.split('-')[0]}-${node.id}`;
@@ -59,10 +59,10 @@ export const templateList = [
 const templates = {
     simple() {
         const prod = addNode('production', 100, 150, 'Production');
-        const sw = addNode('switch', 400, 150, 'Main Switch');
-        const disp = addNode('display', 650, 100, 'Display-1');
-        const proj = addNode('projector', 950, 100, 'Projector-1');
-        const ctrl = addNode('control', 400, 400, 'Stream Deck');
+        const sw = addNode('switch', 400, 150, 'Main Switch', { speed: '2.5 Gbps' });
+        const disp = addNode('display', 650, 100, 'Display-1', { gpu: 'NVIDIA RTX PRO', outputType: 'GPU' });
+        const proj = addNode('projector', 950, 100, 'Projector-1', { inputType: 'HDMI', resolution: '1920x1080' });
+        const ctrl = addNode('control', 400, 400, 'Stream Deck', { protocol: 'OSC' });
 
         createConnection(prod.id, 'net', sw.id, 'p1');
         createConnection(disp.id, 'net', sw.id, 'p2');
@@ -72,13 +72,13 @@ const templates = {
 
     multiproj() {
         const prod = addNode('production', 100, 200, 'Production');
-        const sw = addNode('switch', 400, 200, 'Core Switch');
-        const d1 = addNode('display', 700, 60, 'Display-A');
-        const d2 = addNode('display', 700, 340, 'Display-B');
-        const p1 = addNode('projector', 1000, 0, 'Proj-Left');
-        const p2 = addNode('projector', 1000, 160, 'Proj-Center');
-        const p3 = addNode('projector', 1000, 320, 'Proj-Right');
-        const p4 = addNode('projector', 1000, 480, 'Proj-Fill');
+        const sw = addNode('switch', 400, 200, 'Core Switch', { speed: '2.5 Gbps', managed: true });
+        const d1 = addNode('display', 700, 60, 'Display-A', { gpu: 'NVIDIA RTX PRO', outputType: 'GPU' });
+        const d2 = addNode('display', 700, 340, 'Display-B', { gpu: 'NVIDIA RTX PRO', outputType: 'GPU' });
+        const p1 = addNode('projector', 1000, 0, 'Proj-Left', { inputType: 'HDMI', mapping3d: true });
+        const p2 = addNode('projector', 1000, 160, 'Proj-Center', { inputType: 'HDMI', mapping3d: true });
+        const p3 = addNode('projector', 1000, 320, 'Proj-Right', { inputType: 'HDMI', mapping3d: true });
+        const p4 = addNode('projector', 1000, 480, 'Proj-Fill', { inputType: 'HDMI' });
 
         createConnection(prod.id, 'net', sw.id, 'p1');
         createConnection(d1.id, 'net', sw.id, 'p2');
@@ -93,12 +93,12 @@ const templates = {
 
     ledwall() {
         const prod = addNode('production', 100, 200, 'Production');
-        const sw = addNode('switch', 400, 200, 'Core Switch');
-        const disp = addNode('display', 700, 100, 'Display-1');
-        const matrix = addNode('matrix', 1000, 100, 'HDMI Matrix');
-        const led1 = addNode('led', 1300, 50, 'LED Proc A');
-        const led2 = addNode('led', 1300, 250, 'LED Proc B');
-        const dmx = addNode('dmx', 700, 400, 'Art-Net Node');
+        const sw = addNode('switch', 400, 200, 'Core Switch', { speed: '2.5 Gbps', managed: true, igmpSnooping: true });
+        const disp = addNode('display', 700, 100, 'Display-1', { gpu: 'NVIDIA RTX PRO', outputType: 'GPU', storage: 'NVMe SSD' });
+        const matrix = addNode('matrix', 1000, 100, 'HDMI Matrix', { signalType: 'HDMI', size: '4x4' });
+        const led1 = addNode('led', 1300, 50, 'LED Proc A', { inputType: 'HDMI', pixels: '3840x2160' });
+        const led2 = addNode('led', 1300, 250, 'LED Proc B', { inputType: 'HDMI', pixels: '3840x2160' });
+        const dmx = addNode('dmx', 700, 400, 'Art-Net Node', { direction: 'Both' });
 
         createConnection(prod.id, 'net', sw.id, 'p1');
         createConnection(disp.id, 'net', sw.id, 'p2');

@@ -393,8 +393,10 @@
                     </div>
                     <div class="stat-card">
                         <div class="stat-emoji">📏</div>
-                        <div class="stat-value" style="font-size: 1.5rem">responsibilities</div>
+                        <div class="stat-value" style="font-size: 1.5rem; margin-bottom: 12px; margin-top: 24px;">
+                            indistinguishable</div>
                         <div class="stat-label">Longest Word</div>
+                        <div class="stat-desc">at 17 characters</div>
                     </div>
                     <div class="stat-card">
                         <div class="stat-emoji">👀</div>
@@ -1095,6 +1097,15 @@
                 } else if (e.key === 'ArrowLeft') {
                     e.preventDefault();
                     goToPrevSlide();
+                } else if (e.key === 'f' || e.key === 'F') {
+                    e.preventDefault();
+                    if (!document.fullscreenElement) {
+                        document.documentElement.requestFullscreen().catch(err => {
+                            console.error(`Error attempting to enable fullscreen: ${err.message} (${err.name})`);
+                        });
+                    } else {
+                        document.exitFullscreen();
+                    }
                 }
             });
 
@@ -1459,7 +1470,8 @@
                     const tableTop = table.getBoundingClientRect().top;
                     const rowYPositions = commitRows.map(tr => {
                         const rect = tr.getBoundingClientRect();
-                        return (rect.top - tableTop) + rect.height / 2;
+                        // Add +2 offset to visually align the dots with the text baseline
+                        return (rect.top - tableTop) + rect.height / 2 + 2;
                     });
 
                     drawCanvas(commits, hashToIdx, commitLane, commitColor, commitBranch,
@@ -1669,13 +1681,13 @@
                 let isFastForward = false;
 
                 function handleKeyDown(event) {
-                    if (event.key === 'f' || event.key === 'F') {
+                    if (event.key === 's' || event.key === 'S') {
                         isFastForward = true;
                     }
                 }
 
                 function handleKeyUp(event) {
-                    if (event.key === 'f' || event.key === 'F') {
+                    if (event.key === 's' || event.key === 'S') {
                         isFastForward = false;
                     }
                 }
@@ -1976,6 +1988,19 @@
                     height = window.innerHeight;
                     canvas.width = width;
                     canvas.height = height;
+
+                    // Recalculate positions based on new window dimensions
+                    stars.length = 0; // Clear existing stars
+                    for (let i = 0; i < numStars; i++) {
+                        stars.push({
+                            x: Math.random() * width,
+                            y: Math.random() * height,
+                            vx: (Math.random() - 0.5) * 0.5,
+                            vy: (Math.random() - 0.5) * 0.5,
+                            radius: Math.random() * 1.5 + 0.5,
+                            opacity: Math.random() * 0.5 + 0.5,
+                        });
+                    }
                 }
 
                 ctx.clearRect(0, 0, width, height);
