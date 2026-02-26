@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
         nodes: [],
         connections: [],
         nextId: 1,
+        nextConnectionId: 1,
         pan: { x: 0, y: 0 },
         scale: 1,
         isDraggingNode: null,
@@ -25,6 +26,7 @@ document.addEventListener('DOMContentLoaded', () => {
             nodes: state.nodes,
             connections: state.connections,
             nextId: state.nextId,
+            nextConnectionId: state.nextConnectionId,
             pan: state.pan,
             scale: state.scale
         };
@@ -39,6 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 state.nodes = data.nodes || [];
                 state.connections = data.connections || [];
                 state.nextId = data.nextId || 1;
+                state.nextConnectionId = data.nextConnectionId || (data.connections && data.connections.length > 0 ? Math.max(...data.connections.map(c => c.id)) + 1 : 1);
                 state.pan = data.pan || { x: 0, y: 0 };
                 state.scale = data.scale || 1;
                 return true;
@@ -77,164 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     // --- Node Definitions ---
-    const NodeTypes = {
-        production: {
-            title: 'Production Computer',
-            icon: 'fa-desktop',
-            width: 220,
-            ports: [
-                { id: 'net', label: 'Network', type: 'network' }
-            ],
-            data: { name: 'Prod-1', ip: '192.168.1.100' }
-        },
-        display: {
-            title: 'Display Server',
-            icon: 'fa-server',
-            width: 220,
-            ports: [
-                { id: 'net', label: 'Network', type: 'network' },
-                { id: 'out-1', label: 'Output 1', type: 'output' },
-                { id: 'out-2', label: 'Output 2', type: 'output' },
-                { id: 'out-3', label: 'Output 3', type: 'output' },
-                { id: 'out-4', label: 'Output 4', type: 'output' }
-            ],
-            ports: [
-                { id: 'net', label: 'Network', type: 'network' },
-                { id: 'out-1', label: 'Output 1', type: 'output' },
-                { id: 'out-2', label: 'Output 2', type: 'output' },
-                { id: 'out-3', label: 'Output 3', type: 'output' },
-                { id: 'out-4', label: 'Output 4', type: 'output' }
-            ],
-            data: { name: 'Disp-1', ip: '192.168.1.101', outputs: 4, inputs: 1, inputTypes: ['Generic'] }
-        },
-        watchpax: {
-            title: 'WATCHPAX',
-            icon: 'fa-cube',
-            width: 200,
-            ports: [
-                { id: 'net', label: 'Network', type: 'network' },
-                { id: 'out-1', label: 'Output 1', type: 'output' },
-                { id: 'out-2', label: 'Output 2', type: 'output' }
-            ],
-            data: { name: 'PAX-1', ip: '192.168.1.110', model: 'WATCHPAX 60' }
-        },
-        projector: {
-            title: 'Projector',
-            icon: 'fa-video',
-            width: 180,
-            ports: [
-                { id: 'in', label: 'Input', type: 'input' },
-                { id: 'net', label: 'Control', type: 'network' }
-            ],
-            data: { name: 'Proj-1', resolution: '1920x1080' }
-        },
-        led: {
-            title: 'LED Processor',
-            icon: 'fa-border-all',
-            width: 200,
-            ports: [
-                { id: 'in', label: 'Input', type: 'input' },
-                { id: 'net', label: 'Control', type: 'network' }
-            ],
-            data: { name: 'LED-1', pixels: '3840x2160' }
-        },
-        ndi: {
-            title: 'NDI Source',
-            icon: 'fa-podcast',
-            width: 200,
-            ports: [
-                { id: 'net', label: 'Network', type: 'network' },
-                { id: 'out', label: 'NDI Out', type: 'output' }
-            ],
-            data: { name: 'NDI-1', stream: 'Camera 1', resolution: '1920x1080' }
-        },
-        capture: {
-            title: 'Capture Card',
-            icon: 'fa-sd-card',
-            width: 200,
-            ports: [
-                { id: 'in-sdi', label: 'SDI In', type: 'input' },
-                { id: 'in-hdmi', label: 'HDMI In', type: 'input' },
-                { id: 'out', label: 'To PC', type: 'output' }
-            ],
-            data: { name: 'Cap-1', model: 'Decklink', inputs: 2 }
-        },
-        dmx: {
-            title: 'DMX / Art-Net',
-            icon: 'fa-lightbulb',
-            width: 200,
-            ports: [
-                { id: 'net', label: 'Network', type: 'network' },
-                { id: 'dmx-out', label: 'DMX Out', type: 'output' }
-            ],
-            data: { name: 'DMX-1', universe: 1, protocol: 'Art-Net' }
-        },
-        audio: {
-            title: 'Audio Device',
-            icon: 'fa-volume-high',
-            width: 180,
-            ports: [
-                { id: 'net', label: 'Dante/AES67', type: 'network' },
-                { id: 'in', label: 'Audio In', type: 'input' },
-                { id: 'out', label: 'Audio Out', type: 'output' }
-            ],
-            data: { name: 'Audio-1', channels: 8 }
-        },
-        control: {
-            title: 'Control System',
-            icon: 'fa-gamepad',
-            width: 200,
-            ports: [
-                { id: 'net', label: 'Network', type: 'network' }
-            ],
-            data: { name: 'Ctrl-1', protocol: 'OSC', model: 'Stream Deck' }
-        },
-        mediaserver: {
-            title: 'Media Server',
-            icon: 'fa-film',
-            width: 220,
-            ports: [
-                { id: 'net', label: 'Network', type: 'network' },
-                { id: 'out-1', label: 'Output 1', type: 'output' },
-                { id: 'out-2', label: 'Output 2', type: 'output' },
-                { id: 'ndi-out', label: 'NDI Out', type: 'output' }
-            ],
-            data: { name: 'Media-1', ip: '192.168.1.120' }
-        },
-        matrix: {
-            title: 'Matrix Switcher',
-            icon: 'fa-arrows-turn-to-dots',
-            width: 220,
-            ports: [
-                { id: 'in-1', label: 'In 1', type: 'input' },
-                { id: 'in-2', label: 'In 2', type: 'input' },
-                { id: 'in-3', label: 'In 3', type: 'input' },
-                { id: 'in-4', label: 'In 4', type: 'input' },
-                { id: 'out-1', label: 'Out 1', type: 'output' },
-                { id: 'out-2', label: 'Out 2', type: 'output' },
-                { id: 'out-3', label: 'Out 3', type: 'output' },
-                { id: 'out-4', label: 'Out 4', type: 'output' },
-                { id: 'net', label: 'Control', type: 'network' }
-            ],
-            data: { name: 'Matrix-1', model: '4x4 HDMI' }
-        },
-        switch: {
-            title: 'Network Switch',
-            icon: 'fa-network-wired',
-            width: 180,
-            ports: [
-                { id: 'p1', label: 'Port 1', type: 'network' },
-                { id: 'p2', label: 'Port 2', type: 'network' },
-                { id: 'p3', label: 'Port 3', type: 'network' },
-                { id: 'p4', label: 'Port 4', type: 'network' },
-                { id: 'p5', label: 'Port 5', type: 'network' },
-                { id: 'p6', label: 'Port 6', type: 'network' },
-                { id: 'p7', label: 'Port 7', type: 'network' },
-                { id: 'p8', label: 'Port 8', type: 'network' }
-            ],
-            data: { name: 'Switch-1', model: 'Generic' }
-        }
-    };
+    // NodeTypes loaded from nodeTypes.js (global)
 
     // --- Core Functions ---
 
@@ -300,14 +146,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (node.data.color) {
             header.style.backgroundColor = node.data.color;
         }
-
-        // Color Stripe (Removed)
-        /*
-        const stripe = document.createElement('div');
-        stripe.className = 'node-color-stripe';
-        if (node.data.color) stripe.style.background = node.data.color;
-        header.appendChild(stripe);
-        */
 
         // Drag handler on header
         header.addEventListener('mousedown', (e) => {
@@ -437,7 +275,7 @@ document.addEventListener('DOMContentLoaded', () => {
         html += `
             <div class="prop-row">
                 <label>Connections</label>
-                <div class="connections-list" style="font-size: 0.8rem; color: var(--text-muted);">
+                <div class="connections-list">
                     ${getConnectionsHtml(node)}
                 </div>
             </div>
@@ -457,16 +295,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Input Types Configuration (For Display Nodes)
         if (node.type === 'display' && node.data.inputs > 0) {
-            html += `<div style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 10px;">
-                <label style="font-size: 0.75rem; color: var(--text-secondary); margin-bottom: 6px; display: block;">Input Types</label>`;
+            html += `<div class="input-types-section">
+                <label>Input Types</label>`;
 
             for (let i = 1; i <= node.data.inputs; i++) {
                 const currentType = (node.data.inputTypes && node.data.inputTypes[i - 1]) ? node.data.inputTypes[i - 1] : 'Generic';
                 html += `
-                    <div class="prop-row" style="margin-bottom: 4px;">
-                         <div style="display: flex; align-items: center; gap: 8px;">
-                            <span style="font-size: 0.8rem; width: 20px;">${i}:</span>
-                            <select class="prop-input-type" data-index="${i - 1}" style="flex: 1;">
+                    <div class="prop-row">
+                         <div class="input-type-row">
+                            <span class="input-type-index">${i}:</span>
+                            <select class="prop-input-type" data-index="${i - 1}">
                                 <option value="Generic" ${currentType === 'Generic' ? 'selected' : ''}>Generic</option>
                                 <option value="SDI" ${currentType === 'SDI' ? 'selected' : ''}>SDI</option>
                                 <option value="HDMI" ${currentType === 'HDMI' ? 'selected' : ''}>HDMI</option>
@@ -642,12 +480,6 @@ document.addEventListener('DOMContentLoaded', () => {
             el.style.borderColor = '';
         }
 
-        // Stripe removed
-        /*
-        const stripe = el.querySelector('.node-color-stripe');
-        if (stripe) stripe.style.background = node.data.color;
-        */
-
         // Update Properties List
         const propsDiv = el.querySelector('.node-properties');
         if (propsDiv) {
@@ -680,10 +512,10 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!otherNode || !myPort || !otherPort) return '';
 
             return `
-                <div style="margin-bottom: 4px; padding: 4px; background: rgba(255,255,255,0.05); border-radius: 4px;">
-                    <span style="color: var(--text-primary);">${myPort.label}</span>
-                    <i class="fa-solid fa-arrow-right" style="font-size: 0.7em; margin: 0 4px;"></i>
-                    <span style="color: var(--text-secondary);">${otherNode.data.name} (${otherPort.label})</span>
+                <div class="connection-item">
+                    <span class="connection-port">${myPort.label}</span>
+                    <i class="fa-solid fa-arrow-right connection-arrow"></i>
+                    <span class="connection-target">${otherNode.data.name} (${otherPort.label})</span>
                 </div>
             `;
         }).join('');
@@ -827,7 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (exists) return;
 
         state.connections.push({
-            id: Date.now(),
+            id: state.nextConnectionId++,
             source: sourceNode,
             sourcePort: sourcePort,
             target: targetNode,
@@ -973,7 +805,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     saveState();
                 }
             } else if (key === 'save') {
-                const json = JSON.stringify({ nodes: state.nodes, connections: state.connections, nextId: state.nextId, pan: state.pan, scale: state.scale }, null, 2);
+                const json = JSON.stringify({ nodes: state.nodes, connections: state.connections, nextId: state.nextId, nextConnectionId: state.nextConnectionId, pan: state.pan, scale: state.scale }, null, 2);
                 const blob = new Blob([json], { type: 'application/json' });
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
@@ -1023,6 +855,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 state.nodes = data.nodes || [];
                 state.connections = data.connections || [];
                 state.nextId = data.nextId || (Math.max(...state.nodes.map(n => n.id), 0) + 1);
+                state.nextConnectionId = data.nextConnectionId || (state.connections.length > 0 ? Math.max(...state.connections.map(c => c.id)) + 1 : 1);
                 state.pan = data.pan || { x: 0, y: 0 };
                 state.scale = data.scale || 1;
 

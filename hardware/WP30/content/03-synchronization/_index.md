@@ -1,9 +1,11 @@
 ---
-title: "EDID Emulators"
+title: "Synchronization"
 icon: "link"
 ---
 
-# EDID EMULATORS
+# SYNCHRONIZATION
+
+**The WATCHPAX 30 ships with four EDID emulators for maintaining stable display identification on each HDMI output.**
 
 ### EDID
 

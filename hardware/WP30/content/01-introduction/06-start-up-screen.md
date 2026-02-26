@@ -6,15 +6,17 @@ title: "Start Up Screen"
 
 **The screens shown on connected displays when the WATCHPAX 30 starts up.**
 
+When the WATCHPAX 30 boots, the start-up screen is displayed on all connected HDMI outputs. The screen shows key system information including the unit's serial number, the active WATCHOUT version, and the system image version. This information is useful for verifying which software version is running and for support or troubleshooting purposes.
+
 :::warning
 The WATCHPAX 30 always starts up with WATCHOUT 7 as default.
 :::
 
-This screen is shown on all display devices connected to the WATCHPAX 30 at start-up with WATCHOUT 7.
+This screen is shown on all display devices connected to the WATCHPAX 30 at start-up with WATCHOUT 7. It displays the WATCHOUT version number and the unit's serial number.
 
 ![WATCHOUT 7 start-up screen](../media/wp30/introduction_02.jpg)
 
-This screen is shown on all display devices connected to the WATCHPAX 30 at start-up with WATCHOUT 6.
+This screen is shown on all display devices connected to the WATCHPAX 30 at start-up with WATCHOUT 6. The serial number and WATCHOUT version are shown in the same manner.
 
 ![WATCHOUT 6 start-up screen](../media/wp30/introduction_03.jpg)
 

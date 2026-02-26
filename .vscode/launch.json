@@ -57,6 +57,17 @@
                 "build"
             ],
             "cwd": "${workspaceFolder}/hardware/WP64"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Build WP30 Wiki",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": [
+                "run-script",
+                "build"
+            ],
+            "cwd": "${workspaceFolder}/hardware/WP30"
         }
     ]
 }

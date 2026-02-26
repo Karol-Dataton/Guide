@@ -2805,6 +2805,66 @@ body[data-page-id="glossary"] .glossary-search-empty {
     font-weight: 600;
 }
 
+/* Rollout toggle bar */
+.carousel-rollout-bar {
+    display: flex;
+    justify-content: center;
+    padding: 0 32px 16px;
+    background: var(--bg-tertiary);
+}
+
+.carousel-rollout-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border-subtle);
+    background: var(--input-bg);
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    font-family: var(--font-family);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.carousel-rollout-toggle:hover {
+    background: var(--hover-bg);
+    color: var(--text-primary);
+    border-color: var(--accent-primary);
+}
+
+.carousel-rollout-toggle .rollout-icon-collapse {
+    display: none;
+}
+
+/* Rollout mode: show all steps stacked */
+.carousel.rollout .carousel-slide {
+    display: flex;
+    border-bottom: 1px solid var(--border-subtle);
+}
+
+.carousel.rollout .carousel-slide:last-child {
+    border-bottom: none;
+}
+
+.carousel.rollout .carousel-controls,
+.carousel.rollout .carousel-counter {
+    display: none;
+}
+
+.carousel.rollout .carousel-rollout-bar {
+    border-top: 1px solid var(--border-subtle);
+}
+
+.carousel.rollout .carousel-rollout-toggle .rollout-icon-expand {
+    display: none;
+}
+
+.carousel.rollout .carousel-rollout-toggle .rollout-icon-collapse {
+    display: inline;
+}
+
 /* Light theme overrides */
 [data-theme="light"] .carousel {
     box-shadow: 0 4px 20px var(--shadow-color);
@@ -2861,7 +2921,8 @@ body[data-page-id="glossary"] .glossary-search-empty {
     }
 
     .carousel-controls,
-    .carousel-counter {
+    .carousel-counter,
+    .carousel-rollout-bar {
         display: none;
     }
 }

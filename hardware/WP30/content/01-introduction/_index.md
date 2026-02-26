@@ -5,6 +5,8 @@ icon: "book"
 
 # INTRODUCTION
 
+**The WATCHPAX 30 is a compact, dedicated media server for use with Dataton WATCHOUT, featuring four HDMI outputs and built-in WATCHOUT 6 and 7 licenses.**
+
 ### Product Information
 
 - [Welcome to WATCHPAX 30](01-welcome.md) - Copyright, trademarks, and support resources

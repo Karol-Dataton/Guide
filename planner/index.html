@@ -17,11 +17,11 @@
 
 <body>
     <div class="app">
-        <header class="header">
+        <header class="header" role="banner">
             <div class="logo">
                 <h1>WATCHOUT PLANNER</h1>
             </div>
-            <div class="toolbar">
+            <div class="toolbar" role="toolbar" aria-label="Main toolbar">
                 <!-- WATCHOUT Systems -->
                 <div class="dropdown">
                     <button class="tool-btn dropdown-toggle" title="WATCHOUT Systems">
@@ -98,7 +98,29 @@
                 </div>
 
                 <div class="separator"></div>
-                <button id="clear-canvas" class="tool-btn danger">
+                <div class="btn-group">
+                    <button id="zoom-in" class="tool-btn" title="Zoom In" aria-label="Zoom in">
+                        <i class="fa-solid fa-magnifying-glass-plus" aria-hidden="true"></i>
+                    </button>
+                    <button id="zoom-out" class="tool-btn" title="Zoom Out" aria-label="Zoom out">
+                        <i class="fa-solid fa-magnifying-glass-minus" aria-hidden="true"></i>
+                    </button>
+                    <button id="zoom-fit" class="tool-btn" title="Fit to Canvas" aria-label="Fit to canvas">
+                        <i class="fa-solid fa-expand" aria-hidden="true"></i>
+                    </button>
+                    <button id="zoom-reset" class="tool-btn" title="Reset to 100%" aria-label="Reset zoom">
+                        <span id="zoom-level" aria-live="polite">100%</span>
+                    </button>
+                </div>
+                <div class="separator"></div>
+                <button id="snap-toggle" class="tool-btn" title="Toggle Snap to Grid" aria-label="Toggle snap to grid" aria-pressed="false">
+                    <i class="fa-solid fa-border-none"></i> Snap
+                </button>
+                <div class="separator"></div>
+                <button id="auto-layout" class="tool-btn" title="Auto Arrange" aria-label="Auto arrange nodes">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i> Auto
+                </button>
+                <button id="clear-canvas" class="tool-btn danger" aria-label="Clear all nodes">
                     <i class="fa-solid fa-trash"></i> Clear
                 </button>
                 <div class="separator"></div>
@@ -109,23 +131,44 @@
                     <button id="load-plan" class="tool-btn secondary" title="Import JSON">
                         <i class="fa-solid fa-upload"></i> Load
                     </button>
-                    <button id="export-image" class="tool-btn secondary" title="Export Image">
-                        <i class="fa-solid fa-camera"></i> Export
+                    <button id="export-image" class="tool-btn secondary" title="Export PNG">
+                        <i class="fa-solid fa-camera"></i> PNG
+                    </button>
+                    <button id="export-svg" class="tool-btn secondary" title="Export SVG">
+                        <i class="fa-solid fa-vector-square"></i> SVG
                     </button>
                 </div>
                 <input type="file" id="load-file" accept=".json" style="display: none;">
+                <div class="separator"></div>
+                <div class="dropdown">
+                    <button class="tool-btn dropdown-toggle" title="New from Template">
+                        <i class="fa-solid fa-file-circle-plus"></i> Templates <i class="fa-solid fa-caret-down"></i>
+                    </button>
+                    <div class="dropdown-menu" id="templates-menu"></div>
+                </div>
+                <div class="separator"></div>
+                <div class="search-box" role="search">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="search-input" placeholder="Search nodes..." autocomplete="off">
+                </div>
             </div>
         </header>
 
         <main class="main-editor">
-            <div id="editor-container" class="editor-container">
+            <div id="editor-container" class="editor-container" role="application" aria-label="Diagram canvas">
+                <div id="groups-layer" class="groups-layer"></div>
                 <svg id="connections-layer" class="connections-layer"></svg>
                 <div id="nodes-layer" class="nodes-layer">
                     <!-- Nodes will be added here -->
                 </div>
             </div>
-            <div class="properties-panel" id="properties-panel">
-                <h3>Properties</h3>
+            <div id="minimap" class="minimap">
+                <canvas id="minimap-canvas" width="180" height="120"></canvas>
+            </div>
+            <div class="properties-panel" id="properties-panel" role="complementary" aria-label="Node properties">
+                <h3>Properties <button id="collapse-panel" class="collapse-btn" aria-label="Toggle properties panel">
+                    <i class="fa-solid fa-chevron-right"></i>
+                </button></h3>
                 <div id="properties-content">
                     <p class="placeholder-text">Select a node to view properties.</p>
                 </div>
@@ -133,7 +176,7 @@
         </main>
     </div>
 
-    <script src="app.js"></script>
+    <script type="module" src="js/main.js"></script>
 </body>
 
 </html>

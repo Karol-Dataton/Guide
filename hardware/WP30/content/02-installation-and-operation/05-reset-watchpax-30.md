@@ -17,19 +17,18 @@ A reset, regardless of level, is an advanced measure. Make sure you are fully aw
 
 ### Reset and Keep User Data
 
-This option resets the system partitions but keeps all user data such as:
+This option resets the system partitions but keeps all user data. The table below shows what is retained and what is reset.
 
-* Shows
-* Media
-* WATCHOUT settings
-* Startup script
-  - Network settings
-  - Timecode settings
-
-Driver-related settings will be reset to default factory settings such as:
-
-* Display settings
-  - Display mode
+| Setting | Kept |
+|---|---|
+| Shows | &#10003; |
+| Media | &#10003; |
+| WATCHOUT settings | &#10003; |
+| Startup script | &#10003; |
+| Network settings | &#10003; |
+| Timecode settings | &#10003; |
+| Display settings | &#10007; |
+| Display mode | &#10007; |
 
 ### Reset to Factory Settings
 

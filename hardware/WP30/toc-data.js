@@ -98,7 +98,7 @@ const tocData = [
         "level": 2,
         "title": "Connectors",
         "page": 8,
-        "description": "Overview of the WATCHPAX 30 connectors. Use the images below together with the reference information for your unit.",
+        "description": "Overview of the WATCHPAX 30 front and rear panel connectors. Use the numbered callouts in the images together with th...",
         "group": "Hardware Reference",
         "groupOrder": 2,
         "groupItemOrder": 1
@@ -165,7 +165,7 @@ const tocData = [
     },
     {
         "level": 1,
-        "title": "3. EDID Emulators",
+        "title": "3. Synchronization",
         "page": 1,
         "icon": "link"
     },
@@ -210,6 +210,12 @@ const tocData = [
         "group": "Legal",
         "groupOrder": 0,
         "groupItemOrder": 2
+    },
+    {
+        "level": 1,
+        "title": "5. Glossary",
+        "page": 1,
+        "icon": "fileText"
     }
 ];
 

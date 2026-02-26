@@ -2,7 +2,7 @@
 
 @font-face {
     font-family: 'Futura Now Headline';
-    src: url('../shortcuts/FuturaNowHeadline-Rg.otf') format('opentype');
+    src: url('./FuturaNowHeadline-Rg.otf') format('opentype');
     font-weight: 400;
     font-style: normal;
     font-display: swap;
@@ -150,6 +150,13 @@ body {
     background: rgba(255, 255, 255, 0.1);
 }
 
+#zoom-level {
+    font-size: 0.8rem;
+    font-weight: 500;
+    min-width: 36px;
+    text-align: center;
+}
+
 /* Dropdown Menus */
 .dropdown {
     position: relative;
@@ -230,6 +237,63 @@ body {
     cursor: grabbing;
 }
 
+.editor-container.snap-active {
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: var(--grid-size) var(--grid-size);
+}
+
+.tool-btn.active {
+    background: rgba(107, 37, 221, 0.25);
+    border-color: var(--accent-primary);
+    color: var(--text-primary);
+}
+
+/* Groups Layer */
+.groups-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 0;
+    transform-origin: 0 0;
+}
+
+.group-box {
+    position: absolute;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    pointer-events: auto;
+    min-width: 150px;
+    min-height: 100px;
+}
+
+.group-header {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: move;
+    user-select: none;
+}
+
+.group-resize-handle {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 16px;
+    height: 16px;
+    cursor: nwse-resize;
+    border-right: 3px solid rgba(255, 255, 255, 0.2);
+    border-bottom: 3px solid rgba(255, 255, 255, 0.2);
+    border-radius: 0 0 10px 0;
+}
+
 /* SVG Layer for Connections */
 .connections-layer {
     position: absolute;
@@ -250,6 +314,10 @@ body {
     stroke-width: 2px;
     pointer-events: stroke;
 }
+
+.connection-line.wire-output { stroke: var(--port-output); }
+.connection-line.wire-input { stroke: var(--port-input); }
+.connection-line.wire-network { stroke: var(--port-network); }
 
 .connection-line:hover {
     stroke: var(--accent-primary);
@@ -354,6 +422,16 @@ body {
 .port-socket:hover {
     border-color: white;
     transform: scale(1.2);
+}
+
+.port-socket.valid-target {
+    border-color: #22c55e;
+    box-shadow: 0 0 6px #22c55e;
+    transform: scale(1.3);
+}
+
+.port-socket.invalid-target {
+    opacity: 0.3;
 }
 
 .port.input .port-socket {
@@ -502,5 +580,366 @@ body {
     font-weight: 500;
 }
 
-/* Color Stripe */
-/* Color Stripe Removed */
+/* Connections list in properties panel */
+.connections-list {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.connection-item {
+    margin-bottom: 4px;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 4px;
+}
+
+.connection-item .connection-port {
+    color: var(--text-primary);
+}
+
+.connection-item .connection-arrow {
+    font-size: 0.7em;
+    margin: 0 4px;
+}
+
+.connection-item .connection-target {
+    color: var(--text-secondary);
+}
+
+/* Input types configuration */
+.input-types-section {
+    margin-top: 10px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 10px;
+}
+
+.input-types-section > label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    display: block;
+}
+
+.input-type-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.input-type-index {
+    font-size: 0.8rem;
+    width: 20px;
+}
+
+.input-type-row select {
+    flex: 1;
+}
+
+.input-types-section .prop-row {
+    margin-bottom: 4px;
+}
+
+/* Context Menu */
+.context-menu {
+    position: fixed;
+    background: var(--bg-panel);
+    border: 1px solid var(--border-node);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+    min-width: 180px;
+    padding: 4px 0;
+    z-index: 500;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.context-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 14px;
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+}
+
+.context-menu-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+.context-menu-item.danger:hover {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+}
+
+.context-menu-item i {
+    width: 16px;
+    text-align: center;
+    color: var(--accent-secondary);
+}
+
+.context-menu-separator {
+    height: 1px;
+    background: var(--border-node);
+    margin: 4px 0;
+}
+
+/* Search */
+.search-box {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    border-radius: 6px;
+    padding: 0 10px;
+}
+
+.search-box i { color: var(--text-muted); font-size: 0.8rem; }
+
+.search-box input {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+    font-family: inherit;
+    font-size: 0.85rem;
+    padding: 8px 0;
+    width: 140px;
+    outline: none;
+}
+
+.search-box input::placeholder { color: var(--text-muted); }
+
+.node.search-match {
+    box-shadow: 0 0 0 2px var(--accent-primary), 0 0 12px rgba(107, 37, 221, 0.4);
+}
+
+.node.search-dim {
+    opacity: 0.25;
+}
+
+/* Minimap */
+.minimap {
+    position: absolute;
+    bottom: 16px;
+    left: 16px;
+    background: rgba(10, 10, 15, 0.85);
+    border: 1px solid var(--border-node);
+    border-radius: 8px;
+    padding: 4px;
+    z-index: 50;
+    cursor: crosshair;
+}
+
+.minimap canvas {
+    display: block;
+    border-radius: 4px;
+}
+
+/* Marquee Selection */
+.marquee-selection {
+    position: fixed;
+    border: 1px dashed var(--accent-primary);
+    background: rgba(107, 37, 221, 0.1);
+    pointer-events: none;
+    z-index: 999;
+}
+
+/* Responsive */
+.toolbar {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    scrollbar-width: thin;
+}
+
+.collapse-btn {
+    float: right;
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    cursor: pointer;
+    padding: 0 4px;
+    font-size: 0.8rem;
+}
+
+.collapse-btn:hover { color: var(--text-primary); }
+
+.properties-panel.collapsed {
+    width: 40px;
+    min-width: 40px;
+    padding: 10px 8px;
+    overflow: hidden;
+}
+
+.properties-panel.collapsed > *:not(h3) { display: none; }
+.properties-panel.collapsed h3 { writing-mode: vertical-rl; font-size: 0.8rem; }
+
+@media (max-width: 1000px) {
+    .properties-panel {
+        width: 40px;
+        min-width: 40px;
+        padding: 10px 8px;
+        overflow: hidden;
+    }
+    .properties-panel > *:not(h3) { display: none; }
+    .properties-panel h3 { writing-mode: vertical-rl; font-size: 0.8rem; }
+
+    .toolbar .separator { display: none; }
+    .toolbar { gap: 4px; }
+    .tool-btn { padding: 6px 8px; font-size: 0.75rem; }
+}
+
+/* Onboarding */
+#onboarding-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.onboarding-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-node);
+    border-radius: 16px;
+    padding: 32px 40px;
+    max-width: 460px;
+    box-shadow: 0 24px 64px rgba(0, 0, 0, 0.6);
+}
+
+.onboarding-panel h2 {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--text-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.onboarding-tips {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 24px;
+}
+
+.onboarding-tip {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.onboarding-tip kbd {
+    background: var(--bg-grid);
+    border: 1px solid var(--border-node);
+    border-radius: 4px;
+    padding: 2px 8px;
+    min-width: 90px;
+    text-align: center;
+    font-family: inherit;
+    font-size: 0.8rem;
+    color: var(--text-primary);
+    flex-shrink: 0;
+}
+
+.onboarding-close {
+    width: 100%;
+    padding: 10px;
+    background: var(--accent-primary);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.onboarding-close:hover {
+    background: var(--accent-secondary);
+}
+
+/* Focus indicators */
+.tool-btn:focus-visible,
+.dropdown-item:focus-visible,
+.context-menu-item:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+}
+
+.node:focus-visible {
+    box-shadow: 0 0 0 3px var(--accent-primary);
+}
+
+/* Shortcut Overlay */
+#shortcut-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.shortcut-panel {
+    background: var(--bg-panel);
+    border: 1px solid var(--border-node);
+    border-radius: 12px;
+    padding: 24px 32px;
+    min-width: 320px;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5);
+}
+
+.shortcut-panel h3 {
+    font-size: 1rem;
+    margin-bottom: 16px;
+    color: var(--text-primary);
+}
+
+.shortcut-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 6px 0;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.shortcut-row kbd {
+    background: var(--bg-grid);
+    border: 1px solid var(--border-node);
+    border-radius: 4px;
+    padding: 2px 8px;
+    font-family: inherit;
+    font-size: 0.8rem;
+    min-width: 100px;
+    text-align: center;
+    color: var(--text-primary);
+}
+
+.shortcut-close {
+    margin-top: 16px;
+    width: 100%;
+    padding: 8px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-node);
+    border-radius: 6px;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.shortcut-close:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}

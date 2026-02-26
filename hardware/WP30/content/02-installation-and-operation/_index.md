@@ -5,6 +5,8 @@ icon: "settings"
 
 # INSTALLATION AND OPERATION
 
+**Complete guide to installing, operating and resetting the WATCHPAX 30, including safety information and quick-start procedures.**
+
 ### Safety and Setup
 
 - [Before Using Your WATCHPAX 30](01-before-using-your-watchpax-30.md) - Safety precautions and warnings

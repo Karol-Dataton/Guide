@@ -452,6 +452,20 @@ function setupCarousels() {
         // Initialize state
         goToSlide(0);
 
+        // Rollout mode toggle (show all steps at once)
+        const rolloutToggle = carousel.querySelector('.carousel-rollout-toggle');
+        if (rolloutToggle) {
+            rolloutToggle.addEventListener('click', () => {
+                const isRollout = carousel.classList.toggle('rollout');
+                const label = rolloutToggle.querySelector('.carousel-rollout-label');
+                if (label) {
+                    label.textContent = isRollout ? 'Step by step' : 'Show all steps';
+                }
+                rolloutToggle.setAttribute('aria-label',
+                    isRollout ? 'Switch to step-by-step view' : 'Show all steps');
+            });
+        }
+
         // Re-setup image modals for images inside carousel slides
         setupImageModals();
     });
