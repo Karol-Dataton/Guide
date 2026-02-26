@@ -4,7 +4,8 @@ const shortcuts = [
     { keys: ['Ctrl', 'O'], action: 'Open a show file', category: 'general' },
     { keys: ['Ctrl', 'S'], action: 'Save show to disk', category: 'general' },
     { keys: ['Ctrl', 'Shift', 'S'], action: 'Save show to disk with new name', category: 'general' },
-    { keys: ['Enter'], action: 'Open Properties window, if closed, or jump to Properties window', category: 'general' },
+    { keys: ['Alt', 'Enter'], action: 'Show Properties', category: 'general' },
+    { keys: ['Shift', 'Enter'], action: 'Draw focus to/away from Properties window', category: 'general' },
     { keys: ['Ctrl', 'Tab'], action: 'Cycle over all open windows left to right', category: 'general' },
     { keys: ['Ctrl', 'Shift', 'Tab'], action: 'Cycle over all open windows right to left', category: 'general' },
     { keys: ['Ctrl', 'F4'], action: 'Close selected window', category: 'general' },
@@ -49,13 +50,13 @@ const shortcuts = [
     { keys: ['Ctrl', '3'], action: 'Preview scale 1:4', category: 'stage' },
     { keys: ['Ctrl', '4'], action: 'Preview scale 1:2', category: 'stage' },
     { keys: ['Ctrl', '5'], action: 'Preview scale 1:1', category: 'stage' },
-    // CAMERA MODE NORMAL
+    // CAMERA MODE: NORMAL
     { keys: ['A'], action: 'Pan left (Camera Normal Mode)', category: 'camera' },
     { keys: ['D'], action: 'Pan right (Camera Normal Mode)', category: 'camera' },
     { keys: ['W'], action: 'Pan up (Camera Normal Mode)', category: 'camera' },
     { keys: ['S'], action: 'Pan down (Camera Normal Mode)', category: 'camera' },
     { keys: ['Wheel'], action: 'Zoom in/out (Camera Mode)', category: 'camera' },
-    // CAMERA MODE FIRST PERSON
+    // CAMERA MODE: FIRST PERSON AND PROJECTOR
     { keys: ['E'], action: 'Pan up (First Person/Projector Mode)', category: 'camera' },
     { keys: ['Q'], action: 'Pan down (First Person/Projector Mode)', category: 'camera' },
     { keys: ['J'], action: 'Orbit left (First Person Mode)', category: 'camera' },
@@ -73,6 +74,7 @@ const shortcuts = [
     { keys: ['Space'], action: 'Start timeline (toggle)', category: 'timeline' },
     { keys: ['Esc'], action: 'Pause timeline (no toggle)', category: 'timeline' },
     { keys: ['Num 0'], action: 'Start timeline (no toggle)', category: 'timeline' },
+    { keys: ['Num *'], action: 'Returns playhead to last paused position', category: 'timeline' },
     { keys: ['Num +'], action: 'Magnify timeline scale', category: 'timeline' },
     { keys: ['Num -'], action: 'Reduce timeline scale', category: 'timeline' },
     { keys: ['Ctrl', '0'], action: 'Zoom to fit (or zoom to selection)', category: 'timeline' },
@@ -95,6 +97,7 @@ const shortcuts = [
     { keys: ['Alt', 'O'], action: 'Opacity', category: 'effect' },
     { keys: ['Alt', 'B'], action: 'Gaussian Blur', category: 'effect' },
     { keys: ['Alt', 'C'], action: 'Crop All Sides', category: 'effect' },
+    { keys: ['Alt', 'X'], action: 'Rotation X-Axis', category: 'effect' },
     { keys: ['Alt', 'Z'], action: 'Rotation Z-Axis', category: 'effect' },
     { keys: ['Alt', 'Y'], action: 'Rotation Y-Axis', category: 'effect' },
     { keys: ['Alt', 'V'], action: 'Volume', category: 'effect' },
@@ -130,7 +133,7 @@ const keyMapping = {
     'Home': ['Home'], 'End': ['End'], 'PageUp': ['Page Up'], 'PageDown': ['Page Down'],
     'Num0': ['Num 0'], 'Num1': ['Num 1'], 'Num2': ['Num 2'], 'Num3': ['Num 3'],
     'Num4': ['Num 4'], 'Num5': ['Num 5'], 'Num6': ['Num 6'], 'Num7': ['Num 7'],
-    'Num8': ['Num 8'], 'Num9': ['Num 9'], 'Num+': ['Num +'], 'Num-': ['Num -'],
+    'Num8': ['Num 8'], 'Num9': ['Num 9'], 'Num+': ['Num +'], 'Num-': ['Num -'], 'Num*': ['Num *'],
 };
 
 // Category colors

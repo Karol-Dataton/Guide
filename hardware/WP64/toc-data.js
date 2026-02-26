@@ -165,9 +165,9 @@ const tocData = [
     },
     {
         "level": 2,
-        "title": "Miscellaneous",
+        "title": "Audio Output and WATCHPAX Config",
         "page": 6,
-        "description": "Additional features and configuration options for the WATCHPAX 64, including audio output and the WATCHPAX Config web...",
+        "description": "Audio output options and the WATCHPAX Config web interface for the WATCHPAX 64.",
         "group": "Additional Features",
         "groupOrder": 2,
         "groupItemOrder": 0
@@ -176,7 +176,7 @@ const tocData = [
         "level": 2,
         "title": "Dante License Activation",
         "page": 7,
-        "description": "WATCHPAX 64 is Dante-ready for WATCHOUT 7. This means the Dante license must be purchased and activated by the user.",
+        "description": "WATCHPAX 64 is Dante-ready for WATCHOUT 7. This means the Dante license must be purchased and activated by the user. ...",
         "group": "Additional Features",
         "groupOrder": 2,
         "groupItemOrder": 1
@@ -255,6 +255,12 @@ const tocData = [
         "group": "Legal",
         "groupOrder": 0,
         "groupItemOrder": 2
+    },
+    {
+        "level": 1,
+        "title": "5. Glossary",
+        "page": 1,
+        "icon": "bookOpen"
     }
 ];
 

@@ -26,7 +26,11 @@ The WATCHPAX 64 unit may be mounted in a 19-inch rack by using the optional rack
 
 ### Power On
 
-The WATCHPAX 64 unit is switched on by inserting the power cord or inserting the power cord and using the on/off switch (see [Connectors](../01-introduction/08-connectors.md) in the Introduction). Wake-on-LAN (WOL) may also be used with other units that support it.
+The WATCHPAX 64 starts automatically when AC power is connected — simply insert the power cord and the unit will begin its boot sequence without pressing any buttons.
+
+If the unit was shut down via software (see [Power Off](#power-off) below) while the power cord remained connected, press the **power button** on the front panel to start it again (see [Connectors](../01-introduction/08-connectors.md) in the Introduction).
+
+The WATCHPAX 64 also supports **Wake-on-LAN (WOL)**, which allows the unit to be powered on remotely by sending a magic packet over the network to its Ethernet adapter. This can be useful when the unit is installed in a location that is difficult to access physically. See the [Glossary](../05-glossary/_index.md#wake-on-lan-wol) for more on WOL.
 
 ### First Power On
 
