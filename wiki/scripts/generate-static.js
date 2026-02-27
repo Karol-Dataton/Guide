@@ -110,7 +110,7 @@ function getSidebarSubsections(subsections) {
 }
 
 const ASSETS_TO_COPY = [
-    { from: path.join(WIKI_ROOT, 'widgets', 'cie_1931_chromaticity_diagram.png'), to: path.join(OUTPUT_DIR, 'cie_1931_chromaticity_diagram.png') }
+    { from: path.join(WIKI_ROOT, 'media', 'cie_1931_chromaticity_diagram.png'), to: path.join(OUTPUT_DIR, 'media', 'cie_1931_chromaticity_diagram.png') }
 ];
 
 // --- Asset Copying ---

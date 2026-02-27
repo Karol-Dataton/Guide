@@ -13,7 +13,7 @@ const LOCALE = (process.env.LOCALE || 'en').toLowerCase();
 const UI_TEXT = {
     en: {
         htmlLang: 'en',
-        guideTitle: 'WATCHPAX 30 User Guide',
+        guideTitle: 'WATCHPAX 50 User Guide',
         searchPlaceholder: 'Search documentation...',
         home: 'Home',
         previous: 'Previous',
@@ -21,7 +21,7 @@ const UI_TEXT = {
         inThisChapter: 'In This Chapter',
         inThisChapterDescription: 'This chapter covers the following topics. Click on any section to learn more.',
         missingSectionContent: 'Content for this section is not available in the wiki data.',
-        footerPrefix: 'WATCHPAX 30 User Guide • Dataton Documentation • Generated',
+        footerPrefix: 'WATCHPAX 50 User Guide • Dataton Documentation • Generated',
         languageSwitchTitle: 'Switch language',
         languageSwitchLabel: 'PL',
         statsPageTitle: 'Wiki Statistics',
@@ -31,7 +31,7 @@ const UI_TEXT = {
     },
     pl: {
         htmlLang: 'pl',
-        guideTitle: 'Przewodnik użytkownika WATCHPAX 30',
+        guideTitle: 'Przewodnik użytkownika WATCHPAX 50',
         searchPlaceholder: 'Szukaj w dokumentacji...',
         home: 'Strona główna',
         previous: 'Poprzedni',
@@ -39,7 +39,7 @@ const UI_TEXT = {
         inThisChapter: 'W tym rozdziale',
         inThisChapterDescription: 'Ten rozdział obejmuje poniższe tematy. Kliknij dowolną sekcję, aby przejść dalej.',
         missingSectionContent: 'Treść tej sekcji nie jest jeszcze dostępna.',
-        footerPrefix: 'Przewodnik użytkownika WATCHPAX 30 • Dokumentacja Dataton • Wygenerowano',
+        footerPrefix: 'Przewodnik użytkownika WATCHPAX 50 • Dokumentacja Dataton • Wygenerowano',
         languageSwitchTitle: 'Przełącz język',
         languageSwitchLabel: 'EN',
         statsPageTitle: 'Statystyki wiki',
@@ -165,7 +165,7 @@ function getSidebarSubsections(subsections) {
 }
 
 const ASSETS_TO_COPY = [
-    { from: path.join(WIKI_ROOT, 'media', 'cie_1931_chromaticity_diagram.png'), to: path.join(OUTPUT_DIR, 'media', 'cie_1931_chromaticity_diagram.png') }
+    { from: path.join(WIKI_ROOT, 'widgets', 'cie_1931_chromaticity_diagram.png'), to: path.join(OUTPUT_DIR, 'cie_1931_chromaticity_diagram.png') }
 ];
 
 // --- Asset Copying ---
@@ -265,7 +265,7 @@ function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs, extra
                             <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                         </svg>
                     </span>
-                    <h1>WATCHPAX 30 GUIDE</h1>
+                    <h1>WATCHPAX 50 GUIDE</h1>
                 </a>
 
             </div>
@@ -634,12 +634,27 @@ function generateStatsPage() {
         'the', 'of', 'and', 'to', 'a', 'in', 'is', 'that', 'for', 'it', 'as', 'was', 'with', 'on', 'by', 'be', 'at', 'this', 'are', 'we', 'you', 'or', 'an', 'your', 'from', 'can', 'which', 'if', 'will', 'not', 'use', 'has', 'have', 'but', 'more', 'when', 'all', 'one', 'new', 'their', 'other', 'also', 'time', 'into', 'up', 'out', 'so', 'what', 'some', 'see', 'only', 'do', 'its', 'them', 'two', 'then', 'over', 'may', 'no', 'there', 'any', 'after', 'how', 'most', 'such', 'these', 'used', 'using', 'way', 'about', 'get', 'than', 'just', 'make', 'where', 'like', 'should'
     ]);
 
-    // Calculate Widget Count
-    const widgetsDir = path.join(WIKI_ROOT, 'widgets');
-    let widgetCount = 0;
-    if (fs.existsSync(widgetsDir)) {
-        widgetCount = fs.readdirSync(widgetsDir).filter(file => file.endsWith('.html')).length;
+    // Calculate Widget Count — count unique widgets actually referenced in content
+    const contentDirName = process.env.CONTENT_DIR || 'content';
+    const contentDirForWidgets = path.join(WIKI_ROOT, contentDirName);
+    const usedWidgets = new Set();
+    function scanDirForWidgets(dir) {
+        if (!fs.existsSync(dir)) return;
+        fs.readdirSync(dir).forEach(item => {
+            const itemPath = path.join(dir, item);
+            if (fs.statSync(itemPath).isDirectory()) {
+                scanDirForWidgets(itemPath);
+            } else if (item.endsWith('.md')) {
+                const md = fs.readFileSync(itemPath, 'utf-8');
+                const matches = md.matchAll(/\[\[WIDGET:(.*?)\]\]/g);
+                for (const m of matches) {
+                    usedWidgets.add(m[1].trim());
+                }
+            }
+        });
     }
+    scanDirForWidgets(contentDirForWidgets);
+    let widgetCount = usedWidgets.size;
 
     function analyzeText(html, trackFrequency = false) {
         if (!html) return 0;
@@ -786,7 +801,6 @@ function generateStatsPage() {
     });
 
     // Fun Fact Calculations
-    extendedStats.longestWord = 'responsibilities';
     const wpm = 200;
     const readingTimeMinutes = Math.ceil(totalWords / wpm);
     const readingHours = Math.floor(readingTimeMinutes / 60);
