@@ -1,0 +1,9 @@
+# Ignore built HTML files in the chapters/subdirectories
+# We don't want to ignore the root index.html or other root files
+*/index.html
+*/*.html
+
+# Don't ignore the root html files explicitly just in case we add more
+!/index.html
+!/stats.html
+!/version.html
