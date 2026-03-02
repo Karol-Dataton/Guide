@@ -770,21 +770,12 @@ function setupHeroVideo() {
     const heroMedia = document.getElementById('hero-media');
     if (!heroMedia) return;
 
-    const videos = [
-        'media/splash/Live_Show_Programmer_Creates_Scene.mp4',
-        'media/splash/Looping_Video_Generation_Complete.mp4',
-        'media/splash/Video_Generation_With_Asian_Male_Operator.mp4',
-        'media/splash/a_show_programmer_on_a_live_sh.mp4',
-        'media/splash/a_show_programmer_sits_in_a_we.mp4',
-        'media/splash/Programmer_Creates_Show_in_Watchout.mp4'
-    ];
-    // Simple check if media files exist? No, just try to play.
-    const randomVideo = videos[Math.floor(Math.random() * videos.length)];
+    const splashVideo = 'media/splash/0302.mp4';
 
     heroMedia.innerHTML = `
         <div class="video-wrapper" style="position: relative;">
             <video autoplay muted loop playsinline>
-                <source src="${randomVideo}" type="video/mp4">
+                <source src="${splashVideo}" type="video/mp4">
             </video>
             <div class="hero-text">WATCHOUT</div>
         </div>
