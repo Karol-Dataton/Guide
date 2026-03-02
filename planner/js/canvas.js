@@ -134,6 +134,12 @@ export function applyPanZoom() {
     svgLayer.style.transform = t;
     const groupsLayer = document.getElementById('groups-layer');
     if (groupsLayer) groupsLayer.style.transform = t;
+
+    // Move background grid with the canvas
+    const gridSize = 20 * state.scale;
+    container.style.backgroundSize = `${gridSize}px ${gridSize}px`;
+    container.style.backgroundPosition = `${state.pan.x}px ${state.pan.y}px`;
+
     updateZoomIndicator();
 }
 
