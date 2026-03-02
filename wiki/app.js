@@ -233,7 +233,6 @@ window.watchoutBadgeStore = watchoutBadgeStore;
 
 document.addEventListener('DOMContentLoaded', () => {
     setupSidebar();
-    setupSidebarTools();
     setupThemeToggle();
     setupMobileMenu();
     setupHeroVideo();
@@ -635,40 +634,6 @@ function setupSidebarAccordion() {
     });
 }
 
-function setupSidebarTools() {
-    const toolsContainer = document.querySelector('.tools-buttons');
-    if (!toolsContainer) return;
-
-    const existingDashboard = toolsContainer.querySelector('a[href*="dashboard/index.html"]');
-    if (existingDashboard) return;
-
-    const shortcutLink = toolsContainer.querySelector('a[href*="shortcuts/index.html"]');
-    const templateHref = shortcutLink ? shortcutLink.getAttribute('href') : '../shortcuts/index.html';
-    const dashboardHref = templateHref.replace('shortcuts/index.html', 'dashboard/index.html');
-
-    const dashboardLink = document.createElement('a');
-    dashboardLink.href = dashboardHref;
-    dashboardLink.className = 'tools-btn';
-    dashboardLink.title = 'Director Dashboard';
-    dashboardLink.innerHTML = `
-        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-            stroke-linejoin="round">
-            <path d="M12 2v6"></path>
-            <path d="M5 7h14"></path>
-            <path d="M5 11h14"></path>
-            <path d="M5 15h10"></path>
-            <path d="M5 19h6"></path>
-        </svg>
-    `;
-
-    const themeToggle = toolsContainer.querySelector('#theme-toggle');
-    if (themeToggle) {
-        toolsContainer.insertBefore(dashboardLink, themeToggle);
-    } else {
-        toolsContainer.appendChild(dashboardLink);
-    }
-}
 
 function renderTocPreview() {
     const tocPreviewGrid = document.getElementById('toc-preview-grid');

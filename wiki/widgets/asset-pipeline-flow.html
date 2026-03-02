@@ -1,28 +1,137 @@
 <div class="interactive-widget" id="asset-pipeline-widget">
-    <canvas id="asset-pipeline-canvas" width="900" height="420"
-        style="width: 100%; height: auto; display: block; cursor: default; touch-action: none;"></canvas>
-    <div class="widget-controls"
-        style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 0;">
-        <button id="apf-play-btn"
-            style="padding: 6px 16px; border-radius: 6px; background: var(--input-bg); border: 1px solid var(--border-subtle); color: var(--text-primary); cursor: pointer; font-family: var(--font-family); font-size: 0.85rem; transition: all 150ms ease;">
-            &#9654; Simulate
-        </button>
-        <button id="apf-reset-btn"
-            style="padding: 6px 16px; border-radius: 6px; background: var(--input-bg); border: 1px solid var(--border-subtle); color: var(--text-primary); cursor: pointer; font-family: var(--font-family); font-size: 0.85rem; transition: all 150ms ease;">
-            Reset
-        </button>
-        <div style="margin-left: auto; display: flex; align-items: center; gap: 8px;">
-            <span style="font-size: 0.8rem; color: var(--text-secondary);">State:</span>
-            <span id="apf-state-badge"
-                style="display: inline-block; padding: 3px 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 600; min-width: 60px; text-align: center; background: rgba(99, 102, 241, 0.2); color: #818cf8;">Idle</span>
+    <canvas id="asset-pipeline-canvas" width="900" height="420"></canvas>
+
+    <div class="widget-controls">
+        <div class="controls-left">
+            <button id="apf-play-btn" class="widget-btn primary">
+                &#9654; Simulate
+            </button>
+            <button id="apf-reset-btn" class="widget-btn">
+                Reset
+            </button>
+        </div>
+        <div class="controls-right">
+            <span class="state-label">State:</span>
+            <span id="apf-state-badge" class="state-badge">Idle</span>
         </div>
     </div>
+
     <div class="widget-explainer">
-        Click <strong>Simulate</strong> to watch a file travel through the four pipeline stages: <strong>Upload</strong>,
+        Click <strong>Simulate</strong> to watch a file travel through the four pipeline stages:
+        <strong>Upload</strong>,
         <strong>Optimization</strong>, <strong>Storage</strong>, and <strong>Distribution</strong>. Hover over any stage
         for details.
     </div>
 </div>
+
+<style>
+    /* Scoped styles for the widget to match Wiki theme */
+    #asset-pipeline-widget {
+        background: var(--bg-glass);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--border-radius-lg);
+        padding: 24px;
+        margin: 24px 0;
+        box-shadow: 0 4px 6px var(--shadow-color);
+        font-family: var(--font-family);
+    }
+
+    #asset-pipeline-canvas {
+        width: 100%;
+        height: auto;
+        display: block;
+        cursor: default;
+        touch-action: none;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: var(--border-radius);
+        margin-bottom: 20px;
+        border: 1px solid var(--border-subtle);
+    }
+
+    .widget-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    .controls-left,
+    .controls-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .widget-btn {
+        padding: 8px 20px;
+        border-radius: var(--border-radius);
+        background: var(--input-bg);
+        border: 1px solid var(--border-subtle);
+        color: var(--text-primary);
+        cursor: pointer;
+        font-family: var(--font-family);
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .widget-btn:hover {
+        background: var(--input-bg-hover);
+        border-color: var(--accent-primary);
+        transform: translateY(-1px);
+    }
+
+    .widget-btn:active {
+        transform: translateY(0);
+    }
+
+    .widget-btn.primary {
+        background: rgba(107, 37, 221, 0.2);
+        border-color: var(--accent-primary);
+        color: #fff;
+    }
+
+    .widget-btn.primary:hover {
+        background: rgba(107, 37, 221, 0.3);
+        box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .state-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+
+    .state-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        min-width: 80px;
+        text-align: center;
+        background: var(--input-bg);
+        color: var(--text-muted);
+        border: 1px solid var(--border-subtle);
+        transition: all 0.3s ease;
+    }
+
+    .widget-explainer {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        padding-top: 16px;
+        border-top: 1px solid var(--border-subtle);
+    }
+
+    .widget-explainer strong {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+</style>
 
 <script>
     (function () {
@@ -30,15 +139,19 @@
         if (!canvas) return;
         const ctx = canvas.getContext('2d');
 
-        // High-DPI scaling to prevent blurry rendering on Retina displays
+        // Get styles from CSS variables for consistency
+        const computedStyle = getComputedStyle(document.body);
+        const getVar = (name) => computedStyle.getPropertyValue(name).trim();
+
+        const themeFonts = getVar('--font-family');
+        const themeBg = getVar('--bg-primary'); // Fallback
+
+        // High-DPI scaling
         const dpr = window.devicePixelRatio || 1;
-        const W = canvas.width;   // logical width (900)
-        const H = canvas.height;  // logical height (420)
+        const W = canvas.width;
+        const H = canvas.height;
         canvas.width = W * dpr;
         canvas.height = H * dpr;
-        canvas.style.width = W + 'px';
-        canvas.style.maxWidth = '100%';
-        canvas.style.height = 'auto';
         ctx.scale(dpr, dpr);
 
         const playBtn = document.getElementById('apf-play-btn');
@@ -50,34 +163,34 @@
             {
                 id: 'upload',
                 label: 'Upload',
-                icon: '\u2B06',  // ⬆
-                color: '#60a5fa',
-                desc: 'Source file copied into\nAsset Manager storage',
-                detail: 'State: Uploading\nOrganized by asset UUID\nProgress tracked in real time'
+                icon: '\u2B06',
+                color: '#60a5fa', // Blue
+                desc: 'Source file is copied into\nthe Asset Manager',
+                detail: 'State: Uploading\nFiles are organized automatically\nProgress is tracked in real time'
             },
             {
                 id: 'optimize',
                 label: 'Optimization',
-                icon: '\u2699',  // ⚙
-                color: '#a78bfa',
-                desc: 'Transcoded to GPU-friendly\nplayback codec (HAP)',
-                detail: 'State: Optimizing\nBlake3 content-addressed chunks\nEnables deduplication'
+                icon: '\u2699',
+                color: '#a78bfa', // Purple
+                desc: 'Converted to a GPU-optimized\nformat (HAP) for playback',
+                detail: 'State: Optimizing\nConverts media for fast GPU playback\nDuplicate content is detected and reused'
             },
             {
                 id: 'storage',
                 label: 'Storage',
-                icon: '\uD83D\uDCBE',  // 💾
-                color: '#34d399',
-                desc: 'Source + optimized output\nretained, DB updated atomically',
-                detail: 'assetdb.json updated atomically\nExclusive data (unique to asset)\nShared data (deduplicated chunks)'
+                icon: '\uD83D\uDCBE',
+                color: '#34d399', // Green
+                desc: 'Original and optimized files\nare saved to the asset database',
+                detail: 'Asset database is updated safely\nOriginal source file is preserved\nShared data is deduplicated to save space'
             },
             {
                 id: 'distribute',
                 label: 'Distribution',
-                icon: '\uD83C\uDF10',  // 🌐
-                color: '#fb923c',
-                desc: 'Optimized assets transferred\nto all Runners on network',
-                detail: '2 concurrent download workers\nPort 3023\nRequires show to be online'
+                icon: '\uD83C\uDF10',
+                color: '#fb923c', // Orange
+                desc: 'Optimized files are sent\nto all Display Computers',
+                detail: 'Files transfer to each Display Computer\nMultiple transfers run in parallel\nThe show must be online to distribute'
             }
         ];
 
@@ -90,18 +203,14 @@
         const startX = (W - totalStagesW) / 2;
 
         // Animation state
-        let animPhase = -1;      // -1 = idle, 0-3 = stage index being processed
-        let animProgress = 0;    // 0..1 within current phase
+        let animPhase = -1;
+        let animProgress = 0;
         let animRAF = null;
         let animStartTime = 0;
         let isRunning = false;
         let hoverStage = -1;
 
-        // Particle (the file traveling through pipeline)
-        const particleTrail = [];
-        const maxTrailLen = 20;
-
-        // Runner nodes for distribution stage
+        // Runner nodes
         const runners = [
             { label: 'Runner 1', x: 0, y: 0 },
             { label: 'Runner 2', x: 0, y: 0 },
@@ -116,11 +225,20 @@
         // --- Drawing ---
 
         function draw() {
-            ctx.save();
-            ctx.setTransform(1, 0, 0, 1, 0, 0);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.restore();
-            drawBackground();
+            ctx.clearRect(0, 0, W, H); // Clear transparency
+            // No background fill -> transparent to show CSS background
+
+            // Grid (lighter)
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+            ctx.lineWidth = 1;
+            const step = 30;
+            for (let x = 0; x < W; x += step) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+            }
+            for (let y = 0; y < H; y += step) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+            }
+
             drawTitle();
             drawConnectors();
             drawStages();
@@ -129,44 +247,18 @@
             drawTooltip();
         }
 
-        function drawBackground() {
-            // Subtle gradient background
-            const grad = ctx.createLinearGradient(0, 0, 0, H);
-            grad.addColorStop(0, '#0c1222');
-            grad.addColorStop(1, '#0f1729');
-            ctx.fillStyle = grad;
-            ctx.fillRect(0, 0, W, H);
-
-            // Subtle grid
-            ctx.strokeStyle = 'rgba(99, 102, 241, 0.07)';
-            ctx.lineWidth = 1;
-            const step = 30;
-            for (let x = 0; x < W; x += step) {
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, H);
-                ctx.stroke();
-            }
-            for (let y = 0; y < H; y += step) {
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(W, y);
-                ctx.stroke();
-            }
-        }
-
         function drawTitle() {
-            ctx.font = 'bold 14px -apple-system, system-ui, sans-serif';
+            ctx.font = 'bold 14px ' + themeFonts;
             ctx.textAlign = 'center';
-            ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
             ctx.fillText('ASSET PIPELINE', W / 2, 30);
 
-            // Source file icon on left
-            ctx.font = '22px -apple-system, system-ui, sans-serif';
+            // Source file icon
+            ctx.font = '22px ' + themeFonts;
             ctx.textAlign = 'center';
             ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
             ctx.fillText('\uD83D\uDCC1', startX - 40, stageY + stageH / 2 + 6);
-            ctx.font = '9px -apple-system, system-ui, sans-serif';
+            ctx.font = '9px ' + themeFonts;
             ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
             ctx.fillText('Source File', startX - 40, stageY + stageH / 2 + 24);
         }
@@ -179,9 +271,8 @@
                 const toX = r2.x;
                 const y = stageY + stageH / 2;
 
-                // Arrow line
                 const isActive = (animPhase > i) || (animPhase === i && animProgress > 0.8);
-                const alpha = isActive ? 0.8 : 0.3;
+                const alpha = isActive ? 0.8 : 0.2;
 
                 ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
                 ctx.lineWidth = 2;
@@ -190,7 +281,6 @@
                 ctx.lineTo(toX - 12, y);
                 ctx.stroke();
 
-                // Arrowhead
                 ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
                 ctx.beginPath();
                 ctx.moveTo(toX - 4, y);
@@ -199,7 +289,6 @@
                 ctx.closePath();
                 ctx.fill();
 
-                // Animated dash when this transition is happening
                 if (animPhase === i && animProgress > 0.7) {
                     const dashProgress = (animProgress - 0.7) / 0.3;
                     const dx = toX - fromX;
@@ -211,13 +300,12 @@
                 }
             }
 
-            // Entry connector (source file -> upload)
             const r0 = getStageRect(0);
             const entryFromX = startX - 20;
             const entryToX = r0.x;
             const entryY = stageY + stageH / 2;
             const entryActive = animPhase >= 0;
-            const entryAlpha = entryActive ? 0.7 : 0.25;
+            const entryAlpha = entryActive ? 0.7 : 0.2;
 
             ctx.strokeStyle = `rgba(255, 255, 255, ${entryAlpha})`;
             ctx.lineWidth = 2;
@@ -237,31 +325,15 @@
                 const isCompleted = (animPhase > i);
                 const isHovered = (hoverStage === i);
 
-                // Stage box
-                const boxAlpha = isActive ? 0.35 : isCompleted ? 0.25 : 0.12;
-                const borderAlpha = isActive ? 0.9 : isCompleted ? 0.65 : isHovered ? 0.55 : 0.3;
+                const boxAlpha = isActive ? 0.3 : isCompleted ? 0.2 : 0.08;
+                const borderAlpha = isActive ? 0.9 : isCompleted ? 0.6 : isHovered ? 0.4 : 0.2;
 
-                // Glow when active
                 if (isActive) {
                     ctx.shadowColor = stage.color;
-                    ctx.shadowBlur = 20;
+                    ctx.shadowBlur = 15;
                 }
 
-                // Rounded rect
-                const r = 10;
-                ctx.beginPath();
-                ctx.moveTo(rect.x + r, rect.y);
-                ctx.lineTo(rect.x + rect.w - r, rect.y);
-                ctx.quadraticCurveTo(rect.x + rect.w, rect.y, rect.x + rect.w, rect.y + r);
-                ctx.lineTo(rect.x + rect.w, rect.y + rect.h - r);
-                ctx.quadraticCurveTo(rect.x + rect.w, rect.y + rect.h, rect.x + rect.w - r, rect.y + rect.h);
-                ctx.lineTo(rect.x + r, rect.y + rect.h);
-                ctx.quadraticCurveTo(rect.x, rect.y + rect.h, rect.x, rect.y + rect.h - r);
-                ctx.lineTo(rect.x, rect.y + r);
-                ctx.quadraticCurveTo(rect.x, rect.y, rect.x + r, rect.y);
-                ctx.closePath();
-
-                // Parse color to get rgba
+                roundRect(ctx, rect.x, rect.y, rect.w, rect.h, 10);
                 ctx.fillStyle = hexToRgba(stage.color, boxAlpha);
                 ctx.fill();
                 ctx.strokeStyle = hexToRgba(stage.color, borderAlpha);
@@ -271,53 +343,50 @@
                 ctx.shadowColor = 'transparent';
                 ctx.shadowBlur = 0;
 
-                // Progress bar inside stage when active
+                // Progress bar
                 if (isActive) {
                     const barY = rect.y + rect.h - 8;
-                    const barH = 3;
                     const barPad = 12;
-                    // Background track
-                    ctx.fillStyle = 'rgba(255, 255, 255, 0.15)';
-                    roundRect(ctx, rect.x + barPad, barY, rect.w - barPad * 2, barH, 2);
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                    roundRect(ctx, rect.x + barPad, barY, rect.w - barPad * 2, 3, 2);
                     ctx.fill();
-                    // Progress fill
                     ctx.fillStyle = hexToRgba(stage.color, 0.8);
                     const fillW = (rect.w - barPad * 2) * animProgress;
                     if (fillW > 0) {
-                        roundRect(ctx, rect.x + barPad, barY, fillW, barH, 2);
+                        roundRect(ctx, rect.x + barPad, barY, fillW, 3, 2);
                         ctx.fill();
                     }
                 }
 
-                // Completed checkmark
+                // Checkmark
                 if (isCompleted) {
-                    ctx.font = '14px -apple-system, system-ui, sans-serif';
+                    ctx.font = '14px ' + themeFonts;
                     ctx.textAlign = 'right';
                     ctx.fillStyle = '#22c55e';
                     ctx.fillText('\u2713', rect.x + rect.w - 8, rect.y + 18);
                 }
 
-                // Stage number
-                ctx.font = 'bold 10px -apple-system, system-ui, sans-serif';
+                // Number
+                ctx.font = 'bold 10px ' + themeFonts;
                 ctx.textAlign = 'left';
-                ctx.fillStyle = hexToRgba(stage.color, isActive || isCompleted ? 0.9 : 0.6);
+                ctx.fillStyle = hexToRgba(stage.color, isActive || isCompleted ? 0.9 : 0.5);
                 ctx.fillText((i + 1).toString(), rect.x + 10, rect.y + 16);
 
                 // Icon
-                ctx.font = '26px -apple-system, system-ui, sans-serif';
+                ctx.font = '26px ' + themeFonts;
                 ctx.textAlign = 'center';
                 ctx.fillStyle = hexToRgba(stage.color, isActive ? 1 : isCompleted ? 0.85 : 0.6);
                 ctx.fillText(stage.icon, rect.x + rect.w / 2, rect.y + 50);
 
                 // Label
-                ctx.font = 'bold 12px -apple-system, system-ui, sans-serif';
+                ctx.font = 'bold 12px ' + themeFonts;
                 ctx.textAlign = 'center';
                 ctx.fillStyle = isActive || isCompleted ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.7)';
                 ctx.fillText(stage.label, rect.x + rect.w / 2, rect.y + 72);
 
-                // Short description
-                ctx.font = '10px -apple-system, system-ui, sans-serif';
-                ctx.fillStyle = 'rgba(255,255,255,0.55)';
+                // Description
+                ctx.font = '10px ' + themeFonts;
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
                 const descLines = stage.desc.split('\n');
                 for (let l = 0; l < descLines.length; l++) {
                     ctx.fillText(descLines[l], rect.x + rect.w / 2, rect.y + 88 + l * 13);
@@ -326,7 +395,6 @@
         }
 
         function drawRunnerNodes() {
-            // Draw runner boxes below the Distribution stage
             const distRect = getStageRect(3);
             const runnerW = 80;
             const runnerH = 36;
@@ -346,7 +414,7 @@
 
                 const fillProgress = isDistActive ? Math.max(0, Math.min(1, (animProgress - i * 0.15) / 0.6)) : (isDistDone ? 1 : 0);
 
-                // Connection line from distribution stage
+                // Line
                 const lineFromX = distRect.x + distRect.w / 2;
                 const lineFromY = distRect.y + distRect.h;
                 const lineToX = rx + runnerW / 2;
@@ -360,7 +428,7 @@
                 ctx.quadraticCurveTo(lineFromX, (lineFromY + lineToY) / 2, lineToX, lineToY - 2);
                 ctx.stroke();
 
-                // Animated dot along the line
+                // Dot
                 if (isDistActive && fillProgress > 0 && fillProgress < 1) {
                     const t = fillProgress;
                     const cx = lineFromX + (lineToX - lineFromX) * t;
@@ -372,61 +440,38 @@
                     ctx.fill();
                 }
 
-                // Runner box
-                const boxAlpha = fillProgress > 0 ? 0.25 : 0.12;
-                const borderAlpha = fillProgress > 0 ? 0.65 : 0.25;
-
-                const rr = 6;
-                ctx.beginPath();
-                ctx.moveTo(rx + rr, ry);
-                ctx.lineTo(rx + runnerW - rr, ry);
-                ctx.quadraticCurveTo(rx + runnerW, ry, rx + runnerW, ry + rr);
-                ctx.lineTo(rx + runnerW, ry + runnerH - rr);
-                ctx.quadraticCurveTo(rx + runnerW, ry + runnerH, rx + runnerW - rr, ry + runnerH);
-                ctx.lineTo(rx + rr, ry + runnerH);
-                ctx.quadraticCurveTo(rx, ry + runnerH, rx, ry + runnerH - rr);
-                ctx.lineTo(rx, ry + rr);
-                ctx.quadraticCurveTo(rx, ry, rx + rr, ry);
-                ctx.closePath();
+                // Runner Box
+                const boxAlpha = fillProgress > 0 ? 0.25 : 0.1;
+                const borderAlpha = fillProgress > 0 ? 0.6 : 0.2;
 
                 ctx.fillStyle = `rgba(251, 146, 60, ${boxAlpha})`;
+                roundRect(ctx, rx, ry, runnerW, runnerH, 6);
                 ctx.fill();
                 ctx.strokeStyle = `rgba(251, 146, 60, ${borderAlpha})`;
-                ctx.lineWidth = 1;
                 ctx.stroke();
 
-                // Fill progress inside runner box
+                // Progress Fill
                 if (fillProgress > 0 && fillProgress < 1) {
                     ctx.save();
-                    ctx.beginPath();
-                    ctx.moveTo(rx + rr, ry);
-                    ctx.lineTo(rx + runnerW - rr, ry);
-                    ctx.quadraticCurveTo(rx + runnerW, ry, rx + runnerW, ry + rr);
-                    ctx.lineTo(rx + runnerW, ry + runnerH - rr);
-                    ctx.quadraticCurveTo(rx + runnerW, ry + runnerH, rx + runnerW - rr, ry + runnerH);
-                    ctx.lineTo(rx + rr, ry + runnerH);
-                    ctx.quadraticCurveTo(rx, ry + runnerH, rx, ry + runnerH - rr);
-                    ctx.lineTo(rx, ry + rr);
-                    ctx.quadraticCurveTo(rx, ry, rx + rr, ry);
-                    ctx.closePath();
+                    roundRect(ctx, rx, ry, runnerW, runnerH, 6);
                     ctx.clip();
-                    ctx.fillStyle = 'rgba(251, 146, 60, 0.18)';
+                    ctx.fillStyle = 'rgba(251, 146, 60, 0.15)';
                     ctx.fillRect(rx, ry, runnerW * fillProgress, runnerH);
                     ctx.restore();
                 }
 
-                // Checkmark if done
+                // Checkmark
                 if (fillProgress >= 1) {
-                    ctx.font = '11px -apple-system, system-ui, sans-serif';
+                    ctx.font = '11px ' + themeFonts;
                     ctx.textAlign = 'right';
                     ctx.fillStyle = '#22c55e';
                     ctx.fillText('\u2713', rx + runnerW - 5, ry + 14);
                 }
 
-                // Runner label
-                ctx.font = '10px -apple-system, system-ui, sans-serif';
+                // Text
+                ctx.font = '10px ' + themeFonts;
                 ctx.textAlign = 'center';
-                ctx.fillStyle = fillProgress > 0 ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.55)';
+                ctx.fillStyle = fillProgress > 0 ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.5)';
                 ctx.fillText(runners[i].label, rx + runnerW / 2, ry + runnerH / 2 + 4);
             }
         }
@@ -437,8 +482,6 @@
             const rect = getStageRect(animPhase);
             const cx = rect.x + rect.w / 2;
             const cy = rect.y - 20;
-
-            // Pulsing glow above active stage
             const pulse = Math.sin(performance.now() * 0.005) * 0.3 + 0.7;
             const stage = stages[animPhase];
 
@@ -468,35 +511,23 @@
             let tipX = rect.x + rect.w / 2 - tipW / 2;
             let tipY = rect.y - tipH - 16;
 
-            // Keep within canvas
             if (tipX < 8) tipX = 8;
             if (tipX + tipW > W - 8) tipX = W - 8 - tipW;
             if (tipY < 8) tipY = rect.y + rect.h + 12;
 
-            // Background
-            ctx.fillStyle = 'rgba(15, 23, 42, 0.95)';
-            const r = 8;
-            ctx.beginPath();
-            ctx.moveTo(tipX + r, tipY);
-            ctx.lineTo(tipX + tipW - r, tipY);
-            ctx.quadraticCurveTo(tipX + tipW, tipY, tipX + tipW, tipY + r);
-            ctx.lineTo(tipX + tipW, tipY + tipH - r);
-            ctx.quadraticCurveTo(tipX + tipW, tipY + tipH, tipX + tipW - r, tipY + tipH);
-            ctx.lineTo(tipX + r, tipY + tipH);
-            ctx.quadraticCurveTo(tipX, tipY + tipH, tipX, tipY + tipH - r);
-            ctx.lineTo(tipX, tipY + r);
-            ctx.quadraticCurveTo(tipX, tipY, tipX + r, tipY);
-            ctx.closePath();
-            ctx.fill();
-
+            // Tooltip Background (Glass)
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
             ctx.strokeStyle = hexToRgba(stage.color, 0.4);
             ctx.lineWidth = 1;
+
+            roundRect(ctx, tipX, tipY, tipW, tipH, 8);
+            ctx.fill();
             ctx.stroke();
 
             // Text
-            ctx.font = '11px -apple-system, system-ui, sans-serif';
+            ctx.font = '11px ' + themeFonts;
             ctx.textAlign = 'left';
-            ctx.fillStyle = 'rgba(255,255,255,0.8)';
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
             for (let l = 0; l < lines.length; l++) {
                 ctx.fillText(lines[l], tipX + padX, tipY + padY + 12 + l * lineH);
             }
@@ -527,27 +558,31 @@
 
         function updateStateBadge(text, color) {
             stateBadge.textContent = text;
+            stateBadge.style.background = 'var(--input-bg)';
+            stateBadge.style.color = 'var(--text-muted)';
+            stateBadge.style.borderColor = 'var(--border-subtle)';
+
             if (color === 'green') {
                 stateBadge.style.background = 'rgba(34, 197, 94, 0.2)';
                 stateBadge.style.color = '#22c55e';
+                stateBadge.style.borderColor = 'rgba(34, 197, 94, 0.3)';
             } else if (color === 'blue') {
                 stateBadge.style.background = 'rgba(96, 165, 250, 0.2)';
                 stateBadge.style.color = '#60a5fa';
+                stateBadge.style.borderColor = 'rgba(96, 165, 250, 0.3)';
             } else if (color === 'purple') {
                 stateBadge.style.background = 'rgba(167, 139, 250, 0.2)';
                 stateBadge.style.color = '#a78bfa';
+                stateBadge.style.borderColor = 'rgba(167, 139, 250, 0.3)';
             } else if (color === 'orange') {
                 stateBadge.style.background = 'rgba(251, 146, 60, 0.2)';
                 stateBadge.style.color = '#fb923c';
-            } else {
-                stateBadge.style.background = 'rgba(99, 102, 241, 0.2)';
-                stateBadge.style.color = '#818cf8';
+                stateBadge.style.borderColor = 'rgba(251, 146, 60, 0.3)';
             }
         }
 
         // --- Animation ---
-
-        const phaseDurations = [1.8, 3.0, 1.5, 2.5]; // seconds per phase
+        const phaseDurations = [1.8, 3.0, 1.5, 2.5];
 
         function startSimulation() {
             if (isRunning) return;
@@ -573,7 +608,6 @@
 
         function tick() {
             if (!isRunning) return;
-
             const now = performance.now();
             const elapsed = (now - animStartTime) / 1000;
             const phaseDur = phaseDurations[animPhase] || 2;
@@ -582,31 +616,25 @@
             draw();
 
             if (animProgress >= 1) {
-                // Move to next phase
                 animPhase++;
                 animProgress = 0;
                 animStartTime = performance.now();
 
                 if (animPhase >= stages.length) {
-                    // Done
-                    animPhase = stages.length; // mark as fully done
+                    animPhase = stages.length;
                     isRunning = false;
                     updateStateBadge('Complete', 'green');
                     draw();
                     return;
                 }
-
-                // Update badge
                 const stateNames = ['Uploading', 'Optimizing', 'Storing', 'Distributing'];
                 const stateColors = ['blue', 'purple', 'green', 'orange'];
                 updateStateBadge(stateNames[animPhase], stateColors[animPhase]);
             }
-
             animRAF = requestAnimationFrame(tick);
         }
 
         // --- Interaction ---
-
         function getCanvasCoords(e) {
             const rect = canvas.getBoundingClientRect();
             const scaleX = W / rect.width;
@@ -622,9 +650,7 @@
         function findHoverStage(mx, my) {
             for (let i = 0; i < stages.length; i++) {
                 const r = getStageRect(i);
-                if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) {
-                    return i;
-                }
+                if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) return i;
             }
             return -1;
         }
@@ -642,12 +668,10 @@
             draw();
         });
 
-        // Click on stage to jump to that phase
         canvas.addEventListener('pointerdown', (e) => {
             const { x, y } = getCanvasCoords(e);
             const clicked = findHoverStage(x, y);
             if (clicked >= 0 && !isRunning) {
-                // Set animation to show this stage as active
                 animPhase = clicked;
                 animProgress = 0.5;
                 const stateNames = ['Uploading', 'Optimizing', 'Storing', 'Distributing'];
@@ -657,15 +681,12 @@
             }
         });
 
-        // --- Button handlers ---
         playBtn.addEventListener('click', () => {
             resetSimulation();
-            // Small delay to show reset, then start
             setTimeout(() => startSimulation(), 100);
         });
         resetBtn.addEventListener('click', () => resetSimulation());
 
-        // --- Init ---
         draw();
     })();
 </script>

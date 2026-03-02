@@ -105,8 +105,6 @@ When **Auto Update Assets** is enabled in the show settings, the Producer monito
 
 This works in combination with the [Asset Watcher](./09-asset-watcher.md): the watcher detects new files in watched folders, and the auto-update mechanism detects changes to existing source files.
 
-[[WIDGET: interactive-dynamic-asset-flow — animated diagram showing the version swap pipeline from file change through Director coordination to Runner substitution]]
-
 ### Managing Versions
 
 - **Deleting a version** — select the version inside the dynamic asset folder and delete it. If the dynamic asset is used on the timeline, at least one version must remain — WATCHOUT prevents you from deleting the last version of a used dynamic asset.

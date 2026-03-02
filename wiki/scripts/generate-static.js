@@ -211,7 +211,43 @@ function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs, extra
                     </span>
                     <h1>WATCHOUT GUIDE</h1>
                 </a>
-
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
             </div>
 
             <div class="search-container">
@@ -236,97 +272,6 @@ function generatePageHtml(title, content, sidebarHtml, depth, breadcrumbs, extra
                 ${sidebarHtml}
             </nav>
 
-            <div class="sidebar-footer">
-                <div class="tools-section">
-                    <span class="tools-label">Tools</span>
-                    <div class="tools-buttons">
-                        <a href="[[RELATIVE_PATH]]../shortcuts/index.html" class="tools-btn" title="Keyboard Shortcuts">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect>
-                                <path d="M6 8h.001"></path>
-                                <path d="M10 8h.001"></path>
-                                <path d="M14 8h.001"></path>
-                                <path d="M18 8h.001"></path>
-                                <path d="M8 12h.001"></path>
-                                <path d="M12 12h.001"></path>
-                                <path d="M16 12h.001"></path>
-                                <path d="M7 16h10"></path>
-                            </svg>
-                        </a>
-                        <a href="[[RELATIVE_PATH]]../planner/index.html" class="tools-btn" title="Infrastructure Planner">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <circle cx="18" cy="5" r="3"></circle>
-                                <circle cx="6" cy="12" r="3"></circle>
-                                <circle cx="18" cy="19" r="3"></circle>
-                                <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line>
-                                <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line>
-                            </svg>
-                        </a>
-                        <a href="[[RELATIVE_PATH]]../test-patterns/index.html" class="tools-btn" title="Test Pattern Generator">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <rect x="3" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="3" width="7" height="7"></rect>
-                                <rect x="14" y="14" width="7" height="7"></rect>
-                                <rect x="3" y="14" width="7" height="7"></rect>
-                            </svg>
-                        </a>
-                        <a href="[[RELATIVE_PATH]]../dashboard/index.html" class="tools-btn" title="Director Dashboard">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                stroke-linejoin="round">
-                                <path d="M12 2v6"></path>
-                                <path d="M5 7h14"></path>
-                                <path d="M5 11h14"></path>
-                                <path d="M5 15h10"></path>
-                                <path d="M5 19h6"></path>
-                            </svg>
-                        </a>
-                        <button class="tools-btn" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
-                             <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                            </svg>
-                            <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="5"></circle>
-                                <line x1="12" y1="1" x2="12" y2="3"></line>
-                                <line x1="12" y1="21" x2="12" y2="23"></line>
-                                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                                <line x1="1" y1="12" x2="3" y2="12"></line>
-                                <line x1="21" y1="12" x2="23" y2="12"></line>
-                                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-                            </svg>
-                             <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <circle cx="12" cy="12" r="4"></circle>
-                                <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
-                                <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
-                                <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
-                                <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
-                            </svg>
-                             <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
-                                <polyline points="2 17 12 22 22 17"></polyline>
-                                <polyline points="2 12 12 17 22 12"></polyline>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-            </div>
         </aside>
 
         <!-- Main Content Area -->
@@ -601,6 +546,276 @@ chapters.forEach(chapter => {
 });
 
 console.log("Static generation complete.");
+
+function escapeHtml(value) {
+    return String(value)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
+
+function resolveSectionHtml(sections, sectionTitle) {
+    if (!sections) return '';
+    if (sections[sectionTitle]) return sections[sectionTitle];
+
+    const target = sectionTitle.toUpperCase();
+    const keys = Object.keys(sections);
+    for (let i = 0; i < keys.length; i += 1) {
+        const key = keys[i];
+        const probe = key.toUpperCase();
+        if (probe === target || probe.includes(target) || target.includes(probe)) {
+            return sections[key];
+        }
+    }
+
+    return '';
+}
+
+function classifyWidgetPageState(html) {
+    const source = String(html || '');
+    const hasInteractive = /interactive-widget/i.test(source);
+    const hasMissing = /widget-error/i.test(source);
+
+    if (!hasInteractive && !hasMissing) return null;
+
+    if (hasInteractive && hasMissing) {
+        return {
+            label: 'interactive + missing',
+            cssClass: 'widget-state-mixed',
+            interactive: true,
+            missing: true
+        };
+    }
+
+    if (hasInteractive) {
+        return {
+            label: 'interactive',
+            cssClass: 'widget-state-interactive',
+            interactive: true,
+            missing: false
+        };
+    }
+
+    return {
+        label: 'missing',
+        cssClass: 'widget-state-missing',
+        interactive: false,
+        missing: true
+    };
+}
+
+function generateWidgetPagesIndex() {
+    console.log("Generating widget-pages.html...");
+
+    const groups = [];
+    let totalPages = 0;
+    let interactivePages = 0;
+    let missingPages = 0;
+
+    chapters.forEach((chapter) => {
+        if (chapter.disabled) return;
+
+        const chapterData = wikiContent[chapter.title] || {};
+        const sections = chapterData.sections || {};
+        const entries = [];
+
+        const overviewState = classifyWidgetPageState(chapterData.overview || '');
+        if (overviewState) {
+            entries.push({
+                title: `${chapter.title} Overview`,
+                url: `${chapter.slug}/index.html`,
+                state: overviewState
+            });
+        }
+
+        chapter.subsections.forEach((sub) => {
+            const sectionHtml = resolveSectionHtml(sections, sub.title);
+            const state = classifyWidgetPageState(sectionHtml);
+            if (!state) return;
+
+            entries.push({
+                title: sub.title,
+                url: `${chapter.slug}/${sub.slug}.html`,
+                state
+            });
+        });
+
+        if (entries.length === 0) return;
+
+        entries.forEach((entry) => {
+            totalPages += 1;
+            if (entry.state.interactive) interactivePages += 1;
+            if (entry.state.missing) missingPages += 1;
+        });
+
+        groups.push({
+            chapterTitle: chapter.title,
+            entries
+        });
+    });
+
+    const groupsHtml = groups.length > 0
+        ? groups.map((group) => {
+            const entriesHtml = group.entries.map((entry) => {
+                return `
+                    <li>
+                        <a href="${entry.url}">${escapeHtml(entry.title)}</a>
+                        <span class="widget-state ${entry.state.cssClass}">${escapeHtml(entry.state.label)}</span>
+                    </li>
+                `;
+            }).join('');
+
+            return `
+                <section class="widget-group">
+                    <h3>${escapeHtml(group.chapterTitle)} (${group.entries.length})</h3>
+                    <ul>${entriesHtml}</ul>
+                </section>
+            `;
+        }).join('')
+        : '<div class="widget-empty">No widget pages found.</div>';
+
+    const widgetBody = `
+        <style>
+            .widget-index-meta {
+                color: var(--text-secondary);
+                margin-bottom: 20px;
+            }
+
+            .widget-index-stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+
+            .widget-index-stat {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-subtle);
+                border-radius: var(--border-radius);
+                padding: 14px;
+            }
+
+            .widget-index-stat-value {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: var(--accent-primary);
+                line-height: 1;
+                margin-bottom: 6px;
+            }
+
+            .widget-index-stat-label {
+                color: var(--text-secondary);
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+            }
+
+            .widget-group {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-subtle);
+                border-radius: var(--border-radius);
+                padding: 16px;
+                margin-bottom: 14px;
+            }
+
+            .widget-group h3 {
+                margin: 0 0 10px;
+                font-size: 1rem;
+            }
+
+            .widget-group ul {
+                margin: 0;
+                padding-left: 18px;
+            }
+
+            .widget-group li {
+                margin: 8px 0;
+                color: var(--text-primary);
+            }
+
+            .widget-group a {
+                color: var(--text-primary);
+                text-decoration: none;
+                border-bottom: 1px dashed var(--border-subtle);
+            }
+
+            .widget-group a:hover {
+                color: var(--accent-primary);
+                border-bottom-color: var(--accent-primary);
+            }
+
+            .widget-state {
+                margin-left: 8px;
+                font-size: 0.74rem;
+                padding: 2px 7px;
+                border-radius: 999px;
+                border: 1px solid transparent;
+                vertical-align: middle;
+                white-space: nowrap;
+            }
+
+            .widget-state-interactive {
+                color: #75d7ad;
+                border-color: rgba(117, 215, 173, 0.4);
+                background: rgba(117, 215, 173, 0.12);
+            }
+
+            .widget-state-missing {
+                color: #f6b36c;
+                border-color: rgba(246, 179, 108, 0.4);
+                background: rgba(246, 179, 108, 0.12);
+            }
+
+            .widget-state-mixed {
+                color: #8fc6ff;
+                border-color: rgba(143, 198, 255, 0.4);
+                background: rgba(143, 198, 255, 0.12);
+            }
+
+            .widget-empty {
+                color: var(--text-secondary);
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-subtle);
+                border-radius: var(--border-radius);
+                padding: 14px;
+            }
+        </style>
+
+        <h1>Widget Page Index</h1>
+        <p class="widget-index-meta">Hidden helper page: lists all documentation pages with interactive widgets and/or missing widget placeholders.</p>
+
+        <div class="widget-index-stats">
+            <div class="widget-index-stat">
+                <div class="widget-index-stat-value">${totalPages}</div>
+                <div class="widget-index-stat-label">Total Pages</div>
+            </div>
+            <div class="widget-index-stat">
+                <div class="widget-index-stat-value">${interactivePages}</div>
+                <div class="widget-index-stat-label">Interactive</div>
+            </div>
+            <div class="widget-index-stat">
+                <div class="widget-index-stat-value">${missingPages}</div>
+                <div class="widget-index-stat-label">Missing</div>
+            </div>
+        </div>
+
+        ${groupsHtml}
+    `;
+
+    const breadcrumbs = `
+        <a href="index.html" class="breadcrumb-item">Home</a>
+        <span class="breadcrumb-separator">›</span>
+        <span class="breadcrumb-item current">Widget Page Index</span>
+    `;
+
+    const sidebar = generateSidebar('', 0);
+    const html = generatePageHtml("Widget Page Index", widgetBody, sidebar, 0, breadcrumbs);
+
+    fs.writeFileSync(path.join(OUTPUT_DIR, 'widget-pages.html'), html);
+    console.log("Generated: widget-pages.html");
+}
 
 // --- Generate Stats Page ---
 function generateStatsPage() {
@@ -1072,6 +1287,7 @@ function generateStatsPage() {
     console.log("Generated: stats.html");
 }
 
+generateWidgetPagesIndex();
 generateStatsPage();
 
 // --- Generate Version Page ---

@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="WATCHOUT User Guide - Version Info">
-    <title>Version Info - WATCHOUT 7 User Guide</title>
+    <meta name="description" content="WATCHOUT User Guide - Widget Page Index">
+    <title>Widget Page Index - WATCHOUT 7 User Guide</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -18,7 +18,7 @@
         })();
     </script>
 </head>
-<body data-page-id="version-info">
+<body data-page-id="widget-page-index">
     <div class="app">
         <!-- Sidebar Navigation -->
         <aside class="sidebar" id="sidebar">
@@ -938,7 +938,7 @@
                     
         <a href="index.html" class="breadcrumb-item">Home</a>
         <span class="breadcrumb-separator">›</span>
-        <span class="breadcrumb-item current">Version</span>
+        <span class="breadcrumb-item current">Widget Page Index</span>
     
                 </div>
             </header>
@@ -946,19 +946,316 @@
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
                     
-        <h1>Version Information</h1>
-        <div class="version-card" style="background: var(--bg-secondary); padding: 40px; border-radius: var(--border-radius); border: 1px solid var(--border-subtle); text-align: center; margin-bottom: 40px;">
-            <div style="font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 10px;">Current Version</div>
-            <div style="font-size: 4rem; font-weight: 700; color: var(--accent-primary); font-family: 'Futura Now Headline', sans-serif;">v1.0.0</div>
-            <div style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">Build Date: 2026-03-02</div>
+        <style>
+            .widget-index-meta {
+                color: var(--text-secondary);
+                margin-bottom: 20px;
+            }
+
+            .widget-index-stats {
+                display: grid;
+                grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+                gap: 12px;
+                margin-bottom: 24px;
+            }
+
+            .widget-index-stat {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-subtle);
+                border-radius: var(--border-radius);
+                padding: 14px;
+            }
+
+            .widget-index-stat-value {
+                font-size: 1.8rem;
+                font-weight: 700;
+                color: var(--accent-primary);
+                line-height: 1;
+                margin-bottom: 6px;
+            }
+
+            .widget-index-stat-label {
+                color: var(--text-secondary);
+                font-size: 0.8rem;
+                text-transform: uppercase;
+                letter-spacing: 0.06em;
+            }
+
+            .widget-group {
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-subtle);
+                border-radius: var(--border-radius);
+                padding: 16px;
+                margin-bottom: 14px;
+            }
+
+            .widget-group h3 {
+                margin: 0 0 10px;
+                font-size: 1rem;
+            }
+
+            .widget-group ul {
+                margin: 0;
+                padding-left: 18px;
+            }
+
+            .widget-group li {
+                margin: 8px 0;
+                color: var(--text-primary);
+            }
+
+            .widget-group a {
+                color: var(--text-primary);
+                text-decoration: none;
+                border-bottom: 1px dashed var(--border-subtle);
+            }
+
+            .widget-group a:hover {
+                color: var(--accent-primary);
+                border-bottom-color: var(--accent-primary);
+            }
+
+            .widget-state {
+                margin-left: 8px;
+                font-size: 0.74rem;
+                padding: 2px 7px;
+                border-radius: 999px;
+                border: 1px solid transparent;
+                vertical-align: middle;
+                white-space: nowrap;
+            }
+
+            .widget-state-interactive {
+                color: #75d7ad;
+                border-color: rgba(117, 215, 173, 0.4);
+                background: rgba(117, 215, 173, 0.12);
+            }
+
+            .widget-state-missing {
+                color: #f6b36c;
+                border-color: rgba(246, 179, 108, 0.4);
+                background: rgba(246, 179, 108, 0.12);
+            }
+
+            .widget-state-mixed {
+                color: #8fc6ff;
+                border-color: rgba(143, 198, 255, 0.4);
+                background: rgba(143, 198, 255, 0.12);
+            }
+
+            .widget-empty {
+                color: var(--text-secondary);
+                background: var(--bg-secondary);
+                border: 1px solid var(--border-subtle);
+                border-radius: var(--border-radius);
+                padding: 14px;
+            }
+        </style>
+
+        <h1>Widget Page Index</h1>
+        <p class="widget-index-meta">Hidden helper page: lists all documentation pages with interactive widgets and/or missing widget placeholders.</p>
+
+        <div class="widget-index-stats">
+            <div class="widget-index-stat">
+                <div class="widget-index-stat-value">32</div>
+                <div class="widget-index-stat-label">Total Pages</div>
+            </div>
+            <div class="widget-index-stat">
+                <div class="widget-index-stat-value">23</div>
+                <div class="widget-index-stat-label">Interactive</div>
+            </div>
+            <div class="widget-index-stat">
+                <div class="widget-index-stat-value">9</div>
+                <div class="widget-index-stat-label">Missing</div>
+            </div>
         </div>
 
-        <div class="changelog-container" style="background: var(--bg-secondary); padding: 40px; border-radius: var(--border-radius); border: 1px solid var(--border-subtle);">
-            <h1>Changelog</h1><br/>All notable changes to this project will be documented in this file.<br/>The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).<br/><h2>[1.0.0] - 2026-02-12</h2><br/><h3>Added</h3>
-<ul><li>Initial release of the WATCHOUT 7 User Guide wiki.</li></ul>
-
-        </div>
+        
+                <section class="widget-group">
+                    <h3>3. Displays and Outputs (6)</h3>
+                    <ul>
+                    <li>
+                        <a href="displays-and-outputs/virtual-displays.html">Virtual Displays</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="displays-and-outputs/3d-mapping-projectors.html">3d Mapping Projectors</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="displays-and-outputs/warp-geometry.html">Warp Geometry</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="displays-and-outputs/display-masks.html">Display Masks</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="displays-and-outputs/hdr-and-color-management.html">HDR and Color Management</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="displays-and-outputs/display-calibration.html">Display Calibration</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                </ul>
+                </section>
+            
+                <section class="widget-group">
+                    <h3>4. Assets &amp; Asset Manager (2)</h3>
+                    <ul>
+                    <li>
+                        <a href="assets-asset-manager/asset-manager.html">Asset Manager</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="assets-asset-manager/formats-codecs.html">Formats &amp; Codecs</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                </ul>
+                </section>
+            
+                <section class="widget-group">
+                    <h3>5. Timeline and Cues (1)</h3>
+                    <ul>
+                    <li>
+                        <a href="timeline-and-cues/working-with-layers.html">Working With Layers</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                </ul>
+                </section>
+            
+                <section class="widget-group">
+                    <h3>6. Effects and Tweens (14)</h3>
+                    <ul>
+                    <li>
+                        <a href="effects-and-tweens/understanding-tweens.html">Understanding Tweens</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/position-and-movement.html">Position and Movement</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/scale-and-size.html">Scale and Size</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/rotation-effects.html">Rotation Effects</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/opacity-and-fades.html">Opacity and Fades</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/cropping.html">Cropping</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/color-adjustments.html">Color Adjustments</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/corner-pinning.html">Corner Pinning</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/linear-wipe.html">Linear Wipe</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/blend-modes.html">Blend Modes</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/frame-blending.html">Frame Blending</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/chroma-key.html">Chroma Key</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/key-and-fill.html">Key and Fill</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                
+                    <li>
+                        <a href="effects-and-tweens/tween-expressions.html">Tween Expressions</a>
+                        <span class="widget-state widget-state-interactive">interactive</span>
+                    </li>
+                </ul>
+                </section>
+            
+                <section class="widget-group">
+                    <h3>8. The Interface (9)</h3>
+                    <ul>
+                    <li>
+                        <a href="the-interface/main-window-overview.html">Main Window Overview</a>
+                        <span class="widget-state widget-state-missing">missing</span>
+                    </li>
+                
+                    <li>
+                        <a href="the-interface/the-stage-window.html">The Stage Window</a>
+                        <span class="widget-state widget-state-missing">missing</span>
+                    </li>
+                
+                    <li>
+                        <a href="the-interface/the-timeline-window.html">The Timeline Window</a>
+                        <span class="widget-state widget-state-missing">missing</span>
+                    </li>
+                
+                    <li>
+                        <a href="the-interface/the-cue-list-window.html">The Cue List Window</a>
+                        <span class="widget-state widget-state-missing">missing</span>
+                    </li>
+                
+                    <li>
+                        <a href="the-interface/the-assets-window.html">The Assets Window</a>
+                        <span class="widget-state widget-state-missing">missing</span>
+                    </li>
+                
+                    <li>
+                        <a href="the-interface/the-properties-panel.html">The Properties Panel</a>
+                        <span class="widget-state widget-state-missing">missing</span>
+                    </li>
+                
+                    <li>
+                        <a href="the-interface/the-nodes-window.html">The Nodes Window</a>
+                        <span class="widget-state widget-state-missing">missing</span>
+                    </li>
+                
+                    <li>
+                        <a href="the-interface/the-devices-window.html">The Devices Window</a>
+                        <span class="widget-state widget-state-missing">missing</span>
+                    </li>
+                
+                    <li>
+                        <a href="the-interface/customizing-your-workspace.html">Customizing Your Workspace</a>
+                        <span class="widget-state widget-state-missing">missing</span>
+                    </li>
+                </ul>
+                </section>
+            
     
                 </div>
             </article>

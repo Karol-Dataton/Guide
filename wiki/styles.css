@@ -200,8 +200,7 @@ body::before {
 .sidebar.collapsed .search-container,
 .sidebar.collapsed .toc-chapter-title,
 .sidebar.collapsed .toc-chapter-arrow,
-.sidebar.collapsed .toc-subsections,
-.sidebar.collapsed .sidebar-footer .nav-link span:not(.logo-icon) {
+.sidebar.collapsed .toc-subsections {
     display: none;
 }
 
@@ -507,11 +506,6 @@ body::before {
     border-color: rgba(255, 255, 255, 0.06);
     transform: none;
     box-shadow: none;
-}
-
-.sidebar-footer {
-    padding: 16px 20px;
-    border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
 
 .nav-link {
@@ -1917,80 +1911,35 @@ body[data-page-id="glossary"] .glossary-search-empty {
     display: none;
 }
 
-/* Tools Section in Sidebar Footer */
-.sidebar-footer {
-    padding: 16px;
-    border-top: 1px solid var(--border-subtle);
-}
+/* Tools Section in Sidebar Footer - REMOVED */
 
-.tools-section {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.tools-label {
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--text-muted);
-    padding-left: 4px;
-}
-
-.tools-buttons {
-    display: flex;
-    border-radius: var(--border-radius);
-    overflow: hidden;
-    border: 1px solid var(--border-subtle);
-}
-
-.tools-btn {
-    flex: 1;
+/* Theme toggle button in sidebar header */
+.sidebar-theme-toggle {
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 12px;
-    background: var(--input-bg);
-    border: none;
+    padding: 8px;
+    background: transparent;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--border-radius);
     color: var(--text-secondary);
     cursor: pointer;
     transition: all var(--transition-fast);
-    text-decoration: none;
+    flex-shrink: 0;
 }
 
-.tools-btn:hover {
+.sidebar-theme-toggle:hover {
     background: var(--hover-bg);
     color: var(--text-primary);
 }
 
-.tools-btn:active {
-    transform: scale(0.98);
+.sidebar-theme-toggle:active {
+    transform: scale(0.95);
 }
 
-.tools-btn:not(:last-child) {
-    border-right: 1px solid var(--border-subtle);
-}
-
-.tools-btn svg {
+.sidebar-theme-toggle svg {
     width: 18px;
     height: 18px;
-}
-
-/* Theme toggle icons logic moved to end of file */
-
-/* Hide tools label when sidebar collapsed */
-.sidebar.collapsed .tools-label {
-    display: none;
-}
-
-.sidebar.collapsed .tools-buttons {
-    flex-direction: column;
-}
-
-.sidebar.collapsed .tools-btn:not(:last-child) {
-    border-right: none;
-    border-bottom: 1px solid var(--border-subtle);
 }
 
 /* Light theme specific adjustments */

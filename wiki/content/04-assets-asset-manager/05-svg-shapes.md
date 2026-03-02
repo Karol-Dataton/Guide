@@ -124,8 +124,6 @@ When an SVG shape is placed on the timeline as a cue, you can override its rende
 
 Increasing the render resolution produces sharper output when the cue is scaled up on stage, at the cost of more GPU memory.
 
-[[WIDGET: interactive-render-resolution — side-by-side comparison showing a text shape at 1080p vs 4K render resolution when scaled to fill a large display]]
-
 ### Using Shapes on the Timeline
 
 Shape assets work like any other visual asset:
