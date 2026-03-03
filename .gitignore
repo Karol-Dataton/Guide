@@ -1,5 +1,8 @@
 7nx/
 
+# macOS
+.DS_Store
+
 # Generated Wiki Content
 wiki/**/*.html
 wiki/content-data.js
@@ -7,4 +10,5 @@ wiki/toc-data.js
 !wiki/index.html
 !wiki/stats.html
 !wiki/version.html
+!wiki/widget-pages.html
 !wiki/widgets/*.html

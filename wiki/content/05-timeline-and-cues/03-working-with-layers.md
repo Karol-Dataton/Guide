@@ -113,7 +113,7 @@ Each layer has an optional **Key and Fill** system that controls how the layer's
 | **Alpha** | The alpha channel of the key layer controls transparency directly. |
 | **Alpha Inverted** | The inverted alpha channel of the key layer controls transparency. |
 
-[[WIDGET:key-fill-modes]]
+For an interactive demonstration of how these modes work, see the [Key and Fill](../effects-and-tweens/key-and-fill.html) page.
 
 Key and fill is typically used when integrating WATCHOUT with broadcast graphics systems or when building advanced compositing setups where one layer's luminance or alpha drives the visibility of another layer's content.
 

@@ -1,0 +1,18 @@
+{
+    "name": "watchpax64-wiki",
+    "version": "1.0.0",
+    "description": "WATCHPAX 50 User Guide - Documentation Wiki",
+    "scripts": {
+        "build": "node scripts/build-content.js && node scripts/generate-static.js && node scripts/build-content.js",
+        "extract": "node scripts/extract-to-markdown.js",
+        "pdf": "node scripts/generate-pdf.js",
+        "release": "node scripts/release.js",
+        "bump": "npm run release"
+    },
+    "keywords": [
+        "watchpax64",
+        "documentation",
+        "wiki"
+    ],
+    "license": "UNLICENSED"
+}

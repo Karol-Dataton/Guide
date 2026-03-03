@@ -110,8 +110,6 @@ Preview thumbnails always use **HAP** (HapStd for opaque, HapAlpha for transpare
 **Image sequences have the lowest optimization priority (-3).** They are processed after images (+1), other assets (0), audio (-1), and video (-2). For large sequences, plan for significant optimization time. If you need faster processing, encode the sequence to a video file in your compositing tool first.
 :::
 
-[[WIDGET: interactive-optimization-priority — visualization showing the priority queue order: Image(+1) → Other(0) → Audio(-1) → Video(-2) → ImageSequence(-3)]]
-
 ### Playback Behavior
 
 Once imported and optimized, an image sequence behaves identically to a video asset:
