@@ -1,10 +1,517 @@
-<div class="interactive-widget" id="stub-color-global-controls">
-    <div style="padding: 14px; border: 1px dashed var(--border-subtle); border-radius: 8px; background: var(--code-bg);">
-        <div style="font-weight: 600; color: var(--text-primary); margin-bottom: 8px;">Widget Stub: Global Color Controls</div>
-        <div style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.5;">
-            Planned behavior: Sample image with Brightness, Exposure, Contrast, and Gamma controls plus a
-            histogram/tone curve panel to compare linear, multiplicative, and gamma remapping behavior.
-            Status: Stub only - interactive implementation pending.
+<style>
+    #color-global-controls-widget {
+        width: 100%;
+        container-type: inline-size;
+    }
+
+    #color-global-controls-widget .cgc-layout {
+        display: flex;
+        gap: 28px;
+        align-items: flex-start;
+        flex-wrap: wrap;
+    }
+
+    #color-global-controls-widget .cgc-preview {
+        flex: 1 1 360px;
+        min-width: 280px;
+        position: relative;
+    }
+
+    #color-global-controls-widget .cgc-preview canvas {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 6px;
+        border: 1px solid var(--border-subtle);
+        background: #000;
+    }
+
+    #color-global-controls-widget .cgc-loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        background: var(--bg-secondary);
+        border-radius: 6px;
+        border: 1px solid var(--border-subtle);
+    }
+
+    #color-global-controls-widget .cgc-sidebar {
+        flex: 0 0 320px;
+        min-width: 260px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #color-global-controls-widget .cgc-sliders {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    #color-global-controls-widget .cgc-slider-row {
+        display: grid;
+        grid-template-columns: 90px 1fr 52px;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #color-global-controls-widget .cgc-slider-label {
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        user-select: none;
+    }
+
+    #color-global-controls-widget .cgc-slider-row input[type="range"] {
+        width: 100%;
+        accent-color: var(--accent-primary);
+        cursor: pointer;
+        margin: 0;
+    }
+
+    #color-global-controls-widget .cgc-slider-val {
+        font-family: monospace;
+        font-size: 0.82rem;
+        color: var(--accent-primary);
+        text-align: right;
+        min-width: 48px;
+        user-select: none;
+    }
+
+    #color-global-controls-widget .cgc-curve-section {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--border-radius);
+        padding: 14px;
+    }
+
+    #color-global-controls-widget .cgc-curve-header {
+        font-size: 0.8rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+    }
+
+    #color-global-controls-widget .cgc-curve-wrap {
+        position: relative;
+        width: 100%;
+        aspect-ratio: 1 / 1;
+    }
+
+    #color-global-controls-widget .cgc-curve-wrap canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        border-radius: 4px;
+        background: transparent;
+    }
+
+    #color-global-controls-widget .cgc-curve-legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 8px;
+        font-size: 0.75rem;
+        color: var(--text-muted);
+    }
+
+    #color-global-controls-widget .cgc-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+    }
+
+    #color-global-controls-widget .cgc-legend-swatch {
+        width: 14px;
+        height: 3px;
+        border-radius: 1px;
+    }
+
+    #color-global-controls-widget .cgc-reset-btn {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-subtle);
+        border-radius: 50px;
+        padding: 5px 14px;
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        cursor: pointer;
+        align-self: flex-start;
+        transition: border-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    #color-global-controls-widget .cgc-reset-btn:hover {
+        border-color: var(--accent-primary);
+        color: var(--text-primary);
+    }
+
+    @container (max-width: 640px) {
+        #color-global-controls-widget .cgc-sidebar {
+            flex: 1 1 100%;
+        }
+    }
+</style>
+
+<div class="interactive-widget" id="color-global-controls-widget">
+    <div class="cgc-layout">
+        <!-- Image Preview -->
+        <div class="cgc-preview">
+            <canvas id="cgc-canvas" width="600" height="450"></canvas>
+            <div class="cgc-loading" id="cgc-loading">Loading image…</div>
+        </div>
+
+        <!-- Controls Sidebar -->
+        <div class="cgc-sidebar">
+            <div class="cgc-sliders">
+                <div class="cgc-slider-row">
+                    <span class="cgc-slider-label">Brightness</span>
+                    <input type="range" id="cgc-brightness" min="-100" max="100" value="0" step="1">
+                    <span class="cgc-slider-val" id="cgc-brightness-val">0%</span>
+                </div>
+                <div class="cgc-slider-row">
+                    <span class="cgc-slider-label">Contrast</span>
+                    <input type="range" id="cgc-contrast" min="-100" max="100" value="0" step="1">
+                    <span class="cgc-slider-val" id="cgc-contrast-val">0%</span>
+                </div>
+                <div class="cgc-slider-row">
+                    <span class="cgc-slider-label">Exposure</span>
+                    <input type="range" id="cgc-exposure" min="-5" max="5" value="0" step="0.1">
+                    <span class="cgc-slider-val" id="cgc-exposure-val">0 EV</span>
+                </div>
+                <div class="cgc-slider-row">
+                    <span class="cgc-slider-label">Gamma</span>
+                    <input type="range" id="cgc-gamma" min="0.1" max="5.0" value="1.0" step="0.01">
+                    <span class="cgc-slider-val" id="cgc-gamma-val">1.00</span>
+                </div>
+            </div>
+
+            <button class="cgc-reset-btn" id="cgc-reset">Reset All</button>
+
+            <!-- Tone Curve -->
+            <div class="cgc-curve-section">
+                <div class="cgc-curve-header">Transfer Curve</div>
+                <div class="cgc-curve-wrap">
+                    <canvas id="cgc-curve-canvas" width="256" height="256"></canvas>
+                </div>
+                <div class="cgc-curve-legend">
+                    <span class="cgc-legend-item"><span class="cgc-legend-swatch" style="background:#fff;"></span> Combined</span>
+                    <span class="cgc-legend-item"><span class="cgc-legend-swatch" style="background:#facc15;"></span> Brightness</span>
+                    <span class="cgc-legend-item"><span class="cgc-legend-swatch" style="background:#f97316;"></span> Contrast</span>
+                    <span class="cgc-legend-item"><span class="cgc-legend-swatch" style="background:#38bdf8;"></span> Exposure</span>
+                    <span class="cgc-legend-item"><span class="cgc-legend-swatch" style="background:#a78bfa;"></span> Gamma</span>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="widget-explainer" style="margin-top: 20px;">
+        <strong>Brightness</strong> applies a linear (additive) shift — every pixel moves by the same amount.
+        <strong>Exposure</strong> is multiplicative — it scales pixels proportionally, so highlights shift more than shadows.
+        <strong>Contrast</strong> stretches or compresses values around the midpoint.
+        <strong>Gamma</strong> reshapes the midtone curve using a power function, leaving deep shadows and bright highlights less affected.
+        The transfer curve shows how each transform remaps input to output values.
+    </div>
 </div>
+
+<script>
+    (function () {
+        var canvas = document.getElementById('cgc-canvas');
+        var curveCanvas = document.getElementById('cgc-curve-canvas');
+        var loadingEl = document.getElementById('cgc-loading');
+        if (!canvas || !curveCanvas) return;
+
+        var ctx = canvas.getContext('2d');
+        var ctxCurve = curveCanvas.getContext('2d');
+
+        // Slider elements
+        var sliders = {
+            brightness: document.getElementById('cgc-brightness'),
+            contrast: document.getElementById('cgc-contrast'),
+            exposure: document.getElementById('cgc-exposure'),
+            gamma: document.getElementById('cgc-gamma')
+        };
+        var valLabels = {
+            brightness: document.getElementById('cgc-brightness-val'),
+            contrast: document.getElementById('cgc-contrast-val'),
+            exposure: document.getElementById('cgc-exposure-val'),
+            gamma: document.getElementById('cgc-gamma-val')
+        };
+        var resetBtn = document.getElementById('cgc-reset');
+
+        // Defaults
+        var defaults = { brightness: 0, contrast: 0, exposure: 0, gamma: 1.0 };
+
+        // State
+        var originalPixels = null;
+        var imgWidth = 0;
+        var imgHeight = 0;
+        var rafId = null;
+
+        // ---- Color math functions ----
+
+        // Brightness: linear additive shift
+        // v in [0,1], brightness in [-100, 100]
+        function applyBrightness(v, brightness) {
+            return v + brightness / 100;
+        }
+
+        // Contrast: pivot around 0.5
+        // Standard contrast formula: ((v - 0.5) * factor) + 0.5
+        // factor = (100 + contrast) / (100 - contrast) when contrast in (-100, 100)
+        function applyContrast(v, contrast) {
+            if (contrast === 0) return v;
+            var c = contrast / 100;
+            // Use a smooth contrast function
+            // factor ranges from 0 (at -100) through 1 (at 0) to very high (at 100)
+            var factor;
+            if (c >= 0) {
+                factor = 1 + c * 3; // 1 at 0, 4 at 100
+            } else {
+                factor = 1 + c; // 1 at 0, 0 at -100
+            }
+            return (v - 0.5) * factor + 0.5;
+        }
+
+        // Exposure: multiplicative (2^EV)
+        function applyExposure(v, ev) {
+            return v * Math.pow(2, ev);
+        }
+
+        // Gamma: power curve (v^(1/gamma))
+        function applyGamma(v, gamma) {
+            if (v <= 0) return 0;
+            return Math.pow(v, 1.0 / gamma);
+        }
+
+        // Combined pipeline: Brightness -> Contrast -> Exposure -> Gamma, then clamp
+        function pipeline(v, brightness, contrast, exposure, gamma) {
+            v = applyBrightness(v, brightness);
+            v = applyContrast(v, contrast);
+            v = applyExposure(v, exposure);
+            v = applyGamma(v, gamma);
+            return v < 0 ? 0 : v > 1 ? 1 : v;
+        }
+
+        // ---- Build a 256-entry lookup table for speed ----
+        function buildLUT(brightness, contrast, exposure, gamma) {
+            var lut = new Uint8Array(256);
+            for (var i = 0; i < 256; i++) {
+                var v = i / 255;
+                v = pipeline(v, brightness, contrast, exposure, gamma);
+                lut[i] = Math.round(v * 255);
+            }
+            return lut;
+        }
+
+        // ---- Process image pixels using LUT ----
+        function processImage() {
+            if (!originalPixels) return;
+
+            var brightness = parseFloat(sliders.brightness.value);
+            var contrast = parseFloat(sliders.contrast.value);
+            var exposure = parseFloat(sliders.exposure.value);
+            var gamma = parseFloat(sliders.gamma.value);
+
+            var lut = buildLUT(brightness, contrast, exposure, gamma);
+
+            var imageData = ctx.createImageData(imgWidth, imgHeight);
+            var src = originalPixels;
+            var dst = imageData.data;
+
+            for (var i = 0, len = src.length; i < len; i += 4) {
+                dst[i] = lut[src[i]];
+                dst[i + 1] = lut[src[i + 1]];
+                dst[i + 2] = lut[src[i + 2]];
+                dst[i + 3] = src[i + 3];
+            }
+
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        // ---- Draw tone curve ----
+        function drawCurve() {
+            var brightness = parseFloat(sliders.brightness.value);
+            var contrast = parseFloat(sliders.contrast.value);
+            var exposure = parseFloat(sliders.exposure.value);
+            var gamma = parseFloat(sliders.gamma.value);
+
+            var w = curveCanvas.width;
+            var h = curveCanvas.height;
+            var pad = 0;
+
+            ctxCurve.clearRect(0, 0, w, h);
+
+            // Background grid
+            ctxCurve.fillStyle = 'rgba(255,255,255,0.03)';
+            ctxCurve.fillRect(0, 0, w, h);
+
+            ctxCurve.strokeStyle = 'rgba(255,255,255,0.06)';
+            ctxCurve.lineWidth = 1;
+            // Grid lines at 25%, 50%, 75%
+            for (var g = 1; g <= 3; g++) {
+                var pos = Math.round((g / 4) * w) + 0.5;
+                ctxCurve.beginPath();
+                ctxCurve.moveTo(pos, 0);
+                ctxCurve.lineTo(pos, h);
+                ctxCurve.stroke();
+                ctxCurve.beginPath();
+                ctxCurve.moveTo(0, pos);
+                ctxCurve.lineTo(w, pos);
+                ctxCurve.stroke();
+            }
+
+            // Diagonal reference (identity)
+            ctxCurve.strokeStyle = 'rgba(255,255,255,0.12)';
+            ctxCurve.lineWidth = 1;
+            ctxCurve.beginPath();
+            ctxCurve.moveTo(pad, h - pad);
+            ctxCurve.lineTo(w - pad, pad);
+            ctxCurve.stroke();
+
+            // Helper to draw a curve
+            function drawOneCurve(fn, color, lineW) {
+                ctxCurve.strokeStyle = color;
+                ctxCurve.lineWidth = lineW;
+                ctxCurve.beginPath();
+                for (var x = 0; x < w; x++) {
+                    var input = x / (w - 1);
+                    var output = fn(input);
+                    output = output < 0 ? 0 : output > 1 ? 1 : output;
+                    var py = h - pad - output * (h - 2 * pad);
+                    var px = pad + x;
+                    if (x === 0) ctxCurve.moveTo(px, py);
+                    else ctxCurve.lineTo(px, py);
+                }
+                ctxCurve.stroke();
+            }
+
+            // Individual curves (thin, semi-transparent)
+            var hasBrightness = brightness !== 0;
+            var hasContrast = contrast !== 0;
+            var hasExposure = exposure !== 0;
+            var hasGamma = gamma !== 1.0;
+            var multipleActive = (hasBrightness + hasContrast + hasExposure + hasGamma) > 1;
+
+            if (multipleActive) {
+                if (hasBrightness) {
+                    drawOneCurve(function (v) { return applyBrightness(v, brightness); }, 'rgba(250,204,21,0.45)', 1.5);
+                }
+                if (hasContrast) {
+                    drawOneCurve(function (v) { return applyContrast(v, contrast); }, 'rgba(249,115,22,0.45)', 1.5);
+                }
+                if (hasExposure) {
+                    drawOneCurve(function (v) { return applyExposure(v, exposure); }, 'rgba(56,189,248,0.45)', 1.5);
+                }
+                if (hasGamma) {
+                    drawOneCurve(function (v) { return applyGamma(v, gamma); }, 'rgba(167,139,250,0.45)', 1.5);
+                }
+            }
+
+            // Combined curve (bright white, thicker)
+            drawOneCurve(function (v) {
+                return pipeline(v, brightness, contrast, exposure, gamma);
+            }, '#ffffff', 2);
+
+            // If only one is active, tint the combined line with that color
+            if (!multipleActive) {
+                var activeColor = null;
+                if (hasBrightness) activeColor = 'rgba(250,204,21,0.9)';
+                if (hasContrast) activeColor = 'rgba(249,115,22,0.9)';
+                if (hasExposure) activeColor = 'rgba(56,189,248,0.9)';
+                if (hasGamma) activeColor = 'rgba(167,139,250,0.9)';
+                if (activeColor) {
+                    drawOneCurve(function (v) {
+                        return pipeline(v, brightness, contrast, exposure, gamma);
+                    }, activeColor, 2);
+                }
+            }
+
+            // Axis labels
+            ctxCurve.fillStyle = 'rgba(255,255,255,0.25)';
+            ctxCurve.font = '10px system-ui, sans-serif';
+            ctxCurve.textAlign = 'left';
+            ctxCurve.textBaseline = 'bottom';
+            ctxCurve.fillText('Input', 4, h - 3);
+            ctxCurve.save();
+            ctxCurve.translate(10, h - 4);
+            ctxCurve.rotate(-Math.PI / 2);
+            ctxCurve.textBaseline = 'bottom';
+            ctxCurve.textAlign = 'left';
+            ctxCurve.fillText('Output', 0, 0);
+            ctxCurve.restore();
+        }
+
+        // ---- Update everything ----
+        function scheduleUpdate() {
+            if (rafId) return;
+            rafId = requestAnimationFrame(function () {
+                rafId = null;
+                updateLabels();
+                processImage();
+                drawCurve();
+            });
+        }
+
+        function updateLabels() {
+            valLabels.brightness.textContent = sliders.brightness.value + '%';
+            valLabels.contrast.textContent = sliders.contrast.value + '%';
+            valLabels.exposure.textContent = parseFloat(sliders.exposure.value).toFixed(1) + ' EV';
+            valLabels.gamma.textContent = parseFloat(sliders.gamma.value).toFixed(2);
+        }
+
+        // ---- Event listeners ----
+        Object.keys(sliders).forEach(function (key) {
+            sliders[key].addEventListener('input', scheduleUpdate);
+            // Double-click to reset individual slider
+            sliders[key].addEventListener('dblclick', function () {
+                sliders[key].value = defaults[key];
+                scheduleUpdate();
+            });
+        });
+
+        resetBtn.addEventListener('click', function () {
+            Object.keys(sliders).forEach(function (key) {
+                sliders[key].value = defaults[key];
+            });
+            scheduleUpdate();
+        });
+
+        // ---- Load image ----
+        var img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function () {
+            loadingEl.style.display = 'none';
+
+            // Fit image into canvas while preserving aspect ratio
+            var aspect = img.naturalWidth / img.naturalHeight;
+            var cw = 600;
+            var ch = Math.round(cw / aspect);
+            canvas.width = cw;
+            canvas.height = ch;
+            imgWidth = cw;
+            imgHeight = ch;
+
+            // Draw original to extract pixels
+            ctx.drawImage(img, 0, 0, cw, ch);
+            originalPixels = ctx.getImageData(0, 0, cw, ch).data.slice();
+
+            updateLabels();
+            processImage();
+            drawCurve();
+        };
+        img.onerror = function () {
+            loadingEl.textContent = 'Failed to load image';
+        };
+        img.src = '../media/gamla.png';
+
+        // Initial curve draw (before image loads)
+        updateLabels();
+        drawCurve();
+    })();
+</script>
