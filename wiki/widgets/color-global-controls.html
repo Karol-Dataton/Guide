@@ -7,7 +7,7 @@
     #color-global-controls-widget .cgc-layout {
         display: flex;
         gap: 28px;
-        align-items: flex-start;
+        align-items: stretch;
         flex-wrap: wrap;
     }
 
@@ -15,15 +15,16 @@
         flex: 1 1 360px;
         min-width: 280px;
         position: relative;
-    }
-
-    #color-global-controls-widget .cgc-preview canvas {
-        width: 100%;
-        height: auto;
-        display: block;
+        overflow: hidden;
         border-radius: 6px;
         border: 1px solid var(--border-subtle);
         background: #000;
+    }
+
+    #color-global-controls-widget .cgc-preview canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
     }
 
     #color-global-controls-widget .cgc-loading {
@@ -224,6 +225,7 @@
         var canvas = document.getElementById('cgc-canvas');
         var curveCanvas = document.getElementById('cgc-curve-canvas');
         var loadingEl = document.getElementById('cgc-loading');
+        var previewWrap = canvas && canvas.parentElement;
         if (!canvas || !curveCanvas) return;
 
         var ctx = canvas.getContext('2d');
@@ -249,47 +251,36 @@
 
         // State
         var originalPixels = null;
+        var sourceImage = null;
+        var imgNaturalW = 0;
+        var imgNaturalH = 0;
         var imgWidth = 0;
         var imgHeight = 0;
         var rafId = null;
+        var useLUT = true;
 
         // ---- Color math functions ----
 
-        // Brightness: linear additive shift
-        // v in [0,1], brightness in [-100, 100]
         function applyBrightness(v, brightness) {
             return v + brightness / 100;
         }
 
-        // Contrast: pivot around 0.5
-        // Standard contrast formula: ((v - 0.5) * factor) + 0.5
-        // factor = (100 + contrast) / (100 - contrast) when contrast in (-100, 100)
         function applyContrast(v, contrast) {
             if (contrast === 0) return v;
             var c = contrast / 100;
-            // Use a smooth contrast function
-            // factor ranges from 0 (at -100) through 1 (at 0) to very high (at 100)
-            var factor;
-            if (c >= 0) {
-                factor = 1 + c * 3; // 1 at 0, 4 at 100
-            } else {
-                factor = 1 + c; // 1 at 0, 0 at -100
-            }
+            var factor = c >= 0 ? 1 + c * 3 : 1 + c;
             return (v - 0.5) * factor + 0.5;
         }
 
-        // Exposure: multiplicative (2^EV)
         function applyExposure(v, ev) {
             return v * Math.pow(2, ev);
         }
 
-        // Gamma: power curve (v^(1/gamma))
         function applyGamma(v, gamma) {
             if (v <= 0) return 0;
             return Math.pow(v, 1.0 / gamma);
         }
 
-        // Combined pipeline: Brightness -> Contrast -> Exposure -> Gamma, then clamp
         function pipeline(v, brightness, contrast, exposure, gamma) {
             v = applyBrightness(v, brightness);
             v = applyContrast(v, contrast);
@@ -298,7 +289,6 @@
             return v < 0 ? 0 : v > 1 ? 1 : v;
         }
 
-        // ---- Build a 256-entry lookup table for speed ----
         function buildLUT(brightness, contrast, exposure, gamma) {
             var lut = new Uint8Array(256);
             for (var i = 0; i < 256; i++) {
@@ -309,29 +299,81 @@
             return lut;
         }
 
-        // ---- Process image pixels using LUT ----
-        function processImage() {
-            if (!originalPixels) return;
+        // ---- Resize canvas to fill container ----
+        function sizeCanvas() {
+            if (!sourceImage) return;
+            var containerW = previewWrap.clientWidth;
+            if (containerW === 0) return;
 
+            var dpr = window.devicePixelRatio || 1;
+            var aspect = imgNaturalW / imgNaturalH;
+            var cssW = containerW;
+            var cssH = Math.round(cssW / aspect);
+
+            // Set canvas backing store to match display pixels
+            var bufW = Math.round(cssW * dpr);
+            var bufH = Math.round(cssH * dpr);
+
+            // Only rebuild pixel cache if buffer size actually changed
+            if (canvas.width === bufW && canvas.height === bufH) return;
+
+            canvas.width = bufW;
+            canvas.height = bufH;
+            canvas.style.width = cssW + 'px';
+            canvas.style.height = cssH + 'px';
+            imgWidth = bufW;
+            imgHeight = bufH;
+
+            // Re-extract original pixels at new resolution
+            ctx.drawImage(sourceImage, 0, 0, bufW, bufH);
+            try {
+                originalPixels = ctx.getImageData(0, 0, bufW, bufH).data.slice();
+                useLUT = true;
+            } catch (e) {
+                useLUT = false;
+            }
+        }
+
+        // ---- Process image (LUT path) ----
+        function processImageLUT() {
+            if (!originalPixels) return;
             var brightness = parseFloat(sliders.brightness.value);
             var contrast = parseFloat(sliders.contrast.value);
             var exposure = parseFloat(sliders.exposure.value);
             var gamma = parseFloat(sliders.gamma.value);
-
             var lut = buildLUT(brightness, contrast, exposure, gamma);
-
             var imageData = ctx.createImageData(imgWidth, imgHeight);
             var src = originalPixels;
             var dst = imageData.data;
-
             for (var i = 0, len = src.length; i < len; i += 4) {
                 dst[i] = lut[src[i]];
                 dst[i + 1] = lut[src[i + 1]];
                 dst[i + 2] = lut[src[i + 2]];
                 dst[i + 3] = src[i + 3];
             }
-
             ctx.putImageData(imageData, 0, 0);
+        }
+
+        // ---- CSS filter fallback (tainted canvas / file://) ----
+        function processImageFilter() {
+            if (!sourceImage) return;
+            var brightness = parseFloat(sliders.brightness.value);
+            var contrast = parseFloat(sliders.contrast.value);
+            var exposure = parseFloat(sliders.exposure.value);
+            var gamma = parseFloat(sliders.gamma.value);
+
+            var cssBrightness = (1 + brightness / 100) * Math.pow(2, exposure) * Math.pow(gamma, 0.5);
+            var cssContrast = contrast >= 0 ? 1 + (contrast / 100) * 3 : 1 + contrast / 100;
+
+            ctx.filter = 'brightness(' + cssBrightness + ') contrast(' + cssContrast + ')';
+            ctx.clearRect(0, 0, imgWidth, imgHeight);
+            ctx.drawImage(sourceImage, 0, 0, imgWidth, imgHeight);
+            ctx.filter = 'none';
+        }
+
+        function processImage() {
+            if (useLUT) processImageLUT();
+            else processImageFilter();
         }
 
         // ---- Draw tone curve ----
@@ -343,38 +385,24 @@
 
             var w = curveCanvas.width;
             var h = curveCanvas.height;
-            var pad = 0;
 
             ctxCurve.clearRect(0, 0, w, h);
 
-            // Background grid
             ctxCurve.fillStyle = 'rgba(255,255,255,0.03)';
             ctxCurve.fillRect(0, 0, w, h);
 
             ctxCurve.strokeStyle = 'rgba(255,255,255,0.06)';
             ctxCurve.lineWidth = 1;
-            // Grid lines at 25%, 50%, 75%
             for (var g = 1; g <= 3; g++) {
                 var pos = Math.round((g / 4) * w) + 0.5;
-                ctxCurve.beginPath();
-                ctxCurve.moveTo(pos, 0);
-                ctxCurve.lineTo(pos, h);
-                ctxCurve.stroke();
-                ctxCurve.beginPath();
-                ctxCurve.moveTo(0, pos);
-                ctxCurve.lineTo(w, pos);
-                ctxCurve.stroke();
+                ctxCurve.beginPath(); ctxCurve.moveTo(pos, 0); ctxCurve.lineTo(pos, h); ctxCurve.stroke();
+                ctxCurve.beginPath(); ctxCurve.moveTo(0, pos); ctxCurve.lineTo(w, pos); ctxCurve.stroke();
             }
 
-            // Diagonal reference (identity)
             ctxCurve.strokeStyle = 'rgba(255,255,255,0.12)';
             ctxCurve.lineWidth = 1;
-            ctxCurve.beginPath();
-            ctxCurve.moveTo(pad, h - pad);
-            ctxCurve.lineTo(w - pad, pad);
-            ctxCurve.stroke();
+            ctxCurve.beginPath(); ctxCurve.moveTo(0, h); ctxCurve.lineTo(w, 0); ctxCurve.stroke();
 
-            // Helper to draw a curve
             function drawOneCurve(fn, color, lineW) {
                 ctxCurve.strokeStyle = color;
                 ctxCurve.lineWidth = lineW;
@@ -383,15 +411,13 @@
                     var input = x / (w - 1);
                     var output = fn(input);
                     output = output < 0 ? 0 : output > 1 ? 1 : output;
-                    var py = h - pad - output * (h - 2 * pad);
-                    var px = pad + x;
-                    if (x === 0) ctxCurve.moveTo(px, py);
-                    else ctxCurve.lineTo(px, py);
+                    var py = h - output * h;
+                    if (x === 0) ctxCurve.moveTo(x, py);
+                    else ctxCurve.lineTo(x, py);
                 }
                 ctxCurve.stroke();
             }
 
-            // Individual curves (thin, semi-transparent)
             var hasBrightness = brightness !== 0;
             var hasContrast = contrast !== 0;
             var hasExposure = exposure !== 0;
@@ -399,40 +425,23 @@
             var multipleActive = (hasBrightness + hasContrast + hasExposure + hasGamma) > 1;
 
             if (multipleActive) {
-                if (hasBrightness) {
-                    drawOneCurve(function (v) { return applyBrightness(v, brightness); }, 'rgba(250,204,21,0.45)', 1.5);
-                }
-                if (hasContrast) {
-                    drawOneCurve(function (v) { return applyContrast(v, contrast); }, 'rgba(249,115,22,0.45)', 1.5);
-                }
-                if (hasExposure) {
-                    drawOneCurve(function (v) { return applyExposure(v, exposure); }, 'rgba(56,189,248,0.45)', 1.5);
-                }
-                if (hasGamma) {
-                    drawOneCurve(function (v) { return applyGamma(v, gamma); }, 'rgba(167,139,250,0.45)', 1.5);
-                }
+                if (hasBrightness) drawOneCurve(function (v) { return applyBrightness(v, brightness); }, 'rgba(250,204,21,0.45)', 1.5);
+                if (hasContrast) drawOneCurve(function (v) { return applyContrast(v, contrast); }, 'rgba(249,115,22,0.45)', 1.5);
+                if (hasExposure) drawOneCurve(function (v) { return applyExposure(v, exposure); }, 'rgba(56,189,248,0.45)', 1.5);
+                if (hasGamma) drawOneCurve(function (v) { return applyGamma(v, gamma); }, 'rgba(167,139,250,0.45)', 1.5);
             }
 
-            // Combined curve (bright white, thicker)
-            drawOneCurve(function (v) {
-                return pipeline(v, brightness, contrast, exposure, gamma);
-            }, '#ffffff', 2);
+            drawOneCurve(function (v) { return pipeline(v, brightness, contrast, exposure, gamma); }, '#ffffff', 2);
 
-            // If only one is active, tint the combined line with that color
             if (!multipleActive) {
-                var activeColor = null;
-                if (hasBrightness) activeColor = 'rgba(250,204,21,0.9)';
-                if (hasContrast) activeColor = 'rgba(249,115,22,0.9)';
-                if (hasExposure) activeColor = 'rgba(56,189,248,0.9)';
-                if (hasGamma) activeColor = 'rgba(167,139,250,0.9)';
-                if (activeColor) {
-                    drawOneCurve(function (v) {
-                        return pipeline(v, brightness, contrast, exposure, gamma);
-                    }, activeColor, 2);
-                }
+                var ac = null;
+                if (hasBrightness) ac = 'rgba(250,204,21,0.9)';
+                if (hasContrast) ac = 'rgba(249,115,22,0.9)';
+                if (hasExposure) ac = 'rgba(56,189,248,0.9)';
+                if (hasGamma) ac = 'rgba(167,139,250,0.9)';
+                if (ac) drawOneCurve(function (v) { return pipeline(v, brightness, contrast, exposure, gamma); }, ac, 2);
             }
 
-            // Axis labels
             ctxCurve.fillStyle = 'rgba(255,255,255,0.25)';
             ctxCurve.font = '10px system-ui, sans-serif';
             ctxCurve.textAlign = 'left';
@@ -468,7 +477,6 @@
         // ---- Event listeners ----
         Object.keys(sliders).forEach(function (key) {
             sliders[key].addEventListener('input', scheduleUpdate);
-            // Double-click to reset individual slider
             sliders[key].addEventListener('dblclick', function () {
                 sliders[key].value = defaults[key];
                 scheduleUpdate();
@@ -482,25 +490,23 @@
             scheduleUpdate();
         });
 
+        // ---- Resize observer ----
+        var resizeObserver = new ResizeObserver(function () {
+            if (!sourceImage) return;
+            sizeCanvas();
+            processImage();
+        });
+        resizeObserver.observe(previewWrap);
+
         // ---- Load image ----
         var img = new Image();
-        img.crossOrigin = 'anonymous';
         img.onload = function () {
             loadingEl.style.display = 'none';
+            sourceImage = img;
+            imgNaturalW = img.naturalWidth;
+            imgNaturalH = img.naturalHeight;
 
-            // Fit image into canvas while preserving aspect ratio
-            var aspect = img.naturalWidth / img.naturalHeight;
-            var cw = 600;
-            var ch = Math.round(cw / aspect);
-            canvas.width = cw;
-            canvas.height = ch;
-            imgWidth = cw;
-            imgHeight = ch;
-
-            // Draw original to extract pixels
-            ctx.drawImage(img, 0, 0, cw, ch);
-            originalPixels = ctx.getImageData(0, 0, cw, ch).data.slice();
-
+            sizeCanvas();
             updateLabels();
             processImage();
             drawCurve();
