@@ -1,0 +1,644 @@
+<div class="interactive-widget" id="pat-widget">
+    <style>
+        #pat-widget {
+            width: 100%;
+            font-family: var(--font-family, system-ui, sans-serif);
+        }
+
+        #pat-widget .pat-panels {
+            display: flex;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        #pat-widget .pat-panel {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #pat-widget .pat-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 6px 6px 0 0;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        #pat-widget .pat-panel-header.pat-off {
+            background: rgba(156, 163, 175, 0.12);
+            color: #9ca3af;
+            border: 1px solid rgba(156, 163, 175, 0.25);
+            border-bottom: none;
+        }
+
+        #pat-widget .pat-panel-header.pat-on {
+            background: rgba(99, 102, 241, 0.12);
+            color: var(--accent-primary, #6366f1);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-bottom: none;
+        }
+
+        #pat-widget .pat-badge {
+            font-size: 0.65rem;
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        #pat-widget .pat-off .pat-badge {
+            background: rgba(156, 163, 175, 0.2);
+            color: #d1d5db;
+        }
+
+        #pat-widget .pat-on .pat-badge {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--accent-primary, #a5b4fc);
+        }
+
+        #pat-widget canvas {
+            width: 100%;
+            height: 300px;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0d0d1a 100%);
+            border-radius: 0 0 8px 8px;
+            display: block;
+        }
+
+        #pat-widget .pat-panel:first-child canvas {
+            border: 1px solid rgba(156, 163, 175, 0.18);
+            border-top: none;
+        }
+
+        #pat-widget .pat-panel:last-child canvas {
+            border: 1px solid rgba(99, 102, 241, 0.18);
+            border-top: none;
+        }
+
+        #pat-widget .pat-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        #pat-widget .pat-btn {
+            padding: 6px 18px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--bg-tertiary, #292524);
+            color: var(--text-secondary, #a8a29e);
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        #pat-widget .pat-btn:hover {
+            background: rgba(107, 37, 221, 0.15);
+            border-color: var(--accent-primary, #6B25DD);
+            color: var(--text-primary, #e7e5e4);
+        }
+
+        #pat-widget .pat-btn.pat-active {
+            background: rgba(107, 37, 221, 0.25);
+            border-color: var(--accent-primary, #6B25DD);
+            color: #c4a0ff;
+        }
+
+        #pat-widget .pat-path-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        #pat-widget .pat-path-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary, #a8a29e);
+            white-space: nowrap;
+        }
+
+        #pat-widget .pat-path-group select {
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: var(--input-bg, #1c1917);
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.1));
+            color: var(--text-primary, #e7e5e4);
+            font-size: 0.8rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        #pat-widget .pat-speed-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        #pat-widget .pat-speed-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary, #a8a29e);
+            white-space: nowrap;
+        }
+
+        #pat-widget .pat-speed-group input[type=range] {
+            width: 80px;
+            height: 5px;
+            cursor: pointer;
+            accent-color: var(--accent-primary, #6B25DD);
+        }
+
+        #pat-widget .pat-speed-val {
+            font-size: 0.7rem;
+            color: var(--text-muted, #78716c);
+            font-variant-numeric: tabular-nums;
+            min-width: 28px;
+        }
+
+        #pat-widget .pat-explain {
+            margin-top: 10px;
+            min-height: 44px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            background: rgba(99, 102, 241, 0.06);
+            border-left: 3px solid var(--accent-primary, #6366f1);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: var(--text-secondary, #a8a29e);
+        }
+
+        #pat-widget .pat-explain strong {
+            color: var(--text-primary, #e7e5e4);
+        }
+
+        @media (max-width: 680px) {
+            #pat-widget .pat-panels {
+                flex-direction: column;
+            }
+
+            #pat-widget canvas {
+                height: 220px;
+            }
+
+            #pat-widget .pat-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #pat-widget .pat-controls > * {
+                justify-content: center;
+            }
+
+            #pat-widget .pat-speed-group input[type=range] {
+                flex: 1;
+            }
+        }
+    </style>
+
+    <div class="pat-panels">
+        <div class="pat-panel">
+            <div class="pat-panel-header pat-off">
+                <span class="pat-badge">OFF</span>
+                <span>Align with Trajectory</span>
+            </div>
+            <canvas id="pat-canvas-off" width="700" height="460"></canvas>
+        </div>
+        <div class="pat-panel">
+            <div class="pat-panel-header pat-on">
+                <span class="pat-badge">ON</span>
+                <span>Align with Trajectory</span>
+            </div>
+            <canvas id="pat-canvas-on" width="700" height="460"></canvas>
+        </div>
+    </div>
+
+    <div class="pat-controls">
+        <button class="pat-btn" id="pat-play-btn">Play</button>
+        <div class="pat-path-group">
+            <label>Path</label>
+            <select id="pat-path-select">
+                <option value="s-curve" selected>S-Curve</option>
+                <option value="loop">Loop</option>
+                <option value="zigzag">Zigzag</option>
+                <option value="arc">Wide Arc</option>
+            </select>
+        </div>
+        <div class="pat-speed-group">
+            <label>Speed</label>
+            <input type="range" id="pat-speed" min="1" max="5" value="2" step="0.5">
+            <span class="pat-speed-val" id="pat-speed-val">1&times;</span>
+        </div>
+    </div>
+
+    <div class="pat-explain" id="pat-explain">
+        Press <strong>Play</strong> to see the difference. The left object keeps a <strong>fixed rotation</strong> as it moves along the path, while the right object <strong>automatically rotates</strong> to face its direction of travel &mdash; aligning its orientation with the tangent of the motion path.
+    </div>
+</div>
+
+<script>
+(function() {
+    /* ── DOM refs ──────────────────────────────────────────────────────── */
+    var cOff = document.getElementById('pat-canvas-off');
+    var cOn  = document.getElementById('pat-canvas-on');
+    if (!cOff || !cOn) return;
+    var ctxOff = cOff.getContext('2d');
+    var ctxOn  = cOn.getContext('2d');
+    var W = cOff.width, H = cOff.height;
+
+    var playBtn   = document.getElementById('pat-play-btn');
+    var pathSel   = document.getElementById('pat-path-select');
+    var speedSldr = document.getElementById('pat-speed');
+    var speedVal  = document.getElementById('pat-speed-val');
+    var explainEl = document.getElementById('pat-explain');
+
+    /* ── state ─────────────────────────────────────────────────────────── */
+    var playing   = false;
+    var animT     = 0;       // 0..1 progress (linear)
+    var animStart = 0;
+    var animRAF   = 0;
+    var baseDuration = 3000; // ms at speed 1×
+
+    /* ── path definitions ──────────────────────────────────────────────── */
+    // Format: array of segments, each segment = { p0, cp1, cp2, p1 }
+
+    var paths = {
+        's-curve': [
+            { p0:{x:80,y:360}, cp1:{x:180,y:140}, cp2:{x:300,y:360}, p1:{x:380,y:230} },
+            { p0:{x:380,y:230}, cp1:{x:460,y:100}, cp2:{x:540,y:300}, p1:{x:620,y:120} }
+        ],
+        'loop': [
+            { p0:{x:100,y:300}, cp1:{x:100,y:80},  cp2:{x:420,y:80},  p1:{x:420,y:230} },
+            { p0:{x:420,y:230}, cp1:{x:420,y:380}, cp2:{x:200,y:420}, p1:{x:260,y:300} },
+            { p0:{x:260,y:300}, cp1:{x:320,y:180}, cp2:{x:560,y:200}, p1:{x:600,y:140} }
+        ],
+        'zigzag': [
+            { p0:{x:80,y:350},  cp1:{x:120,y:340}, cp2:{x:160,y:120}, p1:{x:220,y:110} },
+            { p0:{x:220,y:110}, cp1:{x:280,y:100}, cp2:{x:320,y:360}, p1:{x:380,y:350} },
+            { p0:{x:380,y:350}, cp1:{x:440,y:340}, cp2:{x:480,y:120}, p1:{x:540,y:110} },
+            { p0:{x:540,y:110}, cp1:{x:580,y:104}, cp2:{x:610,y:180}, p1:{x:630,y:220} }
+        ],
+        'arc': [
+            { p0:{x:80,y:380}, cp1:{x:80,y:60}, cp2:{x:620,y:60}, p1:{x:620,y:380} }
+        ]
+    };
+
+    var currentPath = 's-curve';
+
+    function getSegments() {
+        return paths[currentPath] || paths['s-curve'];
+    }
+
+    /* ── math helpers ──────────────────────────────────────────────────── */
+    function cubicBezier(a, b, c, d, t) {
+        var mt = 1 - t;
+        return mt*mt*mt*a + 3*mt*mt*t*b + 3*mt*t*t*c + t*t*t*d;
+    }
+
+    function cubicBezierDeriv(a, b, c, d, t) {
+        var mt = 1 - t;
+        return 3*mt*mt*(b - a) + 6*mt*t*(c - b) + 3*t*t*(d - c);
+    }
+
+    function dist(ax, ay, bx, by) {
+        var dx = ax - bx, dy = ay - by;
+        return Math.sqrt(dx*dx + dy*dy);
+    }
+
+    /* ── chord-length parameterization with caching ────────────────────── */
+    var SAMPLE_STEPS = 40;
+    var cachedPathKey = '';
+    var cachedLengths = null;
+    var cachedTotal   = 0;
+
+    function ensureLengthCache() {
+        var key = currentPath;
+        if (key === cachedPathKey && cachedLengths) return;
+        var segs = getSegments();
+        var lengths = [];
+        var total = 0;
+        for (var s = 0; s < segs.length; s++) {
+            var seg = segs[s];
+            var len = 0, px = seg.p0.x, py = seg.p0.y;
+            for (var i = 1; i <= SAMPLE_STEPS; i++) {
+                var t = i / SAMPLE_STEPS;
+                var nx = cubicBezier(seg.p0.x, seg.cp1.x, seg.cp2.x, seg.p1.x, t);
+                var ny = cubicBezier(seg.p0.y, seg.cp1.y, seg.cp2.y, seg.p1.y, t);
+                len += dist(px, py, nx, ny);
+                px = nx; py = ny;
+            }
+            lengths.push(len);
+            total += len;
+        }
+        cachedPathKey = key;
+        cachedLengths = lengths;
+        cachedTotal   = total;
+    }
+
+    // Returns {x, y, angle} for globalT in [0..1]
+    function pathPointAndAngle(globalT) {
+        var segs = getSegments();
+        ensureLengthCache();
+        if (cachedTotal === 0) return { x: segs[0].p0.x, y: segs[0].p0.y, angle: 0 };
+
+        var target = globalT * cachedTotal;
+        var acc = 0;
+
+        for (var s = 0; s < segs.length; s++) {
+            if (acc + cachedLengths[s] >= target || s === segs.length - 1) {
+                var localT = cachedLengths[s] > 0 ? (target - acc) / cachedLengths[s] : 0;
+                localT = Math.max(0, Math.min(1, localT));
+                var seg = segs[s];
+
+                var x = cubicBezier(seg.p0.x, seg.cp1.x, seg.cp2.x, seg.p1.x, localT);
+                var y = cubicBezier(seg.p0.y, seg.cp1.y, seg.cp2.y, seg.p1.y, localT);
+
+                // tangent via analytic derivative
+                var dx = cubicBezierDeriv(seg.p0.x, seg.cp1.x, seg.cp2.x, seg.p1.x, localT);
+                var dy = cubicBezierDeriv(seg.p0.y, seg.cp1.y, seg.cp2.y, seg.p1.y, localT);
+
+                // fallback for near-zero derivative (cusp)
+                if (Math.abs(dx) < 0.001 && Math.abs(dy) < 0.001) {
+                    var eps = 0.002;
+                    var t2 = Math.min(1, localT + eps);
+                    var t1 = Math.max(0, localT - eps);
+                    dx = cubicBezier(seg.p0.x, seg.cp1.x, seg.cp2.x, seg.p1.x, t2)
+                       - cubicBezier(seg.p0.x, seg.cp1.x, seg.cp2.x, seg.p1.x, t1);
+                    dy = cubicBezier(seg.p0.y, seg.cp1.y, seg.cp2.y, seg.p1.y, t2)
+                       - cubicBezier(seg.p0.y, seg.cp1.y, seg.cp2.y, seg.p1.y, t1);
+                }
+
+                var angle = Math.atan2(dy, dx);
+                return { x: x, y: y, angle: angle };
+            }
+            acc += cachedLengths[s];
+        }
+
+        var last = segs[segs.length - 1];
+        return { x: last.p1.x, y: last.p1.y, angle: 0 };
+    }
+
+    /* ── drawing helpers ───────────────────────────────────────────────── */
+    function drawBackground(ctx) {
+        var grad = ctx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, '#0a0a1a');
+        grad.addColorStop(1, '#111126');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+    }
+
+    function drawGrid(ctx) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.lineWidth = 1;
+        var step = 40;
+        ctx.beginPath();
+        for (var x = 0; x <= W; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+        for (var y = 0; y <= H; y += step) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
+        ctx.stroke();
+    }
+
+    function drawPath(ctx) {
+        var segs = getSegments();
+        ctx.save();
+        ctx.strokeStyle = 'rgba(107,37,221,0.5)';
+        ctx.lineWidth = 2;
+        ctx.shadowColor = 'rgba(107,37,221,0.3)';
+        ctx.shadowBlur = 6;
+        ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        ctx.moveTo(segs[0].p0.x, segs[0].p0.y);
+        for (var i = 0; i < segs.length; i++) {
+            var s = segs[i];
+            ctx.bezierCurveTo(s.cp1.x, s.cp1.y, s.cp2.x, s.cp2.y, s.p1.x, s.p1.y);
+        }
+        ctx.stroke();
+        ctx.restore();
+
+        // start and end dots
+        var first = segs[0].p0;
+        var last = segs[segs.length - 1].p1;
+        ctx.save();
+        ctx.fillStyle = 'rgba(107,37,221,0.4)';
+        ctx.beginPath(); ctx.arc(first.x, first.y, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(last.x, last.y, 5, 0, Math.PI * 2); ctx.fill();
+
+        // tiny labels
+        ctx.font = '600 10px var(--font-family, system-ui)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillStyle = 'rgba(107,37,221,0.5)';
+        ctx.fillText('START', first.x, first.y - 8);
+        ctx.fillText('END', last.x, last.y - 8);
+        ctx.restore();
+    }
+
+    // Arrow shape — points right at angle=0
+    function drawArrow(ctx, x, y, angle, color, ghost) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+
+        var size = 16;
+
+        if (!ghost) {
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 14;
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(size, 0);                    // tip
+        ctx.lineTo(-size * 0.5, -size * 0.7);   // upper wing
+        ctx.lineTo(-size * 0.15, 0);             // notch
+        ctx.lineTo(-size * 0.5, size * 0.7);    // lower wing
+        ctx.closePath();
+
+        ctx.fillStyle = ghost ? 'rgba(120,120,140,0.3)' : color;
+        ctx.fill();
+
+        if (!ghost) {
+            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+        }
+
+        ctx.restore();
+    }
+
+    // Tangent direction line on the "on" canvas
+    function drawTangentIndicator(ctx, x, y, angle) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.strokeStyle = 'rgba(245,200,66,0.3)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(-30, 0);
+        ctx.lineTo(40, 0);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+    }
+
+    // Ghost trail of recent positions
+    function drawTrail(ctx, t, aligned) {
+        var trailCount = 6;
+        var trailSpacing = 0.035;
+        for (var i = trailCount; i >= 1; i--) {
+            var tt = t - i * trailSpacing;
+            if (tt < 0) continue;
+            var pt = pathPointAndAngle(tt);
+            var alpha = (1 - i / (trailCount + 1)) * 0.25;
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            drawArrow(ctx, pt.x, pt.y, aligned ? pt.angle : 0, '#f5c842', true);
+            ctx.restore();
+        }
+    }
+
+    /* ── main draw ─────────────────────────────────────────────────────── */
+    function drawScene(ctx, aligned) {
+        ctx.clearRect(0, 0, W, H);
+        drawBackground(ctx);
+        drawGrid(ctx);
+        drawPath(ctx);
+
+        if (!playing && animT === 0) {
+            // static state: arrow at start + hint text
+            var pt = pathPointAndAngle(0);
+            drawArrow(ctx, pt.x, pt.y, aligned ? pt.angle : 0, '#f5c842', false);
+
+            ctx.save();
+            ctx.font = '600 13px var(--font-family, system-ui)';
+            ctx.fillStyle = 'rgba(255,255,255,0.12)';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Press Play', W / 2, H / 2);
+            ctx.restore();
+            return;
+        }
+
+        // trail
+        drawTrail(ctx, animT, aligned);
+
+        // current position
+        var pt = pathPointAndAngle(animT);
+        var ang = aligned ? pt.angle : 0;
+
+        if (aligned) {
+            drawTangentIndicator(ctx, pt.x, pt.y, pt.angle);
+        }
+
+        drawArrow(ctx, pt.x, pt.y, ang, '#f5c842', false);
+    }
+
+    function drawAll() {
+        drawScene(ctxOff, false);
+        drawScene(ctxOn, true);
+    }
+
+    /* ── animation loop ────────────────────────────────────────────────── */
+    function getSpeed() {
+        return parseFloat(speedSldr.value) / 2;
+    }
+
+    function getDuration() {
+        return baseDuration / getSpeed();
+    }
+
+    function startPlay() {
+        playing = true;
+        animT = 0;
+        animStart = performance.now();
+        playBtn.textContent = 'Stop';
+        playBtn.classList.add('pat-active');
+        updateExplain();
+        animFrame();
+    }
+
+    function stopPlay() {
+        playing = false;
+        cancelAnimationFrame(animRAF);
+        playBtn.textContent = 'Play';
+        playBtn.classList.remove('pat-active');
+        animT = 0;
+        updateExplain();
+        drawAll();
+    }
+
+    function animFrame() {
+        if (!playing) return;
+        var elapsed = performance.now() - animStart;
+        var duration = getDuration();
+        // linear progress, looping
+        animT = (elapsed % duration) / duration;
+        drawAll();
+        animRAF = requestAnimationFrame(animFrame);
+    }
+
+    /* ── explainer text ────────────────────────────────────────────────── */
+    function updateExplain() {
+        if (playing) {
+            var name = pathSel.options[pathSel.selectedIndex].text;
+            explainEl.innerHTML = 'Animating on the <strong>' + name + '</strong> path. '
+                + 'Notice how the left arrow always faces right, while the right arrow <strong>rotates to follow the curve</strong>. '
+                + 'This is the <strong>tangent direction</strong> \u2014 the instantaneous direction of travel at each point on the path.';
+        } else {
+            explainEl.innerHTML = 'Press <strong>Play</strong> to see the difference. '
+                + 'The left object keeps a <strong>fixed rotation</strong> as it moves along the path, '
+                + 'while the right object <strong>automatically rotates</strong> to face its direction of travel \u2014 '
+                + 'aligning its orientation with the tangent of the motion path.';
+        }
+    }
+
+    /* ── events ────────────────────────────────────────────────────────── */
+    playBtn.addEventListener('click', function() {
+        if (playing) stopPlay(); else startPlay();
+    });
+
+    pathSel.addEventListener('change', function() {
+        currentPath = pathSel.value;
+        cachedPathKey = '';  // invalidate cache
+        if (playing) {
+            animStart = performance.now();
+            animT = 0;
+        }
+        updateExplain();
+        drawAll();
+    });
+
+    speedSldr.addEventListener('input', function() {
+        var spd = getSpeed();
+        var label = spd < 1 ? spd.toFixed(1) : spd.toFixed(1).replace(/\.0$/, '');
+        speedVal.textContent = label + '\u00d7';
+        if (playing) {
+            // maintain current position when speed changes
+            var duration = getDuration();
+            animStart = performance.now() - animT * duration;
+        }
+    });
+
+    /* ── init ──────────────────────────────────────────────────────────── */
+    speedVal.textContent = getSpeed().toFixed(1).replace(/\.0$/, '') + '\u00d7';
+    drawAll();
+})();
+</script>

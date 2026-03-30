@@ -1,0 +1,1712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHOUT User Guide - 3d Mapping Projectors">
+    <title>3d Mapping Projectors - WATCHOUT 7 User Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <style>
+        .guide-switcher { position: relative; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border-subtle, #2a2a3e); }
+        .guide-switcher-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            color: var(--text-primary, #e0e0e8); cursor: pointer;
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .guide-switcher-toggle:hover { border-color: var(--accent-primary, #60a5fa); }
+        .guide-switcher-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .guide-switcher.open .guide-switcher-arrow { transform: rotate(180deg); }
+        .guide-switcher-dropdown {
+            display: none; position: absolute; left: 16px; right: 16px; bottom: 100%;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            border-radius: 6px; z-index: 100; overflow: hidden;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+        }
+        .guide-switcher.open .guide-switcher-dropdown { display: block; }
+        .guide-switcher-option {
+            display: block; padding: 8px 12px; color: var(--text-secondary, #a0a0b8);
+            text-decoration: none; font-size: 0.85rem; transition: background 0.15s, color 0.15s;
+        }
+        .guide-switcher-option:hover { background: var(--bg-hover, #22223a); color: var(--text-primary, #e0e0e8); }
+        .guide-switcher-option.active { color: var(--accent-primary, #60a5fa); font-weight: 500; }
+    </style>
+</head>
+<body data-page-id="3d-mapping-projectors">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo logo-link" aria-label="Go to home page">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHOUT GUIDE</h1>
+                </a>
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter  " data-index="0">
+            <a href="../getting-started/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Getting Started</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">First Steps</div>
+                        <a class="toc-subsection " href="../getting-started/welcome-to-watchout-7.html">
+                            Welcome To Watchout 7
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/system-requirements.html">
+                            System Requirements
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/installing-watchout.html">
+                            Installing Watchout
+                        </a>
+                        
+                        <div class="toc-group-label">Setup and Configuration</div>
+                        <a class="toc-subsection " href="../getting-started/launching-the-application.html">
+                            Launching The Application
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/network-configuration.html">
+                            Network Configuration
+                        </a>
+                        
+                        <div class="toc-group-label">Your First Show</div>
+                        <a class="toc-subsection " href="../getting-started/quick-start-tutorial.html">
+                            Quick Start Tutorial
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/architectural-differences-watchout-6-vs-7.html">
+                            Architectural Differences Watchout 6 Vs 7
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="1">
+            <a href="../working-with-shows/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">2. Working with Shows</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
+                            Creating A New Show
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
+                            Opening Existing Shows
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/saving-your-work.html">
+                            Saving Your Work
+                        </a>
+                        
+                        <div class="toc-group-label">Show Configuration</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-properties.html">
+                            Show Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Archiving and Auditing</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-consolidation.html">
+                            Show Consolidation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-information.html">
+                            Show Information
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter expanded " data-index="2">
+            <a href="../displays-and-outputs/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
+                <span class="toc-chapter-title">3. Displays and Outputs</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/adding-displays.html">
+                            Adding Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-properties.html">
+                            Display Properties
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-grid-setup.html">
+                            Display Grid Setup
+                        </a>
+                        
+                        <div class="toc-group-label">Core Display Types</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/virtual-displays.html">
+                            Virtual Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection active" href="../displays-and-outputs/3d-mapping-projectors.html">
+                            3d Mapping Projectors
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/sdi-output.html">
+                            Sdi Output
+                        </a>
+                        
+                        <div class="toc-group-label">Geometry Correction and Blending</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/edge-blending.html">
+                            Edge Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/warp-geometry.html">
+                            Warp Geometry
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-masks.html">
+                            Display Masks
+                        </a>
+                        
+                        <div class="toc-group-label">Color, Calibration, and Diagnostics</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/hdr-and-color-management.html">
+                            HDR and Color Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-calibration.html">
+                            Display Calibration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/test-patterns.html">
+                            Test Patterns
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/compression-fundamentals.html">
+                            Compression Fundamentals
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="3">
+            <a href="../assets-asset-manager/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></span>
+                <span class="toc-chapter-title">4. Assets & Asset Manager</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager.html">
+                            Asset Manager
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-types.html">
+                            Asset Types
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-properties.html">
+                            Asset Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Media Formats and Creation</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/formats-codecs.html">
+                            Formats & Codecs
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/svg-shapes.html">
+                            SVG Shapes
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/image-sequences.html">
+                            Image Sequences
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Asset Workflows</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/dynamic-assets.html">
+                            Dynamic Assets
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/web-user-interface.html">
+                            Web User Interface
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-watcher.html">
+                            Asset Watcher
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-transfer.html">
+                            Asset Transfer
+                        </a>
+                        
+                        <div class="toc-group-label">Settings and Data Management</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager-settings.html">
+                            Asset Manager Settings
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/import-export-and-mapping.html">
+                            Import, Export, and Mapping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/importing-gdtf-files.html">
+                            Importing GDTF Files
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="4">
+            <a href="../timeline-and-cues/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                <span class="toc-chapter-title">5. Timeline and Cues</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/understanding-the-timeline.html">
+                            Understanding The Timeline
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adding-media-cues.html">
+                            Adding Media Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/working-with-layers.html">
+                            Working With Layers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adjusting-timing.html">
+                            Adjusting Timing
+                        </a>
+                        
+                        <div class="toc-group-label">Cue Types</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/control-cues.html">
+                            Control Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/marker-cues.html">
+                            Marker Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/output-cues.html">
+                            Output Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/variables-and-variable-cues.html">
+                            Variables and Variable Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/artnet-fixture-cues.html">
+                            ArtNet Fixture Cues
+                        </a>
+                        
+                        <div class="toc-group-label">Compositions and Organization</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/compositions.html">
+                            Compositions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cue-sets-and-variants.html">
+                            Cue Sets and Variants
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/media-snapshots.html">
+                            Media Snapshots
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/stacking-order.html">
+                            Stacking Order
+                        </a>
+                        
+                        <div class="toc-group-label">Automation and Advanced Workflows</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/timeline-triggers-and-expressions.html">
+                            Timeline Triggers and Expressions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/conditional-cues.html">
+                            Conditional Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/blind-edit-mode.html">
+                            Blind Edit Mode
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/insert-and-delete-time.html">
+                            Insert and Delete Time
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cues-window.html">
+                            Cues Window
+                        </a>
+                        
+                        <div class="toc-group-label">Output Reference</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/output-types-overview.html">
+                            Output Types Overview
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="5">
+            <a href="../effects-and-tweens/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">6. Effects and Tweens</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/understanding-tweens.html">
+                            Understanding Tweens
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/opacity-and-fades.html">
+                            Opacity and Fades
+                        </a>
+                        
+                        <div class="toc-group-label">Transform Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/position-and-movement.html">
+                            Position and Movement
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/scale-and-size.html">
+                            Scale and Size
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/rotation-effects.html">
+                            Rotation Effects
+                        </a>
+                        
+                        <div class="toc-group-label">Visual Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/cropping.html">
+                            Cropping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/color-adjustments.html">
+                            Color Adjustments
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blur-effects.html">
+                            Blur Effects
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blend-modes.html">
+                            Blend Modes
+                        </a>
+                        
+                        <div class="toc-group-label">Audio</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/audio-volume.html">
+                            Audio Volume
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/corner-pinning.html">
+                            Corner Pinning
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/linear-wipe.html">
+                            Linear Wipe
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/frame-blending.html">
+                            Frame Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/chroma-key.html">
+                            Chroma Key
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/key-and-fill.html">
+                            Key and Fill
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/tween-expressions.html">
+                            Tween Expressions
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="6">
+            <a href="../playback/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>
+                <span class="toc-chapter-title">7. Playback</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../playback/starting-and-stopping.html">
+                            Starting and Stopping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/preview-mode.html">
+                            Preview Mode
+                        </a>
+                        
+                        <div class="toc-group-label">Going Live</div>
+                        <a class="toc-subsection " href="../playback/connecting-to-display-servers.html">
+                            Connecting to Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/going-online.html">
+                            Going Online
+                        </a>
+                        
+                        <div class="toc-group-label">Show Operation</div>
+                        <a class="toc-subsection " href="../playback/running-your-show.html">
+                            Running Your Show
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="7">
+            <a href="../the-interface/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></span>
+                <span class="toc-chapter-title">8. The Interface</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Overview</div>
+                        <a class="toc-subsection " href="../the-interface/main-window-overview.html">
+                            Main Window Overview
+                        </a>
+                        
+                        <div class="toc-group-label">Window Reference</div>
+                        <a class="toc-subsection " href="../the-interface/the-stage-window.html">
+                            The Stage Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-timeline-window.html">
+                            The Timeline Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-cue-list-window.html">
+                            The Cue List Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-assets-window.html">
+                            The Assets Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-properties-panel.html">
+                            The Properties Panel
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-nodes-window.html">
+                            The Nodes Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-devices-window.html">
+                            The Devices Window
+                        </a>
+                        
+                        <div class="toc-group-label">Customization</div>
+                        <a class="toc-subsection " href="../the-interface/customizing-your-workspace.html">
+                            Customizing Your Workspace
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="8">
+            <a href="../network-setup/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                <span class="toc-chapter-title">9. Network Setup</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Architecture and Basics</div>
+                        <a class="toc-subsection " href="../network-setup/network-overview.html">
+                            Network Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/display-servers.html">
+                            Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/connecting-devices.html">
+                            Connecting Devices
+                        </a>
+                        
+                        <div class="toc-group-label">Protocols and Services</div>
+                        <a class="toc-subsection " href="../network-setup/firewall-configuration.html">
+                            Firewall Configuration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/ndi-video-sources.html">
+                            NDI Video Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/capture-sources.html">
+                            Capture Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/dante-audio.html">
+                            Dante Audio
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/time-synchronization.html">
+                            Time Synchronization
+                        </a>
+                        
+                        <div class="toc-group-label">Maintenance and Management</div>
+                        <a class="toc-subsection " href="../network-setup/node-management-and-maintenance.html">
+                            Node Management and Maintenance
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/remote-file-access.html">
+                            Remote File Access
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/working-directory-management.html">
+                            Working Directory Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/software-updates.html">
+                            Software Updates
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="9">
+            <a href="../external-control/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">10. External Control</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Foundations</div>
+                        <a class="toc-subsection " href="../external-control/external-control-overview.html">
+                            External Control Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/variables-and-inputs.html">
+                            Variables and Inputs
+                        </a>
+                        
+                        <div class="toc-group-label">Primary Protocols</div>
+                        <a class="toc-subsection " href="../external-control/http-rest-api.html">
+                            HTTP REST API
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/osc-protocol.html">
+                            OSC Protocol
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/artnet-input.html">
+                            ArtNet Input
+                        </a>
+                        
+                        <div class="toc-group-label">Specialized Protocols</div>
+                        <a class="toc-subsection " href="../external-control/midi-bridge.html">
+                            MIDI Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/ltc-bridge.html">
+                            LTC Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/posistagenet.html">
+                            PosiStageNet
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/midi-show-control.html">
+                            MIDI Show Control
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/watchout-6-protocol.html">
+                            WATCHOUT 6 Protocol
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="10">
+            <a href="../keyboard-shortcuts/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.001"></path><path d="M10 8h.001"></path><path d="M14 8h.001"></path><path d="M18 8h.001"></path><path d="M8 12h.001"></path><path d="M12 12h.001"></path><path d="M16 12h.001"></path><path d="M7 16h10"></path></svg></span>
+                <span class="toc-chapter-title">11. Keyboard Shortcuts</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Input and Editing</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/file-operations.html">
+                            File Operations
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/edit-commands.html">
+                            Edit Commands
+                        </a>
+                        
+                        <div class="toc-group-label">Navigation and Playback</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/stage-navigation.html">
+                            Stage Navigation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/timeline-controls.html">
+                            Timeline Controls
+                        </a>
+                        
+                        <div class="toc-group-label">Effects and Layout</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/tween-shortcuts.html">
+                            Tween Shortcuts
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/window-management.html">
+                            Window Management
+                        </a>
+                        
+                        <div class="toc-group-label">Properties and Tables</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/property-editing.html">
+                            Property Editing
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/table-views.html">
+                            Table Views
+                        </a>
+                        
+                        <div class="toc-group-label">Hardware Input</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/xbox-controller.html">
+                            Xbox Controller
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/display-warp.html">
+                            Display & Warp
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="11">
+            <a href="../troubleshooting/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">12. Troubleshooting</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Common Issues</div>
+                        <a class="toc-subsection " href="../troubleshooting/common-issues.html">
+                            Common Issues
+                        </a>
+                        
+                        <div class="toc-group-label">By Category</div>
+                        <a class="toc-subsection " href="../troubleshooting/performance-tips.html">
+                            Performance Tips
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/display-problems.html">
+                            Display Problems
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/network-issues.html">
+                            Network Issues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/media-playback-issues.html">
+                            Media Playback Issues
+                        </a>
+                        
+                        <div class="toc-group-label">Getting Support</div>
+                        <a class="toc-subsection " href="../troubleshooting/feedback-reports.html">
+                            Feedback Reports
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/getting-help.html">
+                            Getting Help
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="12">
+            <a href="../glossary/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">13. Glossary</span>
+                
+            </a>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="13">
+            <a href="../legal/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">14. Legal</span>
+                
+            </a>
+            
+        </div>
+        
+            </nav>
+            
+            <div class="guide-switcher" id="guide-switcher">
+                <button class="guide-switcher-toggle" id="guide-switcher-toggle" aria-label="Switch guide">
+                    <span class="guide-switcher-label">WATCHOUT</span>
+                    <svg class="guide-switcher-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="guide-switcher-dropdown" id="guide-switcher-dropdown">
+                    <a class="guide-switcher-option active" href="../../watchout/index.html">WATCHOUT</a>
+                        <a class="guide-switcher-option" href="../../wp64/index.html">WATCHPAX 64</a>
+                        <a class="guide-switcher-option" href="../../wp30/index.html">WATCHPAX 30</a>
+                        <a class="guide-switcher-option" href="../../wp50/index.html">WATCHPAX 50</a>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">3. Displays and Outputs</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">3d Mapping Projectors</span>
+        
+                </div>
+                <a href="../index.html" class="header-home-link" aria-label="Go to home page">
+                    <img src="../media/dataton-logo.png" alt="Dataton" class="header-logo">
+                </a>
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><h2>3D Mapping Projectors</h2>
+
+<p><strong>3D projectors</strong> are used to project media content onto real-world three-dimensional surfaces such as buildings, stage sets, sculptures, and other irregular shapes. Unlike standard flat display outputs, 3D projectors allow content to wrap around and conform to the physical geometry of a surface, so that imagery appears correctly aligned and undistorted when viewed in the real environment. This makes them essential for architectural projection mapping, immersive stage design, and any application where projected content must match a non-flat surface.</p>
+
+<h3>What is 3D Mapping?</h3>
+
+<p>3D mapping is the process of aligning a projector's output to the contours of a real-world surface so that projected content appears geometrically correct. Because physical surfaces are rarely flat or perfectly perpendicular to the projector, the software must account for the shape of the target surface, the projector's physical position and orientation, and the characteristics of the projector's lens. WATCHOUT models each projector as a virtual camera with a projection frustum. By matching this virtual frustum to the real projector's placement and lens properties, content can be warped and positioned so that it maps accurately onto the physical surface.</p>
+
+<h3>What is Required</h3>
+
+<p>To use 3D mapping projectors in WATCHOUT, the following are needed:</p>
+
+<ul>
+<li><strong>One or more projectors</strong> added to the WATCHOUT stage, representing the physical projectors in the venue.</li>
+<li><strong>Accurate projector placement</strong> — the projector's position (<strong>Eye</strong>), the point it is aimed at (<strong>Target</strong>), and its <strong>Roll</strong> must reflect the real-world setup.</li>
+<li><strong>Lens parameters</strong> — <strong>Lens shift</strong> (horizontal and vertical) and <strong>Width/Distance ratio</strong> must be set to match the physical projector's lens characteristics.</li>
+<li><strong>Calibration points</strong> — a set of virtual points in the software matched to corresponding reality points on the physical surface. This calibration step is what enables WATCHOUT to compute the correct projection mapping.</li>
+<li><strong>3D calibration</strong> — the mapping itself is accomplished through WATCHOUT's 3D calibration workflow, where virtual-to-reality point correspondences are established and refined. See <a href="#3d-calibration">3D Calibration</a> below.</li>
+
+</ul>
+
+<h3>Core Projector Parameters</h3>
+
+<p>These parameters define the projection frustum — the 3D volume that the projector illuminates. Together they tell WATCHOUT exactly how to warp content so it maps correctly onto the target surface.</p>
+
+<ul>
+<li><strong>Eye</strong> (X, Y, Z) — the physical position of the projector in 3D space. This is where the projector is mounted, expressed in stage coordinate units. Moving the Eye changes the projection origin and the angle at which content reaches the surface.</li>
+
+<p><li><strong>Target</strong> (X, Y, Z) — the point on the surface the projector is aimed at. Eye and Target together define the projection axis. Adjusting the Target tilts the projection without moving the projector body.</li></p>
+
+<p><li><strong>Roll</strong> (degrees) — rotation around the projection axis (the Eye → Target line). A value of 0° means the projector is mounted level. Adjust for portrait orientation (90°) or to correct for a tilted mounting bracket.</li></p>
+
+<p><li><strong>Horizontal Lens Shift</strong> (%) — offsets the projected image left or right without moving the projector. Expressed as a percentage of image width. Matches the physical lens shift mechanism on professional projectors.</li></p>
+
+<p><li><strong>Vertical Lens Shift</strong> (%) — offsets the projected image up or down. Commonly used when a projector is ceiling-mounted (shift down) or floor-mounted (shift up) to avoid keystoning.</li></p>
+
+<p><li><strong>Width/Distance Ratio</strong> (displayed as 1:N) — the throw ratio of the lens. Controls how wide the image is at a given throw distance. Smaller values produce a wider, shorter throw; larger values produce a narrower, longer throw. Enter the value as shown on the projector's specification sheet.</li></p>
+
+</ul>
+
+<div class="interactive-widget" id="projector-frustum-widget">
+    <style>
+        #projector-frustum-widget {
+            width: 100%;
+        }
+
+        #projector-frustum-widget .pf-layout {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        #projector-frustum-widget .pf-canvas-wrap {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+        }
+
+        #projector-frustum-widget canvas {
+            width: 100%;
+            height: 600px;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0d0d1a 100%);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: block;
+            cursor: grab;
+        }
+
+        #projector-frustum-widget canvas:active {
+            cursor: grabbing;
+        }
+
+        #projector-frustum-widget .pf-orbit-hint {
+            position: absolute;
+            bottom: 8px;
+            left: 12px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.25);
+            pointer-events: none;
+        }
+
+        #projector-frustum-widget .pf-controls {
+            width: 210px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #projector-frustum-widget .pf-control {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding: 7px 9px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        #projector-frustum-widget .pf-control:hover,
+        #projector-frustum-widget .pf-control.active {
+            border-color: var(--accent-primary, #6366f1);
+            background: rgba(99, 102, 241, 0.08);
+        }
+
+        #projector-frustum-widget .pf-control label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary, #e7e5e4);
+            pointer-events: none;
+        }
+
+        #projector-frustum-widget .pf-control input[type=range] {
+            width: 100%;
+            accent-color: var(--accent-primary, #6366f1);
+            height: 5px;
+            cursor: pointer;
+        }
+
+        #projector-frustum-widget .pf-control .pf-val {
+            font-size: 0.7rem;
+            color: var(--text-muted, #78716c);
+            font-variant-numeric: tabular-nums;
+        }
+
+        #projector-frustum-widget .pf-explain {
+            margin-top: 10px;
+            min-height: 52px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            background: rgba(99, 102, 241, 0.06);
+            border-left: 3px solid var(--accent-primary, #6366f1);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: var(--text-secondary, #a8a29e);
+        }
+
+        #projector-frustum-widget .pf-explain strong {
+            color: var(--text-primary, #e7e5e4);
+        }
+
+        #projector-frustum-widget .pf-reset-btn {
+            margin-top: 2px;
+            padding: 5px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            background: var(--bg-tertiary, #292524);
+            color: var(--text-secondary, #a8a29e);
+            font-family: inherit;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        #projector-frustum-widget .pf-reset-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        @media (max-width: 700px) {
+            #projector-frustum-widget .pf-layout {
+                flex-direction: column;
+            }
+
+            #projector-frustum-widget .pf-controls {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            #projector-frustum-widget .pf-control {
+                flex: 1 1 45%;
+                min-width: 130px;
+            }
+        }
+    </style>
+
+    <div class="pf-layout">
+        <div class="pf-canvas-wrap">
+            <canvas id="pf-canvas" width="1600" height="1200"></canvas>
+            <div class="pf-orbit-hint">Drag to orbit</div>
+        </div>
+        <div class="pf-controls">
+            <div class="pf-control" data-param="eyeHeight" tabindex="0">
+                <label>Eye Height</label>
+                <input type="range" id="pf-eyeHeight" min="0" max="300" value="150">
+                <span class="pf-val" id="pf-eyeHeight-val">150</span>
+            </div>
+            <div class="pf-control" data-param="eyeDist" tabindex="0">
+                <label>Eye Distance</label>
+                <input type="range" id="pf-eyeDist" min="100" max="500" value="300">
+                <span class="pf-val" id="pf-eyeDist-val">300</span>
+            </div>
+            <div class="pf-control" data-param="targetHeight" tabindex="0">
+                <label>Target Height</label>
+                <input type="range" id="pf-targetHeight" min="0" max="300" value="80">
+                <span class="pf-val" id="pf-targetHeight-val">80</span>
+            </div>
+            <div class="pf-control" data-param="roll" tabindex="0">
+                <label>Roll</label>
+                <input type="range" id="pf-roll" min="-45" max="45" value="0">
+                <span class="pf-val" id="pf-roll-val">0°</span>
+            </div>
+            <div class="pf-control" data-param="hShift" tabindex="0">
+                <label>H. Lens Shift</label>
+                <input type="range" id="pf-hShift" min="-50" max="50" value="0">
+                <span class="pf-val" id="pf-hShift-val">0%</span>
+            </div>
+            <div class="pf-control" data-param="vShift" tabindex="0">
+                <label>V. Lens Shift</label>
+                <input type="range" id="pf-vShift" min="-50" max="50" value="0">
+                <span class="pf-val" id="pf-vShift-val">0%</span>
+            </div>
+            <div class="pf-control" data-param="ratio" tabindex="0">
+                <label>Width/Distance</label>
+                <input type="range" id="pf-ratio" min="40" max="200" value="100">
+                <span class="pf-val" id="pf-ratio-val">1:1.00</span>
+            </div>
+            <button class="pf-reset-btn" id="pf-reset">Reset All</button>
+        </div>
+    </div>
+    <div class="pf-explain" id="pf-explain">
+        Adjust any parameter to see its effect on the projection. Drag the 3D view to orbit.
+    </div>
+</div>
+<script>
+    (function () {
+        const canvas = document.getElementById('pf-canvas');
+        const ctx = canvas.getContext('2d');
+        const W = canvas.width, H = canvas.height;
+        const explainEl = document.getElementById('pf-explain');
+
+        const sliders = {
+            eyeHeight: document.getElementById('pf-eyeHeight'),
+            eyeDist: document.getElementById('pf-eyeDist'),
+            targetHeight: document.getElementById('pf-targetHeight'),
+            roll: document.getElementById('pf-roll'),
+            hShift: document.getElementById('pf-hShift'),
+            vShift: document.getElementById('pf-vShift'),
+            ratio: document.getElementById('pf-ratio'),
+        };
+        const valEls = {
+            eyeHeight: document.getElementById('pf-eyeHeight-val'),
+            eyeDist: document.getElementById('pf-eyeDist-val'),
+            targetHeight: document.getElementById('pf-targetHeight-val'),
+            roll: document.getElementById('pf-roll-val'),
+            hShift: document.getElementById('pf-hShift-val'),
+            vShift: document.getElementById('pf-vShift-val'),
+            ratio: document.getElementById('pf-ratio-val'),
+        };
+        const defaults = { eyeHeight: 150, eyeDist: 300, targetHeight: 80, roll: 0, hShift: 0, vShift: 0, ratio: 100 };
+
+        const explanations = {
+            eyeHeight: '<strong>Eye Height</strong> — Vertical position of the projector. Raising it simulates ceiling mounting; lowering it simulates floor placement. The projection angle steepens as the height difference from the target increases.',
+            eyeDist: '<strong>Eye Distance</strong> — How far the projector is from the wall. Greater distance = larger projected image at the same throw ratio. This is the throw distance.',
+            targetHeight: '<strong>Target Height</strong> — The point on the wall the projector is aimed at. Moving it shifts the projection axis up or down without moving the projector body.',
+            roll: '<strong>Roll</strong> — Rotation around the projection axis (Eye → Target line). 0° = level. Use ±90° for portrait orientation. The projected rectangle rotates on the wall.',
+            hShift: '<strong>Horizontal Lens Shift</strong> — Moves the projected image left or right on the wall without moving the projector. Expressed as % of image width. Matches physical lens shift on pro projectors.',
+            vShift: '<strong>Vertical Lens Shift</strong> — Moves the projected image up or down on the wall. Used when ceiling-mounted (shift down) or floor-mounted (shift up) to avoid keystoning.',
+            ratio: '<strong>Width/Distance Ratio (Throw Ratio)</strong> — Controls how wide the image is at a given distance. Displayed as 1:N. Smaller N = wider short-throw lens. Larger N = narrower long-throw lens.',
+        };
+
+        let activeParam = null;
+        const controlEls = document.querySelectorAll('#projector-frustum-widget .pf-control');
+        controlEls.forEach(el => {
+            const p = el.dataset.param;
+            el.addEventListener('mouseenter', () => setActive(p));
+            el.addEventListener('mouseleave', () => setActive(null));
+            el.addEventListener('focus', () => setActive(p));
+            el.addEventListener('blur', () => setActive(null));
+        });
+        function setActive(p) {
+            activeParam = p;
+            controlEls.forEach(el => el.classList.toggle('active', el.dataset.param === p));
+            explainEl.innerHTML = explanations[p] || 'Adjust any parameter to see its effect on the projection. Drag the 3D view to orbit.';
+        }
+        Object.keys(sliders).forEach(k => sliders[k].addEventListener('input', draw));
+        document.getElementById('pf-reset').addEventListener('click', () => {
+            Object.keys(defaults).forEach(k => sliders[k].value = defaults[k]);
+            draw();
+        });
+
+        // --- Camera orbit ---
+        let camYaw = 0.84, camPitch = -0.44;
+        let dragging = false, lastMX, lastMY;
+        canvas.addEventListener('mousedown', e => { dragging = true; lastMX = e.clientX; lastMY = e.clientY; });
+        canvas.addEventListener('touchstart', e => { dragging = true; lastMX = e.touches[0].clientX; lastMY = e.touches[0].clientY; e.preventDefault(); }, { passive: false });
+        window.addEventListener('mouseup', () => dragging = false);
+        window.addEventListener('touchend', () => dragging = false);
+        window.addEventListener('mousemove', e => {
+            if (!dragging) return;
+            camYaw += (e.clientX - lastMX) * 0.006;
+            camPitch -= (e.clientY - lastMY) * 0.006;
+            camPitch = Math.max(-1.52, Math.min(-0.17, camPitch));
+            lastMX = e.clientX; lastMY = e.clientY;
+            draw();
+        });
+        window.addEventListener('touchmove', e => {
+            if (!dragging) return;
+            camYaw += (e.touches[0].clientX - lastMX) * 0.006;
+            camPitch -= (e.touches[0].clientY - lastMY) * 0.006;
+            camPitch = Math.max(-1.52, Math.min(-0.17, camPitch));
+            lastMX = e.touches[0].clientX; lastMY = e.touches[0].clientY;
+            draw();
+        }, { passive: false });
+
+        // --- 3D math ---
+        function project(x, y, z) {
+            // Scene center
+            const cx = 0, cy = 100, cz = -150;
+            let dx = x - cx, dy = y - cy, dz = z - cz;
+            // Rotate around Y (yaw)
+            const cosY = Math.cos(camYaw), sinY = Math.sin(camYaw);
+            let rx = dx * cosY - dz * sinY;
+            let rz = dx * sinY + dz * cosY;
+            let ry = dy;
+            // Rotate around X (pitch)
+            const cosP = Math.cos(camPitch), sinP = Math.sin(camPitch);
+            let ry2 = ry * cosP - rz * sinP;
+            let rz2 = ry * sinP + rz * cosP;
+            rx = rx;
+            // Perspective
+            const fov = 1100;
+            const dist = 600;
+            const perspective = fov / (rz2 + dist);
+            if (perspective < 0) return null;
+            return {
+                x: W / 2 + rx * perspective,
+                y: H / 2 - ry2 * perspective,
+                z: rz2,
+                s: perspective
+            };
+        }
+
+        function drawLine3D(ax, ay, az, bx, by, bz, color, width) {
+            const pa = project(ax, ay, az);
+            const pb = project(bx, by, bz);
+            if (!pa || !pb) return;
+            ctx.strokeStyle = color;
+            ctx.lineWidth = width;
+            ctx.beginPath();
+            ctx.moveTo(pa.x, pa.y);
+            ctx.lineTo(pb.x, pb.y);
+            ctx.stroke();
+        }
+
+        function drawPoly3D(points, fillColor, strokeColor, strokeWidth) {
+            const projected = points.map(p => project(p[0], p[1], p[2]));
+            if (projected.some(p => !p)) return;
+            ctx.beginPath();
+            ctx.moveTo(projected[0].x, projected[0].y);
+            for (let i = 1; i < projected.length; i++) {
+                ctx.lineTo(projected[i].x, projected[i].y);
+            }
+            ctx.closePath();
+            if (fillColor) { ctx.fillStyle = fillColor; ctx.fill(); }
+            if (strokeColor) { ctx.strokeStyle = strokeColor; ctx.lineWidth = strokeWidth || 1; ctx.stroke(); }
+        }
+
+        function drawDot3D(x, y, z, radius, color) {
+            const p = project(x, y, z);
+            if (!p) return;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, radius * p.s * 0.8, 0, Math.PI * 2);
+            ctx.fillStyle = color;
+            ctx.fill();
+        }
+
+        function drawLabel3D(x, y, z, text, color, offsetX, offsetY) {
+            const p = project(x, y, z);
+            if (!p) return;
+            ctx.font = `600 ${Math.max(14, 20 * p.s * 0.8)}px Inter, system-ui, sans-serif`;
+            ctx.fillStyle = color;
+            ctx.textAlign = 'center';
+            ctx.fillText(text, p.x + (offsetX || 0), p.y + (offsetY || 0));
+        }
+
+        function getVals() {
+            return {
+                eyeHeight: +sliders.eyeHeight.value,
+                eyeDist: +sliders.eyeDist.value,
+                targetHeight: +sliders.targetHeight.value,
+                roll: +sliders.roll.value,
+                hShift: +sliders.hShift.value,
+                vShift: +sliders.vShift.value,
+                ratio: +sliders.ratio.value / 100,
+            };
+        }
+
+        function draw() {
+            const v = getVals();
+
+            valEls.eyeHeight.textContent = v.eyeHeight;
+            valEls.eyeDist.textContent = v.eyeDist;
+            valEls.targetHeight.textContent = v.targetHeight;
+            valEls.roll.textContent = v.roll + '°';
+            valEls.hShift.textContent = v.hShift + '%';
+            valEls.vShift.textContent = v.vShift + '%';
+            valEls.ratio.textContent = '1:' + v.ratio.toFixed(2);
+
+            ctx.clearRect(0, 0, W, H);
+
+            // --- Ground grid ---
+            const gridSize = 400;
+            const gridStep = 50;
+            ctx.setLineDash([]);
+            for (let i = -gridSize; i <= gridSize; i += gridStep) {
+                drawLine3D(i, 0, -gridSize, i, 0, gridSize, 'rgba(255,255,255,0.04)', 0.5);
+                drawLine3D(-gridSize, 0, i, gridSize, 0, i, 'rgba(255,255,255,0.04)', 0.5);
+            }
+
+            // --- Wall (surface at z=0) ---
+            const wallW = 250, wallH = 300;
+            drawPoly3D(
+                [[-wallW, 0, 0], [wallW, 0, 0], [wallW, wallH, 0], [-wallW, wallH, 0]],
+                'rgba(255,255,255,0.04)', 'rgba(255,255,255,0.15)', 1
+            );
+            drawLabel3D(0, wallH + 15, 0, 'WALL / SURFACE', 'rgba(255,255,255,0.25)', 0, 0);
+
+            // --- Projector position ---
+            const eyeX = 0;
+            const eyeY = v.eyeHeight;
+            const eyeZ = -v.eyeDist;
+
+            // Target on wall
+            const tgtX = 0;
+            const tgtY = v.targetHeight;
+            const tgtZ = 0;
+
+            // Direction from eye to target
+            const dirX = tgtX - eyeX;
+            const dirY = tgtY - eyeY;
+            const dirZ = tgtZ - eyeZ;
+            const dirLen = Math.sqrt(dirX * dirX + dirY * dirY + dirZ * dirZ);
+            const ndx = dirX / dirLen, ndy = dirY / dirLen, ndz = dirZ / dirLen;
+
+            // Build local coordinate frame at the target
+            // "up" in world = (0,1,0), apply roll
+            const rollRad = v.roll * Math.PI / 180;
+
+            // Right vector = normalize(dir cross worldUp), then rotate by roll
+            let rx = ndz * 1 - ndy * 0;  // dir cross (0,1,0) simplified
+            let ry = ndx * 0 - ndz * 0;
+            let rz = ndy * 0 - ndx * 1;
+            // Actually: cross(dir, up) where up=(0,1,0)
+            rx = ndy * 0 - 0 * ndz; // This is wrong, let me redo
+            // cross(d, u) where d=(ndx,ndy,ndz), u=(0,1,0)
+            rx = ndy * 0 - ndz * 1;  // = -ndz
+            ry = ndz * 0 - ndx * 0;  // = 0
+            rz = ndx * 1 - ndy * 0;  // = ndx
+            // So right = (-ndz, 0, ndx)
+            let rLen = Math.sqrt(rx * rx + ry * ry + rz * rz);
+            if (rLen < 0.001) { rx = 1; ry = 0; rz = 0; rLen = 1; }
+            rx /= rLen; ry /= rLen; rz /= rLen;
+
+            // Up vector = cross(right, dir)
+            let ux = ry * ndz - rz * ndy;
+            let uy = rz * ndx - rx * ndz;
+            let uz = rx * ndy - ry * ndx;
+            let uLen = Math.sqrt(ux * ux + uy * uy + uz * uz);
+            ux /= uLen; uy /= uLen; uz /= uLen;
+
+            // Apply roll: rotate right and up around dir
+            const cosR = Math.cos(rollRad), sinR = Math.sin(rollRad);
+            const rx2 = rx * cosR + ux * sinR;
+            const ry2 = ry * cosR + uy * sinR;
+            const rz2 = rz * cosR + uz * sinR;
+            const ux2 = -rx * sinR + ux * cosR;
+            const uy2 = -ry * sinR + uy * cosR;
+            const uz2 = -rz * sinR + uz * cosR;
+
+            // Frustum half-widths at the wall
+            const halfW = v.eyeDist / (2 * v.ratio);
+            const aspect = 9 / 16;
+            const halfH = halfW * aspect;
+
+            // Lens shift offsets
+            const hOff = (v.hShift / 100) * halfW * 2;
+            const vOff = (v.vShift / 100) * halfH * 2;
+
+            // Four corners of the projected image on the wall (z=0 plane)
+            // Center of projection on wall, shifted
+            const pcX = tgtX + rx2 * hOff + ux2 * vOff;
+            const pcY = tgtY + ry2 * hOff + uy2 * vOff;
+            const pcZ = tgtZ + rz2 * hOff + uz2 * vOff;
+
+            const corners = [
+                [pcX - rx2 * halfW - ux2 * halfH, pcY - ry2 * halfW - uy2 * halfH, pcZ - rz2 * halfW - uz2 * halfH], // BL
+                [pcX + rx2 * halfW - ux2 * halfH, pcY + ry2 * halfW - uy2 * halfH, pcZ + rz2 * halfW - uz2 * halfH], // BR
+                [pcX + rx2 * halfW + ux2 * halfH, pcY + ry2 * halfW + uy2 * halfH, pcZ + rz2 * halfW + uz2 * halfH], // TR
+                [pcX - rx2 * halfW + ux2 * halfH, pcY - ry2 * halfW + uy2 * halfH, pcZ - rz2 * halfW + uz2 * halfH], // TL
+            ];
+
+            // --- Draw frustum volume (edges from eye to corners) ---
+            const isRatioActive = activeParam === 'ratio';
+            const frustumEdgeColor = isRatioActive ? 'rgba(139,92,246,0.5)' : 'rgba(99,102,241,0.25)';
+            const frustumEdgeW = isRatioActive ? 1.5 : 1;
+
+            // Frustum side faces (translucent fill)
+            for (let i = 0; i < 4; i++) {
+                const j = (i + 1) % 4;
+                drawPoly3D(
+                    [[eyeX, eyeY, eyeZ], corners[i], corners[j]],
+                    'rgba(99,102,241,0.04)', frustumEdgeColor, frustumEdgeW
+                );
+            }
+
+            // Frustum edges
+            for (const c of corners) {
+                drawLine3D(eyeX, eyeY, eyeZ, c[0], c[1], c[2], frustumEdgeColor, frustumEdgeW);
+            }
+
+            // --- Projected image rectangle on wall ---
+            drawPoly3D(corners, 'rgba(250,204,21,0.12)', 'rgba(250,204,21,0.8)', 2);
+
+            // Crosshair on projected image
+            const midTop = [(corners[2][0] + corners[3][0]) / 2, (corners[2][1] + corners[3][1]) / 2, (corners[2][2] + corners[3][2]) / 2];
+            const midBot = [(corners[0][0] + corners[1][0]) / 2, (corners[0][1] + corners[1][1]) / 2, (corners[0][2] + corners[1][2]) / 2];
+            const midLeft = [(corners[0][0] + corners[3][0]) / 2, (corners[0][1] + corners[3][1]) / 2, (corners[0][2] + corners[3][2]) / 2];
+            const midRight = [(corners[1][0] + corners[2][0]) / 2, (corners[1][1] + corners[2][1]) / 2, (corners[1][2] + corners[2][2]) / 2];
+            ctx.setLineDash([4, 4]);
+            drawLine3D(midTop[0], midTop[1], midTop[2], midBot[0], midBot[1], midBot[2], 'rgba(250,204,21,0.2)', 1);
+            drawLine3D(midLeft[0], midLeft[1], midLeft[2], midRight[0], midRight[1], midRight[2], 'rgba(250,204,21,0.2)', 1);
+            ctx.setLineDash([]);
+
+            // --- Projection axis (dashed) ---
+            const isAxisActive = activeParam === 'eyeHeight' || activeParam === 'eyeDist' || activeParam === 'targetHeight';
+            ctx.setLineDash([6, 5]);
+            drawLine3D(eyeX, eyeY, eyeZ, tgtX, tgtY, tgtZ,
+                isAxisActive ? 'rgba(251,191,36,0.6)' : 'rgba(255,255,255,0.12)', 1);
+            ctx.setLineDash([]);
+
+            // --- Projector body (small box) ---
+            const bSize = 12;
+            const bLen = 20;
+            // Simple box along the direction axis
+            const bCorners = [];
+            for (let si = -1; si <= 1; si += 2) {
+                for (let sj = -1; sj <= 1; sj += 2) {
+                    const ox = rx2 * si * bSize + ux2 * sj * bSize;
+                    const oy = ry2 * si * bSize + uy2 * sj * bSize;
+                    const oz = rz2 * si * bSize + uz2 * sj * bSize;
+                    bCorners.push([eyeX + ox, eyeY + oy, eyeZ + oz]);
+                    bCorners.push([eyeX + ox + ndx * bLen, eyeY + oy + ndy * bLen, eyeZ + oz + ndz * bLen]);
+                }
+            }
+            // Draw projector box faces
+            const bFaces = [
+                [0, 2, 6, 4], [1, 3, 7, 5], // sides
+                [0, 1, 3, 2], [4, 5, 7, 6], // top/bottom
+                [0, 1, 5, 4], [2, 3, 7, 6], // front/back
+            ];
+            for (const face of bFaces) {
+                drawPoly3D(
+                    face.map(i => bCorners[i]),
+                    'rgba(99,102,241,0.35)', 'rgba(129,140,248,0.6)', 1
+                );
+            }
+
+            // --- Lens glow (small circle at projector front) ---
+            const lensCX = eyeX + ndx * bLen;
+            const lensCY = eyeY + ndy * bLen;
+            const lensCZ = eyeZ + ndz * bLen;
+            drawDot3D(lensCX, lensCY, lensCZ, 6, 'rgba(250,204,21,0.5)');
+
+            // --- Eye dot ---
+            const isEyeActive = activeParam === 'eyeHeight' || activeParam === 'eyeDist';
+            drawDot3D(eyeX, eyeY, eyeZ, isEyeActive ? 8 : 5, isEyeActive ? '#818cf8' : '#6366f1');
+            drawLabel3D(eyeX, eyeY, eyeZ, 'Eye', '#a5b4fc', 0, -20);
+
+            // --- Target dot ---
+            const isTgtActive = activeParam === 'targetHeight';
+            drawDot3D(tgtX, tgtY, tgtZ, isTgtActive ? 8 : 5, isTgtActive ? '#fbbf24' : '#f59e0b');
+            drawLabel3D(tgtX, tgtY, tgtZ, 'Target', '#fcd34d', 0, -18);
+
+            // --- Projected image label ---
+            const labelPos = [(corners[2][0] + corners[3][0]) / 2, (corners[2][1] + corners[3][1]) / 2 + 12, (corners[2][2] + corners[3][2]) / 2];
+            drawLabel3D(labelPos[0], labelPos[1], labelPos[2], 'Projected Image', 'rgba(250,204,21,0.6)', 0, -6);
+
+            // --- Vertical reference line from eye to ground ---
+            ctx.setLineDash([3, 3]);
+            drawLine3D(eyeX, 0, eyeZ, eyeX, eyeY, eyeZ, 'rgba(255,255,255,0.08)', 1);
+            ctx.setLineDash([]);
+
+            // --- Shift indicators ---
+            if (Math.abs(v.hShift) > 1 || Math.abs(v.vShift) > 1) {
+                ctx.setLineDash([3, 3]);
+                drawLine3D(tgtX, tgtY, tgtZ, pcX, pcY, pcZ, 'rgba(52,211,153,0.5)', 1);
+                ctx.setLineDash([]);
+            }
+
+        }
+
+        draw();
+    })();
+</script>
+
+<h3>Projector Camera Mode</h3>
+
+<p>Switch Stage camera mode to <strong>Projector</strong> for alignment work. WATCHOUT supports calibration workflows with virtual/reality points and continuous/manual calibration behavior.</p>
+
+<h3>3D Calibration</h3>
+
+<p>3D mapping in WATCHOUT is achieved through 3D calibration. Calibration establishes the correspondence between virtual points (defined in the software's coordinate space) and reality points (physical locations on the target surface). By providing a sufficient number of these point pairs, WATCHOUT can compute the precise transformation needed to warp the projected image so that it aligns with the real-world geometry.</p>
+
+<p>For reality-point adjustment workflows, provide enough calibration points first. For a complete guide to calibration workflows, including NDI streams, EDID management, and external calibration integration, see <a href="display-calibration.html">Display Calibration</a>.</p>
+
+<div class='warning-box'><p>Projector calibration in 2D reality mode requires at least six virtual points before editing reality points.
+</p></div>
+
+<h3>Operational Notes</h3>
+
+<ul>
+<li><strong>No automatic edge blending</strong> — unlike standard Display objects, 3D Projectors do not receive automatic soft-edge blending when they overlap on the stage. To manage overlapping projection areas, use manual masking. See <a href="display-masks.html">Display Masks</a>.</li>
+<li>Projector mode is not available while viewing a composition-only stage context.</li>
+<li>Keep calibration and geometry edits versioned like any other critical show state.</li>
+
+</ul></div><div class="section-nav">
+                <a href="virtual-displays.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="display-grid-setup.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script>var wikiBasePath = '../';</script>
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+    
+    <script>
+        (function() {
+            var sw = document.getElementById('guide-switcher');
+            var btn = document.getElementById('guide-switcher-toggle');
+            if (!sw || !btn) return;
+            btn.addEventListener('click', function(e) { e.stopPropagation(); sw.classList.toggle('open'); });
+            document.addEventListener('click', function(e) { if (!sw.contains(e.target)) sw.classList.remove('open'); });
+        })();
+    </script>
+</body>
+</html>

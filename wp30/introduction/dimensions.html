@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHPAX 30 User Guide - Dimensions">
+    <title>Dimensions - WATCHPAX 30 User Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <style>
+        .guide-switcher { position: relative; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border-subtle, #2a2a3e); }
+        .guide-switcher-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            color: var(--text-primary, #e0e0e8); cursor: pointer;
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .guide-switcher-toggle:hover { border-color: var(--accent-primary, #60a5fa); }
+        .guide-switcher-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .guide-switcher.open .guide-switcher-arrow { transform: rotate(180deg); }
+        .guide-switcher-dropdown {
+            display: none; position: absolute; left: 16px; right: 16px; bottom: 100%;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            border-radius: 6px; z-index: 100; overflow: hidden;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+        }
+        .guide-switcher.open .guide-switcher-dropdown { display: block; }
+        .guide-switcher-option {
+            display: block; padding: 8px 12px; color: var(--text-secondary, #a0a0b8);
+            text-decoration: none; font-size: 0.85rem; transition: background 0.15s, color 0.15s;
+        }
+        .guide-switcher-option:hover { background: var(--bg-hover, #22223a); color: var(--text-primary, #e0e0e8); }
+        .guide-switcher-option.active { color: var(--accent-primary, #60a5fa); font-weight: 500; }
+    </style>
+</head>
+<body data-page-id="dimensions" data-canonical-path="introduction/dimensions.html">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo" style="text-decoration: none; color: inherit;">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHPAX 30 GUIDE</h1>
+                </a>
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter expanded " data-index="0">
+            <a href="../introduction/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Introduction</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Product Information</div>
+                        <a class="toc-subsection " href="../introduction/welcome-to-watchpax-30.html">
+                            Welcome to WATCHPAX 30
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/introduction-to-watchpax-30.html">
+                            Introduction to WATCHPAX 30
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/accessories.html">
+                            Accessories
+                        </a>
+                        
+                        <div class="toc-group-label">Technical Specifications</div>
+                        <a class="toc-subsection active" href="../introduction/dimensions.html">
+                            Dimensions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/power.html">
+                            Power
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/environmental.html">
+                            Environmental
+                        </a>
+                        
+                        <div class="toc-group-label">Hardware Reference</div>
+                        <a class="toc-subsection " href="../introduction/start-up-screen.html">
+                            Start Up Screen
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/connectors.html">
+                            Connectors
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/media-server-operating-system.html">
+                            Media Server Operating System
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="1">
+            <a href="../installation-and-operation/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
+                <span class="toc-chapter-title">2. Installation and Operation</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Safety and Setup</div>
+                        <a class="toc-subsection " href="../installation-and-operation/before-using-your-watchpax-30.html">
+                            Before Using Your WATCHPAX 30
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../installation-and-operation/ventilation.html">
+                            Ventilation
+                        </a>
+                        
+                        <div class="toc-group-label">Getting Started</div>
+                        <a class="toc-subsection " href="../installation-and-operation/installation.html">
+                            Installation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../installation-and-operation/quick-start.html">
+                            Quick Start
+                        </a>
+                        
+                        <div class="toc-group-label">Maintenance</div>
+                        <a class="toc-subsection " href="../installation-and-operation/reset-watchpax-30.html">
+                            Reset WATCHPAX 30
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="2">
+            <a href="../edid-emulators/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></span>
+                <span class="toc-chapter-title">3. EDID Emulators</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">EDID</div>
+                        <a class="toc-subsection " href="../edid-emulators/edid-emulators.html">
+                            EDID Emulators
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="3">
+            <a href="../warranty-conformity-and-disposal/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">4. Warranty, Conformity and Disposal</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Legal</div>
+                        <a class="toc-subsection " href="../warranty-conformity-and-disposal/limited-warranty.html">
+                            Limited Warranty
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../warranty-conformity-and-disposal/declaration-of-conformity.html">
+                            Declaration of Conformity
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../warranty-conformity-and-disposal/disposal.html">
+                            Disposal
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+            </nav>
+            
+            <div class="guide-switcher" id="guide-switcher">
+                <button class="guide-switcher-toggle" id="guide-switcher-toggle" aria-label="Switch guide">
+                    <span class="guide-switcher-label">WATCHPAX 30</span>
+                    <svg class="guide-switcher-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="guide-switcher-dropdown" id="guide-switcher-dropdown">
+                    <a class="guide-switcher-option" href="../../watchout/index.html">WATCHOUT</a>
+                        <a class="guide-switcher-option" href="../../wp64/index.html">WATCHPAX 64</a>
+                        <a class="guide-switcher-option active" href="../../wp30/index.html">WATCHPAX 30</a>
+                        <a class="guide-switcher-option" href="../../wp50/index.html">WATCHPAX 50</a>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">1. Introduction</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">Dimensions</span>
+        
+                </div>
+                <img src="../media/dataton-logo.png" alt="Dataton" class="header-logo">
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><h2>Dimensions</h2>
+
+<p><strong>Physical dimensions and weight of the WATCHPAX 30 unit.</strong></p>
+
+<ul>
+<li>Width: 215 mm</li>
+<li>Height: 32 mm</li>
+<li>Depth: 176 mm</li>
+<li>Weight: 1550 g</li>
+
+</ul></div><div class="section-nav">
+                <a href="accessories.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="power.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHPAX 30 User Guide • Dataton Documentation • Generated March 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+    
+    <script>
+        (function() {
+            var sw = document.getElementById('guide-switcher');
+            var btn = document.getElementById('guide-switcher-toggle');
+            if (!sw || !btn) return;
+            btn.addEventListener('click', function(e) { e.stopPropagation(); sw.classList.toggle('open'); });
+            document.addEventListener('click', function(e) { if (!sw.contains(e.target)) sw.classList.remove('open'); });
+        })();
+    </script>
+</body>
+</html>

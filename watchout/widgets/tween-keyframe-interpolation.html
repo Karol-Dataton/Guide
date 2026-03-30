@@ -1,0 +1,700 @@
+<div class="interactive-widget" id="tween-kf-interp">
+    <style>
+        #tween-kf-interp {
+            font-family: inherit;
+            user-select: none;
+            -webkit-user-select: none;
+            max-width: 720px;
+        }
+
+        #tween-kf-interp .tkf-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        #tween-kf-interp .tkf-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary, #f8fafc);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        #tween-kf-interp .tkf-presets {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        #tween-kf-interp .tkf-preset-btn {
+            background: var(--bg-tertiary, #1a1a25);
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+            color: var(--text-secondary, #94a3b8);
+            padding: 4px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            font-weight: 500;
+            font-family: inherit;
+            transition: all 0.15s ease;
+        }
+
+        #tween-kf-interp .tkf-preset-btn:hover {
+            border-color: var(--accent-primary, #6B25DD);
+            color: var(--text-primary, #f8fafc);
+        }
+
+        #tween-kf-interp .tkf-preset-btn.active {
+            background: var(--accent-primary, #6B25DD);
+            border-color: var(--accent-primary, #6B25DD);
+            color: #fff;
+        }
+
+        #tween-kf-interp .tkf-chart-row {
+            display: flex;
+            align-items: stretch;
+            gap: 12px;
+        }
+
+        #tween-kf-interp .tkf-canvas-wrap {
+            position: relative;
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.15);
+            flex: 1;
+            min-width: 0;
+        }
+
+        #tween-kf-interp .tkf-canvas-wrap canvas {
+            display: block;
+            width: 100%;
+            background: transparent;
+        }
+
+        #tween-kf-interp .tkf-preview-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            padding-bottom: 36px;
+            width: 72px;
+            flex-shrink: 0;
+        }
+
+        #tween-kf-interp .tkf-preview-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 6px;
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+            background: var(--accent-primary, #6B25DD);
+            transition: none;
+            flex-shrink: 0;
+        }
+
+        #tween-kf-interp .tkf-preview-label {
+            font-size: 0.72rem;
+            color: var(--text-muted, #8494a7);
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        #tween-kf-interp .tkf-preview-value {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-primary, #f8fafc);
+            font-variant-numeric: tabular-nums;
+            text-align: center;
+        }
+
+        #tween-kf-interp .tkf-transport {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        #tween-kf-interp .tkf-play-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+            background: var(--bg-tertiary, #1a1a25);
+            color: var(--text-primary, #f8fafc);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        #tween-kf-interp .tkf-play-btn:hover {
+            border-color: var(--accent-primary, #6B25DD);
+            background: rgba(107, 37, 221, 0.15);
+        }
+
+        #tween-kf-interp .tkf-time-slider {
+            flex: 1;
+            accent-color: var(--accent-primary, #6B25DD);
+            cursor: pointer;
+        }
+
+        #tween-kf-interp .tkf-time-display {
+            font-size: 0.78rem;
+            color: var(--text-muted, #8494a7);
+            font-variant-numeric: tabular-nums;
+            min-width: 36px;
+            text-align: right;
+        }
+
+        #tween-kf-interp .tkf-controls-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        #tween-kf-interp .tkf-easing-select {
+            background: var(--bg-tertiary, #1a1a25);
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+            border-radius: 6px;
+            padding: 5px 10px;
+            color: var(--text-primary, #f8fafc);
+            font-family: inherit;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.15s ease;
+        }
+
+        #tween-kf-interp .tkf-easing-select:hover,
+        #tween-kf-interp .tkf-easing-select:focus {
+            border-color: var(--accent-primary, #6B25DD);
+        }
+
+        #tween-kf-interp .tkf-ctrl-label {
+            font-size: 0.78rem;
+            color: var(--text-muted, #8494a7);
+        }
+
+        #tween-kf-interp .tkf-hint {
+            font-size: 0.82rem;
+            color: var(--text-primary, #f8fafc);
+            line-height: 1.6;
+            margin-top: 14px;
+            padding: 12px 16px;
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 4px solid var(--accent-primary, #6B25DD);
+            border-radius: 4px;
+        }
+
+        @media (max-width: 520px) {
+            #tween-kf-interp .tkf-header { flex-direction: column; align-items: flex-start; }
+            #tween-kf-interp .tkf-chart-row { flex-direction: column; }
+            #tween-kf-interp .tkf-preview-row { flex-direction: row; width: auto; justify-content: flex-start; gap: 14px; margin-top: 10px; }
+            #tween-kf-interp .tkf-preview-label { text-align: left; }
+        }
+    </style>
+
+    <div class="tkf-header">
+        <div class="tkf-title">Keyframe Interpolation</div>
+        <div class="tkf-presets">
+            <button class="tkf-preset-btn active" data-preset="fadeIn">Fade In</button>
+            <button class="tkf-preset-btn" data-preset="fadeOut">Fade Out</button>
+            <button class="tkf-preset-btn" data-preset="sCurve">S-Curve</button>
+        </div>
+    </div>
+
+    <div class="tkf-chart-row">
+        <div class="tkf-canvas-wrap">
+            <canvas id="tkf-canvas" width="720" height="280"></canvas>
+        </div>
+
+        <div class="tkf-preview-row">
+            <div class="tkf-preview-box" id="tkf-preview"></div>
+            <span class="tkf-preview-label">Opacity preview</span>
+            <span class="tkf-preview-value" id="tkf-val-disp">0%</span>
+        </div>
+    </div>
+
+    <div class="tkf-transport">
+        <button class="tkf-play-btn" id="tkf-play" aria-label="Play">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon id="tkf-play-icon" points="3,1 12,7 3,13"/></svg>
+        </button>
+        <input type="range" class="tkf-time-slider" id="tkf-scrub" min="0" max="1000" value="0">
+        <span class="tkf-time-display" id="tkf-time-disp">0.0s</span>
+    </div>
+
+    <div class="tkf-controls-row">
+        <span class="tkf-ctrl-label">Easing for selected segment:</span>
+        <select class="tkf-easing-select" id="tkf-easing">
+            <option value="linear">Linear</option>
+            <optgroup label="Quadratic">
+                <option value="quadIn">Quad In</option>
+                <option value="quadOut">Quad Out</option>
+                <option value="quadInOut">Quad InOut</option>
+            </optgroup>
+            <optgroup label="Cubic">
+                <option value="cubicIn">Cubic In</option>
+                <option value="cubicOut">Cubic Out</option>
+                <option value="cubicInOut">Cubic InOut</option>
+            </optgroup>
+            <optgroup label="Sinusoidal">
+                <option value="sineIn">Sine In</option>
+                <option value="sineOut">Sine Out</option>
+                <option value="sineInOut">Sine InOut</option>
+            </optgroup>
+            <optgroup label="Exponential">
+                <option value="expoIn">Expo In</option>
+                <option value="expoOut">Expo Out</option>
+                <option value="expoInOut">Expo InOut</option>
+            </optgroup>
+            <optgroup label="Bounce">
+                <option value="bounceIn">Bounce In</option>
+                <option value="bounceOut">Bounce Out</option>
+                <option value="bounceInOut">Bounce InOut</option>
+            </optgroup>
+            <optgroup label="Elastic">
+                <option value="elasticIn">Elastic In</option>
+                <option value="elasticOut">Elastic Out</option>
+                <option value="elasticInOut">Elastic InOut</option>
+            </optgroup>
+            <optgroup label="Back">
+                <option value="backIn">Back In</option>
+                <option value="backOut">Back Out</option>
+                <option value="backInOut">Back InOut</option>
+            </optgroup>
+        </select>
+    </div>
+
+    <div class="tkf-hint">Drag keyframe diamonds to reposition &middot; Click curve area to add a point &middot; Right-click a point to delete it</div>
+
+    <script>
+    (function() {
+        var root = document.getElementById('tween-kf-interp');
+        var canvas = document.getElementById('tkf-canvas');
+        if (!root || !canvas) return;
+        var ctx = canvas.getContext('2d');
+        var scrub = document.getElementById('tkf-scrub');
+        var playBtn = document.getElementById('tkf-play');
+        var playIcon = document.getElementById('tkf-play-icon');
+        var timeDisp = document.getElementById('tkf-time-disp');
+        var valDisp = document.getElementById('tkf-val-disp');
+        var previewBox = document.getElementById('tkf-preview');
+        var easingSel = document.getElementById('tkf-easing');
+
+        var PAD = { top: 30, right: 50, bottom: 48, left: 70 };
+        var DPR = window.devicePixelRatio || 1;
+        var W, H, plotW, plotH;
+        var DURATION = 3;
+
+        function resize() {
+            var rect = canvas.parentElement.getBoundingClientRect();
+            W = Math.round(rect.width);
+            H = 280;
+            canvas.width = W * DPR;
+            canvas.height = H * DPR;
+            canvas.style.width = W + 'px';
+            canvas.style.height = H + 'px';
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            plotW = W - PAD.left - PAD.right;
+            plotH = H - PAD.top - PAD.bottom;
+        }
+
+        /* ── Easing functions ── */
+        var ease = {
+            linear: function(t) { return t; },
+            quadIn: function(t) { return t * t; },
+            quadOut: function(t) { return t * (2 - t); },
+            quadInOut: function(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; },
+            cubicIn: function(t) { return t * t * t; },
+            cubicOut: function(t) { return 1 - Math.pow(1 - t, 3); },
+            cubicInOut: function(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; },
+            sineIn: function(t) { return 1 - Math.cos(t * Math.PI / 2); },
+            sineOut: function(t) { return Math.sin(t * Math.PI / 2); },
+            sineInOut: function(t) { return 0.5 * (1 - Math.cos(Math.PI * t)); },
+            expoIn: function(t) { return t === 0 ? 0 : Math.pow(2, 10 * t - 10); },
+            expoOut: function(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); },
+            expoInOut: function(t) { if (t === 0 || t === 1) return t; return t < 0.5 ? Math.pow(2, 20 * t - 10) / 2 : (2 - Math.pow(2, -20 * t + 10)) / 2; },
+            bounceOut: function(t) { var n = 7.5625, d = 2.75; if (t < 1/d) return n*t*t; if (t < 2/d) { t -= 1.5/d; return n*t*t + 0.75; } if (t < 2.5/d) { t -= 2.25/d; return n*t*t + 0.9375; } t -= 2.625/d; return n*t*t + 0.984375; },
+            bounceIn: function(t) { return 1 - ease.bounceOut(1 - t); },
+            bounceInOut: function(t) { return t < 0.5 ? (1 - ease.bounceOut(1 - 2*t)) / 2 : (1 + ease.bounceOut(2*t - 1)) / 2; },
+            elasticIn: function(t) { if (t === 0 || t === 1) return t; return -Math.pow(2, 10*t - 10) * Math.sin((10*t - 10.75) * (2*Math.PI) / 3); },
+            elasticOut: function(t) { if (t === 0 || t === 1) return t; return Math.pow(2, -10*t) * Math.sin((10*t - 0.75) * (2*Math.PI) / 3) + 1; },
+            elasticInOut: function(t) { if (t === 0 || t === 1) return t; var c = (2*Math.PI) / 4.5; return t < 0.5 ? -(Math.pow(2, 20*t - 10) * Math.sin((20*t - 11.125) * c)) / 2 : (Math.pow(2, -20*t + 10) * Math.sin((20*t - 11.125) * c)) / 2 + 1; },
+            backIn: function(t) { var s = 1.70158; return s * t * t * t - (s - 1) * t * t; },
+            backOut: function(t) { var s = 1.70158; t -= 1; return 1 + s * t * t * t + (s - 1) * t * t; },
+            backInOut: function(t) { var s = 1.70158 * 1.525; t *= 2; if (t < 1) return (t * t * ((s + 1) * t - s)) / 2; t -= 2; return (t * t * ((s + 1) * t + s) + 2) / 2; }
+        };
+
+        /* ── Keyframe state ── */
+        var keyframes = [];
+        var selectedKf = -1;
+        var selectedSeg = 1;
+        var dragging = -1;
+        var playing = false;
+        var playT = 0;
+        var animId = null;
+        var lastFrameTime = 0;
+
+        var presets = {
+            fadeIn:  [{ t: 0, v: 0, easing: 'linear' }, { t: 1, v: 1, easing: 'cubicOut' }],
+            fadeOut: [{ t: 0, v: 1, easing: 'linear' }, { t: 1, v: 0, easing: 'cubicIn' }],
+            sCurve: [{ t: 0, v: 0, easing: 'linear' }, { t: 0.5, v: 1, easing: 'cubicInOut' }, { t: 1, v: 0, easing: 'cubicInOut' }],
+            pulse:  [{ t: 0, v: 0, easing: 'linear' }, { t: 0.2, v: 1, easing: 'cubicOut' }, { t: 0.4, v: 0.3, easing: 'cubicIn' }, { t: 0.6, v: 1, easing: 'cubicOut' }, { t: 0.8, v: 0.3, easing: 'cubicIn' }, { t: 1, v: 0, easing: 'cubicInOut' }]
+        };
+
+        function loadPreset(name) {
+            keyframes = presets[name].map(function(k) { return { t: k.t, v: k.v, easing: k.easing }; });
+            selectedKf = -1;
+            selectedSeg = 1;
+            syncEasingUI();
+            draw();
+        }
+
+        function evaluate(t) {
+            if (keyframes.length === 0) return 0;
+            if (keyframes.length === 1) return keyframes[0].v;
+            if (t <= keyframes[0].t) return keyframes[0].v;
+            if (t >= keyframes[keyframes.length - 1].t) return keyframes[keyframes.length - 1].v;
+            for (var i = 1; i < keyframes.length; i++) {
+                if (t <= keyframes[i].t) {
+                    var a = keyframes[i - 1], b = keyframes[i];
+                    var local = (t - a.t) / (b.t - a.t);
+                    var fn = ease[b.easing] || ease.linear;
+                    return a.v + (b.v - a.v) * fn(local);
+                }
+            }
+            return keyframes[keyframes.length - 1].v;
+        }
+
+        /* ── Coordinate helpers ── */
+        function tToX(t) { return PAD.left + t * plotW; }
+        function vToY(v) { return PAD.top + (1 - v) * plotH; }
+        function xToT(x) { return Math.max(0, Math.min(1, (x - PAD.left) / plotW)); }
+        function yToV(y) { return Math.max(0, Math.min(1, 1 - (y - PAD.top) / plotH)); }
+
+        function css(prop, fb) {
+            return getComputedStyle(root).getPropertyValue(prop).trim() || fb;
+        }
+
+        function hexToRGBA(hex, a) {
+            if (!hex || !hex.startsWith('#') || hex.length < 7) return 'rgba(107,37,221,' + a + ')';
+            var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+            return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+        }
+
+        /* ── Draw ── */
+        function draw() {
+            var accent = css('--accent-primary', '#6B25DD');
+            var txtP = css('--text-primary', '#f8fafc');
+            var txtM = css('--text-muted', '#8494a7');
+            var border = css('--border-subtle', 'rgba(255,255,255,0.06)');
+
+            ctx.clearRect(0, 0, W, H);
+
+            // Grid lines
+            ctx.strokeStyle = border;
+            ctx.lineWidth = 1;
+            for (var i = 0; i <= 4; i++) {
+                var y = PAD.top + (plotH / 4) * i;
+                ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + plotW, y); ctx.stroke();
+            }
+            for (var i = 0; i <= 10; i++) {
+                var x = PAD.left + (plotW / 10) * i;
+                ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, PAD.top + plotH); ctx.stroke();
+            }
+
+            // Y-axis labels
+            ctx.font = '11px system-ui, sans-serif';
+            ctx.fillStyle = txtM;
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (var i = 0; i <= 4; i++) {
+                ctx.fillText((100 - i * 25) + '%', PAD.left - 8, PAD.top + (plotH / 4) * i);
+            }
+
+            // X-axis labels
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            for (var i = 0; i <= 10; i++) {
+                ctx.fillText((DURATION * i / 10).toFixed(1) + 's', PAD.left + (plotW / 10) * i, PAD.top + plotH + 8);
+            }
+
+            // Axis titles
+            ctx.fillStyle = css('--text-secondary', '#94a3b8');
+            ctx.font = '11px system-ui, sans-serif';
+
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText('Time', PAD.left + plotW / 2, H - 8);
+
+            ctx.save();
+            ctx.translate(PAD.left - 44, PAD.top + plotH / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Value', 0, 0);
+            ctx.restore();
+
+            // Draw curve per segment
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            for (var seg = 1; seg < keyframes.length; seg++) {
+                var a = keyframes[seg - 1], b = keyframes[seg];
+                var isSel = (seg === selectedSeg);
+                ctx.strokeStyle = isSel ? accent : hexToRGBA(accent, 0.45);
+                ctx.beginPath();
+                var steps = Math.max(80, Math.round(plotW * (b.t - a.t)));
+                for (var s = 0; s <= steps; s++) {
+                    var lt = s / steps;
+                    var fn = ease[b.easing] || ease.linear;
+                    var val = a.v + (b.v - a.v) * fn(lt);
+                    var px = tToX(a.t + lt * (b.t - a.t));
+                    var py = vToY(val);
+                    s === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+            }
+
+            // Dashed extensions before first / after last keyframe
+            if (keyframes.length > 0) {
+                ctx.strokeStyle = hexToRGBA(accent, 0.2);
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([5, 4]);
+                if (keyframes[0].t > 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(tToX(0), vToY(keyframes[0].v));
+                    ctx.lineTo(tToX(keyframes[0].t), vToY(keyframes[0].v));
+                    ctx.stroke();
+                }
+                var last = keyframes[keyframes.length - 1];
+                if (last.t < 1) {
+                    ctx.beginPath();
+                    ctx.moveTo(tToX(last.t), vToY(last.v));
+                    ctx.lineTo(tToX(1), vToY(last.v));
+                    ctx.stroke();
+                }
+                ctx.setLineDash([]);
+            }
+
+            // Keyframe diamonds
+            for (var i = 0; i < keyframes.length; i++) {
+                var kf = keyframes[i];
+                var kx = tToX(kf.t), ky = vToY(kf.v);
+                var sz = (i === selectedKf) ? 7 : 5.5;
+                ctx.save();
+                ctx.translate(kx, ky);
+                ctx.rotate(Math.PI / 4);
+                ctx.fillStyle = (i === selectedKf) ? accent : txtP;
+                ctx.strokeStyle = (i === selectedKf) ? '#fff' : accent;
+                ctx.lineWidth = 1.5;
+                ctx.fillRect(-sz, -sz, sz * 2, sz * 2);
+                ctx.strokeRect(-sz, -sz, sz * 2, sz * 2);
+                ctx.restore();
+            }
+
+            // Playhead
+            var curT = playing ? playT : parseInt(scrub.value) / 1000;
+            var curV = evaluate(curT);
+            var hx = tToX(curT);
+
+            // Vertical playhead line
+            ctx.strokeStyle = hexToRGBA(txtP, 0.25);
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(hx, PAD.top);
+            ctx.lineTo(hx, PAD.top + plotH);
+            ctx.stroke();
+
+            // Horizontal value line
+            ctx.strokeStyle = hexToRGBA(accent, 0.2);
+            ctx.beginPath();
+            ctx.moveTo(PAD.left, vToY(curV));
+            ctx.lineTo(hx, vToY(curV));
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Playback dot
+            ctx.beginPath();
+            ctx.arc(hx, vToY(curV), 6, 0, Math.PI * 2);
+            ctx.fillStyle = accent;
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Update readouts
+            var pct = Math.round(curV * 100);
+            valDisp.textContent = pct + '%';
+            timeDisp.textContent = (curT * DURATION).toFixed(1) + 's';
+            previewBox.style.opacity = curV;
+            if (!playing) scrub.value = Math.round(curT * 1000);
+        }
+
+        /* ── Pointer interaction ── */
+        function findKfNear(cx, cy) {
+            var best = -1, bestD = 18;
+            for (var i = 0; i < keyframes.length; i++) {
+                var dx = tToX(keyframes[i].t) - cx, dy = vToY(keyframes[i].v) - cy;
+                var d = Math.sqrt(dx * dx + dy * dy);
+                if (d < bestD) { bestD = d; best = i; }
+            }
+            return best;
+        }
+
+        function canvasXY(e) {
+            var r = canvas.getBoundingClientRect();
+            return { x: e.clientX - r.left, y: e.clientY - r.top };
+        }
+
+        canvas.addEventListener('pointerdown', function(e) {
+            e.preventDefault();
+            var c = canvasXY(e);
+            var idx = findKfNear(c.x, c.y);
+            if (idx >= 0) {
+                selectedKf = idx;
+                dragging = idx;
+                selectedSeg = Math.max(1, Math.min(idx, keyframes.length - 1));
+                syncEasingUI();
+                canvas.setPointerCapture(e.pointerId);
+            } else if (c.x > PAD.left && c.x < PAD.left + plotW && c.y > PAD.top && c.y < PAD.top + plotH) {
+                var nt = xToT(c.x), nv = yToV(c.y);
+                // Determine easing from surrounding segment
+                var segIdx = 1;
+                for (var i = 1; i < keyframes.length; i++) {
+                    if (nt <= keyframes[i].t) { segIdx = i; break; }
+                    segIdx = i;
+                }
+                var easingName = keyframes[segIdx] ? keyframes[segIdx].easing : 'linear';
+                keyframes.push({ t: nt, v: nv, easing: easingName });
+                keyframes.sort(function(a, b) { return a.t - b.t; });
+                for (var i = 0; i < keyframes.length; i++) {
+                    if (Math.abs(keyframes[i].t - nt) < 0.001 && Math.abs(keyframes[i].v - nv) < 0.001) {
+                        selectedKf = i;
+                        dragging = i;
+                        selectedSeg = Math.max(1, Math.min(i, keyframes.length - 1));
+                        break;
+                    }
+                }
+                syncEasingUI();
+                clearPresetHL();
+                canvas.setPointerCapture(e.pointerId);
+            }
+            draw();
+        });
+
+        canvas.addEventListener('pointermove', function(e) {
+            if (dragging < 0) return;
+            var c = canvasXY(e);
+            var nt = xToT(c.x), nv = yToV(c.y);
+            // Lock first/last to t boundaries, constrain middle ones
+            if (dragging === 0) nt = 0;
+            else if (dragging === keyframes.length - 1) nt = 1;
+            else nt = Math.max(keyframes[dragging - 1].t + 0.005, Math.min(keyframes[dragging + 1].t - 0.005, nt));
+            keyframes[dragging].t = nt;
+            keyframes[dragging].v = Math.max(0, Math.min(1, nv));
+            clearPresetHL();
+            draw();
+        });
+
+        canvas.addEventListener('pointerup', function() { dragging = -1; });
+
+        canvas.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            var c = canvasXY(e);
+            var idx = findKfNear(c.x, c.y);
+            if (idx > 0 && idx < keyframes.length - 1) {
+                keyframes.splice(idx, 1);
+                selectedKf = -1;
+                selectedSeg = Math.max(1, Math.min(selectedSeg, keyframes.length - 1));
+                syncEasingUI();
+                clearPresetHL();
+                draw();
+            }
+        });
+
+        /* ── Easing select sync ── */
+        function syncEasingUI() {
+            if (selectedSeg >= 1 && selectedSeg < keyframes.length) {
+                easingSel.value = keyframes[selectedSeg].easing;
+            }
+        }
+
+        easingSel.addEventListener('change', function() {
+            if (selectedSeg >= 1 && selectedSeg < keyframes.length) {
+                keyframes[selectedSeg].easing = easingSel.value;
+                clearPresetHL();
+                draw();
+            }
+        });
+
+        /* ── Scrub ── */
+        scrub.addEventListener('input', function() {
+            if (playing) stopPlay();
+            draw();
+        });
+
+        /* ── Playback ── */
+        function startPlay() {
+            playing = true;
+            playT = parseInt(scrub.value) / 1000;
+            if (playT >= 0.999) playT = 0;
+            lastFrameTime = performance.now();
+            playIcon.setAttribute('points', '2,1 2,13 5,13 5,1 9,1 9,13 12,13 12,1');
+            tick();
+        }
+
+        function stopPlay() {
+            playing = false;
+            if (animId) cancelAnimationFrame(animId);
+            animId = null;
+            scrub.value = Math.round(playT * 1000);
+            playIcon.setAttribute('points', '3,1 12,7 3,13');
+        }
+
+        function tick() {
+            if (!playing) return;
+            var now = performance.now();
+            playT += (now - lastFrameTime) / 1000 / DURATION;
+            lastFrameTime = now;
+            if (playT >= 1) { playT = 1; draw(); stopPlay(); return; }
+            scrub.value = Math.round(playT * 1000);
+            draw();
+            animId = requestAnimationFrame(tick);
+        }
+
+        playBtn.addEventListener('click', function() {
+            playing ? stopPlay() : startPlay();
+        });
+
+        /* ── Preset buttons ── */
+        var presetBtns = root.querySelectorAll('.tkf-preset-btn');
+        presetBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                presetBtns.forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                loadPreset(btn.getAttribute('data-preset'));
+            });
+        });
+
+        function clearPresetHL() {
+            presetBtns.forEach(function(b) { b.classList.remove('active'); });
+        }
+
+        /* ── Init ── */
+        resize();
+        loadPreset('fadeIn');
+        window.addEventListener('resize', function() { resize(); draw(); });
+    })();
+    </script>
+</div>

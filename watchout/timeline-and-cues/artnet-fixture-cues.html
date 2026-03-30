@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHOUT User Guide - ArtNet Fixture Cues">
+    <title>ArtNet Fixture Cues - WATCHOUT 7 User Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <style>
+        .guide-switcher { position: relative; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border-subtle, #2a2a3e); }
+        .guide-switcher-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            color: var(--text-primary, #e0e0e8); cursor: pointer;
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .guide-switcher-toggle:hover { border-color: var(--accent-primary, #60a5fa); }
+        .guide-switcher-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .guide-switcher.open .guide-switcher-arrow { transform: rotate(180deg); }
+        .guide-switcher-dropdown {
+            display: none; position: absolute; left: 16px; right: 16px; bottom: 100%;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            border-radius: 6px; z-index: 100; overflow: hidden;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+        }
+        .guide-switcher.open .guide-switcher-dropdown { display: block; }
+        .guide-switcher-option {
+            display: block; padding: 8px 12px; color: var(--text-secondary, #a0a0b8);
+            text-decoration: none; font-size: 0.85rem; transition: background 0.15s, color 0.15s;
+        }
+        .guide-switcher-option:hover { background: var(--bg-hover, #22223a); color: var(--text-primary, #e0e0e8); }
+        .guide-switcher-option.active { color: var(--accent-primary, #60a5fa); font-weight: 500; }
+    </style>
+</head>
+<body data-page-id="artnet-fixture-cues">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo logo-link" aria-label="Go to home page">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHOUT GUIDE</h1>
+                </a>
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter  " data-index="0">
+            <a href="../getting-started/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Getting Started</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">First Steps</div>
+                        <a class="toc-subsection " href="../getting-started/welcome-to-watchout-7.html">
+                            Welcome To Watchout 7
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/system-requirements.html">
+                            System Requirements
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/installing-watchout.html">
+                            Installing Watchout
+                        </a>
+                        
+                        <div class="toc-group-label">Setup and Configuration</div>
+                        <a class="toc-subsection " href="../getting-started/launching-the-application.html">
+                            Launching The Application
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/network-configuration.html">
+                            Network Configuration
+                        </a>
+                        
+                        <div class="toc-group-label">Your First Show</div>
+                        <a class="toc-subsection " href="../getting-started/quick-start-tutorial.html">
+                            Quick Start Tutorial
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/architectural-differences-watchout-6-vs-7.html">
+                            Architectural Differences Watchout 6 Vs 7
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="1">
+            <a href="../working-with-shows/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">2. Working with Shows</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
+                            Creating A New Show
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
+                            Opening Existing Shows
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/saving-your-work.html">
+                            Saving Your Work
+                        </a>
+                        
+                        <div class="toc-group-label">Show Configuration</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-properties.html">
+                            Show Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Archiving and Auditing</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-consolidation.html">
+                            Show Consolidation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-information.html">
+                            Show Information
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="2">
+            <a href="../displays-and-outputs/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
+                <span class="toc-chapter-title">3. Displays and Outputs</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/adding-displays.html">
+                            Adding Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-properties.html">
+                            Display Properties
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-grid-setup.html">
+                            Display Grid Setup
+                        </a>
+                        
+                        <div class="toc-group-label">Core Display Types</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/virtual-displays.html">
+                            Virtual Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/3d-mapping-projectors.html">
+                            3d Mapping Projectors
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/sdi-output.html">
+                            Sdi Output
+                        </a>
+                        
+                        <div class="toc-group-label">Geometry Correction and Blending</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/edge-blending.html">
+                            Edge Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/warp-geometry.html">
+                            Warp Geometry
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-masks.html">
+                            Display Masks
+                        </a>
+                        
+                        <div class="toc-group-label">Color, Calibration, and Diagnostics</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/hdr-and-color-management.html">
+                            HDR and Color Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-calibration.html">
+                            Display Calibration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/test-patterns.html">
+                            Test Patterns
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/compression-fundamentals.html">
+                            Compression Fundamentals
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="3">
+            <a href="../assets-asset-manager/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></span>
+                <span class="toc-chapter-title">4. Assets & Asset Manager</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager.html">
+                            Asset Manager
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-types.html">
+                            Asset Types
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-properties.html">
+                            Asset Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Media Formats and Creation</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/formats-codecs.html">
+                            Formats & Codecs
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/svg-shapes.html">
+                            SVG Shapes
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/image-sequences.html">
+                            Image Sequences
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Asset Workflows</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/dynamic-assets.html">
+                            Dynamic Assets
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/web-user-interface.html">
+                            Web User Interface
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-watcher.html">
+                            Asset Watcher
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-transfer.html">
+                            Asset Transfer
+                        </a>
+                        
+                        <div class="toc-group-label">Settings and Data Management</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager-settings.html">
+                            Asset Manager Settings
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/import-export-and-mapping.html">
+                            Import, Export, and Mapping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/importing-gdtf-files.html">
+                            Importing GDTF Files
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter expanded " data-index="4">
+            <a href="../timeline-and-cues/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                <span class="toc-chapter-title">5. Timeline and Cues</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/understanding-the-timeline.html">
+                            Understanding The Timeline
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adding-media-cues.html">
+                            Adding Media Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/working-with-layers.html">
+                            Working With Layers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adjusting-timing.html">
+                            Adjusting Timing
+                        </a>
+                        
+                        <div class="toc-group-label">Cue Types</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/control-cues.html">
+                            Control Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/marker-cues.html">
+                            Marker Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/output-cues.html">
+                            Output Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/variables-and-variable-cues.html">
+                            Variables and Variable Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection active" href="../timeline-and-cues/artnet-fixture-cues.html">
+                            ArtNet Fixture Cues
+                        </a>
+                        
+                        <div class="toc-group-label">Compositions and Organization</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/compositions.html">
+                            Compositions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cue-sets-and-variants.html">
+                            Cue Sets and Variants
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/media-snapshots.html">
+                            Media Snapshots
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/stacking-order.html">
+                            Stacking Order
+                        </a>
+                        
+                        <div class="toc-group-label">Automation and Advanced Workflows</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/timeline-triggers-and-expressions.html">
+                            Timeline Triggers and Expressions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/conditional-cues.html">
+                            Conditional Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/blind-edit-mode.html">
+                            Blind Edit Mode
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/insert-and-delete-time.html">
+                            Insert and Delete Time
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cues-window.html">
+                            Cues Window
+                        </a>
+                        
+                        <div class="toc-group-label">Output Reference</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/output-types-overview.html">
+                            Output Types Overview
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="5">
+            <a href="../effects-and-tweens/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">6. Effects and Tweens</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/understanding-tweens.html">
+                            Understanding Tweens
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/opacity-and-fades.html">
+                            Opacity and Fades
+                        </a>
+                        
+                        <div class="toc-group-label">Transform Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/position-and-movement.html">
+                            Position and Movement
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/scale-and-size.html">
+                            Scale and Size
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/rotation-effects.html">
+                            Rotation Effects
+                        </a>
+                        
+                        <div class="toc-group-label">Visual Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/cropping.html">
+                            Cropping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/color-adjustments.html">
+                            Color Adjustments
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blur-effects.html">
+                            Blur Effects
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blend-modes.html">
+                            Blend Modes
+                        </a>
+                        
+                        <div class="toc-group-label">Audio</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/audio-volume.html">
+                            Audio Volume
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/corner-pinning.html">
+                            Corner Pinning
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/linear-wipe.html">
+                            Linear Wipe
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/frame-blending.html">
+                            Frame Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/chroma-key.html">
+                            Chroma Key
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/key-and-fill.html">
+                            Key and Fill
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/tween-expressions.html">
+                            Tween Expressions
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="6">
+            <a href="../playback/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>
+                <span class="toc-chapter-title">7. Playback</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../playback/starting-and-stopping.html">
+                            Starting and Stopping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/preview-mode.html">
+                            Preview Mode
+                        </a>
+                        
+                        <div class="toc-group-label">Going Live</div>
+                        <a class="toc-subsection " href="../playback/connecting-to-display-servers.html">
+                            Connecting to Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/going-online.html">
+                            Going Online
+                        </a>
+                        
+                        <div class="toc-group-label">Show Operation</div>
+                        <a class="toc-subsection " href="../playback/running-your-show.html">
+                            Running Your Show
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="7">
+            <a href="../the-interface/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></span>
+                <span class="toc-chapter-title">8. The Interface</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Overview</div>
+                        <a class="toc-subsection " href="../the-interface/main-window-overview.html">
+                            Main Window Overview
+                        </a>
+                        
+                        <div class="toc-group-label">Window Reference</div>
+                        <a class="toc-subsection " href="../the-interface/the-stage-window.html">
+                            The Stage Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-timeline-window.html">
+                            The Timeline Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-cue-list-window.html">
+                            The Cue List Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-assets-window.html">
+                            The Assets Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-properties-panel.html">
+                            The Properties Panel
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-nodes-window.html">
+                            The Nodes Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-devices-window.html">
+                            The Devices Window
+                        </a>
+                        
+                        <div class="toc-group-label">Customization</div>
+                        <a class="toc-subsection " href="../the-interface/customizing-your-workspace.html">
+                            Customizing Your Workspace
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="8">
+            <a href="../network-setup/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                <span class="toc-chapter-title">9. Network Setup</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Architecture and Basics</div>
+                        <a class="toc-subsection " href="../network-setup/network-overview.html">
+                            Network Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/display-servers.html">
+                            Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/connecting-devices.html">
+                            Connecting Devices
+                        </a>
+                        
+                        <div class="toc-group-label">Protocols and Services</div>
+                        <a class="toc-subsection " href="../network-setup/firewall-configuration.html">
+                            Firewall Configuration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/ndi-video-sources.html">
+                            NDI Video Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/capture-sources.html">
+                            Capture Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/dante-audio.html">
+                            Dante Audio
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/time-synchronization.html">
+                            Time Synchronization
+                        </a>
+                        
+                        <div class="toc-group-label">Maintenance and Management</div>
+                        <a class="toc-subsection " href="../network-setup/node-management-and-maintenance.html">
+                            Node Management and Maintenance
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/remote-file-access.html">
+                            Remote File Access
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/working-directory-management.html">
+                            Working Directory Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/software-updates.html">
+                            Software Updates
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="9">
+            <a href="../external-control/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">10. External Control</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Foundations</div>
+                        <a class="toc-subsection " href="../external-control/external-control-overview.html">
+                            External Control Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/variables-and-inputs.html">
+                            Variables and Inputs
+                        </a>
+                        
+                        <div class="toc-group-label">Primary Protocols</div>
+                        <a class="toc-subsection " href="../external-control/http-rest-api.html">
+                            HTTP REST API
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/osc-protocol.html">
+                            OSC Protocol
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/artnet-input.html">
+                            ArtNet Input
+                        </a>
+                        
+                        <div class="toc-group-label">Specialized Protocols</div>
+                        <a class="toc-subsection " href="../external-control/midi-bridge.html">
+                            MIDI Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/ltc-bridge.html">
+                            LTC Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/posistagenet.html">
+                            PosiStageNet
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/midi-show-control.html">
+                            MIDI Show Control
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/watchout-6-protocol.html">
+                            WATCHOUT 6 Protocol
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="10">
+            <a href="../keyboard-shortcuts/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.001"></path><path d="M10 8h.001"></path><path d="M14 8h.001"></path><path d="M18 8h.001"></path><path d="M8 12h.001"></path><path d="M12 12h.001"></path><path d="M16 12h.001"></path><path d="M7 16h10"></path></svg></span>
+                <span class="toc-chapter-title">11. Keyboard Shortcuts</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Input and Editing</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/file-operations.html">
+                            File Operations
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/edit-commands.html">
+                            Edit Commands
+                        </a>
+                        
+                        <div class="toc-group-label">Navigation and Playback</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/stage-navigation.html">
+                            Stage Navigation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/timeline-controls.html">
+                            Timeline Controls
+                        </a>
+                        
+                        <div class="toc-group-label">Effects and Layout</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/tween-shortcuts.html">
+                            Tween Shortcuts
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/window-management.html">
+                            Window Management
+                        </a>
+                        
+                        <div class="toc-group-label">Properties and Tables</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/property-editing.html">
+                            Property Editing
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/table-views.html">
+                            Table Views
+                        </a>
+                        
+                        <div class="toc-group-label">Hardware Input</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/xbox-controller.html">
+                            Xbox Controller
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/display-warp.html">
+                            Display & Warp
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="11">
+            <a href="../troubleshooting/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">12. Troubleshooting</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Common Issues</div>
+                        <a class="toc-subsection " href="../troubleshooting/common-issues.html">
+                            Common Issues
+                        </a>
+                        
+                        <div class="toc-group-label">By Category</div>
+                        <a class="toc-subsection " href="../troubleshooting/performance-tips.html">
+                            Performance Tips
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/display-problems.html">
+                            Display Problems
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/network-issues.html">
+                            Network Issues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/media-playback-issues.html">
+                            Media Playback Issues
+                        </a>
+                        
+                        <div class="toc-group-label">Getting Support</div>
+                        <a class="toc-subsection " href="../troubleshooting/feedback-reports.html">
+                            Feedback Reports
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/getting-help.html">
+                            Getting Help
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="12">
+            <a href="../glossary/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">13. Glossary</span>
+                
+            </a>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="13">
+            <a href="../legal/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">14. Legal</span>
+                
+            </a>
+            
+        </div>
+        
+            </nav>
+            
+            <div class="guide-switcher" id="guide-switcher">
+                <button class="guide-switcher-toggle" id="guide-switcher-toggle" aria-label="Switch guide">
+                    <span class="guide-switcher-label">WATCHOUT</span>
+                    <svg class="guide-switcher-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="guide-switcher-dropdown" id="guide-switcher-dropdown">
+                    <a class="guide-switcher-option active" href="../../watchout/index.html">WATCHOUT</a>
+                        <a class="guide-switcher-option" href="../../wp64/index.html">WATCHPAX 64</a>
+                        <a class="guide-switcher-option" href="../../wp30/index.html">WATCHPAX 30</a>
+                        <a class="guide-switcher-option" href="../../wp50/index.html">WATCHPAX 50</a>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">5. Timeline and Cues</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">ArtNet Fixture Cues</span>
+        
+                </div>
+                <a href="../index.html" class="header-home-link" aria-label="Go to home page">
+                    <img src="../media/dataton-logo.png" alt="Dataton" class="header-logo">
+                </a>
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><h2>ArtNet Fixture Cues</h2>
+
+<p><strong>ArtNet fixture cues are WATCHOUT's mechanism for controlling DMX lighting fixtures directly from the timeline, combining fixture definitions with tween-based automation to output Art-Net DMX data at 44 frames per second.</strong> Instead of requiring a separate lighting console, fixture cues let you embed DMX channel control alongside your visual and audio cues on the same timeline, keeping lighting changes precisely synchronized with media playback. Understanding how fixture definitions, addressing, channel resolutions, and recording interact is essential for any show that integrates DMX-controlled devices.</p>
+
+<h3>What ArtNet Fixture Cues Are</h3>
+
+<p>An ArtNet fixture cue is a specialized media cue that includes Art-Net configuration in its properties. The cue references an Art-Net Fixture asset that defines the fixture's channel layout, and the cue's tween data drives the value of each channel over time. At playback, WATCHOUT evaluates the tween values for every active fixture channel and transmits them as Art-Net DMX packets on the network.</p>
+
+<p>The key components are:</p>
+
+<ul>
+<li><strong>Fixture asset</strong>-defines the fixture type, its available modes, and the channels within each mode.</li>
+<li><strong>Cue addressing</strong>-specifies which Art-Net universe and start channel the fixture occupies.</li>
+<li><strong>Tween automation</strong>-each channel is controlled by an Art-Net tween keyframe, using any of the standard 31 easing curves.</li>
+<li><strong>Optional recording</strong>-pre-captured DMX data can be layered on top of tween values for complex playback.</li>
+
+</ul>
+
+<p>Together, these allow a single timeline cue to drive one fixture instance across its full channel range with frame-accurate automation.</p>
+
+<h3>Fixture Definitions</h3>
+
+<p>Every ArtNet fixture cue is backed by an <strong>Art-Net Fixture</strong> asset that describes the fixture's identity and capabilities.</p>
+
+<p>The fixture definition contains:</p>
+
+<table>
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td><strong>Name</strong></td><td>Fixture name</td></tr>
+<tr><td><strong>Long Name</strong></td><td>Descriptive long name</td></tr>
+<tr><td><strong>Short Name</strong></td><td>Abbreviated name for compact UI display</td></tr>
+<tr><td><strong>Description</strong></td><td>Fixture description</td></tr>
+<tr><td><strong>Fixture Type ID</strong></td><td>Unique identifier for the fixture type</td></tr>
+<tr><td><strong>Modes</strong></td><td>List of available fixture modes</td></tr>
+</table>
+
+<p>Each <strong>ArtNetFixtureMode</strong> defines:</p>
+
+<table>
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td><strong>name</strong></td><td>Mode name (e.g., "Coarse (8bit)")</td></tr>
+<tr><td><strong>description</strong></td><td>Mode description</td></tr>
+<tr><td><strong>channels</strong></td><td>List of channels available in this mode</td></tr>
+<tr><td><strong>relations</strong></td><td>Channel relations (master/follower bindings)</td></tr>
+</table>
+
+<h4>Built-in Fixture Presets</h4>
+
+<p>WATCHOUT ships with two built-in fixture presets:</p>
+
+<table>
+<tr><th>Preset</th><th>Modes</th></tr>
+<tr><td><strong>1ch Generic</strong></td><td>Coarse (8bit), Fine (16bit), Ultra (24bit), Uber (32bit)</td></tr>
+<tr><td><strong>10ch Generic</strong></td><td>Coarse (8bit), Fine (16bit), Ultra (24bit), Uber (32bit)</td></tr>
+</table>
+
+<p>The 1-channel generic is useful for single-parameter devices such as dimmers or simple relay triggers. The 10-channel generic covers fixtures that need multiple independently controlled parameters. Both presets expose all four resolution modes, allowing you to select the precision appropriate for your device.</p>
+
+<h3>Channel Resolutions</h3>
+
+<p>Each channel in a fixture mode has a <strong>resolution</strong> that determines its bit depth and how many consecutive DMX addresses it occupies. WATCHOUT supports the following channel resolutions:</p>
+
+<table>
+<tr><th>Resolution</th><th>Bit Depth</th><th>DMX Addresses</th><th>Description</th></tr>
+<tr><td><strong>Coarse</strong></td><td>8-bit</td><td>1</td><td>Standard DMX precision; one address per channel</td></tr>
+<tr><td><strong>Fine</strong></td><td>16-bit</td><td>2</td><td>High precision; occupies two consecutive addresses</td></tr>
+<tr><td><strong>Ultra</strong></td><td>24-bit</td><td>3</td><td>Very high precision; occupies three consecutive addresses</td></tr>
+<tr><td><strong>Uber</strong></td><td>32-bit</td><td>4</td><td>Maximum precision; occupies four consecutive addresses</td></tr>
+<tr><td><strong>Virtual</strong></td><td>-</td><td>0</td><td>No physical DMX address; used for internal logic only</td></tr>
+</table>
+
+<p>Each channel (regardless of resolution) carries common properties:</p>
+
+<table>
+<tr><th>Property</th><th>Purpose</th></tr>
+<tr><td><strong>offset</strong></td><td>DMX address offset(s) within the fixture's footprint</td></tr>
+<tr><td><strong>Display Name</strong></td><td>Name shown in the UI</td></tr>
+<tr><td><strong>name</strong></td><td>Internal identifier</td></tr>
+<tr><td><strong>default</strong></td><td>Default channel value</td></tr>
+<tr><td><strong>highlight</strong></td><td>Highlight value (used for identification during setup)</td></tr>
+<tr><td><strong>capabilities</strong></td><td>Channel capability descriptors</td></tr>
+</table>
+
+<div class='info-box'><p>Choose the lowest resolution that meets your needs. Most conventional DMX fixtures only respond to 8-bit (Coarse) values. Use Fine or higher only when the receiving device explicitly supports 16-bit or wider channels-unnecessary high resolution wastes DMX addresses without improving output quality.
+</p></div>
+
+<h3>Creating Fixture Assets</h3>
+
+<p>Before you can add a fixture cue to the timeline, you need a fixture asset in the Asset Manager.</p>
+
+<ol>
+<li>Open the <strong>Assets</strong> window.</li>
+<li>Right-click in the asset list and select <strong>Add ArtNet Fixture...</strong> from the context menu.</li>
+<li>Select a fixture preset from the available options (1ch Generic or 10ch Generic).</li>
+<li>The fixture asset appears in the Assets window and is ready to use.</li>
+
+</ol>
+
+<p>Fixture assets do not require optimization-they are definition files, not media. They appear under the <strong>Art-Net Fixture</strong> type in the asset list. See <a href="../04-assets-asset-manager/asset-types.html">Asset Types</a> for details on how Art-Net assets are classified.</p>
+
+<h3>Adding Fixture Cues to the Timeline</h3>
+
+<p>The workflow for placing a fixture cue follows the same pattern as other media cues (see <a href="adding-media-cues.html">Adding Media Cues</a>), with fixture-specific configuration afterward:</p>
+
+<ol>
+<li><strong>Locate the fixture asset</strong> in the Assets window.</li>
+<li><strong>Drag the fixture asset</strong> onto the target timeline at the desired start time and layer.</li>
+<li><strong>Drop the cue</strong> to commit placement. The cue is created with default fixture settings.</li>
+<li><strong>Open the Properties panel</strong> for the new cue. A <strong>Fixture</strong> section appears because the cue references an Art-Net Fixture asset.</li>
+<li><strong>Set the universe and start channel</strong> to match your DMX infrastructure.</li>
+<li><strong>Select the fixture mode</strong> that matches the physical fixture's operating mode.</li>
+<li><strong>Add tween keyframes</strong> to automate channel values over time. Each fixture channel appears as an available <code>Artnet</code> tween type.</li>
+<li><strong>Optionally attach a recording</strong> to layer pre-captured DMX data onto the tween automation.</li>
+
+</ol>
+
+<div class='warning-box'><p>ArtNet fixture cues are <strong>not supported inside compositions</strong>. If a fixture cue is placed on a composition timeline, WATCHOUT logs an error and skips the cue during playback. Always place fixture cues on the main timeline.
+</p></div>
+
+<h3>Fixture Cue Properties</h3>
+
+<p>When a cue references an Art-Net Fixture asset, the following Art-Net settings are available in the Properties panel:</p>
+
+<table>
+<tr><th>Setting</th><th>Purpose</th><th>Notes</th></tr>
+<tr><td><strong>Name</strong></td><td>Fixture instance name</td><td>Identifies this specific fixture cue</td></tr>
+<tr><td><strong>Start Universe</strong></td><td>Absolute universe number (0--32767)</td><td>See <a href="#universe-addressing">Universe Addressing</a> for how this maps to Net/Sub-Net/Universe</td></tr>
+<tr><td><strong>Start Channel</strong></td><td>Channel within universe (0--511)</td><td>First DMX address for this fixture</td></tr>
+<tr><td><strong>Selected Mode</strong></td><td>Index into the fixture's modes list</td><td>Determines which channel layout is active</td></tr>
+<tr><td><strong>Relations</strong></td><td>Channel relation overrides</td><td>Master/follower bindings; see <a href="#channel-relations">Channel Relations</a></td></tr>
+<tr><td><strong>Recording Source</strong></td><td>Reference to an Art-Net Recording asset</td><td>Links pre-captured DMX data to the cue</td></tr>
+</table>
+
+<h3>Universe Addressing</h3>
+
+<p>WATCHOUT uses an <strong>absolute universe number</strong> (range 0--32767) for Art-Net addressing. This single value maps to the standard Art-Net hierarchy of Net, Sub-Net, and Universe:</p>
+
+<table>
+<tr><th>Component</th><th>Range</th><th>Calculation from Absolute Value</th></tr>
+<tr><td><strong>Universe</strong></td><td>0--15</td><td>Absolute value mod 16</td></tr>
+<tr><td><strong>Sub-Net</strong></td><td>0--15</td><td>(Absolute value / 16) mod 16</td></tr>
+<tr><td><strong>Net</strong></td><td>0--127</td><td>Absolute value / 256</td></tr>
+</table>
+
+<p>For example, absolute universe <strong>289</strong> maps to: Universe = 289 mod 16 = <strong>1</strong>, Sub-Net = (289 / 16) mod 16 = <strong>2</strong>, Net = 289 / 256 = <strong>1</strong>. This corresponds to Net 1, Sub-Net 2, Universe 1.</p>
+
+<div class='note-box'><p>If a fixture's channels span beyond address 511 within a universe, WATCHOUT wraps the remaining channels into the next universe automatically. Plan your addressing to avoid unintentional overlap with other fixtures on adjacent universes.
+</p></div>
+
+<h3>Channel Relations</h3>
+
+<p>Channel relations define dependencies between channels within a fixture mode. Each relation specifies:</p>
+
+<table>
+<tr><th>Field</th><th>Purpose</th></tr>
+<tr><td><strong>master</strong></td><td>Name of the master channel</td></tr>
+<tr><td><strong>follower</strong></td><td>Name of the follower channel</td></tr>
+<tr><td><strong>kind</strong></td><td>Relation type: <strong>Override</strong> or <strong>Multiply</strong></td></tr>
+</table>
+
+<p>The two relation types behave differently:</p>
+
+<ul>
+<li><strong>Override</strong>-the master channel's value replaces the follower channel's value entirely. When the master is active, the follower's own tween value is ignored.</li>
+<li><strong>Multiply</strong>-the master channel's value is multiplied with the follower channel's value. This is commonly used for master dimmer relationships where a global intensity channel scales individual channel outputs.</li>
+
+</ul>
+
+<p>Relations are defined in the fixture mode and can be overridden per-cue through the cue's Art-Net settings.</p>
+
+<h3>ArtNet Recording</h3>
+
+<p>ArtNet Recording assets capture live DMX data for playback on the timeline. This is useful for replaying complex lighting sequences that were programmed on an external console, or for capturing live performance data.</p>
+
+<h4>Recording Format</h4>
+
+<p>Recordings capture a sequence of DMX frames with precise timestamps:</p>
+
+<ul>
+<li><strong>Header</strong> — metadata describing the recording session (source universes, channel count, etc.)</li>
+<li><strong>Frames</strong> — one entry per captured frame, each with a timestamp and the channel values at that moment.</li>
+
+</ul>
+
+<p>During optimization, the raw recording is processed into an efficient playback format. You do not need to manage these files directly — WATCHOUT handles the conversion automatically.</p>
+
+<h4>How Recorded Values Combine with Tweens</h4>
+
+<p>Recorded values do not replace tween automation — they <strong>multiply</strong> with it. The tween value acts as a scaling factor for the recorded data:</p>
+
+<ul>
+<li>A tween value at <strong>full</strong> (255 for 8-bit) passes the recorded value through unchanged.</li>
+<li>A tween value at <strong>half</strong> (128) halves the recorded value.</li>
+<li>A tween value of <strong>0</strong> suppresses the recorded value entirely, regardless of what was captured.</li>
+
+</ul>
+
+<p>This multiplicative relationship lets you use tween keyframes as a master intensity control over recorded data.</p>
+
+<div class='info-box'><p>To play back a recording at its original captured levels, set all tween channel values to their maximum (255 for 8-bit). To fade a recording in or out, animate the tween values from 0 to maximum or vice versa.
+</p></div>
+
+<h3>Output Behavior</h3>
+
+<p>WATCHOUT transmits Art-Net DMX data at a fixed rate of <strong>44 frames per second</strong>. This rate applies to all fixture cues uniformly and is not configurable per-cue.</p>
+
+<p>At each output frame, WATCHOUT:</p>
+
+<ol>
+<li>Evaluates every active fixture cue's tween values at the current timeline position.</li>
+<li>Applies any recording data multiplication.</li>
+<li>Packs the channel values into Art-Net DMX packets addressed to the configured universe and channel.</li>
+<li>Transmits the packets on the network.</li>
+
+</ol>
+
+<p>All standard tween easing curves are available for fixture channels, providing smooth transitions between values. The Art-Net tween type is dedicated to fixture channel automation and behaves identically to other tween types in terms of keyframe interpolation and curve selection.</p>
+
+<h3>Art-Net Recorder Application</h3>
+
+<p>WATCHOUT includes a standalone <strong>Art-Net Recorder</strong> application, installed in the same folder as WATCHOUT. A desktop shortcut is created during installation. Double-click the shortcut to launch the recorder.</p>
+
+<p>The Art-Net Recorder captures real-time Art-Net data from a specific universe, which can then be imported into WATCHOUT and placed on the timeline as a cue.</p>
+
+<h4>Configuration</h4>
+
+<p>The top-left area of the application contains <strong>universe addressing</strong> with three parameters:</p>
+
+<table>
+<tr><th>Parameter</th><th>Description</th><th>Range</th></tr>
+<tr><td><strong>Net</strong></td><td>Universe start address in steps of 256 universes</td><td>0--127</td></tr>
+<tr><td><strong>Subnet</strong></td><td>Universe start address in steps of 16 universes</td><td>0--15</td></tr>
+<tr><td><strong>Universe</strong></td><td>Universe start address in steps of single universes</td><td>0--15</td></tr>
+</table>
+
+<p>The resulting absolute universe is calculated as: <strong>Net × 256 + Subnet × 16 + Universe</strong> (range 0--32767).</p>
+
+<p>The lower area of the application displays all <strong>512 individual channels</strong> of one Art-Net universe. You can select all channels or pick individual channels to record.</p>
+
+<h4>Recording Workflow</h4>
+
+<ol>
+<li>Configure the universe settings (Net, Subnet, Universe) to match the source you want to capture.</li>
+<li>Select the channels to record — either all 512 or a custom selection.</li>
+<li>Press <strong>Record</strong> to start capturing.</li>
+<li>During recording, the application displays the recorded time, Art-Net packages per second, and total packages recorded. Each channel shows its current level through color intensity.</li>
+<li>Press <strong>Stop</strong> to end the recording.</li>
+<li>After stopping, you can <strong>Jump back</strong> to review, <strong>Play</strong> a preview, <strong>Save</strong> the recording (to an <code>.ndjson</code> file), or <strong>Discard</strong> it.</li>
+
+</ol>
+
+<div class='warning-box'><p>If a port conflict error appears when starting a recording, another application is blocking the Art-Net port. Stop any application that may be listening on that port — for example, WATCHOUT Manager running in the background — before retrying.
+</p></div>
+
+<div class='info-box'><p>Use the waveform preview at the bottom of the application for a detailed view of the captured data before saving.
+</p></div>
+
+<h4>Using Recordings in WATCHOUT</h4>
+
+<ol>
+<li>Import the saved <code>.ndjson</code> file into WATCHOUT by dragging it into the <strong>Assets</strong> window, or via <strong>File > New Media File</strong>.</li>
+<li>Drag the Art-Net recording asset from the Assets window onto a timeline to create a cue.</li>
+<li>WATCHOUT creates tween layers for each recorded channel automatically.</li>
+<li>The default maximum value is <strong>100%</strong>, shown in the tween area. This can be overridden as needed.</li>
+
+</ol>
+
+<h4>Art-Net Recording Cue Properties</h4>
+
+<p>When a cue references an Art-Net recording asset, the following properties are available:</p>
+
+<table>
+<tr><th>Property</th><th>Purpose</th></tr>
+<tr><td><strong>Name</strong></td><td>Cue instance name</td></tr>
+<tr><td><strong>Start Time</strong></td><td>Timeline position where the cue begins</td></tr>
+<tr><td><strong>Duration</strong></td><td>Length of the cue on the timeline</td></tr>
+<tr><td><strong>Free Running</strong></td><td>Activates cue play state regardless of the Timeline's play state</td></tr>
+<tr><td><strong>Looping</strong></td><td>Activates looping of the recording</td></tr>
+<tr><td><strong>In-time</strong></td><td>Offset into the recording where playback starts</td></tr>
+<tr><td><strong>Net / Sub-Net / Universe / Universe (absolute)</strong></td><td>Art-Net addressing for output</td></tr>
+<tr><td><strong>Channel</strong></td><td>Base channel address for output</td></tr>
+<tr><td><strong>Asset Version</strong></td><td>Which version of the referenced asset to use</td></tr>
+</table>
+
+<h4>Channel Remapping</h4>
+
+<p>At the bottom of the cue's Properties panel there is a <strong>channel remapping table</strong>. This table allows you to change the mapping between the recorded Art-Net channels and the playback output channels, giving you flexibility to redirect captured data to different physical addresses without re-recording.</p>
+
+<h3>Limitations</h3>
+
+<ul>
+<li><strong>Not supported inside compositions.</strong> Placing an ArtNet fixture cue on a composition timeline results in an error log and the cue is skipped at playback. Fixture cues must be placed on the main timeline only.</li>
+<li><strong>Channels can span universe boundaries.</strong> If a fixture's channel footprint extends beyond DMX address 511, WATCHOUT wraps into the next universe. This is handled automatically but can cause unexpected address conflicts if adjacent universes are already in use.</li>
+<li><strong>Fixed output rate.</strong> The 44 FPS Art-Net output rate cannot be changed. For most lighting fixtures this is well within acceptable refresh rates, but it is a fixed system parameter.</li>
+
+</ul>
+
+<h3>Best Practices</h3>
+
+<ul>
+<li><strong>Lock addressing early.</strong> Agree on universe and channel assignments with your lighting team before building fixture cues. Changing addresses after cues are built requires updating every affected cue individually.</li>
+
+<p><li><strong>Use the lowest sufficient resolution.</strong> Most DMX fixtures operate at 8-bit (Coarse). Selecting Fine, Ultra, or Uber modes on fixtures that do not support high-resolution channels wastes DMX addresses and adds no benefit.</li></p>
+
+<p><li><strong>Name fixture instances descriptively.</strong> Use the fixture cue's Name field to identify the physical device (e.g., "House Dimmer Rack A" or "Spot USL"). This makes large shows with many fixture cues navigable.</li></p>
+
+<p><li><strong>Validate on the production network.</strong> Art-Net packets are transmitted over the network. Always test fixture output on the same network infrastructure used in production to catch routing, firewall, or subnet issues before the show.</li></p>
+
+<p><li><strong>Use recordings for complex sequences.</strong> If a lighting look was programmed on an external console, record it and attach the recording to a fixture cue rather than manually recreating it with tween keyframes. This preserves the original timing and nuance.</li></p>
+
+<p><li><strong>Control recordings with tweens.</strong> Because recorded values multiply with tween values, you can use a simple tween fade to bring a recording in and out without editing the recording data itself.</li></p>
+
+<p><li><strong>Document non-default universe assignments.</strong> Record which universe and channel ranges are assigned to which fixtures in your show documentation. This is critical for troubleshooting and show handoff.</li></p>
+
+</ul>
+
+<h3>Troubleshooting</h3>
+
+<table>
+<tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>Fixture cue has no effect on stage</td><td>Universe or start channel does not match the physical fixture's patch</td><td>Verify addressing in the cue's Properties panel against the fixture's DMX patch sheet</td></tr>
+<tr><td>Fixture cue ignored during playback</td><td>Cue is placed inside a composition timeline</td><td>Move the fixture cue to the main timeline; fixture cues inside compositions are not supported</td></tr>
+<tr><td>Channels controlling the wrong parameters</td><td>Selected mode does not match the fixture's operating mode</td><td>Change the Selected Mode in cue properties to match the fixture's current DMX mode</td></tr>
+<tr><td>Unexpected values on adjacent universes</td><td>Fixture's channel footprint wraps past address 511</td><td>Adjust the start channel so all channels fit within a single universe, or account for the wrap in your addressing plan</td></tr>
+<tr><td>Recording plays at wrong intensity</td><td>Tween values are not at maximum</td><td>Set tween channel values to 255 (full) to pass recorded values through unscaled</td></tr>
+<tr><td>Sudden jumps in channel output</td><td>Missing tween keyframes between cue regions</td><td>Add intermediate keyframes with appropriate easing curves to smooth transitions</td></tr>
+<tr><td>No Art-Net packets on network</td><td>Network configuration or routing issue</td><td>Verify the WATCHOUT machine's network adapter is on the correct subnet for Art-Net (typically 2.x.x.x or 10.x.x.x); check firewall rules</td></tr>
+<tr><td>Channel values appear scaled down</td><td>Channel relation set to Multiply with a master channel below full</td><td>Check channel relations and verify the master channel's tween value</td></tr>
+</table></div><div class="section-nav">
+                <a href="variables-and-variable-cues.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="compositions.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script>var wikiBasePath = '../';</script>
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+    
+    <script>
+        (function() {
+            var sw = document.getElementById('guide-switcher');
+            var btn = document.getElementById('guide-switcher-toggle');
+            if (!sw || !btn) return;
+            btn.addEventListener('click', function(e) { e.stopPropagation(); sw.classList.toggle('open'); });
+            document.addEventListener('click', function(e) { if (!sw.contains(e.target)) sw.classList.remove('open'); });
+        })();
+    </script>
+</body>
+</html>

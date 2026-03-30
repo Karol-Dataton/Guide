@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHOUT User Guide - SVG Shapes">
+    <title>SVG Shapes - WATCHOUT 7 User Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <style>
+        .guide-switcher { position: relative; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border-subtle, #2a2a3e); }
+        .guide-switcher-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            color: var(--text-primary, #e0e0e8); cursor: pointer;
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .guide-switcher-toggle:hover { border-color: var(--accent-primary, #60a5fa); }
+        .guide-switcher-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .guide-switcher.open .guide-switcher-arrow { transform: rotate(180deg); }
+        .guide-switcher-dropdown {
+            display: none; position: absolute; left: 16px; right: 16px; bottom: 100%;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            border-radius: 6px; z-index: 100; overflow: hidden;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+        }
+        .guide-switcher.open .guide-switcher-dropdown { display: block; }
+        .guide-switcher-option {
+            display: block; padding: 8px 12px; color: var(--text-secondary, #a0a0b8);
+            text-decoration: none; font-size: 0.85rem; transition: background 0.15s, color 0.15s;
+        }
+        .guide-switcher-option:hover { background: var(--bg-hover, #22223a); color: var(--text-primary, #e0e0e8); }
+        .guide-switcher-option.active { color: var(--accent-primary, #60a5fa); font-weight: 500; }
+    </style>
+</head>
+<body data-page-id="svg-shapes">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo logo-link" aria-label="Go to home page">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHOUT GUIDE</h1>
+                </a>
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter  " data-index="0">
+            <a href="../getting-started/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Getting Started</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">First Steps</div>
+                        <a class="toc-subsection " href="../getting-started/welcome-to-watchout-7.html">
+                            Welcome To Watchout 7
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/system-requirements.html">
+                            System Requirements
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/installing-watchout.html">
+                            Installing Watchout
+                        </a>
+                        
+                        <div class="toc-group-label">Setup and Configuration</div>
+                        <a class="toc-subsection " href="../getting-started/launching-the-application.html">
+                            Launching The Application
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/network-configuration.html">
+                            Network Configuration
+                        </a>
+                        
+                        <div class="toc-group-label">Your First Show</div>
+                        <a class="toc-subsection " href="../getting-started/quick-start-tutorial.html">
+                            Quick Start Tutorial
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/architectural-differences-watchout-6-vs-7.html">
+                            Architectural Differences Watchout 6 Vs 7
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="1">
+            <a href="../working-with-shows/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">2. Working with Shows</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
+                            Creating A New Show
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
+                            Opening Existing Shows
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/saving-your-work.html">
+                            Saving Your Work
+                        </a>
+                        
+                        <div class="toc-group-label">Show Configuration</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-properties.html">
+                            Show Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Archiving and Auditing</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-consolidation.html">
+                            Show Consolidation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-information.html">
+                            Show Information
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="2">
+            <a href="../displays-and-outputs/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
+                <span class="toc-chapter-title">3. Displays and Outputs</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/adding-displays.html">
+                            Adding Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-properties.html">
+                            Display Properties
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-grid-setup.html">
+                            Display Grid Setup
+                        </a>
+                        
+                        <div class="toc-group-label">Core Display Types</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/virtual-displays.html">
+                            Virtual Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/3d-mapping-projectors.html">
+                            3d Mapping Projectors
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/sdi-output.html">
+                            Sdi Output
+                        </a>
+                        
+                        <div class="toc-group-label">Geometry Correction and Blending</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/edge-blending.html">
+                            Edge Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/warp-geometry.html">
+                            Warp Geometry
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-masks.html">
+                            Display Masks
+                        </a>
+                        
+                        <div class="toc-group-label">Color, Calibration, and Diagnostics</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/hdr-and-color-management.html">
+                            HDR and Color Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-calibration.html">
+                            Display Calibration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/test-patterns.html">
+                            Test Patterns
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/compression-fundamentals.html">
+                            Compression Fundamentals
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter expanded " data-index="3">
+            <a href="../assets-asset-manager/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></span>
+                <span class="toc-chapter-title">4. Assets & Asset Manager</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager.html">
+                            Asset Manager
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-types.html">
+                            Asset Types
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-properties.html">
+                            Asset Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Media Formats and Creation</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/formats-codecs.html">
+                            Formats & Codecs
+                        </a>
+                        
+                        
+                        <a class="toc-subsection active" href="../assets-asset-manager/svg-shapes.html">
+                            SVG Shapes
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/image-sequences.html">
+                            Image Sequences
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Asset Workflows</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/dynamic-assets.html">
+                            Dynamic Assets
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/web-user-interface.html">
+                            Web User Interface
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-watcher.html">
+                            Asset Watcher
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-transfer.html">
+                            Asset Transfer
+                        </a>
+                        
+                        <div class="toc-group-label">Settings and Data Management</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager-settings.html">
+                            Asset Manager Settings
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/import-export-and-mapping.html">
+                            Import, Export, and Mapping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/importing-gdtf-files.html">
+                            Importing GDTF Files
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="4">
+            <a href="../timeline-and-cues/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                <span class="toc-chapter-title">5. Timeline and Cues</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/understanding-the-timeline.html">
+                            Understanding The Timeline
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adding-media-cues.html">
+                            Adding Media Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/working-with-layers.html">
+                            Working With Layers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adjusting-timing.html">
+                            Adjusting Timing
+                        </a>
+                        
+                        <div class="toc-group-label">Cue Types</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/control-cues.html">
+                            Control Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/marker-cues.html">
+                            Marker Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/output-cues.html">
+                            Output Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/variables-and-variable-cues.html">
+                            Variables and Variable Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/artnet-fixture-cues.html">
+                            ArtNet Fixture Cues
+                        </a>
+                        
+                        <div class="toc-group-label">Compositions and Organization</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/compositions.html">
+                            Compositions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cue-sets-and-variants.html">
+                            Cue Sets and Variants
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/media-snapshots.html">
+                            Media Snapshots
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/stacking-order.html">
+                            Stacking Order
+                        </a>
+                        
+                        <div class="toc-group-label">Automation and Advanced Workflows</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/timeline-triggers-and-expressions.html">
+                            Timeline Triggers and Expressions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/conditional-cues.html">
+                            Conditional Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/blind-edit-mode.html">
+                            Blind Edit Mode
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/insert-and-delete-time.html">
+                            Insert and Delete Time
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cues-window.html">
+                            Cues Window
+                        </a>
+                        
+                        <div class="toc-group-label">Output Reference</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/output-types-overview.html">
+                            Output Types Overview
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="5">
+            <a href="../effects-and-tweens/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">6. Effects and Tweens</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/understanding-tweens.html">
+                            Understanding Tweens
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/opacity-and-fades.html">
+                            Opacity and Fades
+                        </a>
+                        
+                        <div class="toc-group-label">Transform Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/position-and-movement.html">
+                            Position and Movement
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/scale-and-size.html">
+                            Scale and Size
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/rotation-effects.html">
+                            Rotation Effects
+                        </a>
+                        
+                        <div class="toc-group-label">Visual Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/cropping.html">
+                            Cropping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/color-adjustments.html">
+                            Color Adjustments
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blur-effects.html">
+                            Blur Effects
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blend-modes.html">
+                            Blend Modes
+                        </a>
+                        
+                        <div class="toc-group-label">Audio</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/audio-volume.html">
+                            Audio Volume
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/corner-pinning.html">
+                            Corner Pinning
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/linear-wipe.html">
+                            Linear Wipe
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/frame-blending.html">
+                            Frame Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/chroma-key.html">
+                            Chroma Key
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/key-and-fill.html">
+                            Key and Fill
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/tween-expressions.html">
+                            Tween Expressions
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="6">
+            <a href="../playback/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>
+                <span class="toc-chapter-title">7. Playback</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../playback/starting-and-stopping.html">
+                            Starting and Stopping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/preview-mode.html">
+                            Preview Mode
+                        </a>
+                        
+                        <div class="toc-group-label">Going Live</div>
+                        <a class="toc-subsection " href="../playback/connecting-to-display-servers.html">
+                            Connecting to Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/going-online.html">
+                            Going Online
+                        </a>
+                        
+                        <div class="toc-group-label">Show Operation</div>
+                        <a class="toc-subsection " href="../playback/running-your-show.html">
+                            Running Your Show
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="7">
+            <a href="../the-interface/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></span>
+                <span class="toc-chapter-title">8. The Interface</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Overview</div>
+                        <a class="toc-subsection " href="../the-interface/main-window-overview.html">
+                            Main Window Overview
+                        </a>
+                        
+                        <div class="toc-group-label">Window Reference</div>
+                        <a class="toc-subsection " href="../the-interface/the-stage-window.html">
+                            The Stage Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-timeline-window.html">
+                            The Timeline Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-cue-list-window.html">
+                            The Cue List Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-assets-window.html">
+                            The Assets Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-properties-panel.html">
+                            The Properties Panel
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-nodes-window.html">
+                            The Nodes Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-devices-window.html">
+                            The Devices Window
+                        </a>
+                        
+                        <div class="toc-group-label">Customization</div>
+                        <a class="toc-subsection " href="../the-interface/customizing-your-workspace.html">
+                            Customizing Your Workspace
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="8">
+            <a href="../network-setup/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                <span class="toc-chapter-title">9. Network Setup</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Architecture and Basics</div>
+                        <a class="toc-subsection " href="../network-setup/network-overview.html">
+                            Network Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/display-servers.html">
+                            Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/connecting-devices.html">
+                            Connecting Devices
+                        </a>
+                        
+                        <div class="toc-group-label">Protocols and Services</div>
+                        <a class="toc-subsection " href="../network-setup/firewall-configuration.html">
+                            Firewall Configuration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/ndi-video-sources.html">
+                            NDI Video Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/capture-sources.html">
+                            Capture Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/dante-audio.html">
+                            Dante Audio
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/time-synchronization.html">
+                            Time Synchronization
+                        </a>
+                        
+                        <div class="toc-group-label">Maintenance and Management</div>
+                        <a class="toc-subsection " href="../network-setup/node-management-and-maintenance.html">
+                            Node Management and Maintenance
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/remote-file-access.html">
+                            Remote File Access
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/working-directory-management.html">
+                            Working Directory Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/software-updates.html">
+                            Software Updates
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="9">
+            <a href="../external-control/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">10. External Control</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Foundations</div>
+                        <a class="toc-subsection " href="../external-control/external-control-overview.html">
+                            External Control Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/variables-and-inputs.html">
+                            Variables and Inputs
+                        </a>
+                        
+                        <div class="toc-group-label">Primary Protocols</div>
+                        <a class="toc-subsection " href="../external-control/http-rest-api.html">
+                            HTTP REST API
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/osc-protocol.html">
+                            OSC Protocol
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/artnet-input.html">
+                            ArtNet Input
+                        </a>
+                        
+                        <div class="toc-group-label">Specialized Protocols</div>
+                        <a class="toc-subsection " href="../external-control/midi-bridge.html">
+                            MIDI Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/ltc-bridge.html">
+                            LTC Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/posistagenet.html">
+                            PosiStageNet
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/midi-show-control.html">
+                            MIDI Show Control
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/watchout-6-protocol.html">
+                            WATCHOUT 6 Protocol
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="10">
+            <a href="../keyboard-shortcuts/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.001"></path><path d="M10 8h.001"></path><path d="M14 8h.001"></path><path d="M18 8h.001"></path><path d="M8 12h.001"></path><path d="M12 12h.001"></path><path d="M16 12h.001"></path><path d="M7 16h10"></path></svg></span>
+                <span class="toc-chapter-title">11. Keyboard Shortcuts</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Input and Editing</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/file-operations.html">
+                            File Operations
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/edit-commands.html">
+                            Edit Commands
+                        </a>
+                        
+                        <div class="toc-group-label">Navigation and Playback</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/stage-navigation.html">
+                            Stage Navigation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/timeline-controls.html">
+                            Timeline Controls
+                        </a>
+                        
+                        <div class="toc-group-label">Effects and Layout</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/tween-shortcuts.html">
+                            Tween Shortcuts
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/window-management.html">
+                            Window Management
+                        </a>
+                        
+                        <div class="toc-group-label">Properties and Tables</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/property-editing.html">
+                            Property Editing
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/table-views.html">
+                            Table Views
+                        </a>
+                        
+                        <div class="toc-group-label">Hardware Input</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/xbox-controller.html">
+                            Xbox Controller
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/display-warp.html">
+                            Display & Warp
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="11">
+            <a href="../troubleshooting/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">12. Troubleshooting</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Common Issues</div>
+                        <a class="toc-subsection " href="../troubleshooting/common-issues.html">
+                            Common Issues
+                        </a>
+                        
+                        <div class="toc-group-label">By Category</div>
+                        <a class="toc-subsection " href="../troubleshooting/performance-tips.html">
+                            Performance Tips
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/display-problems.html">
+                            Display Problems
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/network-issues.html">
+                            Network Issues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/media-playback-issues.html">
+                            Media Playback Issues
+                        </a>
+                        
+                        <div class="toc-group-label">Getting Support</div>
+                        <a class="toc-subsection " href="../troubleshooting/feedback-reports.html">
+                            Feedback Reports
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/getting-help.html">
+                            Getting Help
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="12">
+            <a href="../glossary/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">13. Glossary</span>
+                
+            </a>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="13">
+            <a href="../legal/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">14. Legal</span>
+                
+            </a>
+            
+        </div>
+        
+            </nav>
+            
+            <div class="guide-switcher" id="guide-switcher">
+                <button class="guide-switcher-toggle" id="guide-switcher-toggle" aria-label="Switch guide">
+                    <span class="guide-switcher-label">WATCHOUT</span>
+                    <svg class="guide-switcher-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="guide-switcher-dropdown" id="guide-switcher-dropdown">
+                    <a class="guide-switcher-option active" href="../../watchout/index.html">WATCHOUT</a>
+                        <a class="guide-switcher-option" href="../../wp64/index.html">WATCHPAX 64</a>
+                        <a class="guide-switcher-option" href="../../wp30/index.html">WATCHPAX 30</a>
+                        <a class="guide-switcher-option" href="../../wp50/index.html">WATCHPAX 50</a>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">4. Assets & Asset Manager</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">SVG Shapes</span>
+        
+                </div>
+                <a href="../index.html" class="header-home-link" aria-label="Go to home page">
+                    <img src="../media/dataton-logo.png" alt="Dataton" class="header-logo">
+                </a>
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><h2>SVG Shapes</h2>
+
+<p><strong>WATCHOUT 7 includes a built-in shape editor that lets you create vector-based assets — rectangles, ellipses, and text — directly within the application.</strong> These shapes are stored as SVG data internally and rasterized to pixels at a configurable resolution before rendering on display servers. This means shapes remain crisp at any target size, but the final output is always a pixel image — the visual renderer does not process vector graphics natively.</p>
+
+<h3>How It Works</h3>
+
+<p>Shapes follow a different pipeline than imported media assets. Instead of going through the full optimization process (upload → optimize → distribute), shapes are:</p>
+
+<ol>
+<li><strong>Defined</strong> in the Producer using the shape properties panel (geometry, colors, text).</li>
+<li><strong>Stored</strong> as SVG markup within the show data.</li>
+<li><strong>Rasterized</strong> to pixels at the configured resolution using an SVG rendering engine (<code>resvg</code>/<code>usvg</code> with CPU-based <code>tiny-skia</code> rasterization).</li>
+<li><strong>Distributed</strong> to Runners as standard pixel data, identical to an image asset.</li>
+
+</ol>
+
+<div class='warning-box'><p><strong>The visual renderer has no native SVG support.</strong> All shapes are rasterized to pixels before being sent to display servers. If you scale a shape cue beyond its render resolution, it will exhibit the same pixelation as any bitmap image. Set the render resolution to match or exceed the final display size.
+</p></div>
+
+<h3>Shapes vs. Imported Images</h3>
+
+<table>
+<tr><th>Aspect</th><th>SVG Shape</th><th>Imported Image</th></tr>
+<tr><td><strong>Creation</strong></td><td>Built-in editor in WATCHOUT</td><td>External graphics application</td></tr>
+<tr><td><strong>Storage</strong></td><td>SVG markup in show data</td><td>File on disk, managed by Asset Manager</td></tr>
+<tr><td><strong>Resolution</strong></td><td>Configurable per-cue; re-rasterized on change</td><td>Fixed at source resolution</td></tr>
+<tr><td><strong>Alpha support</strong></td><td>Yes (fill and stroke alpha)</td><td>Depends on format (PNG, TGA, EXR)</td></tr>
+<tr><td><strong>Optimization</strong></td><td>Rasterized directly, no codec transcoding</td><td>Goes through full optimization pipeline</td></tr>
+<tr><td><strong>Editing</strong></td><td>In-app property panel</td><td>Requires external tool and re-import</td></tr>
+<tr><td><strong>Use case</strong></td><td>Simple geometric shapes, titles, labels</td><td>Complex graphics, photographs, renders</td></tr>
+</table>
+
+<h3>Why Use Shapes?</h3>
+
+<p>Shapes are useful for:</p>
+
+<ul>
+<li><strong>Title cards and labels</strong> — create text overlays without leaving WATCHOUT.</li>
+<li><strong>Solid backgrounds</strong> — colored rectangles to place behind content or fill gaps.</li>
+<li><strong>Geometric overlays</strong> — circles, rectangles, and stroked outlines for visual accents.</li>
+<li><strong>Dynamic text</strong> — text content that can be changed during a show (when combined with expressions).</li>
+<li><strong>Quick prototyping</strong> — placeholder graphics during show development without needing external tools.</li>
+
+</ul>
+
+<p>Because shapes are generated internally, there is no need to round-trip through an external graphics editor for simple visual elements.</p>
+
+<h3>Creating a Shape</h3>
+
+<ol>
+<li>Right-click in the Assets window.</li>
+<li>Choose <strong>New</strong> and select one of:</li>
+</ol>
+
+<ul>
+<li><strong>New Rectangle Shape</strong></li>
+<li><strong>New Ellipse Shape</strong></li>
+<li><strong>New Text Shape</strong></li>
+</ul>
+
+<ol>
+<li>Enter a name for the shape asset and click <strong>OK</strong>.</li>
+
+</ol>
+
+<p><!-- screenshot: New Shape dialog showing name field and OK/Cancel buttons --></p>
+
+<p>The new shape asset appears in the Assets window with a default white fill and a canvas size of 1920 × 1080 pixels. You can also create shapes inside folders — if a folder is selected when you create the shape, it is placed in that folder.</p>
+
+<div class='info-box'><p><strong>Note:</strong> Shapes cannot be created inside composition folders or non-visual <a href="./dynamic-assets.html">Dynamic Asset</a> folders.
+</p></div>
+
+<h3>Shape Properties Panel</h3>
+
+<p>Select a shape asset to view its dedicated properties panel. Unlike other asset types, shapes display an interactive editor rather than the standard property fields.</p>
+
+<p><!-- screenshot: Shape Properties panel showing preview, base size, geometry, and color sections --></p>
+
+<h4>Preview</h4>
+
+<p>The top section shows a <strong>live preview</strong> of the shape on a checkerboard background (indicating transparency). The preview updates in real time as you modify properties. When multiple shapes are selected with different values, the preview displays a "Multiple values" message.</p>
+
+<h4>Base Size</h4>
+
+<p>The <strong>Base Size</strong> section controls the canvas dimensions:</p>
+
+<ul>
+<li><strong>Width</strong> and <strong>Height</strong> — the SVG canvas size in pixels. Must be positive integers.</li>
+<li>The total pixel area must not exceed approximately 16K (3840 × 2160 × 8 pixels). This prevents creation of shapes that would consume excessive GPU memory.</li>
+
+</ul>
+
+<p>For text shapes, a <strong>Crop to Fit</strong> button appears that automatically adjusts the canvas size to tightly fit the rendered text.</p>
+
+<h4>Geometry</h4>
+
+<p>The <strong>Geometry</strong> section lets you switch between shape types and set visual properties:</p>
+
+<ul>
+<li><strong>Kind</strong> — toggle between <strong>Ellipse</strong>, <strong>Rectangle</strong>, and <strong>Text</strong>. Switching the kind preserves the canvas size and colors, but resets type-specific properties.</li>
+<li><strong>Fill</strong> — the fill color, including alpha (transparency). Click to open a color picker with a spectrum view.</li>
+<li><strong>Stroke</strong> — the stroke (outline) color, also with alpha support.</li>
+<li><strong>Stroke Width</strong> — the thickness of the stroke in pixels. Set to 0 for no stroke.</li>
+
+</ul>
+
+<p>Both fill and stroke show a reset button when their value differs from the original, allowing you to quickly revert individual properties.</p>
+
+<h4>Text Properties</h4>
+
+<p>When the geometry kind is set to <strong>Text</strong>, an additional section appears:</p>
+
+<table>
+<tr><th>Property</th><th>Description</th></tr>
+<tr><td><strong>Text</strong></td><td>Multiline text field for the content to render</td></tr>
+<tr><td><strong>Alignment</strong></td><td>Left, center, or right alignment buttons</td></tr>
+<tr><td><strong>Line Height</strong></td><td>Spacing multiplier between lines (e.g., 1.0 = normal, 1.5 = 150%)</td></tr>
+<tr><td><strong>Font Size</strong></td><td>Size of the text in pixels</td></tr>
+<tr><td><strong>Fit Text</strong></td><td>Automatically calculates the largest font size that fits the current canvas</td></tr>
+<tr><td><strong>Font</strong></td><td>Dropdown listing all available font assets in the show, with thumbnail previews</td></tr>
+</table>
+
+<p><!-- screenshot: Text shape properties showing text field, alignment buttons, font size, and font dropdown --></p>
+
+<div class='info-box'><p><strong>Tip:</strong> To use a custom font, first add the font file as an asset in the Assets window (see <a href="./asset-types.html">Asset Types</a>). It will then appear in the font dropdown. Font thumbnails are generated using SVG rasterization during optimization.
+</p></div>
+
+<h4>Applying Changes</h4>
+
+<p>Shape property changes are <strong>not</strong> applied automatically. After making edits, click the <strong>Apply Changes</strong> button at the bottom of the properties panel to commit the new shape data. This regenerates the SVG and updates all cues referencing the shape.</p>
+
+<h3>SVG Render Resolution</h3>
+
+<p>When an SVG shape is placed on the timeline as a cue, you can override its render resolution on a per-cue basis. This is configured in the cue's properties:</p>
+
+<ul>
+<li><strong>Width</strong> and <strong>Height</strong> — the rasterization resolution. By default, this matches the shape's base size.</li>
+<li><strong>Lock Aspect Ratio</strong> — keeps the width-to-height ratio constant when adjusting one dimension.</li>
+<li><strong>Reset</strong> — reverts the render resolution to the shape's base size.</li>
+
+</ul>
+
+<p>Increasing the render resolution produces sharper output when the cue is scaled up on stage, at the cost of more GPU memory.</p>
+
+<h3>Using Shapes on the Timeline</h3>
+
+<p>Shape assets work like any other visual asset:</p>
+
+<ol>
+<li>Drag the shape from the Assets window onto a timeline layer.</li>
+<li>A media cue is created with the shape as its source.</li>
+<li>Apply position, scale, opacity, and other tweens as usual.</li>
+<li>If the shape content changes (e.g., text is updated and applied), all cues referencing it are updated.</li>
+
+</ol>
+
+<p>Shapes can be used as versions in <a href="./dynamic-assets.html">Dynamic Assets</a> — for example, a dynamic text shape whose content changes between shows.</p>
+
+<h3>Best Practices</h3>
+
+<ul>
+<li><strong>Set render resolution to match display output</strong> — a shape displayed at 4K should have at least a 4K render resolution to avoid pixelation.</li>
+<li><strong>Use Crop to Fit for text</strong> — avoid oversized canvases that waste GPU memory. The Crop to Fit button sizes the canvas to the text's actual bounds.</li>
+<li><strong>Keep shapes simple</strong> — for complex graphics with gradients, shadows, or many elements, use an external graphics tool and import as an image instead.</li>
+<li><strong>Use font assets</strong> — add font files to the show before creating text shapes. System fonts may not be available on all Runners.</li>
+<li><strong>Apply changes deliberately</strong> — the manual "Apply Changes" step prevents accidental updates to live shows. Review the preview before applying.</li>
+<li><strong>Mind the pixel area limit</strong> — the maximum area (approximately 66 megapixels) prevents GPU memory exhaustion, but even smaller shapes consume memory proportional to their resolution.</li>
+
+</ul>
+
+<h3>Limitations</h3>
+
+<ul>
+<li><strong>No native vector rendering</strong> — shapes are rasterized to pixels. The visual renderer does not process SVG natively. Scaling beyond the render resolution causes pixelation.</li>
+<li><strong>Simple geometry only</strong> — the editor supports rectangles, ellipses, and text. Complex paths, gradients, filters, and other SVG features are not available.</li>
+<li><strong>SVG import is image-only</strong> — <code>.svg</code> files can be imported as image assets, but they are rasterized during optimization. The visual renderer does not process SVG vector data natively at runtime. For best results, set the render resolution to match the intended display size.</li>
+<li><strong>CPU-based rasterization</strong> — shape rendering uses CPU rasterization (<code>tiny-skia</code>), not GPU acceleration. Very large shapes at high resolution may take longer to generate.</li>
+<li><strong>Font dependency</strong> — text shapes require the font to be available as a font asset. Missing fonts will cause rendering issues.</li>
+
+</ul>
+
+<h3>Troubleshooting</h3>
+
+<table>
+<tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>Shape appears pixelated on display</td><td>Render resolution is lower than display output size</td><td>Increase the render resolution in the cue's properties to match the display</td></tr>
+<tr><td>Text not rendering correctly</td><td>Font asset missing from the show</td><td>Add the required font file as an asset; select it in the font dropdown</td></tr>
+<tr><td>"Multiple values" in preview</td><td>Multiple shapes selected with different properties</td><td>Select a single shape to see its individual preview</td></tr>
+<tr><td>Canvas size rejected</td><td>Pixel area exceeds the ~66 megapixel limit</td><td>Reduce width or height to stay within the limit</td></tr>
+<tr><td>Changes not visible on timeline</td><td>"Apply Changes" not clicked after editing</td><td>Click <strong>Apply Changes</strong> in the properties panel to commit edits</td></tr>
+<tr><td>Imported <code>.svg</code> looks pixelated</td><td>SVG was rasterized at a resolution lower than the display output</td><td>Re-import and ensure the render resolution matches the intended display size</td></tr>
+</table>
+
+<h3>See Also</h3>
+
+<ul>
+<li><a href="./asset-types.html">Asset Types</a> — overview of all asset types including font assets for text shapes</li>
+<li><a href="./asset-properties.html">Asset Properties</a> — understanding resolution, color space, and state metadata</li>
+<li><a href="./formats-codecs.html">Formats and Codecs</a> — supported image formats if you need to import external graphics</li>
+<li><a href="./dynamic-assets.html">Dynamic Assets</a> — using shapes as versioned content that changes between shows</li>
+
+</ul></div><div class="section-nav">
+                <a href="formats-codecs.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="dynamic-assets.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script>var wikiBasePath = '../';</script>
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+    
+    <script>
+        (function() {
+            var sw = document.getElementById('guide-switcher');
+            var btn = document.getElementById('guide-switcher-toggle');
+            if (!sw || !btn) return;
+            btn.addEventListener('click', function(e) { e.stopPropagation(); sw.classList.toggle('open'); });
+            document.addEventListener('click', function(e) { if (!sw.contains(e.target)) sw.classList.remove('open'); });
+        })();
+    </script>
+</body>
+</html>

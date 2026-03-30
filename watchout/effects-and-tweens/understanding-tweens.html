@@ -1,0 +1,2041 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHOUT User Guide - Understanding Tweens">
+    <title>Understanding Tweens - WATCHOUT 7 User Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <style>
+        .guide-switcher { position: relative; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border-subtle, #2a2a3e); }
+        .guide-switcher-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            color: var(--text-primary, #e0e0e8); cursor: pointer;
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .guide-switcher-toggle:hover { border-color: var(--accent-primary, #60a5fa); }
+        .guide-switcher-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .guide-switcher.open .guide-switcher-arrow { transform: rotate(180deg); }
+        .guide-switcher-dropdown {
+            display: none; position: absolute; left: 16px; right: 16px; bottom: 100%;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            border-radius: 6px; z-index: 100; overflow: hidden;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+        }
+        .guide-switcher.open .guide-switcher-dropdown { display: block; }
+        .guide-switcher-option {
+            display: block; padding: 8px 12px; color: var(--text-secondary, #a0a0b8);
+            text-decoration: none; font-size: 0.85rem; transition: background 0.15s, color 0.15s;
+        }
+        .guide-switcher-option:hover { background: var(--bg-hover, #22223a); color: var(--text-primary, #e0e0e8); }
+        .guide-switcher-option.active { color: var(--accent-primary, #60a5fa); font-weight: 500; }
+    </style>
+</head>
+<body data-page-id="understanding-tweens">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo logo-link" aria-label="Go to home page">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHOUT GUIDE</h1>
+                </a>
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter  " data-index="0">
+            <a href="../getting-started/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Getting Started</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">First Steps</div>
+                        <a class="toc-subsection " href="../getting-started/welcome-to-watchout-7.html">
+                            Welcome To Watchout 7
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/system-requirements.html">
+                            System Requirements
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/installing-watchout.html">
+                            Installing Watchout
+                        </a>
+                        
+                        <div class="toc-group-label">Setup and Configuration</div>
+                        <a class="toc-subsection " href="../getting-started/launching-the-application.html">
+                            Launching The Application
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/network-configuration.html">
+                            Network Configuration
+                        </a>
+                        
+                        <div class="toc-group-label">Your First Show</div>
+                        <a class="toc-subsection " href="../getting-started/quick-start-tutorial.html">
+                            Quick Start Tutorial
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/architectural-differences-watchout-6-vs-7.html">
+                            Architectural Differences Watchout 6 Vs 7
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="1">
+            <a href="../working-with-shows/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">2. Working with Shows</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
+                            Creating A New Show
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
+                            Opening Existing Shows
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/saving-your-work.html">
+                            Saving Your Work
+                        </a>
+                        
+                        <div class="toc-group-label">Show Configuration</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-properties.html">
+                            Show Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Archiving and Auditing</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-consolidation.html">
+                            Show Consolidation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-information.html">
+                            Show Information
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="2">
+            <a href="../displays-and-outputs/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
+                <span class="toc-chapter-title">3. Displays and Outputs</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/adding-displays.html">
+                            Adding Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-properties.html">
+                            Display Properties
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-grid-setup.html">
+                            Display Grid Setup
+                        </a>
+                        
+                        <div class="toc-group-label">Core Display Types</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/virtual-displays.html">
+                            Virtual Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/3d-mapping-projectors.html">
+                            3d Mapping Projectors
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/sdi-output.html">
+                            Sdi Output
+                        </a>
+                        
+                        <div class="toc-group-label">Geometry Correction and Blending</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/edge-blending.html">
+                            Edge Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/warp-geometry.html">
+                            Warp Geometry
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-masks.html">
+                            Display Masks
+                        </a>
+                        
+                        <div class="toc-group-label">Color, Calibration, and Diagnostics</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/hdr-and-color-management.html">
+                            HDR and Color Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-calibration.html">
+                            Display Calibration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/test-patterns.html">
+                            Test Patterns
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/compression-fundamentals.html">
+                            Compression Fundamentals
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="3">
+            <a href="../assets-asset-manager/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></span>
+                <span class="toc-chapter-title">4. Assets & Asset Manager</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager.html">
+                            Asset Manager
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-types.html">
+                            Asset Types
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-properties.html">
+                            Asset Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Media Formats and Creation</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/formats-codecs.html">
+                            Formats & Codecs
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/svg-shapes.html">
+                            SVG Shapes
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/image-sequences.html">
+                            Image Sequences
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Asset Workflows</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/dynamic-assets.html">
+                            Dynamic Assets
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/web-user-interface.html">
+                            Web User Interface
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-watcher.html">
+                            Asset Watcher
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-transfer.html">
+                            Asset Transfer
+                        </a>
+                        
+                        <div class="toc-group-label">Settings and Data Management</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager-settings.html">
+                            Asset Manager Settings
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/import-export-and-mapping.html">
+                            Import, Export, and Mapping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/importing-gdtf-files.html">
+                            Importing GDTF Files
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="4">
+            <a href="../timeline-and-cues/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                <span class="toc-chapter-title">5. Timeline and Cues</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/understanding-the-timeline.html">
+                            Understanding The Timeline
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adding-media-cues.html">
+                            Adding Media Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/working-with-layers.html">
+                            Working With Layers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adjusting-timing.html">
+                            Adjusting Timing
+                        </a>
+                        
+                        <div class="toc-group-label">Cue Types</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/control-cues.html">
+                            Control Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/marker-cues.html">
+                            Marker Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/output-cues.html">
+                            Output Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/variables-and-variable-cues.html">
+                            Variables and Variable Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/artnet-fixture-cues.html">
+                            ArtNet Fixture Cues
+                        </a>
+                        
+                        <div class="toc-group-label">Compositions and Organization</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/compositions.html">
+                            Compositions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cue-sets-and-variants.html">
+                            Cue Sets and Variants
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/media-snapshots.html">
+                            Media Snapshots
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/stacking-order.html">
+                            Stacking Order
+                        </a>
+                        
+                        <div class="toc-group-label">Automation and Advanced Workflows</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/timeline-triggers-and-expressions.html">
+                            Timeline Triggers and Expressions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/conditional-cues.html">
+                            Conditional Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/blind-edit-mode.html">
+                            Blind Edit Mode
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/insert-and-delete-time.html">
+                            Insert and Delete Time
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cues-window.html">
+                            Cues Window
+                        </a>
+                        
+                        <div class="toc-group-label">Output Reference</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/output-types-overview.html">
+                            Output Types Overview
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter expanded " data-index="5">
+            <a href="../effects-and-tweens/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">6. Effects and Tweens</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection active" href="../effects-and-tweens/understanding-tweens.html">
+                            Understanding Tweens
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/opacity-and-fades.html">
+                            Opacity and Fades
+                        </a>
+                        
+                        <div class="toc-group-label">Transform Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/position-and-movement.html">
+                            Position and Movement
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/scale-and-size.html">
+                            Scale and Size
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/rotation-effects.html">
+                            Rotation Effects
+                        </a>
+                        
+                        <div class="toc-group-label">Visual Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/cropping.html">
+                            Cropping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/color-adjustments.html">
+                            Color Adjustments
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blur-effects.html">
+                            Blur Effects
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blend-modes.html">
+                            Blend Modes
+                        </a>
+                        
+                        <div class="toc-group-label">Audio</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/audio-volume.html">
+                            Audio Volume
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/corner-pinning.html">
+                            Corner Pinning
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/linear-wipe.html">
+                            Linear Wipe
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/frame-blending.html">
+                            Frame Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/chroma-key.html">
+                            Chroma Key
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/key-and-fill.html">
+                            Key and Fill
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/tween-expressions.html">
+                            Tween Expressions
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="6">
+            <a href="../playback/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>
+                <span class="toc-chapter-title">7. Playback</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../playback/starting-and-stopping.html">
+                            Starting and Stopping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/preview-mode.html">
+                            Preview Mode
+                        </a>
+                        
+                        <div class="toc-group-label">Going Live</div>
+                        <a class="toc-subsection " href="../playback/connecting-to-display-servers.html">
+                            Connecting to Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/going-online.html">
+                            Going Online
+                        </a>
+                        
+                        <div class="toc-group-label">Show Operation</div>
+                        <a class="toc-subsection " href="../playback/running-your-show.html">
+                            Running Your Show
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="7">
+            <a href="../the-interface/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></span>
+                <span class="toc-chapter-title">8. The Interface</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Overview</div>
+                        <a class="toc-subsection " href="../the-interface/main-window-overview.html">
+                            Main Window Overview
+                        </a>
+                        
+                        <div class="toc-group-label">Window Reference</div>
+                        <a class="toc-subsection " href="../the-interface/the-stage-window.html">
+                            The Stage Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-timeline-window.html">
+                            The Timeline Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-cue-list-window.html">
+                            The Cue List Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-assets-window.html">
+                            The Assets Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-properties-panel.html">
+                            The Properties Panel
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-nodes-window.html">
+                            The Nodes Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-devices-window.html">
+                            The Devices Window
+                        </a>
+                        
+                        <div class="toc-group-label">Customization</div>
+                        <a class="toc-subsection " href="../the-interface/customizing-your-workspace.html">
+                            Customizing Your Workspace
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="8">
+            <a href="../network-setup/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                <span class="toc-chapter-title">9. Network Setup</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Architecture and Basics</div>
+                        <a class="toc-subsection " href="../network-setup/network-overview.html">
+                            Network Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/display-servers.html">
+                            Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/connecting-devices.html">
+                            Connecting Devices
+                        </a>
+                        
+                        <div class="toc-group-label">Protocols and Services</div>
+                        <a class="toc-subsection " href="../network-setup/firewall-configuration.html">
+                            Firewall Configuration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/ndi-video-sources.html">
+                            NDI Video Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/capture-sources.html">
+                            Capture Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/dante-audio.html">
+                            Dante Audio
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/time-synchronization.html">
+                            Time Synchronization
+                        </a>
+                        
+                        <div class="toc-group-label">Maintenance and Management</div>
+                        <a class="toc-subsection " href="../network-setup/node-management-and-maintenance.html">
+                            Node Management and Maintenance
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/remote-file-access.html">
+                            Remote File Access
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/working-directory-management.html">
+                            Working Directory Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/software-updates.html">
+                            Software Updates
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="9">
+            <a href="../external-control/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">10. External Control</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Foundations</div>
+                        <a class="toc-subsection " href="../external-control/external-control-overview.html">
+                            External Control Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/variables-and-inputs.html">
+                            Variables and Inputs
+                        </a>
+                        
+                        <div class="toc-group-label">Primary Protocols</div>
+                        <a class="toc-subsection " href="../external-control/http-rest-api.html">
+                            HTTP REST API
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/osc-protocol.html">
+                            OSC Protocol
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/artnet-input.html">
+                            ArtNet Input
+                        </a>
+                        
+                        <div class="toc-group-label">Specialized Protocols</div>
+                        <a class="toc-subsection " href="../external-control/midi-bridge.html">
+                            MIDI Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/ltc-bridge.html">
+                            LTC Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/posistagenet.html">
+                            PosiStageNet
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/midi-show-control.html">
+                            MIDI Show Control
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/watchout-6-protocol.html">
+                            WATCHOUT 6 Protocol
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="10">
+            <a href="../keyboard-shortcuts/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.001"></path><path d="M10 8h.001"></path><path d="M14 8h.001"></path><path d="M18 8h.001"></path><path d="M8 12h.001"></path><path d="M12 12h.001"></path><path d="M16 12h.001"></path><path d="M7 16h10"></path></svg></span>
+                <span class="toc-chapter-title">11. Keyboard Shortcuts</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Input and Editing</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/file-operations.html">
+                            File Operations
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/edit-commands.html">
+                            Edit Commands
+                        </a>
+                        
+                        <div class="toc-group-label">Navigation and Playback</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/stage-navigation.html">
+                            Stage Navigation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/timeline-controls.html">
+                            Timeline Controls
+                        </a>
+                        
+                        <div class="toc-group-label">Effects and Layout</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/tween-shortcuts.html">
+                            Tween Shortcuts
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/window-management.html">
+                            Window Management
+                        </a>
+                        
+                        <div class="toc-group-label">Properties and Tables</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/property-editing.html">
+                            Property Editing
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/table-views.html">
+                            Table Views
+                        </a>
+                        
+                        <div class="toc-group-label">Hardware Input</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/xbox-controller.html">
+                            Xbox Controller
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/display-warp.html">
+                            Display & Warp
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="11">
+            <a href="../troubleshooting/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">12. Troubleshooting</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Common Issues</div>
+                        <a class="toc-subsection " href="../troubleshooting/common-issues.html">
+                            Common Issues
+                        </a>
+                        
+                        <div class="toc-group-label">By Category</div>
+                        <a class="toc-subsection " href="../troubleshooting/performance-tips.html">
+                            Performance Tips
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/display-problems.html">
+                            Display Problems
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/network-issues.html">
+                            Network Issues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/media-playback-issues.html">
+                            Media Playback Issues
+                        </a>
+                        
+                        <div class="toc-group-label">Getting Support</div>
+                        <a class="toc-subsection " href="../troubleshooting/feedback-reports.html">
+                            Feedback Reports
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/getting-help.html">
+                            Getting Help
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="12">
+            <a href="../glossary/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">13. Glossary</span>
+                
+            </a>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="13">
+            <a href="../legal/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">14. Legal</span>
+                
+            </a>
+            
+        </div>
+        
+            </nav>
+            
+            <div class="guide-switcher" id="guide-switcher">
+                <button class="guide-switcher-toggle" id="guide-switcher-toggle" aria-label="Switch guide">
+                    <span class="guide-switcher-label">WATCHOUT</span>
+                    <svg class="guide-switcher-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="guide-switcher-dropdown" id="guide-switcher-dropdown">
+                    <a class="guide-switcher-option active" href="../../watchout/index.html">WATCHOUT</a>
+                        <a class="guide-switcher-option" href="../../wp64/index.html">WATCHPAX 64</a>
+                        <a class="guide-switcher-option" href="../../wp30/index.html">WATCHPAX 30</a>
+                        <a class="guide-switcher-option" href="../../wp50/index.html">WATCHPAX 50</a>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">6. Effects and Tweens</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">Understanding Tweens</span>
+        
+                </div>
+                <a href="../index.html" class="header-home-link" aria-label="Go to home page">
+                    <img src="../media/dataton-logo.png" alt="Dataton" class="header-logo">
+                </a>
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><h2>Understanding Tweens</h2>
+
+<p>Tweens are time-based value changes attached to cues. Every visual and audio property of a cue that can change over time — position, scale, opacity, color, crop, rotation, blur, volume, and more — is driven by a tween. A tween defines a curve of values across the duration of a cue, controlling exactly how a property transitions from one state to another. Whether you are fading content in, sliding it across Stage, applying a color shift, or animating a crop reveal, the underlying mechanism is always a tween.</p>
+
+<p>WATCHOUT provides over 40 tween types organized into logical groups. Some tweens control a single value (such as Opacity or Brightness), while others involve multiple coordinated channels (such as Position, which has X, Y, and Z axes, or Corners, which has eight channels for the four corner points). Every tween type has its own default value, permitted range, and unit, and these are enforced in the editor to keep values within meaningful bounds.</p>
+
+<h3>How Tweens Work</h3>
+
+<p>A tween is a sequence of <strong>tween points</strong> (keyframes) spread across the duration of a cue. Each tween point defines a specific value at a specific time. Between tween points, WATCHOUT interpolates smoothly according to the selected <strong>transition type</strong> (easing curve), producing continuous animation from one value to the next.</p>
+
+<p>The simplest tween has two points: a start value and an end value. For example, an Opacity tween might start at 0% at the beginning of a cue and reach 100% halfway through, producing a fade-in over the first half of the cue's duration. More complex animations use additional tween points to create multi-stage transitions — a value that rises, holds, then falls, or that follows a specific rhythm synchronized to other show elements.</p>
+
+<div class="interactive-widget" id="tween-kf-interp">
+    <style>
+        #tween-kf-interp {
+            font-family: inherit;
+            user-select: none;
+            -webkit-user-select: none;
+            max-width: 720px;
+        }
+
+        #tween-kf-interp .tkf-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        #tween-kf-interp .tkf-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary, #f8fafc);
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+        }
+
+        #tween-kf-interp .tkf-presets {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        #tween-kf-interp .tkf-preset-btn {
+            background: var(--bg-tertiary, #1a1a25);
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+            color: var(--text-secondary, #94a3b8);
+            padding: 4px 12px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 0.78rem;
+            font-weight: 500;
+            font-family: inherit;
+            transition: all 0.15s ease;
+        }
+
+        #tween-kf-interp .tkf-preset-btn:hover {
+            border-color: var(--accent-primary, #6B25DD);
+            color: var(--text-primary, #f8fafc);
+        }
+
+        #tween-kf-interp .tkf-preset-btn.active {
+            background: var(--accent-primary, #6B25DD);
+            border-color: var(--accent-primary, #6B25DD);
+            color: #fff;
+        }
+
+        #tween-kf-interp .tkf-chart-row {
+            display: flex;
+            align-items: stretch;
+            gap: 12px;
+        }
+
+        #tween-kf-interp .tkf-canvas-wrap {
+            position: relative;
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(0,0,0,0.15);
+            flex: 1;
+            min-width: 0;
+        }
+
+        #tween-kf-interp .tkf-canvas-wrap canvas {
+            display: block;
+            width: 100%;
+            background: transparent;
+        }
+
+        #tween-kf-interp .tkf-preview-row {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            gap: 8px;
+            padding-bottom: 36px;
+            width: 72px;
+            flex-shrink: 0;
+        }
+
+        #tween-kf-interp .tkf-preview-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 6px;
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+            background: var(--accent-primary, #6B25DD);
+            transition: none;
+            flex-shrink: 0;
+        }
+
+        #tween-kf-interp .tkf-preview-label {
+            font-size: 0.72rem;
+            color: var(--text-muted, #8494a7);
+            text-align: center;
+            line-height: 1.3;
+        }
+
+        #tween-kf-interp .tkf-preview-value {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--text-primary, #f8fafc);
+            font-variant-numeric: tabular-nums;
+            text-align: center;
+        }
+
+        #tween-kf-interp .tkf-transport {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        #tween-kf-interp .tkf-play-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+            background: var(--bg-tertiary, #1a1a25);
+            color: var(--text-primary, #f8fafc);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.15s ease;
+            flex-shrink: 0;
+        }
+
+        #tween-kf-interp .tkf-play-btn:hover {
+            border-color: var(--accent-primary, #6B25DD);
+            background: rgba(107, 37, 221, 0.15);
+        }
+
+        #tween-kf-interp .tkf-time-slider {
+            flex: 1;
+            accent-color: var(--accent-primary, #6B25DD);
+            cursor: pointer;
+        }
+
+        #tween-kf-interp .tkf-time-display {
+            font-size: 0.78rem;
+            color: var(--text-muted, #8494a7);
+            font-variant-numeric: tabular-nums;
+            min-width: 36px;
+            text-align: right;
+        }
+
+        #tween-kf-interp .tkf-controls-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 14px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        #tween-kf-interp .tkf-easing-select {
+            background: var(--bg-tertiary, #1a1a25);
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+            border-radius: 6px;
+            padding: 5px 10px;
+            color: var(--text-primary, #f8fafc);
+            font-family: inherit;
+            font-size: 0.8rem;
+            outline: none;
+            cursor: pointer;
+            transition: border-color 0.15s ease;
+        }
+
+        #tween-kf-interp .tkf-easing-select:hover,
+        #tween-kf-interp .tkf-easing-select:focus {
+            border-color: var(--accent-primary, #6B25DD);
+        }
+
+        #tween-kf-interp .tkf-ctrl-label {
+            font-size: 0.78rem;
+            color: var(--text-muted, #8494a7);
+        }
+
+        #tween-kf-interp .tkf-hint {
+            font-size: 0.82rem;
+            color: var(--text-primary, #f8fafc);
+            line-height: 1.6;
+            margin-top: 14px;
+            padding: 12px 16px;
+            background: rgba(99, 102, 241, 0.1);
+            border-left: 4px solid var(--accent-primary, #6B25DD);
+            border-radius: 4px;
+        }
+
+        @media (max-width: 520px) {
+            #tween-kf-interp .tkf-header { flex-direction: column; align-items: flex-start; }
+            #tween-kf-interp .tkf-chart-row { flex-direction: column; }
+            #tween-kf-interp .tkf-preview-row { flex-direction: row; width: auto; justify-content: flex-start; gap: 14px; margin-top: 10px; }
+            #tween-kf-interp .tkf-preview-label { text-align: left; }
+        }
+    </style>
+
+    <div class="tkf-header">
+        <div class="tkf-title">Keyframe Interpolation</div>
+        <div class="tkf-presets">
+            <button class="tkf-preset-btn active" data-preset="fadeIn">Fade In</button>
+            <button class="tkf-preset-btn" data-preset="fadeOut">Fade Out</button>
+            <button class="tkf-preset-btn" data-preset="sCurve">S-Curve</button>
+        </div>
+    </div>
+
+    <div class="tkf-chart-row">
+        <div class="tkf-canvas-wrap">
+            <canvas id="tkf-canvas" width="720" height="280"></canvas>
+        </div>
+
+        <div class="tkf-preview-row">
+            <div class="tkf-preview-box" id="tkf-preview"></div>
+            <span class="tkf-preview-label">Opacity preview</span>
+            <span class="tkf-preview-value" id="tkf-val-disp">0%</span>
+        </div>
+    </div>
+
+    <div class="tkf-transport">
+        <button class="tkf-play-btn" id="tkf-play" aria-label="Play">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><polygon id="tkf-play-icon" points="3,1 12,7 3,13"/></svg>
+        </button>
+        <input type="range" class="tkf-time-slider" id="tkf-scrub" min="0" max="1000" value="0">
+        <span class="tkf-time-display" id="tkf-time-disp">0.0s</span>
+    </div>
+
+    <div class="tkf-controls-row">
+        <span class="tkf-ctrl-label">Easing for selected segment:</span>
+        <select class="tkf-easing-select" id="tkf-easing">
+            <option value="linear">Linear</option>
+            <optgroup label="Quadratic">
+                <option value="quadIn">Quad In</option>
+                <option value="quadOut">Quad Out</option>
+                <option value="quadInOut">Quad InOut</option>
+            </optgroup>
+            <optgroup label="Cubic">
+                <option value="cubicIn">Cubic In</option>
+                <option value="cubicOut">Cubic Out</option>
+                <option value="cubicInOut">Cubic InOut</option>
+            </optgroup>
+            <optgroup label="Sinusoidal">
+                <option value="sineIn">Sine In</option>
+                <option value="sineOut">Sine Out</option>
+                <option value="sineInOut">Sine InOut</option>
+            </optgroup>
+            <optgroup label="Exponential">
+                <option value="expoIn">Expo In</option>
+                <option value="expoOut">Expo Out</option>
+                <option value="expoInOut">Expo InOut</option>
+            </optgroup>
+            <optgroup label="Bounce">
+                <option value="bounceIn">Bounce In</option>
+                <option value="bounceOut">Bounce Out</option>
+                <option value="bounceInOut">Bounce InOut</option>
+            </optgroup>
+            <optgroup label="Elastic">
+                <option value="elasticIn">Elastic In</option>
+                <option value="elasticOut">Elastic Out</option>
+                <option value="elasticInOut">Elastic InOut</option>
+            </optgroup>
+            <optgroup label="Back">
+                <option value="backIn">Back In</option>
+                <option value="backOut">Back Out</option>
+                <option value="backInOut">Back InOut</option>
+            </optgroup>
+        </select>
+    </div>
+
+    <div class="tkf-hint">Drag keyframe diamonds to reposition &middot; Click curve area to add a point &middot; Right-click a point to delete it</div>
+
+    <script>
+    (function() {
+        var root = document.getElementById('tween-kf-interp');
+        var canvas = document.getElementById('tkf-canvas');
+        if (!root || !canvas) return;
+        var ctx = canvas.getContext('2d');
+        var scrub = document.getElementById('tkf-scrub');
+        var playBtn = document.getElementById('tkf-play');
+        var playIcon = document.getElementById('tkf-play-icon');
+        var timeDisp = document.getElementById('tkf-time-disp');
+        var valDisp = document.getElementById('tkf-val-disp');
+        var previewBox = document.getElementById('tkf-preview');
+        var easingSel = document.getElementById('tkf-easing');
+
+        var PAD = { top: 30, right: 50, bottom: 48, left: 70 };
+        var DPR = window.devicePixelRatio || 1;
+        var W, H, plotW, plotH;
+        var DURATION = 3;
+
+        function resize() {
+            var rect = canvas.parentElement.getBoundingClientRect();
+            W = Math.round(rect.width);
+            H = 280;
+            canvas.width = W * DPR;
+            canvas.height = H * DPR;
+            canvas.style.width = W + 'px';
+            canvas.style.height = H + 'px';
+            ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+            plotW = W - PAD.left - PAD.right;
+            plotH = H - PAD.top - PAD.bottom;
+        }
+
+        /* ── Easing functions ── */
+        var ease = {
+            linear: function(t) { return t; },
+            quadIn: function(t) { return t * t; },
+            quadOut: function(t) { return t * (2 - t); },
+            quadInOut: function(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t; },
+            cubicIn: function(t) { return t * t * t; },
+            cubicOut: function(t) { return 1 - Math.pow(1 - t, 3); },
+            cubicInOut: function(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; },
+            sineIn: function(t) { return 1 - Math.cos(t * Math.PI / 2); },
+            sineOut: function(t) { return Math.sin(t * Math.PI / 2); },
+            sineInOut: function(t) { return 0.5 * (1 - Math.cos(Math.PI * t)); },
+            expoIn: function(t) { return t === 0 ? 0 : Math.pow(2, 10 * t - 10); },
+            expoOut: function(t) { return t === 1 ? 1 : 1 - Math.pow(2, -10 * t); },
+            expoInOut: function(t) { if (t === 0 || t === 1) return t; return t < 0.5 ? Math.pow(2, 20 * t - 10) / 2 : (2 - Math.pow(2, -20 * t + 10)) / 2; },
+            bounceOut: function(t) { var n = 7.5625, d = 2.75; if (t < 1/d) return n*t*t; if (t < 2/d) { t -= 1.5/d; return n*t*t + 0.75; } if (t < 2.5/d) { t -= 2.25/d; return n*t*t + 0.9375; } t -= 2.625/d; return n*t*t + 0.984375; },
+            bounceIn: function(t) { return 1 - ease.bounceOut(1 - t); },
+            bounceInOut: function(t) { return t < 0.5 ? (1 - ease.bounceOut(1 - 2*t)) / 2 : (1 + ease.bounceOut(2*t - 1)) / 2; },
+            elasticIn: function(t) { if (t === 0 || t === 1) return t; return -Math.pow(2, 10*t - 10) * Math.sin((10*t - 10.75) * (2*Math.PI) / 3); },
+            elasticOut: function(t) { if (t === 0 || t === 1) return t; return Math.pow(2, -10*t) * Math.sin((10*t - 0.75) * (2*Math.PI) / 3) + 1; },
+            elasticInOut: function(t) { if (t === 0 || t === 1) return t; var c = (2*Math.PI) / 4.5; return t < 0.5 ? -(Math.pow(2, 20*t - 10) * Math.sin((20*t - 11.125) * c)) / 2 : (Math.pow(2, -20*t + 10) * Math.sin((20*t - 11.125) * c)) / 2 + 1; },
+            backIn: function(t) { var s = 1.70158; return s * t * t * t - (s - 1) * t * t; },
+            backOut: function(t) { var s = 1.70158; t -= 1; return 1 + s * t * t * t + (s - 1) * t * t; },
+            backInOut: function(t) { var s = 1.70158 * 1.525; t *= 2; if (t < 1) return (t * t * ((s + 1) * t - s)) / 2; t -= 2; return (t * t * ((s + 1) * t + s) + 2) / 2; }
+        };
+
+        /* ── Keyframe state ── */
+        var keyframes = [];
+        var selectedKf = -1;
+        var selectedSeg = 1;
+        var dragging = -1;
+        var playing = false;
+        var playT = 0;
+        var animId = null;
+        var lastFrameTime = 0;
+
+        var presets = {
+            fadeIn:  [{ t: 0, v: 0, easing: 'linear' }, { t: 1, v: 1, easing: 'cubicOut' }],
+            fadeOut: [{ t: 0, v: 1, easing: 'linear' }, { t: 1, v: 0, easing: 'cubicIn' }],
+            sCurve: [{ t: 0, v: 0, easing: 'linear' }, { t: 0.5, v: 1, easing: 'cubicInOut' }, { t: 1, v: 0, easing: 'cubicInOut' }],
+            pulse:  [{ t: 0, v: 0, easing: 'linear' }, { t: 0.2, v: 1, easing: 'cubicOut' }, { t: 0.4, v: 0.3, easing: 'cubicIn' }, { t: 0.6, v: 1, easing: 'cubicOut' }, { t: 0.8, v: 0.3, easing: 'cubicIn' }, { t: 1, v: 0, easing: 'cubicInOut' }]
+        };
+
+        function loadPreset(name) {
+            keyframes = presets[name].map(function(k) { return { t: k.t, v: k.v, easing: k.easing }; });
+            selectedKf = -1;
+            selectedSeg = 1;
+            syncEasingUI();
+            draw();
+        }
+
+        function evaluate(t) {
+            if (keyframes.length === 0) return 0;
+            if (keyframes.length === 1) return keyframes[0].v;
+            if (t <= keyframes[0].t) return keyframes[0].v;
+            if (t >= keyframes[keyframes.length - 1].t) return keyframes[keyframes.length - 1].v;
+            for (var i = 1; i < keyframes.length; i++) {
+                if (t <= keyframes[i].t) {
+                    var a = keyframes[i - 1], b = keyframes[i];
+                    var local = (t - a.t) / (b.t - a.t);
+                    var fn = ease[b.easing] || ease.linear;
+                    return a.v + (b.v - a.v) * fn(local);
+                }
+            }
+            return keyframes[keyframes.length - 1].v;
+        }
+
+        /* ── Coordinate helpers ── */
+        function tToX(t) { return PAD.left + t * plotW; }
+        function vToY(v) { return PAD.top + (1 - v) * plotH; }
+        function xToT(x) { return Math.max(0, Math.min(1, (x - PAD.left) / plotW)); }
+        function yToV(y) { return Math.max(0, Math.min(1, 1 - (y - PAD.top) / plotH)); }
+
+        function css(prop, fb) {
+            return getComputedStyle(root).getPropertyValue(prop).trim() || fb;
+        }
+
+        function hexToRGBA(hex, a) {
+            if (!hex || !hex.startsWith('#') || hex.length < 7) return 'rgba(107,37,221,' + a + ')';
+            var r = parseInt(hex.slice(1, 3), 16), g = parseInt(hex.slice(3, 5), 16), b = parseInt(hex.slice(5, 7), 16);
+            return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+        }
+
+        /* ── Draw ── */
+        function draw() {
+            var accent = css('--accent-primary', '#6B25DD');
+            var txtP = css('--text-primary', '#f8fafc');
+            var txtM = css('--text-muted', '#8494a7');
+            var border = css('--border-subtle', 'rgba(255,255,255,0.06)');
+
+            ctx.clearRect(0, 0, W, H);
+
+            // Grid lines
+            ctx.strokeStyle = border;
+            ctx.lineWidth = 1;
+            for (var i = 0; i <= 4; i++) {
+                var y = PAD.top + (plotH / 4) * i;
+                ctx.beginPath(); ctx.moveTo(PAD.left, y); ctx.lineTo(PAD.left + plotW, y); ctx.stroke();
+            }
+            for (var i = 0; i <= 10; i++) {
+                var x = PAD.left + (plotW / 10) * i;
+                ctx.beginPath(); ctx.moveTo(x, PAD.top); ctx.lineTo(x, PAD.top + plotH); ctx.stroke();
+            }
+
+            // Y-axis labels
+            ctx.font = '11px system-ui, sans-serif';
+            ctx.fillStyle = txtM;
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            for (var i = 0; i <= 4; i++) {
+                ctx.fillText((100 - i * 25) + '%', PAD.left - 8, PAD.top + (plotH / 4) * i);
+            }
+
+            // X-axis labels
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'top';
+            for (var i = 0; i <= 10; i++) {
+                ctx.fillText((DURATION * i / 10).toFixed(1) + 's', PAD.left + (plotW / 10) * i, PAD.top + plotH + 8);
+            }
+
+            // Axis titles
+            ctx.fillStyle = css('--text-secondary', '#94a3b8');
+            ctx.font = '11px system-ui, sans-serif';
+
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText('Time', PAD.left + plotW / 2, H - 8);
+
+            ctx.save();
+            ctx.translate(PAD.left - 44, PAD.top + plotH / 2);
+            ctx.rotate(-Math.PI / 2);
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Value', 0, 0);
+            ctx.restore();
+
+            // Draw curve per segment
+            ctx.lineWidth = 2.5;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            for (var seg = 1; seg < keyframes.length; seg++) {
+                var a = keyframes[seg - 1], b = keyframes[seg];
+                var isSel = (seg === selectedSeg);
+                ctx.strokeStyle = isSel ? accent : hexToRGBA(accent, 0.45);
+                ctx.beginPath();
+                var steps = Math.max(80, Math.round(plotW * (b.t - a.t)));
+                for (var s = 0; s <= steps; s++) {
+                    var lt = s / steps;
+                    var fn = ease[b.easing] || ease.linear;
+                    var val = a.v + (b.v - a.v) * fn(lt);
+                    var px = tToX(a.t + lt * (b.t - a.t));
+                    var py = vToY(val);
+                    s === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+                }
+                ctx.stroke();
+            }
+
+            // Dashed extensions before first / after last keyframe
+            if (keyframes.length > 0) {
+                ctx.strokeStyle = hexToRGBA(accent, 0.2);
+                ctx.lineWidth = 1.5;
+                ctx.setLineDash([5, 4]);
+                if (keyframes[0].t > 0) {
+                    ctx.beginPath();
+                    ctx.moveTo(tToX(0), vToY(keyframes[0].v));
+                    ctx.lineTo(tToX(keyframes[0].t), vToY(keyframes[0].v));
+                    ctx.stroke();
+                }
+                var last = keyframes[keyframes.length - 1];
+                if (last.t < 1) {
+                    ctx.beginPath();
+                    ctx.moveTo(tToX(last.t), vToY(last.v));
+                    ctx.lineTo(tToX(1), vToY(last.v));
+                    ctx.stroke();
+                }
+                ctx.setLineDash([]);
+            }
+
+            // Keyframe diamonds
+            for (var i = 0; i < keyframes.length; i++) {
+                var kf = keyframes[i];
+                var kx = tToX(kf.t), ky = vToY(kf.v);
+                var sz = (i === selectedKf) ? 7 : 5.5;
+                ctx.save();
+                ctx.translate(kx, ky);
+                ctx.rotate(Math.PI / 4);
+                ctx.fillStyle = (i === selectedKf) ? accent : txtP;
+                ctx.strokeStyle = (i === selectedKf) ? '#fff' : accent;
+                ctx.lineWidth = 1.5;
+                ctx.fillRect(-sz, -sz, sz * 2, sz * 2);
+                ctx.strokeRect(-sz, -sz, sz * 2, sz * 2);
+                ctx.restore();
+            }
+
+            // Playhead
+            var curT = playing ? playT : parseInt(scrub.value) / 1000;
+            var curV = evaluate(curT);
+            var hx = tToX(curT);
+
+            // Vertical playhead line
+            ctx.strokeStyle = hexToRGBA(txtP, 0.25);
+            ctx.lineWidth = 1;
+            ctx.setLineDash([3, 3]);
+            ctx.beginPath();
+            ctx.moveTo(hx, PAD.top);
+            ctx.lineTo(hx, PAD.top + plotH);
+            ctx.stroke();
+
+            // Horizontal value line
+            ctx.strokeStyle = hexToRGBA(accent, 0.2);
+            ctx.beginPath();
+            ctx.moveTo(PAD.left, vToY(curV));
+            ctx.lineTo(hx, vToY(curV));
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Playback dot
+            ctx.beginPath();
+            ctx.arc(hx, vToY(curV), 6, 0, Math.PI * 2);
+            ctx.fillStyle = accent;
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Update readouts
+            var pct = Math.round(curV * 100);
+            valDisp.textContent = pct + '%';
+            timeDisp.textContent = (curT * DURATION).toFixed(1) + 's';
+            previewBox.style.opacity = curV;
+            if (!playing) scrub.value = Math.round(curT * 1000);
+        }
+
+        /* ── Pointer interaction ── */
+        function findKfNear(cx, cy) {
+            var best = -1, bestD = 18;
+            for (var i = 0; i < keyframes.length; i++) {
+                var dx = tToX(keyframes[i].t) - cx, dy = vToY(keyframes[i].v) - cy;
+                var d = Math.sqrt(dx * dx + dy * dy);
+                if (d < bestD) { bestD = d; best = i; }
+            }
+            return best;
+        }
+
+        function canvasXY(e) {
+            var r = canvas.getBoundingClientRect();
+            return { x: e.clientX - r.left, y: e.clientY - r.top };
+        }
+
+        canvas.addEventListener('pointerdown', function(e) {
+            e.preventDefault();
+            var c = canvasXY(e);
+            var idx = findKfNear(c.x, c.y);
+            if (idx >= 0) {
+                selectedKf = idx;
+                dragging = idx;
+                selectedSeg = Math.max(1, Math.min(idx, keyframes.length - 1));
+                syncEasingUI();
+                canvas.setPointerCapture(e.pointerId);
+            } else if (c.x > PAD.left && c.x < PAD.left + plotW && c.y > PAD.top && c.y < PAD.top + plotH) {
+                var nt = xToT(c.x), nv = yToV(c.y);
+                // Determine easing from surrounding segment
+                var segIdx = 1;
+                for (var i = 1; i < keyframes.length; i++) {
+                    if (nt <= keyframes[i].t) { segIdx = i; break; }
+                    segIdx = i;
+                }
+                var easingName = keyframes[segIdx] ? keyframes[segIdx].easing : 'linear';
+                keyframes.push({ t: nt, v: nv, easing: easingName });
+                keyframes.sort(function(a, b) { return a.t - b.t; });
+                for (var i = 0; i < keyframes.length; i++) {
+                    if (Math.abs(keyframes[i].t - nt) < 0.001 && Math.abs(keyframes[i].v - nv) < 0.001) {
+                        selectedKf = i;
+                        dragging = i;
+                        selectedSeg = Math.max(1, Math.min(i, keyframes.length - 1));
+                        break;
+                    }
+                }
+                syncEasingUI();
+                clearPresetHL();
+                canvas.setPointerCapture(e.pointerId);
+            }
+            draw();
+        });
+
+        canvas.addEventListener('pointermove', function(e) {
+            if (dragging < 0) return;
+            var c = canvasXY(e);
+            var nt = xToT(c.x), nv = yToV(c.y);
+            // Lock first/last to t boundaries, constrain middle ones
+            if (dragging === 0) nt = 0;
+            else if (dragging === keyframes.length - 1) nt = 1;
+            else nt = Math.max(keyframes[dragging - 1].t + 0.005, Math.min(keyframes[dragging + 1].t - 0.005, nt));
+            keyframes[dragging].t = nt;
+            keyframes[dragging].v = Math.max(0, Math.min(1, nv));
+            clearPresetHL();
+            draw();
+        });
+
+        canvas.addEventListener('pointerup', function() { dragging = -1; });
+
+        canvas.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            var c = canvasXY(e);
+            var idx = findKfNear(c.x, c.y);
+            if (idx > 0 && idx < keyframes.length - 1) {
+                keyframes.splice(idx, 1);
+                selectedKf = -1;
+                selectedSeg = Math.max(1, Math.min(selectedSeg, keyframes.length - 1));
+                syncEasingUI();
+                clearPresetHL();
+                draw();
+            }
+        });
+
+        /* ── Easing select sync ── */
+        function syncEasingUI() {
+            if (selectedSeg >= 1 && selectedSeg < keyframes.length) {
+                easingSel.value = keyframes[selectedSeg].easing;
+            }
+        }
+
+        easingSel.addEventListener('change', function() {
+            if (selectedSeg >= 1 && selectedSeg < keyframes.length) {
+                keyframes[selectedSeg].easing = easingSel.value;
+                clearPresetHL();
+                draw();
+            }
+        });
+
+        /* ── Scrub ── */
+        scrub.addEventListener('input', function() {
+            if (playing) stopPlay();
+            draw();
+        });
+
+        /* ── Playback ── */
+        function startPlay() {
+            playing = true;
+            playT = parseInt(scrub.value) / 1000;
+            if (playT >= 0.999) playT = 0;
+            lastFrameTime = performance.now();
+            playIcon.setAttribute('points', '2,1 2,13 5,13 5,1 9,1 9,13 12,13 12,1');
+            tick();
+        }
+
+        function stopPlay() {
+            playing = false;
+            if (animId) cancelAnimationFrame(animId);
+            animId = null;
+            scrub.value = Math.round(playT * 1000);
+            playIcon.setAttribute('points', '3,1 12,7 3,13');
+        }
+
+        function tick() {
+            if (!playing) return;
+            var now = performance.now();
+            playT += (now - lastFrameTime) / 1000 / DURATION;
+            lastFrameTime = now;
+            if (playT >= 1) { playT = 1; draw(); stopPlay(); return; }
+            scrub.value = Math.round(playT * 1000);
+            draw();
+            animId = requestAnimationFrame(tick);
+        }
+
+        playBtn.addEventListener('click', function() {
+            playing ? stopPlay() : startPlay();
+        });
+
+        /* ── Preset buttons ── */
+        var presetBtns = root.querySelectorAll('.tkf-preset-btn');
+        presetBtns.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                presetBtns.forEach(function(b) { b.classList.remove('active'); });
+                btn.classList.add('active');
+                loadPreset(btn.getAttribute('data-preset'));
+            });
+        });
+
+        function clearPresetHL() {
+            presetBtns.forEach(function(b) { b.classList.remove('active'); });
+        }
+
+        /* ── Init ── */
+        resize();
+        loadPreset('fadeIn');
+        window.addEventListener('resize', function() { resize(); draw(); });
+    })();
+    </script>
+</div>
+
+<p>Every tween point has three core properties:</p>
+
+<ul>
+<li><strong>Time from Start of Cue</strong> — when this point occurs, measured from the beginning of the cue.</li>
+<li><strong>Value</strong> — the property value at this moment. The label, unit, and permitted range depend on the tween type (for example, "Percentage" for crop tweens, "Position X / Y / Z" for position tweens, or "X Value / Y Value" for scale tweens).</li>
+<li><strong>Transition Type</strong> — the easing curve used to interpolate from the previous point to this one.</li>
+
+</ul>
+
+<h3>Tween Groups</h3>
+
+<p>Tweens are organized into groups in the tween area beneath each cue. These groups correspond to functional categories and match the submenus in the <strong>Effect</strong> menu:</p>
+
+<table>
+<tr><th>Group</th><th>Tweens Included</th></tr>
+<tr><td><strong>Transform</strong></td><td>Position, Scale, Rotation X, Rotation Y, Rotation Z</td></tr>
+<tr><td><strong>General</strong></td><td>Opacity, Gaussian Blur, Volume</td></tr>
+<tr><td><strong>Crop</strong></td><td>Crop Top, Crop Bottom, Crop Left, Crop Right</td></tr>
+<tr><td><strong>Color</strong></td><td>Brightness, Contrast, Exposure, Temperature, Gamma, Hue, Saturation, Invert, Red Gain, Green Gain, Blue Gain, Red Offset, Green Offset, Blue Offset</td></tr>
+<tr><td><strong>Corners</strong></td><td>Corner Top Left X/Y, Corner Top Right X/Y, Corner Bottom Left X/Y, Corner Bottom Right X/Y</td></tr>
+<tr><td><strong>Linear Wipe</strong></td><td>Angle, Location, Feather, Completion</td></tr>
+<tr><td><strong>ArtNet</strong></td><td>ArtNet fixture channels (when ArtNet tweens are present)</td></tr>
+</table>
+
+<p>You can expand or collapse tween groups using the <strong>Show Tweens</strong> / <strong>Hide Tweens</strong> controls in the tween group header.</p>
+
+<h3>The Effect View</h3>
+
+<p>When a cue with effects is selected, the Effect View appears beneath the cue in the Timeline window. It uses a <strong>two-panel layout</strong>:</p>
+
+<p><strong>Left panel — Effect list.</strong> A collapsible list of all effects applied to the cue. Each row shows:</p>
+
+<table>
+<tr><th>Element</th><th>Purpose</th></tr>
+<tr><td><strong>Color swatch</strong></td><td>The display color of the effect curve (customizable via Edit Menu > Tween Colors)</td></tr>
+<tr><td><strong>Enable checkbox</strong></td><td>Toggles whether the effect is active in rendering — unchecked effects are skipped during playback</td></tr>
+<tr><td><strong>Eye / mute icon</strong></td><td>Controls visibility of the effect curve in the right panel — click to hide a curve and reduce visual clutter</td></tr>
+<tr><td><strong>Name and value</strong></td><td>The effect name and its current value at the playhead position</td></tr>
+</table>
+
+<div class='info-box'><p>You can <strong>solo</strong> a tween by <strong>Shift-clicking its eye icon</strong>. This hides all other effect curves in the right panel, isolating the selected curve for focused editing. Shift-click the eye icon again to restore all curves.
+</p></div>
+
+<p><strong>Right panel — Curve area.</strong> Displays the tween curves and their keyframe points. This is where you visually create and edit animation:</p>
+
+<ul>
+<li><strong>Single-click on a curve</strong> to add a new tween point at that position.</li>
+<li><strong>Drag a point</strong> to move it in time (horizontal) or value (vertical).</li>
+<li><strong>Draw a selection rectangle</strong> by clicking and dragging on an empty area to select multiple points at once.</li>
+<li><strong>Multi-select points</strong> (via selection rectangle, or Ctrl+click) to move many points simultaneously — useful for shifting an entire section of animation in time or value.</li>
+
+</ul>
+
+<h3>Adding Tweens to a Cue</h3>
+
+<p>To add a tween to a cue:</p>
+
+<ol>
+<li>Select one or more cues in the Timeline.</li>
+<li>Open the <strong>Effect</strong> menu and click the desired tween type. The menu items act as toggles — clicking a tween type adds it if not already present, or removes it if it is.</li>
+<li>The tween appears in the tween area beneath the cue, within its corresponding group.</li>
+
+</ol>
+
+<p>Many tween types have keyboard shortcuts for quick access:</p>
+
+<table>
+<tr><th>Shortcut</th><th>Tween</th></tr>
+<tr><td><strong>Alt+P</strong></td><td>Position</td></tr>
+<tr><td><strong>Alt+S</strong></td><td>Scale</td></tr>
+<tr><td><strong>Alt+X</strong></td><td>Rotation X</td></tr>
+<tr><td><strong>Alt+Y</strong></td><td>Rotation Y</td></tr>
+<tr><td><strong>Alt+Z</strong></td><td>Rotation Z</td></tr>
+<tr><td><strong>Alt+O</strong></td><td>Opacity</td></tr>
+<tr><td><strong>Alt+B</strong></td><td>Gaussian Blur</td></tr>
+<tr><td><strong>Alt+V</strong></td><td>Volume</td></tr>
+<tr><td><strong>Alt+C</strong></td><td>Crop (all four sides)</td></tr>
+<tr><td><strong>Alt+N</strong></td><td>Corners (all eight channels)</td></tr>
+</table>
+
+<p>Some tweens are added as a complete group. For example, selecting <strong>Corners</strong> from the Effect menu adds all eight corner channels at once, and selecting <strong>Linear Wipe</strong> adds all four wipe channels together. Individual crop sides can also be added separately through the <strong>Effect > Crop</strong> submenu, or all four at once with <strong>Alt+C</strong>.</p>
+
+<h3>Editing Tween Points</h3>
+
+<p>Once a tween is added, you work with it by adding, moving, and adjusting tween points:</p>
+
+<ul>
+<li><strong>Adding a point</strong> — place the time needle at the desired moment and add a tween point using the context menu or by double-clicking on the tween curve in the tween area.</li>
+<li><strong>Selecting a point</strong> — click a tween point to select it. Its properties appear in the Properties panel.</li>
+<li><strong>Adjusting the value</strong> — edit the value directly in the Properties panel. For position tweens, you also see <strong>Position X</strong>, <strong>Position Y</strong>, and <strong>Position Z</strong> fields. For scale tweens, you see <strong>X Value</strong> and <strong>Y Value</strong> along with their computed <strong>X Pixel Value</strong> and <strong>Y Pixel Value</strong>.</li>
+<li><strong>Moving in time</strong> — drag a tween point horizontally in the tween area, or edit the <strong>Time from Start of Cue</strong> field in the Properties panel.</li>
+
+</ul>
+
+<h3>Transition Types (Easing Curves)</h3>
+
+<p>The <strong>Transition Type</strong> property on each tween point controls how the value interpolates from the previous point to the current one. WATCHOUT provides 31 easing curves organized into 11 families:</p>
+
+<table>
+<tr><th>Family</th><th>Variants</th><th>Character</th></tr>
+<tr><td><strong>Linear</strong></td><td>Linear</td><td>Constant speed, no acceleration or deceleration</td></tr>
+<tr><td><strong>Quadratic</strong></td><td>In, Out, InOut</td><td>Gentle acceleration/deceleration</td></tr>
+<tr><td><strong>Cubic</strong></td><td>In, Out, InOut</td><td>Moderate acceleration/deceleration</td></tr>
+<tr><td><strong>Quartic</strong></td><td>In, Out, InOut</td><td>Strong acceleration/deceleration</td></tr>
+<tr><td><strong>Quintic</strong></td><td>In, Out, InOut</td><td>Very strong acceleration/deceleration</td></tr>
+<tr><td><strong>Sinusoidal</strong></td><td>In, Out, InOut</td><td>Smooth, sine-wave-based easing</td></tr>
+<tr><td><strong>Exponential</strong></td><td>In, Out, InOut</td><td>Dramatic speed changes</td></tr>
+<tr><td><strong>Circular</strong></td><td>In, Out, InOut</td><td>Quarter-circle acceleration profile</td></tr>
+<tr><td><strong>Bounce</strong></td><td>In, Out, InOut</td><td>Simulates a bouncing motion at start/end</td></tr>
+<tr><td><strong>Elastic</strong></td><td>In, Out, InOut</td><td>Overshoots and springs back, like a rubber band</td></tr>
+<tr><td><strong>Back</strong></td><td>In, Out, InOut</td><td>Pulls back slightly before moving forward (or overshoots at the end)</td></tr>
+</table>
+
+<p>Each family (except Linear) has three variants:</p>
+
+<ul>
+<li><strong>In</strong> — the effect is applied at the start of the transition (slow start, fast end).</li>
+<li><strong>Out</strong> — the effect is applied at the end of the transition (fast start, slow end).</li>
+<li><strong>InOut</strong> — the effect is applied at both ends (slow start, slow end, fast middle).</li>
+
+</ul>
+
+<p>The default transition type is <strong>Linear</strong>, which produces constant-speed interpolation. For natural-looking motion, <strong>Quadratic InOut</strong> or <strong>Cubic InOut</strong> are common choices. For attention-grabbing effects, <strong>Bounce Out</strong> or <strong>Elastic Out</strong> add playful character.</p>
+
+<div class='info-box'><p>Choose easing curves that match the emotional tone of the moment. Gentle curves like Sinusoidal InOut suit elegant transitions. Snappy curves like Cubic In suit energetic reveals. Keep easing consistent within a scene for a cohesive feel.
+</p></div>
+
+<h3>Tween Value Reference</h3>
+
+<p>Every tween type has a defined range, default value, and unit. Some tweens enforce hard limits (you cannot enter values outside the range), while others allow values beyond the listed range for creative flexibility. Position, Rotation, Hue, and Corner tweens all accept values outside their default display range.</p>
+
+<div class="tab-container">
+<div class="tab-buttons">
+<button class="tab-btn active" data-tab="tab-group-1-item-1">Transform</button>
+<button class="tab-btn " data-tab="tab-group-1-item-2">General</button>
+<button class="tab-btn " data-tab="tab-group-1-item-3">Crop</button>
+<button class="tab-btn " data-tab="tab-group-1-item-4">Color</button>
+<button class="tab-btn " data-tab="tab-group-1-item-5">Corners</button>
+<button class="tab-btn " data-tab="tab-group-1-item-6">Linear Wipe</button>
+</div>
+<div class="tab-content active" id="tab-group-1-item-1">
+
+<table>
+<tr><th>Tween</th><th>Range</th><th>Default</th><th>Unit</th><th>Notes</th></tr>
+<tr><td><strong>Position</strong></td><td>unlimited</td><td>0</td><td>—</td><td>Stage coordinates (X, Y, Z)</td></tr>
+<tr><td><strong>Scale (X / Y)</strong></td><td>0–100+</td><td>100</td><td>%</td><td>100% = original size, values above 100 are permitted</td></tr>
+<tr><td><strong>Rotation Z</strong></td><td>unlimited</td><td>0</td><td>degrees</td><td>2D spin (roll)</td></tr>
+<tr><td><strong>Rotation Y</strong></td><td>unlimited</td><td>0</td><td>degrees</td><td>Horizontal 3D turn (yaw)</td></tr>
+<tr><td><strong>Rotation X</strong></td><td>unlimited</td><td>0</td><td>degrees</td><td>Vertical 3D tilt (pitch)</td></tr>
+</table>
+
+</div>
+<div class="tab-content " id="tab-group-1-item-2">
+
+<table>
+<tr><th>Tween</th><th>Range</th><th>Default</th><th>Unit</th><th>Notes</th></tr>
+<tr><td><strong>Opacity</strong></td><td>0–100</td><td>100</td><td>%</td><td>100% = fully visible</td></tr>
+<tr><td><strong>Gaussian Blur</strong></td><td>0.5–64</td><td>0.5</td><td>—</td><td>0.5 = no visible blur</td></tr>
+<tr><td><strong>Volume</strong></td><td>0–100</td><td>100</td><td>%</td><td>100% = full volume</td></tr>
+</table>
+
+</div>
+<div class="tab-content " id="tab-group-1-item-3">
+
+<table>
+<tr><th>Tween</th><th>Range</th><th>Default</th><th>Unit</th><th>Notes</th></tr>
+<tr><td><strong>Crop Top / Bottom / Left / Right</strong></td><td>0–100</td><td>0</td><td>%</td><td>0% = no crop</td></tr>
+</table>
+
+</div>
+<div class="tab-content " id="tab-group-1-item-4">
+
+<table>
+<tr><th>Tween</th><th>Range</th><th>Default</th><th>Unit</th><th>Notes</th></tr>
+<tr><td><strong>Brightness</strong></td><td>-100 to 100</td><td>0</td><td>%</td><td>0 = unchanged</td></tr>
+<tr><td><strong>Contrast</strong></td><td>-100 to 100</td><td>0</td><td>%</td><td>0 = unchanged</td></tr>
+<tr><td><strong>Exposure</strong></td><td>-20 to 20</td><td>0</td><td>EV</td><td>0 = unchanged</td></tr>
+<tr><td><strong>Temperature</strong></td><td>-100 to 100</td><td>0</td><td>%</td><td>0 = unchanged</td></tr>
+<tr><td><strong>Gamma</strong></td><td>0.01–10.0</td><td>1.0</td><td>—</td><td>1.0 = unchanged</td></tr>
+<tr><td><strong>Hue</strong></td><td>unlimited</td><td>0</td><td>degrees</td><td>0 = unchanged</td></tr>
+<tr><td><strong>Saturation</strong></td><td>0–100</td><td>100</td><td>%</td><td>100% = full color</td></tr>
+<tr><td><strong>Invert</strong></td><td>0–100</td><td>0</td><td>%</td><td>0 = normal, 100 = fully inverted</td></tr>
+<tr><td><strong>Red / Green / Blue Gain</strong></td><td>0–100</td><td>100</td><td>%</td><td>100% = unchanged</td></tr>
+<tr><td><strong>Red / Green / Blue Offset</strong></td><td>-100 to 100</td><td>0</td><td>%</td><td>0 = unchanged</td></tr>
+</table>
+
+</div>
+<div class="tab-content " id="tab-group-1-item-5">
+
+<table>
+<tr><th>Tween</th><th>Range</th><th>Default</th><th>Unit</th><th>Notes</th></tr>
+<tr><td><strong>Corner (all 8 channels)</strong></td><td>unlimited</td><td>100</td><td>—</td><td>100 = natural corner position</td></tr>
+</table>
+
+</div>
+<div class="tab-content " id="tab-group-1-item-6">
+
+<table>
+<tr><th>Tween</th><th>Range</th><th>Default</th><th>Unit</th><th>Notes</th></tr>
+<tr><td><strong>Wipe Angle</strong></td><td>unlimited</td><td>0</td><td>degrees</td><td>Edge direction</td></tr>
+<tr><td><strong>Wipe Location</strong></td><td>0–100</td><td>100</td><td>%</td><td>Edge position</td></tr>
+<tr><td><strong>Wipe Feather</strong></td><td>0–100</td><td>0</td><td>%</td><td>Edge softness</td></tr>
+<tr><td><strong>Wipe Completion</strong></td><td>0–100</td><td>0</td><td>%</td><td>0 = hidden, 100 = visible</td></tr>
+</table>
+
+</div>
+</div>
+
+<h3>Tween Expressions</h3>
+
+<p>Any tween can optionally be driven by a mathematical <strong>expression</strong> instead of (or in addition to) its keyframe points. When an expression is set, the tween value is computed dynamically at playback time based on variables, time functions, ArtNet input, or other parameters.</p>
+
+<p>For single-value tweens, the Properties panel shows an <strong>Expression</strong> field. For multi-axis tweens like Scale, you see <strong>X Expression</strong> and <strong>Y Expression</strong>. For Position, you see <strong>X Expression</strong>, <strong>Y Expression</strong>, and <strong>Z Expression</strong>.</p>
+
+<p>Expressions are a powerful tool for interactive shows, data-driven animation, and external control. For full details, see <a href="tween-expressions.html">Tween Expressions</a>.</p>
+
+<h3>Practical Advice</h3>
+
+<ul>
+<li><strong>Start simple.</strong> A two-point tween (start value and end value) is often all you need. Add intermediate points only when you need the value to change direction or hold at a specific level.</li>
+<li><strong>Match easing to intent.</strong> Use Linear for mechanical or technical motion. Use InOut curves for natural movement. Use Bounce or Elastic sparingly, for moments that benefit from playful emphasis.</li>
+<li><strong>Keep tween density low.</strong> Many closely spaced tween points are hard to edit and rarely produce better results than fewer well-placed points with appropriate easing curves.</li>
+<li><strong>Preview on target output.</strong> The Stage view gives a good approximation, but always verify tween behavior on the actual display hardware, especially for subtle effects like color shifts or blur.</li>
+<li><strong>Use the Effect menu toggles.</strong> Remember that the Effect menu items are toggles — clicking a tween type on a cue that already has it will remove it. This is the quickest way to clean up unused tweens.</li>
+
+</ul>
+
+<h3>Related Topics</h3>
+
+<ul>
+<li><a href="position-and-movement.html">Position and Movement</a> — animating cue placement on Stage</li>
+<li><a href="scale-and-size.html">Scale and Size</a> — growth, shrink, and zoom effects</li>
+<li><a href="rotation-effects.html">Rotation Effects</a> — 2D spin and 3D rotation</li>
+<li><a href="opacity-and-fades.html">Opacity and Fades</a> — transparency animation and the dedicated fade system</li>
+<li><a href="color-adjustments.html">Color Adjustments</a> — brightness, contrast, hue, and per-channel corrections</li>
+<li><a href="tween-expressions.html">Tween Expressions</a> — driving tweens with mathematical expressions</li>
+
+</ul></div><div class="section-nav">
+                <a href="index.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="position-and-movement.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script>var wikiBasePath = '../';</script>
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+    
+    <script>
+        (function() {
+            var sw = document.getElementById('guide-switcher');
+            var btn = document.getElementById('guide-switcher-toggle');
+            if (!sw || !btn) return;
+            btn.addEventListener('click', function(e) { e.stopPropagation(); sw.classList.toggle('open'); });
+            document.addEventListener('click', function(e) { if (!sw.contains(e.target)) sw.classList.remove('open'); });
+        })();
+    </script>
+</body>
+</html>

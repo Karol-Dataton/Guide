@@ -1,0 +1,534 @@
+<div class="interactive-widget" id="virtual-display-widget">
+    <style>
+        #virtual-display-widget {
+            width: 100%;
+        }
+
+        #virtual-display-widget .vd-layout {
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        #virtual-display-widget .vd-stage-wrap {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+        }
+
+        #virtual-display-widget canvas {
+            width: 100%;
+            height: 500px;
+            background: #0a0a14;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: block;
+            cursor: default;
+        }
+
+        #virtual-display-widget .vd-previews {
+            width: 210px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        #virtual-display-widget .vd-preview {
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+            padding: 8px;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        #virtual-display-widget .vd-preview.active {
+            background: rgba(99, 102, 241, 0.08);
+        }
+
+        #virtual-display-widget .vd-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #virtual-display-widget .vd-preview-swatch {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+            display: inline-block;
+        }
+
+        #virtual-display-widget .vd-preview canvas {
+            width: 100%;
+            height: 100px;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: #0d0d1a;
+        }
+
+        #virtual-display-widget .vd-preview-info {
+            font-size: 0.68rem;
+            color: var(--text-muted, #78716c);
+            margin-top: 5px;
+            font-variant-numeric: tabular-nums;
+        }
+
+        #virtual-display-widget .vd-explain {
+            margin-top: 10px;
+            min-height: 44px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            background: rgba(99, 102, 241, 0.06);
+            border-left: 3px solid var(--accent-primary, #6366f1);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: var(--text-secondary, #a8a29e);
+        }
+
+        #virtual-display-widget .vd-explain strong {
+            color: var(--text-primary, #e7e5e4);
+        }
+
+        #virtual-display-widget .vd-hint {
+            position: absolute;
+            bottom: 8px;
+            left: 12px;
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.25);
+            pointer-events: none;
+        }
+
+        @media (max-width: 700px) {
+            #virtual-display-widget .vd-layout {
+                flex-direction: column;
+            }
+
+            #virtual-display-widget .vd-previews {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            #virtual-display-widget .vd-preview {
+                flex: 1 1 45%;
+                min-width: 140px;
+            }
+        }
+    </style>
+
+    <div class="vd-layout">
+        <div class="vd-stage-wrap">
+            <canvas id="vd-stage-canvas" width="1600" height="1000"></canvas>
+            <div class="vd-hint">Drag rectangles to reposition · Drag edges to resize</div>
+        </div>
+        <div class="vd-previews">
+            <div class="vd-preview" id="vd-prev-0">
+                <div class="vd-preview-label">
+                    <span class="vd-preview-swatch" style="background:#6366f1"></span>
+                    <span style="color:var(--text-primary,#e7e5e4)">LED Top Row</span>
+                </div>
+                <canvas id="vd-prev-canvas-0" width="400" height="200"></canvas>
+                <div class="vd-preview-info" id="vd-prev-info-0"></div>
+            </div>
+            <div class="vd-preview" id="vd-prev-1">
+                <div class="vd-preview-label">
+                    <span class="vd-preview-swatch" style="background:#10b981"></span>
+                    <span style="color:var(--text-primary,#e7e5e4)">Center Screen</span>
+                </div>
+                <canvas id="vd-prev-canvas-1" width="400" height="200"></canvas>
+                <div class="vd-preview-info" id="vd-prev-info-1"></div>
+            </div>
+            <div class="vd-preview" id="vd-prev-2">
+                <div class="vd-preview-label">
+                    <span class="vd-preview-swatch" style="background:#f59e0b"></span>
+                    <span style="color:var(--text-primary,#e7e5e4)">Side Panel</span>
+                </div>
+                <canvas id="vd-prev-canvas-2" width="400" height="200"></canvas>
+                <div class="vd-preview-info" id="vd-prev-info-2"></div>
+            </div>
+        </div>
+    </div>
+    <div class="vd-explain" id="vd-explain">
+        Drag the colored rectangles on the stage to reposition them. Each rectangle is a <strong>virtual
+            display</strong> that captures
+        a region of the stage content. The preview panels on the right show what each virtual display "sees" — exactly
+        like a live texture feed.
+    </div>
+</div>
+<script>
+    (function () {
+        const stageCanvas = document.getElementById('vd-stage-canvas');
+        const stageCtx = stageCanvas.getContext('2d');
+        const SW = stageCanvas.width, SH = stageCanvas.height;
+        const explainEl = document.getElementById('vd-explain');
+
+        const prevCanvases = [
+            document.getElementById('vd-prev-canvas-0'),
+            document.getElementById('vd-prev-canvas-1'),
+            document.getElementById('vd-prev-canvas-2'),
+        ];
+        const prevCtxs = prevCanvases.map(c => c.getContext('2d'));
+        const prevInfoEls = [
+            document.getElementById('vd-prev-info-0'),
+            document.getElementById('vd-prev-info-1'),
+            document.getElementById('vd-prev-info-2'),
+        ];
+        const prevBoxEls = [
+            document.getElementById('vd-prev-0'),
+            document.getElementById('vd-prev-1'),
+            document.getElementById('vd-prev-2'),
+        ];
+
+        // Virtual display definitions: {x, y, w, h, color, label}
+        const vds = [
+            { x: 80, y: 60, w: 600, h: 180, color: '#6366f1', label: 'LED Top Row' },
+            { x: 400, y: 300, w: 500, h: 380, color: '#10b981', label: 'Center Screen' },
+            { x: 1050, y: 200, w: 350, h: 500, color: '#f59e0b', label: 'Side Panel' },
+        ];
+
+        const explanations = {
+            move: '<strong>Repositioning</strong> — Drag a virtual display to change which part of the stage it captures. The preview thumbnail updates in real time, just like the live texture output in WATCHOUT.',
+            resize: '<strong>Resizing</strong> — Drag an edge or corner to change the capture area. In production, you would also set the resolution to match the downstream device (LED processor, NDI stream, etc).',
+            none: 'Drag the colored rectangles on the stage to reposition them. Each rectangle is a <strong>virtual display</strong> that captures a region of the stage content. The preview panels on the right show what each virtual display "sees" — exactly like a live texture feed.',
+        };
+
+        let dragIndex = -1;
+        let dragMode = 'none'; // 'move', 'resize-br', 'resize-bl', 'resize-tr', 'resize-tl', 'resize-r', 'resize-l', 'resize-t', 'resize-b'
+        let dragStartX = 0, dragStartY = 0;
+        let dragOrigVd = null;
+        let hoveredIndex = -1;
+        const EDGE = 14; // edge grab zone in canvas coords
+        const MIN_SIZE = 60;
+
+        // Offscreen canvas for stage content (so we can sample from it for previews)
+        const contentCanvas = document.createElement('canvas');
+        contentCanvas.width = SW;
+        contentCanvas.height = SH;
+        const contentCtx = contentCanvas.getContext('2d');
+
+        const stageBgImage = new Image();
+        let stageBgReady = false;
+        stageBgImage.onload = () => {
+            stageBgReady = true;
+            draw();
+        };
+        stageBgImage.src = '../media/gamla.png';
+
+        // --- Draw stage content ---
+        function drawStageContent(ctx) {
+            // Background
+            if (stageBgReady) {
+                const scale = Math.max(SW / stageBgImage.naturalWidth, SH / stageBgImage.naturalHeight);
+                const drawW = stageBgImage.naturalWidth * scale;
+                const drawH = stageBgImage.naturalHeight * scale;
+                const offsetX = (SW - drawW) / 2;
+                const offsetY = (SH - drawH) / 2;
+                ctx.drawImage(stageBgImage, offsetX, offsetY, drawW, drawH);
+            } else {
+                const bg = ctx.createLinearGradient(0, 0, SW, SH);
+                bg.addColorStop(0, '#0f0c29');
+                bg.addColorStop(0.5, '#302b63');
+                bg.addColorStop(1, '#24243e');
+                ctx.fillStyle = bg;
+                ctx.fillRect(0, 0, SW, SH);
+            }
+
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.38)';
+            ctx.fillRect(0, 0, SW, SH);
+
+            // Grid lines (stage grid)
+            ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+            ctx.lineWidth = 1;
+            for (let gx = 0; gx < SW; gx += 100) {
+                ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, SH); ctx.stroke();
+            }
+            for (let gy = 0; gy < SH; gy += 100) {
+                ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(SW, gy); ctx.stroke();
+            }
+        }
+
+        // --- Detect edge/corner grab ---
+        function getGrabMode(vd, mx, my) {
+            const l = vd.x, r = vd.x + vd.w, t = vd.y, b = vd.y + vd.h;
+            const onLeft = Math.abs(mx - l) < EDGE;
+            const onRight = Math.abs(mx - r) < EDGE;
+            const onTop = Math.abs(my - t) < EDGE;
+            const onBottom = Math.abs(my - b) < EDGE;
+            const inX = mx > l - EDGE && mx < r + EDGE;
+            const inY = my > t - EDGE && my < b + EDGE;
+
+            if (onTop && onLeft && inX && inY) return 'resize-tl';
+            if (onTop && onRight && inX && inY) return 'resize-tr';
+            if (onBottom && onLeft && inX && inY) return 'resize-bl';
+            if (onBottom && onRight && inX && inY) return 'resize-br';
+            if (onTop && inX) return 'resize-t';
+            if (onBottom && inX) return 'resize-b';
+            if (onLeft && inY) return 'resize-l';
+            if (onRight && inY) return 'resize-r';
+            if (mx > l && mx < r && my > t && my < b) return 'move';
+            return 'none';
+        }
+
+        function getCursor(mode) {
+            switch (mode) {
+                case 'resize-tl': case 'resize-br': return 'nwse-resize';
+                case 'resize-tr': case 'resize-bl': return 'nesw-resize';
+                case 'resize-t': case 'resize-b': return 'ns-resize';
+                case 'resize-l': case 'resize-r': return 'ew-resize';
+                case 'move': return 'grab';
+                default: return 'default';
+            }
+        }
+
+        // --- Mouse/touch coord helpers ---
+        function canvasCoords(e) {
+            const rect = stageCanvas.getBoundingClientRect();
+            const scaleX = SW / rect.width;
+            const scaleY = SH / rect.height;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return { x: (clientX - rect.left) * scaleX, y: (clientY - rect.top) * scaleY };
+        }
+
+        // --- Event handlers ---
+        stageCanvas.addEventListener('mousedown', e => {
+            const { x, y } = canvasCoords(e);
+            // Hit-test from top (last drawn = on top) to bottom
+            for (let i = vds.length - 1; i >= 0; i--) {
+                const mode = getGrabMode(vds[i], x, y);
+                if (mode !== 'none') {
+                    dragIndex = i;
+                    dragMode = mode;
+                    dragStartX = x;
+                    dragStartY = y;
+                    dragOrigVd = { ...vds[i] };
+                    stageCanvas.style.cursor = mode === 'move' ? 'grabbing' : getCursor(mode);
+                    break;
+                }
+            }
+        });
+
+        stageCanvas.addEventListener('touchstart', e => {
+            const { x, y } = canvasCoords(e);
+            for (let i = vds.length - 1; i >= 0; i--) {
+                const mode = getGrabMode(vds[i], x, y);
+                if (mode !== 'none') {
+                    dragIndex = i;
+                    dragMode = mode;
+                    dragStartX = x;
+                    dragStartY = y;
+                    dragOrigVd = { ...vds[i] };
+                    e.preventDefault();
+                    break;
+                }
+            }
+        }, { passive: false });
+
+        function onDragMove(mx, my) {
+            if (dragIndex < 0) return;
+            const dx = mx - dragStartX;
+            const dy = my - dragStartY;
+            const vd = vds[dragIndex];
+            const o = dragOrigVd;
+
+            if (dragMode === 'move') {
+                vd.x = Math.max(0, Math.min(SW - vd.w, o.x + dx));
+                vd.y = Math.max(0, Math.min(SH - vd.h, o.y + dy));
+                explainEl.innerHTML = explanations.move;
+            } else {
+                // Resize modes
+                let nx = o.x, ny = o.y, nw = o.w, nh = o.h;
+                if (dragMode.includes('r')) { nw = Math.max(MIN_SIZE, o.w + dx); }
+                if (dragMode.includes('l')) { nx = o.x + dx; nw = Math.max(MIN_SIZE, o.w - dx); if (nw === MIN_SIZE) nx = o.x + o.w - MIN_SIZE; }
+                if (dragMode.includes('b')) { nh = Math.max(MIN_SIZE, o.h + dy); }
+                if (dragMode.includes('t')) { ny = o.y + dy; nh = Math.max(MIN_SIZE, o.h - dy); if (nh === MIN_SIZE) ny = o.y + o.h - MIN_SIZE; }
+                // Clamp to stage bounds
+                if (nx < 0) { nw += nx; nx = 0; }
+                if (ny < 0) { nh += ny; ny = 0; }
+                if (nx + nw > SW) nw = SW - nx;
+                if (ny + nh > SH) nh = SH - ny;
+                vd.x = nx; vd.y = ny; vd.w = nw; vd.h = nh;
+                explainEl.innerHTML = explanations.resize;
+            }
+            draw();
+        }
+
+        window.addEventListener('mousemove', e => {
+            if (dragIndex >= 0) {
+                const { x, y } = canvasCoords(e);
+                onDragMove(x, y);
+                return;
+            }
+            // Hover cursor
+            const rect = stageCanvas.getBoundingClientRect();
+            if (e.clientX < rect.left || e.clientX > rect.right || e.clientY < rect.top || e.clientY > rect.bottom) return;
+            const { x, y } = canvasCoords(e);
+            let cursor = 'default';
+            let newHovered = -1;
+            for (let i = vds.length - 1; i >= 0; i--) {
+                const mode = getGrabMode(vds[i], x, y);
+                if (mode !== 'none') {
+                    cursor = getCursor(mode);
+                    newHovered = i;
+                    break;
+                }
+            }
+            stageCanvas.style.cursor = cursor;
+            if (newHovered !== hoveredIndex) {
+                hoveredIndex = newHovered;
+                prevBoxEls.forEach((el, i) => el.classList.toggle('active', i === hoveredIndex));
+                if (hoveredIndex >= 0) {
+                    prevBoxEls[hoveredIndex].style.borderColor = vds[hoveredIndex].color;
+                }
+                prevBoxEls.forEach((el, i) => {
+                    if (i !== hoveredIndex) el.style.borderColor = '';
+                });
+                draw();
+            }
+        });
+
+        window.addEventListener('touchmove', e => {
+            if (dragIndex < 0) return;
+            const { x, y } = canvasCoords(e);
+            onDragMove(x, y);
+            e.preventDefault();
+        }, { passive: false });
+
+        window.addEventListener('mouseup', () => {
+            if (dragIndex >= 0) {
+                dragIndex = -1;
+                dragMode = 'none';
+                stageCanvas.style.cursor = 'default';
+                explainEl.innerHTML = explanations.none;
+            }
+        });
+        window.addEventListener('touchend', () => {
+            if (dragIndex >= 0) {
+                dragIndex = -1;
+                dragMode = 'none';
+                explainEl.innerHTML = explanations.none;
+            }
+        });
+
+        // Handle mouseleave on stage canvas
+        stageCanvas.addEventListener('mouseleave', () => {
+            if (dragIndex < 0 && hoveredIndex >= 0) {
+                hoveredIndex = -1;
+                prevBoxEls.forEach(el => { el.classList.remove('active'); el.style.borderColor = ''; });
+                draw();
+            }
+        });
+
+        // --- Drawing ---
+        function draw() {
+            // 1. Render stage content to offscreen canvas
+            drawStageContent(contentCtx);
+
+            // 2. Copy content to visible stage canvas
+            stageCtx.drawImage(contentCanvas, 0, 0);
+
+            // 3. Draw "STAGE" label
+            stageCtx.font = '600 16px Inter, system-ui, sans-serif';
+            stageCtx.fillStyle = 'rgba(255,255,255,0.2)';
+            stageCtx.textAlign = 'left';
+            stageCtx.fillText('STAGE  (' + SW + ' × ' + SH + ')', 14, 28);
+
+            // 4. Draw virtual display rectangles
+            vds.forEach((vd, i) => {
+                const isActive = (i === dragIndex) || (i === hoveredIndex);
+                const r = parseInt(vd.color.slice(1, 3), 16);
+                const g = parseInt(vd.color.slice(3, 5), 16);
+                const b = parseInt(vd.color.slice(5, 7), 16);
+
+                // Fill (stronger tint for better contrast over photo backgrounds)
+                stageCtx.fillStyle = `rgba(${r},${g},${b},${isActive ? 0.24 : 0.14})`;
+                stageCtx.fillRect(vd.x, vd.y, vd.w, vd.h);
+
+                // High-contrast outer border
+                stageCtx.strokeStyle = isActive ? 'rgba(255,255,255,0.92)' : 'rgba(255,255,255,0.58)';
+                stageCtx.lineWidth = isActive ? 5 : 3;
+                stageCtx.setLineDash([]);
+                stageCtx.strokeRect(vd.x, vd.y, vd.w, vd.h);
+
+                // Color border
+                stageCtx.strokeStyle = isActive ? `rgba(${r},${g},${b},1)` : `rgba(${r},${g},${b},0.92)`;
+                stageCtx.lineWidth = isActive ? 3 : 2;
+                stageCtx.setLineDash(isActive ? [] : [8, 6]);
+                stageCtx.strokeRect(vd.x, vd.y, vd.w, vd.h);
+                stageCtx.setLineDash([]);
+
+                // Label with contrast chip
+                stageCtx.font = `600 ${isActive ? 16 : 14}px Inter, system-ui, sans-serif`;
+                const labelText = vd.label;
+                const labelW = stageCtx.measureText(labelText).width + 14;
+                const labelH = isActive ? 24 : 22;
+                const labelX = vd.x + 6;
+                const labelY = Math.max(4, vd.y - labelH - 6);
+                stageCtx.fillStyle = 'rgba(0,0,0,0.62)';
+                stageCtx.fillRect(labelX, labelY, labelW, labelH);
+                stageCtx.strokeStyle = `rgba(${r},${g},${b},${isActive ? 0.95 : 0.75})`;
+                stageCtx.lineWidth = 1.5;
+                stageCtx.strokeRect(labelX, labelY, labelW, labelH);
+                stageCtx.fillStyle = 'rgba(255,255,255,0.96)';
+                stageCtx.textAlign = 'left';
+                stageCtx.textBaseline = 'middle';
+                stageCtx.fillText(labelText, labelX + 7, labelY + labelH / 2);
+
+                // Dimensions chip
+                const dimText = `${Math.round(vd.w)} × ${Math.round(vd.h)}`;
+                stageCtx.font = '600 12px Inter, system-ui, sans-serif';
+                const dimW = stageCtx.measureText(dimText).width + 12;
+                const dimH = 18;
+                const dimX = vd.x + 6;
+                const dimY = vd.y + vd.h - dimH - 6;
+                stageCtx.fillStyle = 'rgba(0,0,0,0.6)';
+                stageCtx.fillRect(dimX, dimY, dimW, dimH);
+                stageCtx.fillStyle = 'rgba(255,255,255,0.92)';
+                stageCtx.fillText(dimText, dimX + 6, dimY + dimH / 2);
+                stageCtx.textBaseline = 'alphabetic';
+
+                // Resize handles (small squares at corners when active)
+                if (isActive) {
+                    const hs = 7;
+                    const handles = [
+                        [vd.x, vd.y], [vd.x + vd.w, vd.y],
+                        [vd.x, vd.y + vd.h], [vd.x + vd.w, vd.y + vd.h],
+                    ];
+                    handles.forEach(([hx, hy]) => {
+                        stageCtx.fillStyle = 'rgba(255,255,255,0.96)';
+                        stageCtx.fillRect(hx - hs, hy - hs, hs * 2, hs * 2);
+                        stageCtx.fillStyle = vd.color;
+                        stageCtx.fillRect(hx - hs + 2, hy - hs + 2, hs * 2 - 4, hs * 2 - 4);
+                    });
+                }
+            });
+
+            // 5. Draw preview thumbnails
+            vds.forEach((vd, i) => {
+                const pc = prevCtxs[i];
+                const pw = prevCanvases[i].width;
+                const ph = prevCanvases[i].height;
+                pc.clearRect(0, 0, pw, ph);
+                // Sample the stage content from the vd region
+                pc.drawImage(contentCanvas, vd.x, vd.y, vd.w, vd.h, 0, 0, pw, ph);
+
+                // Draw a subtle border matching the vd color
+                const r = parseInt(vd.color.slice(1, 3), 16);
+                const g = parseInt(vd.color.slice(3, 5), 16);
+                const b = parseInt(vd.color.slice(5, 7), 16);
+                pc.strokeStyle = `rgba(${r},${g},${b},0.4)`;
+                pc.lineWidth = 2;
+                pc.strokeRect(0, 0, pw, ph);
+
+                // Update info text
+                prevInfoEls[i].textContent = `Pos: ${Math.round(vd.x)}, ${Math.round(vd.y)}  ·  Size: ${Math.round(vd.w)} × ${Math.round(vd.h)}`;
+            });
+        }
+
+        draw();
+    })();
+</script>

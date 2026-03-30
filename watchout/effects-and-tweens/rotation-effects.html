@@ -1,0 +1,2251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHOUT User Guide - Rotation Effects">
+    <title>Rotation Effects - WATCHOUT 7 User Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <style>
+        .guide-switcher { position: relative; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border-subtle, #2a2a3e); }
+        .guide-switcher-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            color: var(--text-primary, #e0e0e8); cursor: pointer;
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .guide-switcher-toggle:hover { border-color: var(--accent-primary, #60a5fa); }
+        .guide-switcher-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .guide-switcher.open .guide-switcher-arrow { transform: rotate(180deg); }
+        .guide-switcher-dropdown {
+            display: none; position: absolute; left: 16px; right: 16px; bottom: 100%;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            border-radius: 6px; z-index: 100; overflow: hidden;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+        }
+        .guide-switcher.open .guide-switcher-dropdown { display: block; }
+        .guide-switcher-option {
+            display: block; padding: 8px 12px; color: var(--text-secondary, #a0a0b8);
+            text-decoration: none; font-size: 0.85rem; transition: background 0.15s, color 0.15s;
+        }
+        .guide-switcher-option:hover { background: var(--bg-hover, #22223a); color: var(--text-primary, #e0e0e8); }
+        .guide-switcher-option.active { color: var(--accent-primary, #60a5fa); font-weight: 500; }
+    </style>
+</head>
+<body data-page-id="rotation-effects">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo logo-link" aria-label="Go to home page">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHOUT GUIDE</h1>
+                </a>
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter  " data-index="0">
+            <a href="../getting-started/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Getting Started</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">First Steps</div>
+                        <a class="toc-subsection " href="../getting-started/welcome-to-watchout-7.html">
+                            Welcome To Watchout 7
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/system-requirements.html">
+                            System Requirements
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/installing-watchout.html">
+                            Installing Watchout
+                        </a>
+                        
+                        <div class="toc-group-label">Setup and Configuration</div>
+                        <a class="toc-subsection " href="../getting-started/launching-the-application.html">
+                            Launching The Application
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/network-configuration.html">
+                            Network Configuration
+                        </a>
+                        
+                        <div class="toc-group-label">Your First Show</div>
+                        <a class="toc-subsection " href="../getting-started/quick-start-tutorial.html">
+                            Quick Start Tutorial
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/architectural-differences-watchout-6-vs-7.html">
+                            Architectural Differences Watchout 6 Vs 7
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="1">
+            <a href="../working-with-shows/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">2. Working with Shows</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
+                            Creating A New Show
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
+                            Opening Existing Shows
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/saving-your-work.html">
+                            Saving Your Work
+                        </a>
+                        
+                        <div class="toc-group-label">Show Configuration</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-properties.html">
+                            Show Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Archiving and Auditing</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-consolidation.html">
+                            Show Consolidation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-information.html">
+                            Show Information
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="2">
+            <a href="../displays-and-outputs/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
+                <span class="toc-chapter-title">3. Displays and Outputs</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/adding-displays.html">
+                            Adding Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-properties.html">
+                            Display Properties
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-grid-setup.html">
+                            Display Grid Setup
+                        </a>
+                        
+                        <div class="toc-group-label">Core Display Types</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/virtual-displays.html">
+                            Virtual Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/3d-mapping-projectors.html">
+                            3d Mapping Projectors
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/sdi-output.html">
+                            Sdi Output
+                        </a>
+                        
+                        <div class="toc-group-label">Geometry Correction and Blending</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/edge-blending.html">
+                            Edge Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/warp-geometry.html">
+                            Warp Geometry
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-masks.html">
+                            Display Masks
+                        </a>
+                        
+                        <div class="toc-group-label">Color, Calibration, and Diagnostics</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/hdr-and-color-management.html">
+                            HDR and Color Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-calibration.html">
+                            Display Calibration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/test-patterns.html">
+                            Test Patterns
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/compression-fundamentals.html">
+                            Compression Fundamentals
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="3">
+            <a href="../assets-asset-manager/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></span>
+                <span class="toc-chapter-title">4. Assets & Asset Manager</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager.html">
+                            Asset Manager
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-types.html">
+                            Asset Types
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-properties.html">
+                            Asset Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Media Formats and Creation</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/formats-codecs.html">
+                            Formats & Codecs
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/svg-shapes.html">
+                            SVG Shapes
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/image-sequences.html">
+                            Image Sequences
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Asset Workflows</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/dynamic-assets.html">
+                            Dynamic Assets
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/web-user-interface.html">
+                            Web User Interface
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-watcher.html">
+                            Asset Watcher
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-transfer.html">
+                            Asset Transfer
+                        </a>
+                        
+                        <div class="toc-group-label">Settings and Data Management</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager-settings.html">
+                            Asset Manager Settings
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/import-export-and-mapping.html">
+                            Import, Export, and Mapping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/importing-gdtf-files.html">
+                            Importing GDTF Files
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="4">
+            <a href="../timeline-and-cues/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                <span class="toc-chapter-title">5. Timeline and Cues</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/understanding-the-timeline.html">
+                            Understanding The Timeline
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adding-media-cues.html">
+                            Adding Media Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/working-with-layers.html">
+                            Working With Layers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adjusting-timing.html">
+                            Adjusting Timing
+                        </a>
+                        
+                        <div class="toc-group-label">Cue Types</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/control-cues.html">
+                            Control Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/marker-cues.html">
+                            Marker Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/output-cues.html">
+                            Output Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/variables-and-variable-cues.html">
+                            Variables and Variable Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/artnet-fixture-cues.html">
+                            ArtNet Fixture Cues
+                        </a>
+                        
+                        <div class="toc-group-label">Compositions and Organization</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/compositions.html">
+                            Compositions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cue-sets-and-variants.html">
+                            Cue Sets and Variants
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/media-snapshots.html">
+                            Media Snapshots
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/stacking-order.html">
+                            Stacking Order
+                        </a>
+                        
+                        <div class="toc-group-label">Automation and Advanced Workflows</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/timeline-triggers-and-expressions.html">
+                            Timeline Triggers and Expressions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/conditional-cues.html">
+                            Conditional Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/blind-edit-mode.html">
+                            Blind Edit Mode
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/insert-and-delete-time.html">
+                            Insert and Delete Time
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cues-window.html">
+                            Cues Window
+                        </a>
+                        
+                        <div class="toc-group-label">Output Reference</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/output-types-overview.html">
+                            Output Types Overview
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter expanded " data-index="5">
+            <a href="../effects-and-tweens/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">6. Effects and Tweens</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/understanding-tweens.html">
+                            Understanding Tweens
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/opacity-and-fades.html">
+                            Opacity and Fades
+                        </a>
+                        
+                        <div class="toc-group-label">Transform Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/position-and-movement.html">
+                            Position and Movement
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/scale-and-size.html">
+                            Scale and Size
+                        </a>
+                        
+                        
+                        <a class="toc-subsection active" href="../effects-and-tweens/rotation-effects.html">
+                            Rotation Effects
+                        </a>
+                        
+                        <div class="toc-group-label">Visual Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/cropping.html">
+                            Cropping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/color-adjustments.html">
+                            Color Adjustments
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blur-effects.html">
+                            Blur Effects
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blend-modes.html">
+                            Blend Modes
+                        </a>
+                        
+                        <div class="toc-group-label">Audio</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/audio-volume.html">
+                            Audio Volume
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/corner-pinning.html">
+                            Corner Pinning
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/linear-wipe.html">
+                            Linear Wipe
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/frame-blending.html">
+                            Frame Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/chroma-key.html">
+                            Chroma Key
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/key-and-fill.html">
+                            Key and Fill
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/tween-expressions.html">
+                            Tween Expressions
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="6">
+            <a href="../playback/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>
+                <span class="toc-chapter-title">7. Playback</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../playback/starting-and-stopping.html">
+                            Starting and Stopping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/preview-mode.html">
+                            Preview Mode
+                        </a>
+                        
+                        <div class="toc-group-label">Going Live</div>
+                        <a class="toc-subsection " href="../playback/connecting-to-display-servers.html">
+                            Connecting to Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/going-online.html">
+                            Going Online
+                        </a>
+                        
+                        <div class="toc-group-label">Show Operation</div>
+                        <a class="toc-subsection " href="../playback/running-your-show.html">
+                            Running Your Show
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="7">
+            <a href="../the-interface/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></span>
+                <span class="toc-chapter-title">8. The Interface</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Overview</div>
+                        <a class="toc-subsection " href="../the-interface/main-window-overview.html">
+                            Main Window Overview
+                        </a>
+                        
+                        <div class="toc-group-label">Window Reference</div>
+                        <a class="toc-subsection " href="../the-interface/the-stage-window.html">
+                            The Stage Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-timeline-window.html">
+                            The Timeline Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-cue-list-window.html">
+                            The Cue List Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-assets-window.html">
+                            The Assets Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-properties-panel.html">
+                            The Properties Panel
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-nodes-window.html">
+                            The Nodes Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-devices-window.html">
+                            The Devices Window
+                        </a>
+                        
+                        <div class="toc-group-label">Customization</div>
+                        <a class="toc-subsection " href="../the-interface/customizing-your-workspace.html">
+                            Customizing Your Workspace
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="8">
+            <a href="../network-setup/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                <span class="toc-chapter-title">9. Network Setup</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Architecture and Basics</div>
+                        <a class="toc-subsection " href="../network-setup/network-overview.html">
+                            Network Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/display-servers.html">
+                            Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/connecting-devices.html">
+                            Connecting Devices
+                        </a>
+                        
+                        <div class="toc-group-label">Protocols and Services</div>
+                        <a class="toc-subsection " href="../network-setup/firewall-configuration.html">
+                            Firewall Configuration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/ndi-video-sources.html">
+                            NDI Video Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/capture-sources.html">
+                            Capture Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/dante-audio.html">
+                            Dante Audio
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/time-synchronization.html">
+                            Time Synchronization
+                        </a>
+                        
+                        <div class="toc-group-label">Maintenance and Management</div>
+                        <a class="toc-subsection " href="../network-setup/node-management-and-maintenance.html">
+                            Node Management and Maintenance
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/remote-file-access.html">
+                            Remote File Access
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/working-directory-management.html">
+                            Working Directory Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/software-updates.html">
+                            Software Updates
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="9">
+            <a href="../external-control/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">10. External Control</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Foundations</div>
+                        <a class="toc-subsection " href="../external-control/external-control-overview.html">
+                            External Control Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/variables-and-inputs.html">
+                            Variables and Inputs
+                        </a>
+                        
+                        <div class="toc-group-label">Primary Protocols</div>
+                        <a class="toc-subsection " href="../external-control/http-rest-api.html">
+                            HTTP REST API
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/osc-protocol.html">
+                            OSC Protocol
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/artnet-input.html">
+                            ArtNet Input
+                        </a>
+                        
+                        <div class="toc-group-label">Specialized Protocols</div>
+                        <a class="toc-subsection " href="../external-control/midi-bridge.html">
+                            MIDI Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/ltc-bridge.html">
+                            LTC Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/posistagenet.html">
+                            PosiStageNet
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/midi-show-control.html">
+                            MIDI Show Control
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/watchout-6-protocol.html">
+                            WATCHOUT 6 Protocol
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="10">
+            <a href="../keyboard-shortcuts/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.001"></path><path d="M10 8h.001"></path><path d="M14 8h.001"></path><path d="M18 8h.001"></path><path d="M8 12h.001"></path><path d="M12 12h.001"></path><path d="M16 12h.001"></path><path d="M7 16h10"></path></svg></span>
+                <span class="toc-chapter-title">11. Keyboard Shortcuts</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Input and Editing</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/file-operations.html">
+                            File Operations
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/edit-commands.html">
+                            Edit Commands
+                        </a>
+                        
+                        <div class="toc-group-label">Navigation and Playback</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/stage-navigation.html">
+                            Stage Navigation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/timeline-controls.html">
+                            Timeline Controls
+                        </a>
+                        
+                        <div class="toc-group-label">Effects and Layout</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/tween-shortcuts.html">
+                            Tween Shortcuts
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/window-management.html">
+                            Window Management
+                        </a>
+                        
+                        <div class="toc-group-label">Properties and Tables</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/property-editing.html">
+                            Property Editing
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/table-views.html">
+                            Table Views
+                        </a>
+                        
+                        <div class="toc-group-label">Hardware Input</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/xbox-controller.html">
+                            Xbox Controller
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/display-warp.html">
+                            Display & Warp
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="11">
+            <a href="../troubleshooting/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">12. Troubleshooting</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Common Issues</div>
+                        <a class="toc-subsection " href="../troubleshooting/common-issues.html">
+                            Common Issues
+                        </a>
+                        
+                        <div class="toc-group-label">By Category</div>
+                        <a class="toc-subsection " href="../troubleshooting/performance-tips.html">
+                            Performance Tips
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/display-problems.html">
+                            Display Problems
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/network-issues.html">
+                            Network Issues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/media-playback-issues.html">
+                            Media Playback Issues
+                        </a>
+                        
+                        <div class="toc-group-label">Getting Support</div>
+                        <a class="toc-subsection " href="../troubleshooting/feedback-reports.html">
+                            Feedback Reports
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/getting-help.html">
+                            Getting Help
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="12">
+            <a href="../glossary/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">13. Glossary</span>
+                
+            </a>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="13">
+            <a href="../legal/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">14. Legal</span>
+                
+            </a>
+            
+        </div>
+        
+            </nav>
+            
+            <div class="guide-switcher" id="guide-switcher">
+                <button class="guide-switcher-toggle" id="guide-switcher-toggle" aria-label="Switch guide">
+                    <span class="guide-switcher-label">WATCHOUT</span>
+                    <svg class="guide-switcher-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="guide-switcher-dropdown" id="guide-switcher-dropdown">
+                    <a class="guide-switcher-option active" href="../../watchout/index.html">WATCHOUT</a>
+                        <a class="guide-switcher-option" href="../../wp64/index.html">WATCHPAX 64</a>
+                        <a class="guide-switcher-option" href="../../wp30/index.html">WATCHPAX 30</a>
+                        <a class="guide-switcher-option" href="../../wp50/index.html">WATCHPAX 50</a>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">6. Effects and Tweens</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">Rotation Effects</span>
+        
+                </div>
+                <a href="../index.html" class="header-home-link" aria-label="Go to home page">
+                    <img src="../media/dataton-logo.png" alt="Dataton" class="header-logo">
+                </a>
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><h2>Rotation Effects</h2>
+
+<p>Rotation tweens control the orientation of a cue over time, enabling everything from simple 2D spins to full 3D perspective turns. WATCHOUT provides three independent rotation axes, each with its own tween, giving you complete control over how content tilts, turns, and rolls on Stage.</p>
+
+<h3>Rotation Axes</h3>
+
+<p>WATCHOUT offers three rotation tweens, each corresponding to a different axis:</p>
+
+<table>
+<tr><th>Tween</th><th>UI Name</th><th>Shortcut</th><th>Effect</th></tr>
+<tr><td><strong>Rotation Z</strong></td><td>Rotation Z</td><td><strong>Alt+Z</strong></td><td>Rotates the cue in the plane of the screen — the classic 2D spin. Positive values rotate clockwise, negative values rotate counter-clockwise.</td></tr>
+<tr><td><strong>Rotation Y</strong></td><td>Rotation Y</td><td><strong>Alt+Y</strong></td><td>Rotates the cue around a vertical axis — a horizontal 3D turn, like opening a door.</td></tr>
+<tr><td><strong>Rotation X</strong></td><td>Rotation X</td><td><strong>Alt+X</strong></td><td>Rotates the cue around a horizontal axis — a vertical 3D tilt, like tilting a sign forward or backward.</td></tr>
+</table>
+
+<p>All three are measured in <strong>degrees</strong> with a default of <strong>0</strong> (no rotation). The range is unlimited — values beyond 360 or below -360 produce multiple full revolutions, which is useful for continuous spinning effects.</p>
+
+<div class="interactive-widget" id="rotation-axes-3d-widget">
+    <style>
+        #rotation-axes-3d-widget {
+            width: 100%;
+        }
+
+        #rotation-axes-3d-widget .ra-layout {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        #rotation-axes-3d-widget .ra-canvas-wrap {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+        }
+
+        #rotation-axes-3d-widget canvas {
+            width: 100%;
+            height: 380px;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0d0d1a 100%);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: block;
+        }
+
+        #rotation-axes-3d-widget .ra-controls {
+            width: 200px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #rotation-axes-3d-widget .ra-control {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        #rotation-axes-3d-widget .ra-control:hover,
+        #rotation-axes-3d-widget .ra-control.active {
+            border-color: var(--accent-primary, #6366f1);
+            background: rgba(99, 102, 241, 0.08);
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="z"]:hover,
+        #rotation-axes-3d-widget .ra-control[data-axis="z"].active {
+            border-color: #60a5fa;
+            background: rgba(96, 165, 250, 0.08);
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="y"]:hover,
+        #rotation-axes-3d-widget .ra-control[data-axis="y"].active {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.08);
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="x"]:hover,
+        #rotation-axes-3d-widget .ra-control[data-axis="x"].active {
+            border-color: #f87171;
+            background: rgba(248, 113, 113, 0.08);
+        }
+
+        #rotation-axes-3d-widget .ra-control label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary, #e7e5e4);
+            pointer-events: none;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="x"] label {
+            color: #f87171;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="y"] label {
+            color: #4ade80;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="z"] label {
+            color: #60a5fa;
+        }
+
+        #rotation-axes-3d-widget .ra-control input[type=range] {
+            width: 100%;
+            height: 5px;
+            cursor: pointer;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="x"] input[type=range] {
+            accent-color: #f87171;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="y"] input[type=range] {
+            accent-color: #4ade80;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="z"] input[type=range] {
+            accent-color: #60a5fa;
+        }
+
+        #rotation-axes-3d-widget .ra-val {
+            font-size: 0.7rem;
+            color: var(--text-muted, #78716c);
+            font-variant-numeric: tabular-nums;
+        }
+
+        #rotation-axes-3d-widget .ra-reset-btn {
+            margin-top: 4px;
+            padding: 5px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            background: var(--bg-tertiary, #292524);
+            color: var(--text-secondary, #a8a29e);
+            font-family: inherit;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        #rotation-axes-3d-widget .ra-reset-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        #rotation-axes-3d-widget .ra-explain {
+            margin-top: 10px;
+            min-height: 44px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            background: rgba(99, 102, 241, 0.06);
+            border-left: 3px solid var(--accent-primary, #6366f1);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: var(--text-secondary, #a8a29e);
+        }
+
+        #rotation-axes-3d-widget .ra-explain strong {
+            color: var(--text-primary, #e7e5e4);
+        }
+
+        #rotation-axes-3d-widget .ra-legend {
+            display: flex;
+            gap: 14px;
+            margin-top: 6px;
+            font-size: 0.72rem;
+            color: var(--text-muted, #78716c);
+        }
+
+        #rotation-axes-3d-widget .ra-legend span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        #rotation-axes-3d-widget .ra-legend .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        @media (max-width: 680px) {
+            #rotation-axes-3d-widget .ra-layout {
+                flex-direction: column;
+            }
+
+            #rotation-axes-3d-widget .ra-controls {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            #rotation-axes-3d-widget .ra-control {
+                flex: 1 1 45%;
+                min-width: 130px;
+            }
+        }
+    </style>
+
+    <div class="ra-layout">
+        <div class="ra-canvas-wrap">
+            <canvas id="ra-canvas" width="1200" height="760"></canvas>
+            <div class="ra-legend">
+                <span><span class="dot" style="background:#f87171;"></span> X axis (tilt)</span>
+                <span><span class="dot" style="background:#4ade80;"></span> Y axis (turn)</span>
+                <span><span class="dot" style="background:#60a5fa;"></span> Z axis (spin)</span>
+            </div>
+        </div>
+        <div class="ra-controls">
+            <div class="ra-control" data-axis="z" tabindex="0">
+                <label>Rotation Z (Spin)</label>
+                <input type="range" id="ra-rotZ" min="-360" max="360" value="0" step="1">
+                <span class="ra-val" id="ra-rotZ-val">0&deg;</span>
+            </div>
+            <div class="ra-control" data-axis="y" tabindex="0">
+                <label>Rotation Y (Turn)</label>
+                <input type="range" id="ra-rotY" min="-360" max="360" value="0" step="1">
+                <span class="ra-val" id="ra-rotY-val">0&deg;</span>
+            </div>
+            <div class="ra-control" data-axis="x" tabindex="0">
+                <label>Rotation X (Tilt)</label>
+                <input type="range" id="ra-rotX" min="-360" max="360" value="0" step="1">
+                <span class="ra-val" id="ra-rotX-val">0&deg;</span>
+            </div>
+            <button class="ra-reset-btn" id="ra-reset">Reset All</button>
+        </div>
+    </div>
+    <div class="ra-explain" id="ra-explain">
+        Drag the sliders to rotate the card around each axis. WATCHOUT applies rotations in order: <strong>Z first, then Y, then X</strong>.
+    </div>
+</div>
+
+<script>
+    (function () {
+        var canvas = document.getElementById('ra-canvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var W = canvas.width, H = canvas.height;
+
+        var sliderZ = document.getElementById('ra-rotZ');
+        var sliderY = document.getElementById('ra-rotY');
+        var sliderX = document.getElementById('ra-rotX');
+        var valZ = document.getElementById('ra-rotZ-val');
+        var valY = document.getElementById('ra-rotY-val');
+        var valX = document.getElementById('ra-rotX-val');
+        var explainEl = document.getElementById('ra-explain');
+
+        var explanations = {
+            z: '<strong>Rotation Z</strong> — Rotates the cue in the plane of the screen, like a clock hand. This is the classic 2D spin. Positive values rotate clockwise.',
+            y: '<strong>Rotation Y</strong> — Rotates around a vertical axis, like opening a door. The left and right edges move toward and away from the viewer.',
+            x: '<strong>Rotation X</strong> — Rotates around a horizontal axis, like tilting a sign forward or backward. The top and bottom edges move toward and away from the viewer.',
+            none: 'Drag the sliders to rotate the card around each axis. WATCHOUT applies rotations in order: <strong>Z first, then Y, then X</strong>.'
+        };
+
+        // Axis highlighting
+        var controlEls = document.querySelectorAll('#rotation-axes-3d-widget .ra-control');
+        var activeAxis = null;
+        controlEls.forEach(function (el) {
+            var a = el.dataset.axis;
+            el.addEventListener('mouseenter', function () { setActive(a); });
+            el.addEventListener('mouseleave', function () { setActive(null); });
+            el.addEventListener('focusin', function () { setActive(a); });
+            el.addEventListener('focusout', function () { setActive(null); });
+        });
+
+        function setActive(a) {
+            activeAxis = a;
+            controlEls.forEach(function (el) {
+                el.classList.toggle('active', el.dataset.axis === a);
+            });
+            explainEl.innerHTML = explanations[a] || explanations.none;
+            draw();
+        }
+
+        // --- 3D Math ---
+        var DEG = Math.PI / 180;
+
+        function rotateZ(p, a) {
+            var c = Math.cos(a), s = Math.sin(a);
+            return [c * p[0] - s * p[1], s * p[0] + c * p[1], p[2]];
+        }
+
+        function rotateY(p, a) {
+            var c = Math.cos(a), s = Math.sin(a);
+            return [c * p[0] + s * p[2], p[1], -s * p[0] + c * p[2]];
+        }
+
+        function rotateX(p, a) {
+            var c = Math.cos(a), s = Math.sin(a);
+            return [p[0], c * p[1] - s * p[2], s * p[1] + c * p[2]];
+        }
+
+        // Apply WATCHOUT rotation order: Z -> Y -> X
+        function applyRotations(p, rz, ry, rx) {
+            p = rotateZ(p, rz);
+            p = rotateY(p, ry);
+            p = rotateX(p, rx);
+            return p;
+        }
+
+        // Perspective projection
+        var focalLen = 800;
+        var cx = W / 2, cy = H / 2;
+
+        function project(p) {
+            var z = p[2] + focalLen;
+            if (z < 1) z = 1;
+            var scale = focalLen / z;
+            return [cx + p[0] * scale, cy + p[1] * scale, z, scale];
+        }
+
+        // Card geometry: a flat rectangle in 3D
+        var cardW = 200, cardH = 140;
+        var cardVerts = [
+            [-cardW, -cardH, 0],
+            [cardW, -cardH, 0],
+            [cardW, cardH, 0],
+            [-cardW, cardH, 0]
+        ];
+
+        // Grid subdivisions on card face
+        var gridLinesH = 4;
+        var gridLinesV = 6;
+
+        function lerpXY(a, b, t) {
+            return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+        }
+
+        function draw() {
+            var rz = parseFloat(sliderZ.value) * DEG;
+            var ry = parseFloat(sliderY.value) * DEG;
+            var rx = parseFloat(sliderX.value) * DEG;
+
+            valZ.textContent = sliderZ.value + '\u00B0';
+            valY.textContent = sliderY.value + '\u00B0';
+            valX.textContent = sliderX.value + '\u00B0';
+
+            ctx.clearRect(0, 0, W, H);
+
+            // --- Draw rotation rings ---
+            var axes = [
+                { dir: [1, 0, 0], color: '#f87171', label: 'X', active: activeAxis === 'x' },
+                { dir: [0, 1, 0], color: '#4ade80', label: 'Y', active: activeAxis === 'y' },
+                { dir: [0, 0, 1], color: '#60a5fa', label: 'Z', active: activeAxis === 'z' }
+            ];
+
+            var ringR = 220;
+            var segments = 72;
+
+            axes.forEach(function (axis) {
+                var alpha = axis.active ? 0.5 : 0.15;
+                ctx.strokeStyle = axis.color;
+                ctx.globalAlpha = alpha;
+                ctx.lineWidth = axis.active ? 3 : 1.5;
+                ctx.setLineDash(axis.active ? [] : [4, 4]);
+
+                ctx.beginPath();
+                for (var i = 0; i <= segments; i++) {
+                    var t = (i / segments) * Math.PI * 2;
+                    var pt;
+                    if (axis.label === 'X') {
+                        pt = [0, Math.cos(t) * ringR, Math.sin(t) * ringR];
+                    } else if (axis.label === 'Y') {
+                        pt = [Math.cos(t) * ringR, 0, Math.sin(t) * ringR];
+                    } else {
+                        pt = [Math.cos(t) * ringR, Math.sin(t) * ringR, 0];
+                    }
+                    pt = applyRotations(pt, rz, ry, rx);
+                    var pp = project(pt);
+                    if (i === 0) ctx.moveTo(pp[0], pp[1]);
+                    else ctx.lineTo(pp[0], pp[1]);
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.globalAlpha = 1;
+            });
+
+            // --- Draw axis arrows ---
+            var axisLen = 280;
+            axes.forEach(function (axis) {
+                var alpha = axis.active ? 0.9 : 0.3;
+                ctx.strokeStyle = axis.color;
+                ctx.globalAlpha = alpha;
+                ctx.lineWidth = axis.active ? 3 : 1.5;
+
+                var dir = [axis.dir[0] * axisLen, axis.dir[1] * axisLen, axis.dir[2] * axisLen];
+                var negDir = [-dir[0], -dir[1], -dir[2]];
+
+                var tip = applyRotations(dir, rz, ry, rx);
+                var negTip = applyRotations(negDir, rz, ry, rx);
+                var origin = applyRotations([0, 0, 0], rz, ry, rx);
+                var pt = project(tip);
+                var pn = project(negTip);
+                var po = project(origin);
+
+                // Full axis line
+                ctx.beginPath();
+                ctx.moveTo(pn[0], pn[1]);
+                ctx.lineTo(pt[0], pt[1]);
+                ctx.stroke();
+
+                // Arrow head
+                ctx.fillStyle = axis.color;
+                ctx.globalAlpha = alpha;
+                var dx = pt[0] - po[0];
+                var dy = pt[1] - po[1];
+                var len = Math.sqrt(dx * dx + dy * dy) || 1;
+                var ux = dx / len, uy = dy / len;
+                var arrowSize = 10 * pt[3];
+                if (arrowSize > 18) arrowSize = 18;
+                if (arrowSize < 5) arrowSize = 5;
+                ctx.beginPath();
+                ctx.moveTo(pt[0], pt[1]);
+                ctx.lineTo(pt[0] - ux * arrowSize - uy * arrowSize * 0.5, pt[1] - uy * arrowSize + ux * arrowSize * 0.5);
+                ctx.lineTo(pt[0] - ux * arrowSize + uy * arrowSize * 0.5, pt[1] - uy * arrowSize - ux * arrowSize * 0.5);
+                ctx.closePath();
+                ctx.fill();
+
+                // Axis label
+                ctx.globalAlpha = axis.active ? 1 : 0.5;
+                ctx.fillStyle = axis.color;
+                ctx.font = (axis.active ? 'bold ' : '') + '22px "Futura Now Headline", Futura, system-ui, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                var labelOff = 22;
+                ctx.fillText(axis.label, pt[0] + ux * labelOff, pt[1] + uy * labelOff);
+                ctx.globalAlpha = 1;
+            });
+
+            // --- Draw the card ---
+            var transformed = cardVerts.map(function (v) {
+                return applyRotations(v, rz, ry, rx);
+            });
+            var projected = transformed.map(function (v) {
+                return project(v);
+            });
+
+            // Face direction via cross product
+            var eax = projected[1][0] - projected[0][0], eay = projected[1][1] - projected[0][1];
+            var ebx = projected[3][0] - projected[0][0], eby = projected[3][1] - projected[0][1];
+            var cross = eax * eby - eay * ebx;
+            var isFront = cross > 0;
+
+            // Card face fill
+            ctx.beginPath();
+            ctx.moveTo(projected[0][0], projected[0][1]);
+            ctx.lineTo(projected[1][0], projected[1][1]);
+            ctx.lineTo(projected[2][0], projected[2][1]);
+            ctx.lineTo(projected[3][0], projected[3][1]);
+            ctx.closePath();
+
+            if (isFront) {
+                var grad = ctx.createLinearGradient(projected[0][0], projected[0][1], projected[2][0], projected[2][1]);
+                grad.addColorStop(0, 'rgba(99, 102, 241, 0.35)');
+                grad.addColorStop(1, 'rgba(139, 92, 246, 0.25)');
+                ctx.fillStyle = grad;
+            } else {
+                ctx.fillStyle = 'rgba(80, 60, 60, 0.3)';
+            }
+            ctx.fill();
+
+            // Card border
+            ctx.strokeStyle = isFront ? 'rgba(165, 160, 255, 0.7)' : 'rgba(120, 100, 100, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Grid lines on card
+            ctx.strokeStyle = isFront ? 'rgba(165, 160, 255, 0.2)' : 'rgba(120, 100, 100, 0.15)';
+            ctx.lineWidth = 1;
+
+            for (var gi = 1; gi < gridLinesH; gi++) {
+                var t = gi / gridLinesH;
+                var leftPt = lerpXY(projected[0], projected[3], t);
+                var rightPt = lerpXY(projected[1], projected[2], t);
+                ctx.beginPath();
+                ctx.moveTo(leftPt[0], leftPt[1]);
+                ctx.lineTo(rightPt[0], rightPt[1]);
+                ctx.stroke();
+            }
+            for (var gi = 1; gi < gridLinesV; gi++) {
+                var t = gi / gridLinesV;
+                var topPt = lerpXY(projected[0], projected[1], t);
+                var bottomPt = lerpXY(projected[3], projected[2], t);
+                ctx.beginPath();
+                ctx.moveTo(topPt[0], topPt[1]);
+                ctx.lineTo(bottomPt[0], bottomPt[1]);
+                ctx.stroke();
+            }
+
+            // Card face label
+            var labelCx = (projected[0][0] + projected[2][0]) / 2;
+            var labelCy = (projected[0][1] + projected[2][1]) / 2;
+            ctx.fillStyle = isFront ? 'rgba(200, 200, 255, 0.8)' : 'rgba(180, 150, 150, 0.6)';
+            ctx.font = '28px "Futura Now Headline", Futura, system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(isFront ? 'FRONT' : 'BACK', labelCx, labelCy);
+
+            // Corner dots
+            projected.forEach(function (p) {
+                ctx.fillStyle = isFront ? 'rgba(165, 160, 255, 0.9)' : 'rgba(120, 100, 100, 0.7)';
+                ctx.beginPath();
+                ctx.arc(p[0], p[1], 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        // Events
+        sliderZ.addEventListener('input', draw);
+        sliderY.addEventListener('input', draw);
+        sliderX.addEventListener('input', draw);
+
+        document.getElementById('ra-reset').addEventListener('click', function () {
+            sliderZ.value = 0;
+            sliderY.value = 0;
+            sliderX.value = 0;
+            draw();
+        });
+
+        // Initial draw
+        draw();
+    })();
+</script>
+
+<h3>Adding Rotation Tweens</h3>
+
+<p>To add rotation animation to a cue:</p>
+
+<ol>
+<li>Select one or more cues in the Timeline.</li>
+<li>Open the <strong>Effect</strong> menu and click <strong>Rotation X</strong>, <strong>Rotation Y</strong>, or <strong>Rotation Z</strong>, or use the corresponding keyboard shortcut.</li>
+<li>The rotation tween appears in the tween area beneath the cue, within the <strong>Transform</strong> group.</li>
+
+</ol>
+
+<p>Each rotation axis is added as a separate tween. You can add one, two, or all three depending on the effect you need. For a simple 2D spin, Rotation Z alone is sufficient. For 3D perspective effects, combine two or three axes.</p>
+
+<h3>Rotation Order</h3>
+
+<p>When multiple rotation axes are active on the same cue, WATCHOUT applies them in a fixed order: <strong>Rotation Z first, then Rotation Y, then Rotation X</strong>. This order affects the final visual result because 3D rotations are not commutative — rotating Z then Y produces a different orientation than rotating Y then Z.</p>
+
+<p>In practice, this means:</p>
+
+<ul>
+<li><strong>Rotation Z</strong> establishes the base spin in the screen plane.</li>
+<li><strong>Rotation Y</strong> then turns the already-Z-rotated cue horizontally.</li>
+<li><strong>Rotation X</strong> then tilts the already-Z-and-Y-rotated cue vertically.</li>
+
+</ul>
+
+<p>If you are creating simple single-axis effects, the order does not matter. When combining multiple axes, preview the result carefully and adjust values until the orientation matches your intent.</p>
+
+<div class="interactive-widget" id="rotation-order-widget">
+    <style>
+        #rotation-order-widget {
+            width: 100%;
+        }
+
+        #rotation-order-widget .ro-panels {
+            display: flex;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        #rotation-order-widget .ro-panel {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #rotation-order-widget .ro-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 6px 6px 0 0;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        #rotation-order-widget .ro-panel-header.ro-watchout {
+            background: rgba(99, 102, 241, 0.12);
+            color: var(--accent-primary, #6366f1);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-bottom: none;
+        }
+
+        #rotation-order-widget .ro-panel-header.ro-alt {
+            background: rgba(251, 146, 60, 0.12);
+            color: #fb923c;
+            border: 1px solid rgba(251, 146, 60, 0.25);
+            border-bottom: none;
+        }
+
+        #rotation-order-widget .ro-panel-header .ro-badge {
+            font-size: 0.65rem;
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        #rotation-order-widget .ro-watchout .ro-badge {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--accent-primary, #a5b4fc);
+        }
+
+        #rotation-order-widget .ro-alt .ro-badge {
+            background: rgba(251, 146, 60, 0.2);
+            color: #fdba74;
+        }
+
+        #rotation-order-widget canvas {
+            width: 100%;
+            height: 300px;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0d0d1a 100%);
+            border-radius: 0 0 8px 8px;
+            display: block;
+        }
+
+        #rotation-order-widget .ro-panel:first-child canvas {
+            border: 1px solid rgba(99, 102, 241, 0.18);
+            border-top: none;
+        }
+
+        #rotation-order-widget .ro-panel:last-child canvas {
+            border: 1px solid rgba(251, 146, 60, 0.18);
+            border-top: none;
+        }
+
+        #rotation-order-widget .ro-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            align-items: flex-start;
+            flex-wrap: wrap;
+        }
+
+        #rotation-order-widget .ro-slider-group {
+            flex: 1;
+            min-width: 110px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        #rotation-order-widget .ro-slider-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            pointer-events: none;
+        }
+
+        #rotation-order-widget .ro-slider-group[data-axis="x"] label { color: #f87171; }
+        #rotation-order-widget .ro-slider-group[data-axis="y"] label { color: #4ade80; }
+        #rotation-order-widget .ro-slider-group[data-axis="z"] label { color: #60a5fa; }
+
+        #rotation-order-widget .ro-slider-group input[type=range] {
+            width: 100%;
+            height: 5px;
+            cursor: pointer;
+        }
+
+        #rotation-order-widget .ro-slider-group[data-axis="x"] input { accent-color: #f87171; }
+        #rotation-order-widget .ro-slider-group[data-axis="y"] input { accent-color: #4ade80; }
+        #rotation-order-widget .ro-slider-group[data-axis="z"] input { accent-color: #60a5fa; }
+
+        #rotation-order-widget .ro-val {
+            font-size: 0.7rem;
+            color: var(--text-muted, #78716c);
+            font-variant-numeric: tabular-nums;
+        }
+
+        #rotation-order-widget .ro-order-pick {
+            min-width: 140px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(251, 146, 60, 0.15);
+            background: rgba(251, 146, 60, 0.04);
+        }
+
+        #rotation-order-widget .ro-order-pick label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: #fb923c;
+            pointer-events: none;
+        }
+
+        #rotation-order-widget .ro-order-pick select {
+            width: 100%;
+            padding: 5px 8px;
+            border-radius: 4px;
+            background: var(--input-bg, #1c1917);
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.1));
+            color: var(--text-primary, #e7e5e4);
+            font-size: 0.8rem;
+            font-family: monospace;
+            cursor: pointer;
+        }
+
+        #rotation-order-widget .ro-btn-row {
+            display: flex;
+            align-items: flex-end;
+        }
+
+        #rotation-order-widget .ro-reset-btn {
+            padding: 5px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            background: var(--bg-tertiary, #292524);
+            color: var(--text-secondary, #a8a29e);
+            font-family: inherit;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+            align-self: flex-end;
+            height: fit-content;
+        }
+
+        #rotation-order-widget .ro-reset-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        #rotation-order-widget .ro-explain {
+            margin-top: 10px;
+            min-height: 44px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            background: rgba(99, 102, 241, 0.06);
+            border-left: 3px solid var(--accent-primary, #6366f1);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: var(--text-secondary, #a8a29e);
+        }
+
+        #rotation-order-widget .ro-explain strong {
+            color: var(--text-primary, #e7e5e4);
+        }
+
+        #rotation-order-widget .ro-match {
+            display: inline-block;
+            margin-top: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        #rotation-order-widget .ro-match.same {
+            background: rgba(74, 222, 128, 0.15);
+            color: #4ade80;
+        }
+
+        #rotation-order-widget .ro-match.diff {
+            background: rgba(248, 113, 113, 0.15);
+            color: #f87171;
+        }
+
+        @media (max-width: 680px) {
+            #rotation-order-widget .ro-panels {
+                flex-direction: column;
+            }
+
+            #rotation-order-widget canvas {
+                height: 240px;
+            }
+
+            #rotation-order-widget .ro-controls {
+                flex-direction: column;
+            }
+
+            #rotation-order-widget .ro-slider-group {
+                min-width: 100%;
+            }
+        }
+    </style>
+
+    <div class="ro-panels">
+        <div class="ro-panel">
+            <div class="ro-panel-header ro-watchout">
+                <span class="ro-badge">WATCHOUT</span>
+                <span>Z &rarr; Y &rarr; X</span>
+            </div>
+            <canvas id="ro-canvas-left" width="800" height="520"></canvas>
+        </div>
+        <div class="ro-panel">
+            <div class="ro-panel-header ro-alt">
+                <span class="ro-badge">Compare</span>
+                <span id="ro-alt-order-label">X &rarr; Y &rarr; Z</span>
+            </div>
+            <canvas id="ro-canvas-right" width="800" height="520"></canvas>
+        </div>
+    </div>
+
+    <div class="ro-controls">
+        <div class="ro-slider-group" data-axis="x">
+            <label>Rotation X</label>
+            <input type="range" id="ro-rx" min="-180" max="180" value="45" step="1">
+            <span class="ro-val" id="ro-rx-val">45&deg;</span>
+        </div>
+        <div class="ro-slider-group" data-axis="y">
+            <label>Rotation Y</label>
+            <input type="range" id="ro-ry" min="-180" max="180" value="30" step="1">
+            <span class="ro-val" id="ro-ry-val">30&deg;</span>
+        </div>
+        <div class="ro-slider-group" data-axis="z">
+            <label>Rotation Z</label>
+            <input type="range" id="ro-rz" min="-180" max="180" value="20" step="1">
+            <span class="ro-val" id="ro-rz-val">20&deg;</span>
+        </div>
+        <div class="ro-order-pick">
+            <label>Compare Order</label>
+            <select id="ro-order-select">
+                <option value="XYZ" selected>X &rarr; Y &rarr; Z</option>
+                <option value="XZY">X &rarr; Z &rarr; Y</option>
+                <option value="YXZ">Y &rarr; X &rarr; Z</option>
+                <option value="YZX">Y &rarr; Z &rarr; X</option>
+                <option value="ZXY">Z &rarr; X &rarr; Y</option>
+                <option value="ZYX">Z &rarr; Y &rarr; X (WATCHOUT)</option>
+            </select>
+        </div>
+        <div class="ro-btn-row">
+            <button class="ro-reset-btn" id="ro-reset">Reset</button>
+        </div>
+    </div>
+
+    <div class="ro-explain" id="ro-explain">
+        Both cards receive the <strong>same X, Y, Z values</strong>, but applied in different order.
+        When only one axis is non-zero the results are identical. Try combining two or three axes to see how order changes the outcome.
+        <span class="ro-match diff" id="ro-match-badge" style="display:none;"></span>
+    </div>
+</div>
+
+<script>
+    (function () {
+        /* ---- DOM refs ---- */
+        var cL = document.getElementById('ro-canvas-left');
+        var cR = document.getElementById('ro-canvas-right');
+        if (!cL || !cR) return;
+        var ctxL = cL.getContext('2d');
+        var ctxR = cR.getContext('2d');
+        var LW = cL.width, LH = cL.height;
+        var RW = cR.width, RH = cR.height;
+
+        var sRx = document.getElementById('ro-rx');
+        var sRy = document.getElementById('ro-ry');
+        var sRz = document.getElementById('ro-rz');
+        var vRx = document.getElementById('ro-rx-val');
+        var vRy = document.getElementById('ro-ry-val');
+        var vRz = document.getElementById('ro-rz-val');
+        var orderSel = document.getElementById('ro-order-select');
+        var altLabel = document.getElementById('ro-alt-order-label');
+        var explainEl = document.getElementById('ro-explain');
+        var matchBadge = document.getElementById('ro-match-badge');
+
+        /* ---- 3D math ---- */
+        var DEG = Math.PI / 180;
+
+        function rotZ(p, a) {
+            var c = Math.cos(a), s = Math.sin(a);
+            return [c * p[0] - s * p[1], s * p[0] + c * p[1], p[2]];
+        }
+        function rotY(p, a) {
+            var c = Math.cos(a), s = Math.sin(a);
+            return [c * p[0] + s * p[2], p[1], -s * p[0] + c * p[2]];
+        }
+        function rotX(p, a) {
+            var c = Math.cos(a), s = Math.sin(a);
+            return [p[0], c * p[1] - s * p[2], s * p[1] + c * p[2]];
+        }
+
+        var rotFns = { X: rotX, Y: rotY, Z: rotZ };
+
+        function applyOrder(p, order, rx, ry, rz) {
+            var vals = { X: rx, Y: ry, Z: rz };
+            for (var i = 0; i < order.length; i++) {
+                p = rotFns[order[i]](p, vals[order[i]]);
+            }
+            return p;
+        }
+
+        /* ---- Projection ---- */
+        var focalLen = 600;
+
+        function projectTo(p, cw, ch) {
+            var cx = cw / 2, cy = ch / 2;
+            var z = p[2] + focalLen;
+            if (z < 1) z = 1;
+            var sc = focalLen / z;
+            return [cx + p[0] * sc, cy + p[1] * sc, z, sc];
+        }
+
+        /* ---- Card geometry ---- */
+        var cardW = 140, cardH = 100;
+        var verts = [
+            [-cardW, -cardH, 0],
+            [cardW, -cardH, 0],
+            [cardW, cardH, 0],
+            [-cardW, cardH, 0]
+        ];
+        var gridH = 3, gridV = 5;
+
+        function lerp2(a, b, t) {
+            return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+        }
+
+        /* ---- Draw one card ---- */
+        function drawCard(ctx, cw, ch, order, rx, ry, rz, accentColor, accentRgba) {
+            ctx.clearRect(0, 0, cw, ch);
+
+            var transformed = verts.map(function (v) { return applyOrder(v, order, rx, ry, rz); });
+            var projected = transformed.map(function (v) { return projectTo(v, cw, ch); });
+
+            /* face direction */
+            var ax = projected[1][0] - projected[0][0], ay = projected[1][1] - projected[0][1];
+            var bx = projected[3][0] - projected[0][0], by = projected[3][1] - projected[0][1];
+            var cross = ax * by - ay * bx;
+            var isFront = cross > 0;
+
+            /* axis stubs for context */
+            var axisLen = 180;
+            var axesDef = [
+                { dir: [axisLen, 0, 0], color: '#f87171', lbl: 'X' },
+                { dir: [0, axisLen, 0], color: '#4ade80', lbl: 'Y' },
+                { dir: [0, 0, axisLen], color: '#60a5fa', lbl: 'Z' }
+            ];
+            axesDef.forEach(function (ad) {
+                var tip = applyOrder(ad.dir, order, rx, ry, rz);
+                var neg = applyOrder([-ad.dir[0], -ad.dir[1], -ad.dir[2]], order, rx, ry, rz);
+                var pt = projectTo(tip, cw, ch);
+                var pn = projectTo(neg, cw, ch);
+                ctx.strokeStyle = ad.color;
+                ctx.globalAlpha = 0.25;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(pn[0], pn[1]);
+                ctx.lineTo(pt[0], pt[1]);
+                ctx.stroke();
+
+                /* small label */
+                var o = projectTo([0, 0, 0], cw, ch);
+                var dx = pt[0] - o[0], dy = pt[1] - o[1];
+                var ln = Math.sqrt(dx * dx + dy * dy) || 1;
+                ctx.globalAlpha = 0.4;
+                ctx.fillStyle = ad.color;
+                ctx.font = '16px "Futura Now Headline", Futura, system-ui, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(ad.lbl, pt[0] + dx / ln * 14, pt[1] + dy / ln * 14);
+                ctx.globalAlpha = 1;
+            });
+
+            /* card face */
+            ctx.beginPath();
+            ctx.moveTo(projected[0][0], projected[0][1]);
+            for (var i = 1; i < 4; i++) ctx.lineTo(projected[i][0], projected[i][1]);
+            ctx.closePath();
+
+            if (isFront) {
+                var grad = ctx.createLinearGradient(projected[0][0], projected[0][1], projected[2][0], projected[2][1]);
+                grad.addColorStop(0, accentRgba.replace('A', '0.35'));
+                grad.addColorStop(1, accentRgba.replace('A', '0.20'));
+                ctx.fillStyle = grad;
+            } else {
+                ctx.fillStyle = 'rgba(80, 60, 60, 0.3)';
+            }
+            ctx.fill();
+
+            ctx.strokeStyle = isFront ? accentColor : 'rgba(120, 100, 100, 0.5)';
+            ctx.globalAlpha = isFront ? 0.7 : 0.5;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+
+            /* grid */
+            ctx.strokeStyle = isFront ? accentColor : 'rgba(120, 100, 100, 0.3)';
+            ctx.globalAlpha = isFront ? 0.18 : 0.12;
+            ctx.lineWidth = 1;
+            for (var gi = 1; gi < gridH; gi++) {
+                var t = gi / gridH;
+                var l = lerp2(projected[0], projected[3], t);
+                var r = lerp2(projected[1], projected[2], t);
+                ctx.beginPath(); ctx.moveTo(l[0], l[1]); ctx.lineTo(r[0], r[1]); ctx.stroke();
+            }
+            for (var gi = 1; gi < gridV; gi++) {
+                var t = gi / gridV;
+                var tp = lerp2(projected[0], projected[1], t);
+                var bp = lerp2(projected[3], projected[2], t);
+                ctx.beginPath(); ctx.moveTo(tp[0], tp[1]); ctx.lineTo(bp[0], bp[1]); ctx.stroke();
+            }
+            ctx.globalAlpha = 1;
+
+            /* label */
+            var lcx = (projected[0][0] + projected[2][0]) / 2;
+            var lcy = (projected[0][1] + projected[2][1]) / 2;
+            ctx.fillStyle = isFront ? 'rgba(220, 220, 255, 0.75)' : 'rgba(180, 150, 150, 0.5)';
+            ctx.font = '22px "Futura Now Headline", Futura, system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(isFront ? 'FRONT' : 'BACK', lcx, lcy);
+
+            /* corner dots */
+            projected.forEach(function (p) {
+                ctx.fillStyle = isFront ? accentColor : 'rgba(120,100,100,0.6)';
+                ctx.globalAlpha = isFront ? 0.8 : 0.5;
+                ctx.beginPath();
+                ctx.arc(p[0], p[1], 3, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.globalAlpha = 1;
+            });
+
+            /* return projected corners for comparison */
+            return projected;
+        }
+
+        /* ---- Order labels ---- */
+        var orderLabels = {
+            ZYX: 'Z \u2192 Y \u2192 X',
+            XYZ: 'X \u2192 Y \u2192 Z',
+            XZY: 'X \u2192 Z \u2192 Y',
+            YXZ: 'Y \u2192 X \u2192 Z',
+            YZX: 'Y \u2192 Z \u2192 X',
+            ZXY: 'Z \u2192 X \u2192 Y'
+        };
+
+        /* ---- Main draw ---- */
+        function draw() {
+            var rx = parseFloat(sRx.value) * DEG;
+            var ry = parseFloat(sRy.value) * DEG;
+            var rz = parseFloat(sRz.value) * DEG;
+
+            vRx.textContent = sRx.value + '\u00B0';
+            vRy.textContent = sRy.value + '\u00B0';
+            vRz.textContent = sRz.value + '\u00B0';
+
+            var altOrder = orderSel.value; // e.g. "XYZ"
+            altLabel.textContent = orderLabels[altOrder] || altOrder;
+
+            /* Left: WATCHOUT order (ZYX) */
+            var projL = drawCard(ctxL, LW, LH, 'ZYX', rx, ry, rz,
+                'rgba(165, 160, 255, 0.9)', 'rgba(99, 102, 241, A)');
+
+            /* Right: comparison order */
+            var projR = drawCard(ctxR, RW, RH, altOrder, rx, ry, rz,
+                'rgba(251, 186, 116, 0.9)', 'rgba(251, 146, 60, A)');
+
+            /* Compare: measure max corner deviation in pixels */
+            var maxDev = 0;
+            for (var i = 0; i < 4; i++) {
+                var dx = projL[i][0] - projR[i][0];
+                var dy = projL[i][1] - projR[i][1];
+                var d = Math.sqrt(dx * dx + dy * dy);
+                if (d > maxDev) maxDev = d;
+            }
+
+            /* Count non-zero axes */
+            var nonZero = (sRx.value !== '0' ? 1 : 0) + (sRy.value !== '0' ? 1 : 0) + (sRz.value !== '0' ? 1 : 0);
+            var isWatchoutOrder = altOrder === 'ZYX';
+
+            if (isWatchoutOrder) {
+                matchBadge.style.display = 'inline-block';
+                matchBadge.className = 'ro-match same';
+                matchBadge.textContent = 'IDENTICAL — Same order selected';
+            } else if (maxDev < 0.5 || nonZero <= 1) {
+                matchBadge.style.display = 'inline-block';
+                matchBadge.className = 'ro-match same';
+                matchBadge.textContent = nonZero <= 1
+                    ? 'IDENTICAL — Only one axis is active, so order has no effect'
+                    : 'IDENTICAL';
+            } else {
+                matchBadge.style.display = 'inline-block';
+                matchBadge.className = 'ro-match diff';
+                matchBadge.textContent = 'DIFFERENT — Rotation order changes the result';
+            }
+        }
+
+        /* ---- Events ---- */
+        sRx.addEventListener('input', draw);
+        sRy.addEventListener('input', draw);
+        sRz.addEventListener('input', draw);
+        orderSel.addEventListener('change', draw);
+
+        document.getElementById('ro-reset').addEventListener('click', function () {
+            sRx.value = 45;
+            sRy.value = 30;
+            sRz.value = 20;
+            orderSel.value = 'XYZ';
+            draw();
+        });
+
+        /* ---- Init ---- */
+        draw();
+    })();
+</script>
+
+<div class='info-box'><p>For most 2D work, only Rotation Z is needed. Reserve Rotation X and Y for situations where you specifically want a 3D perspective effect — they are most impactful when combined with content that has a visible sense of depth or when used alongside Position Z changes.
+</p></div>
+
+<h3>Common Use Cases</h3>
+
+<ul>
+<li><strong>Logo or badge spins</strong> — apply a Rotation Z tween that goes from 0° to 360° for one full revolution, or animate continuously for a spinning effect. Use Sinusoidal InOut easing for a graceful start and stop.</li>
+<li><strong>Card-flip transitions</strong> — animate Rotation Y from 0° to 180° to simulate flipping content around like a card. At the midpoint (90°) the cue is edge-on and invisible, making it a natural place to swap content.</li>
+<li><strong>Tilt reveals</strong> — use Rotation X to tilt content forward from a top-down perspective (like a sign falling toward the viewer), combined with an Opacity fade-in for a dramatic reveal.</li>
+<li><strong>Continuous rotation</strong> — set Rotation Z from 0° at the start of a long cue to 3600° at the end for ten full revolutions with constant-speed spinning (using Linear easing).</li>
+<li><strong>Rocking or oscillating motion</strong> — alternate between small positive and negative rotation values (for example, -5° to 5°) with Sinusoidal InOut easing for a gentle rocking effect.</li>
+
+</ul>
+
+<h3>3D Rotation Considerations</h3>
+
+<p>Rotation Y and Rotation X produce perspective effects that simulate 3D depth. When using these:</p>
+
+<ul>
+<li><strong>Content appears to recede and advance.</strong> As a cue rotates around the Y or X axis, parts of it move farther from and closer to the viewer, creating a perspective foreshortening effect.</li>
+<li><strong>Large rotations can make content edge-on or inverted.</strong> At 90°, the cue is viewed from the side and becomes a thin line. At 180°, the content appears mirrored. Plan your animation range to stay within visually meaningful angles unless the goal is a full flip.</li>
+<li><strong>Combine with Position for richer effects.</strong> A Rotation Y turn combined with a Position X shift creates a "swing in from the side" effect that feels more natural than rotation alone. Similarly, Rotation X combined with Position Y movement creates a "tip forward" or "fall back" effect.</li>
+<li><strong>Render Surface setting matters.</strong> The cue property <strong>Render Surface</strong> (found in the cue Properties panel) controls whether the back face of content is visible during 3D rotation. By default it is set to <strong>Outside</strong>, meaning the back of the cue is not rendered. Set it to <strong>Both Sides</strong> if you want content to remain visible when rotated past 90°.</li>
+
+</ul>
+
+<h3>Combining with Other Transform Tweens</h3>
+
+<p>Rotation works well alongside the other transform tweens:</p>
+
+<ul>
+<li><strong>Position</strong> — move content while rotating for dynamic entrances and exits. A cue that slides in from the left while spinning creates an energetic motion graphic.</li>
+<li><strong>Scale</strong> — shrink content while it rotates away, or grow it while it rotates toward the viewer, for zoom-spin effects.</li>
+<li><strong>Align with Trajectory</strong> — if a Position tween is active with the Align with Trajectory option enabled, be aware that it overrides rotation on the affected axes to keep the cue oriented along its motion path.</li>
+
+</ul>
+
+<h3>Practical Tips</h3>
+
+<ul>
+<li>Keep pivot/anchor placement in mind. Rotation always occurs around the cue's position on Stage (its anchor point). If you want a cue to rotate around a different point, offset the cue's position and then use position animation to counteract the offset.</li>
+<li>For smooth, natural 3D rotation effects, use InOut easing curves (Cubic InOut or Sinusoidal InOut) to avoid abrupt starts and stops.</li>
+<li>Test large 3D rotations on the actual display hardware. Perspective foreshortening can appear differently in the Stage preview compared to the real output, especially on wide-format or multi-display setups.</li>
+<li>When animating continuous rotation, ensure the total degree value across tween points is a clean multiple of 360° if you want the cue to return to its original orientation at the end.</li>
+
+</ul></div><div class="section-nav">
+                <a href="scale-and-size.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="opacity-and-fades.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script>var wikiBasePath = '../';</script>
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+    
+    <script>
+        (function() {
+            var sw = document.getElementById('guide-switcher');
+            var btn = document.getElementById('guide-switcher-toggle');
+            if (!sw || !btn) return;
+            btn.addEventListener('click', function(e) { e.stopPropagation(); sw.classList.toggle('open'); });
+            document.addEventListener('click', function(e) { if (!sw.contains(e.target)) sw.classList.remove('open'); });
+        })();
+    </script>
+</body>
+</html>

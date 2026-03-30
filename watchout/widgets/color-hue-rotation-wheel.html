@@ -1,0 +1,603 @@
+<style>
+    #color-hue-wheel-widget {
+        width: 100%;
+        container-type: inline-size;
+    }
+
+    #color-hue-wheel-widget .chw-layout {
+        display: flex;
+        gap: 28px;
+        align-items: stretch;
+        flex-wrap: wrap;
+    }
+
+    #color-hue-wheel-widget .chw-preview {
+        flex: 1 1 360px;
+        min-width: 280px;
+        position: relative;
+        overflow: hidden;
+        border-radius: 6px;
+        border: 1px solid var(--border-subtle);
+        background: transparent;
+    }
+
+    #color-hue-wheel-widget .chw-preview canvas {
+        display: block;
+        width: 100%;
+        height: 100%;
+        background: transparent !important;
+    }
+
+    #color-hue-wheel-widget .chw-loading {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-muted);
+        font-size: 0.85rem;
+        background: var(--bg-secondary);
+        border-radius: 6px;
+        border: 1px solid var(--border-subtle);
+    }
+
+    #color-hue-wheel-widget .chw-sidebar {
+        flex: 0 0 320px;
+        min-width: 260px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    #color-hue-wheel-widget .chw-wheel-section {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+    }
+
+    #color-hue-wheel-widget .chw-wheel-wrap {
+        position: relative;
+        width: 200px;
+        height: 200px;
+    }
+
+    #color-hue-wheel-widget .chw-wheel-wrap canvas {
+        width: 100%;
+        height: 100%;
+        display: block;
+        background: transparent !important;
+    }
+
+    #color-hue-wheel-widget .chw-wheel-label {
+        font-size: 0.9rem;
+        color: var(--text-muted);
+        text-align: center;
+    }
+
+    #color-hue-wheel-widget .chw-sliders {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
+    #color-hue-wheel-widget .chw-slider-row {
+        display: grid;
+        grid-template-columns: 110px 1fr 60px;
+        align-items: center;
+        gap: 10px;
+    }
+
+    #color-hue-wheel-widget .chw-slider-label {
+        font-size: 0.95rem;
+        font-weight: 600;
+        color: var(--text-secondary);
+        user-select: none;
+    }
+
+    #color-hue-wheel-widget .chw-slider-row input[type="range"] {
+        width: 100%;
+        accent-color: var(--accent-primary);
+        cursor: pointer;
+        margin: 0;
+    }
+
+    #color-hue-wheel-widget .chw-slider-val {
+        font-family: monospace;
+        font-size: 0.9rem;
+        color: var(--accent-primary);
+        text-align: right;
+        min-width: 52px;
+        user-select: none;
+    }
+
+    #color-hue-wheel-widget .chw-reset-btn {
+        background: var(--bg-tertiary);
+        border: 1px solid var(--border-subtle);
+        border-radius: 50px;
+        padding: 5px 14px;
+        font-size: 0.78rem;
+        color: var(--text-secondary);
+        cursor: pointer;
+        align-self: flex-start;
+        transition: border-color var(--transition-fast), color var(--transition-fast);
+    }
+
+    #color-hue-wheel-widget .chw-reset-btn:hover {
+        border-color: var(--accent-primary);
+        color: var(--text-primary);
+    }
+
+    @container (max-width: 640px) {
+        #color-hue-wheel-widget .chw-sidebar {
+            flex: 1 1 100%;
+        }
+        #color-hue-wheel-widget .chw-wheel-wrap {
+            width: 160px;
+            height: 160px;
+        }
+    }
+</style>
+
+<div class="interactive-widget" id="color-hue-wheel-widget">
+    <div class="chw-layout">
+        <!-- Image Preview -->
+        <div class="chw-preview">
+            <canvas id="chw-canvas" width="600" height="450"></canvas>
+            <div class="chw-loading" id="chw-loading">Loading image…</div>
+        </div>
+
+        <!-- Controls Sidebar -->
+        <div class="chw-sidebar">
+            <!-- Color Wheel -->
+            <div class="chw-wheel-section">
+                <div class="chw-wheel-wrap">
+                    <canvas id="chw-wheel-canvas" width="400" height="400"></canvas>
+                </div>
+                <div class="chw-wheel-label">Original position (white) · Rotated position (yellow)</div>
+            </div>
+
+            <!-- Sliders -->
+            <div class="chw-sliders">
+                <div class="chw-slider-row">
+                    <span class="chw-slider-label">Hue</span>
+                    <input type="range" id="chw-hue" min="-360" max="360" value="0" step="1">
+                    <span class="chw-slider-val" id="chw-hue-val">0°</span>
+                </div>
+                <div class="chw-slider-row">
+                    <span class="chw-slider-label">Saturation</span>
+                    <input type="range" id="chw-saturation" min="0" max="100" value="100" step="1">
+                    <span class="chw-slider-val" id="chw-saturation-val">100%</span>
+                </div>
+                <div class="chw-slider-row">
+                    <span class="chw-slider-label">Temperature</span>
+                    <input type="range" id="chw-temperature" min="-100" max="100" value="0" step="1">
+                    <span class="chw-slider-val" id="chw-temperature-val">0%</span>
+                </div>
+                <div class="chw-slider-row">
+                    <span class="chw-slider-label">Invert</span>
+                    <input type="range" id="chw-invert" min="0" max="100" value="0" step="1">
+                    <span class="chw-slider-val" id="chw-invert-val">0%</span>
+                </div>
+            </div>
+
+            <button class="chw-reset-btn" id="chw-reset">Reset All</button>
+        </div>
+    </div>
+
+    <div class="widget-explainer" style="margin-top: 20px;">
+        <strong>Hue</strong> rotates the entire color spectrum — at 180° every color becomes its complement.
+        <strong>Saturation</strong> controls color intensity; 0% produces grayscale.
+        <strong>Temperature</strong> shifts white balance along the warm (orange) to cool (blue) axis.
+        <strong>Invert</strong> blends between the original and a fully color-inverted version.
+        The color wheel shows the original red-axis marker (white) and the rotated position (yellow).
+    </div>
+</div>
+
+<script>
+    (function () {
+        var canvas = document.getElementById('chw-canvas');
+        var wheelCanvas = document.getElementById('chw-wheel-canvas');
+        var loadingEl = document.getElementById('chw-loading');
+        var previewWrap = canvas && canvas.parentElement;
+        if (!canvas || !wheelCanvas) return;
+
+        var ctx = canvas.getContext('2d');
+        var ctxWheel = wheelCanvas.getContext('2d');
+
+        // Slider elements
+        var sliders = {
+            hue: document.getElementById('chw-hue'),
+            saturation: document.getElementById('chw-saturation'),
+            temperature: document.getElementById('chw-temperature'),
+            invert: document.getElementById('chw-invert')
+        };
+        var valLabels = {
+            hue: document.getElementById('chw-hue-val'),
+            saturation: document.getElementById('chw-saturation-val'),
+            temperature: document.getElementById('chw-temperature-val'),
+            invert: document.getElementById('chw-invert-val')
+        };
+        var resetBtn = document.getElementById('chw-reset');
+
+        // Defaults
+        var defaults = { hue: 0, saturation: 100, temperature: 0, invert: 0 };
+
+        // State
+        var originalPixels = null;
+        var sourceImage = null;
+        var imgNaturalW = 0;
+        var imgNaturalH = 0;
+        var imgWidth = 0;
+        var imgHeight = 0;
+        var rafId = null;
+        var useLUT = true;
+
+        // ---- Color conversion helpers ----
+
+        function rgbToHsl(r, g, b) {
+            r /= 255; g /= 255; b /= 255;
+            var max = Math.max(r, g, b), min = Math.min(r, g, b);
+            var h, s, l = (max + min) / 2;
+
+            if (max === min) {
+                h = s = 0;
+            } else {
+                var d = max - min;
+                s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                switch (max) {
+                    case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break;
+                    case g: h = ((b - r) / d + 2) / 6; break;
+                    case b: h = ((r - g) / d + 4) / 6; break;
+                }
+            }
+            return [h * 360, s, l];
+        }
+
+        function hue2rgb(p, q, t) {
+            if (t < 0) t += 1;
+            if (t > 1) t -= 1;
+            if (t < 1 / 6) return p + (q - p) * 6 * t;
+            if (t < 1 / 2) return q;
+            if (t < 2 / 3) return p + (q - p) * (2 / 3 - t) * 6;
+            return p;
+        }
+
+        function hslToRgb(h, s, l) {
+            h = ((h % 360) + 360) % 360;
+            h /= 360;
+            var r, g, b;
+            if (s === 0) {
+                r = g = b = l;
+            } else {
+                var q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+                var p = 2 * l - q;
+                r = hue2rgb(p, q, h + 1 / 3);
+                g = hue2rgb(p, q, h);
+                b = hue2rgb(p, q, h - 1 / 3);
+            }
+            return [Math.round(r * 255), Math.round(g * 255), Math.round(b * 255)];
+        }
+
+        // ---- Temperature shift (warm/cool white balance approximation) ----
+        function applyTemperature(r, g, b, temp) {
+            var t = temp / 100;
+            if (t >= 0) {
+                // Warm: stronger red lift, mild green lift, blue reduction
+                return [
+                    r * (1 + 0.38 * t),
+                    g * (1 + 0.10 * t),
+                    b * (1 - 0.38 * t)
+                ];
+            }
+
+            // Cool: stronger blue lift, mild green reduction, red reduction
+            var c = -t;
+            return [
+                r * (1 - 0.38 * c),
+                g * (1 - 0.10 * c),
+                b * (1 + 0.38 * c)
+            ];
+        }
+
+        // ---- Cover-crop source rect (object-fit: cover logic) ----
+        function coverRect(srcW, srcH, dstW, dstH) {
+            var srcAspect = srcW / srcH;
+            var dstAspect = dstW / dstH;
+            var sw, sh, sx, sy;
+            if (srcAspect > dstAspect) {
+                sh = srcH;
+                sw = Math.round(srcH * dstAspect);
+                sx = Math.round((srcW - sw) / 2);
+                sy = 0;
+            } else {
+                sw = srcW;
+                sh = Math.round(srcW / dstAspect);
+                sx = 0;
+                sy = Math.round((srcH - sh) / 2);
+            }
+            return { sx: sx, sy: sy, sw: sw, sh: sh };
+        }
+
+        function keyOutDarkBackground(pixels) {
+            for (var i = 0, len = pixels.length; i < len; i += 4) {
+                var r = pixels[i], g = pixels[i + 1], b = pixels[i + 2], a = pixels[i + 3];
+                var max = Math.max(r, g, b);
+                var min = Math.min(r, g, b);
+                var spread = max - min;
+
+                if (max < 20 && spread < 8) {
+                    pixels[i + 3] = 0;
+                } else if (max < 48 && spread < 12) {
+                    var t = (max - 20) / (48 - 20);
+                    pixels[i + 3] = Math.round(a * (t < 0 ? 0 : t > 1 ? 1 : t));
+                }
+            }
+        }
+
+        // ---- Resize canvas to fill container ----
+        function sizeCanvas() {
+            if (!sourceImage) return;
+            var containerW = previewWrap.clientWidth;
+            var containerH = previewWrap.clientHeight;
+            if (containerW === 0 || containerH === 0) return;
+
+            var dpr = window.devicePixelRatio || 1;
+            var bufW = Math.round(containerW * dpr);
+            var bufH = Math.round(containerH * dpr);
+
+            if (canvas.width === bufW && canvas.height === bufH) return;
+
+            canvas.width = bufW;
+            canvas.height = bufH;
+            imgWidth = bufW;
+            imgHeight = bufH;
+
+            var cr = coverRect(imgNaturalW, imgNaturalH, bufW, bufH);
+            ctx.clearRect(0, 0, bufW, bufH);
+            ctx.drawImage(sourceImage, cr.sx, cr.sy, cr.sw, cr.sh, 0, 0, bufW, bufH);
+            try {
+                var sourceImageData = ctx.getImageData(0, 0, bufW, bufH);
+                keyOutDarkBackground(sourceImageData.data);
+                originalPixels = sourceImageData.data.slice();
+                useLUT = true;
+            } catch (e) {
+                useLUT = false;
+            }
+        }
+
+        // ---- Process image pixels ----
+        function processImagePixels() {
+            if (!originalPixels) return;
+            var hueShift = parseFloat(sliders.hue.value);
+            var satMul = parseFloat(sliders.saturation.value) / 100;
+            var temp = parseFloat(sliders.temperature.value);
+            var invertAmt = parseFloat(sliders.invert.value) / 100;
+
+            var imageData = ctx.createImageData(imgWidth, imgHeight);
+            var src = originalPixels;
+            var dst = imageData.data;
+
+            for (var i = 0, len = src.length; i < len; i += 4) {
+                var r = src[i], g = src[i + 1], b = src[i + 2], a = src[i + 3];
+
+                // Apply hue rotation and saturation
+                var hsl = rgbToHsl(r, g, b);
+                hsl[0] = hsl[0] + hueShift;
+                hsl[1] = hsl[1] * satMul;
+                var rgb = hslToRgb(hsl[0], hsl[1], hsl[2]);
+                r = rgb[0]; g = rgb[1]; b = rgb[2];
+
+                // Apply temperature
+                if (temp !== 0) {
+                    var temped = applyTemperature(r, g, b, temp);
+                    r = temped[0]; g = temped[1]; b = temped[2];
+                }
+
+                // Apply invert
+                if (invertAmt > 0) {
+                    r = r + (255 - 2 * r) * invertAmt;
+                    g = g + (255 - 2 * g) * invertAmt;
+                    b = b + (255 - 2 * b) * invertAmt;
+                }
+
+                dst[i] = r < 0 ? 0 : r > 255 ? 255 : Math.round(r);
+                dst[i + 1] = g < 0 ? 0 : g > 255 ? 255 : Math.round(g);
+                dst[i + 2] = b < 0 ? 0 : b > 255 ? 255 : Math.round(b);
+                dst[i + 3] = a;
+            }
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        // ---- CSS filter fallback (tainted canvas / file://) ----
+        function processImageFilter() {
+            if (!sourceImage) return;
+            var hueShift = parseFloat(sliders.hue.value);
+            var satMul = parseFloat(sliders.saturation.value) / 100;
+            var temp = parseFloat(sliders.temperature.value);
+            var invertAmt = parseFloat(sliders.invert.value) / 100;
+
+            ctx.filter = 'hue-rotate(' + hueShift + 'deg) saturate(' + satMul + ') invert(' + invertAmt + ')';
+            ctx.clearRect(0, 0, imgWidth, imgHeight);
+            var cr = coverRect(imgNaturalW, imgNaturalH, imgWidth, imgHeight);
+            ctx.drawImage(sourceImage, cr.sx, cr.sy, cr.sw, cr.sh, 0, 0, imgWidth, imgHeight);
+            ctx.filter = 'none';
+
+            // Temperature approximation for filter fallback mode.
+            if (temp !== 0) {
+                var amt = Math.min(1, Math.abs(temp) / 100);
+                ctx.save();
+                // Affect only non-transparent image pixels.
+                ctx.globalCompositeOperation = 'source-atop';
+                ctx.globalAlpha = 0.25 * amt;
+                ctx.fillStyle = temp > 0 ? 'rgb(255, 150, 64)' : 'rgb(80, 150, 255)';
+                ctx.fillRect(0, 0, imgWidth, imgHeight);
+                ctx.restore();
+            }
+        }
+
+        function processImage() {
+            if (useLUT) processImagePixels();
+            else processImageFilter();
+        }
+
+        // ---- Draw color wheel ----
+        function drawWheel() {
+            var hueShift = parseFloat(sliders.hue.value);
+            var satMul = parseFloat(sliders.saturation.value) / 100;
+
+            var w = wheelCanvas.width;
+            var h = wheelCanvas.height;
+            var cx = w / 2;
+            var cy = h / 2;
+            var outerPad = Math.max(38, Math.round(w * 0.18));
+            var outerR = Math.min(cx, cy) - outerPad;
+            var innerR = outerR * 0.62;
+
+            ctxWheel.clearRect(0, 0, w, h);
+
+            // Draw hue ring — each segment shows the color AFTER rotation
+            var steps = 360;
+            for (var i = 0; i < steps; i++) {
+                var angle0 = (i / steps) * Math.PI * 2 - Math.PI / 2;
+                var angle1 = ((i + 1.5) / steps) * Math.PI * 2 - Math.PI / 2;
+                var displayHue = (i + hueShift + 360) % 360;
+                var rgb = hslToRgb(displayHue, satMul, 0.5);
+
+                ctxWheel.beginPath();
+                ctxWheel.moveTo(cx + Math.cos(angle0) * innerR, cy + Math.sin(angle0) * innerR);
+                ctxWheel.lineTo(cx + Math.cos(angle0) * outerR, cy + Math.sin(angle0) * outerR);
+                ctxWheel.lineTo(cx + Math.cos(angle1) * outerR, cy + Math.sin(angle1) * outerR);
+                ctxWheel.lineTo(cx + Math.cos(angle1) * innerR, cy + Math.sin(angle1) * innerR);
+                ctxWheel.closePath();
+                ctxWheel.fillStyle = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
+                ctxWheel.fill();
+            }
+
+            // Degree labels
+            var degreeFontPx = Math.max(15, Math.round(w * 0.05));
+            ctxWheel.font = '600 ' + degreeFontPx + 'px system-ui, sans-serif';
+            ctxWheel.textAlign = 'center';
+            ctxWheel.textBaseline = 'middle';
+            ctxWheel.fillStyle = 'rgba(255,255,255,0.6)';
+            var labelAngles = [0, 90, 180, 270];
+            var labelTexts = ['0°', '90°', '180°', '270°'];
+            for (var li = 0; li < labelAngles.length; li++) {
+                var la = (labelAngles[li] / 180) * Math.PI - Math.PI / 2;
+                var lr = outerR + Math.max(24, Math.round(w * 0.09));
+                ctxWheel.fillText(labelTexts[li], cx + Math.cos(la) * lr, cy + Math.sin(la) * lr);
+            }
+
+            // Draw original position marker (white line at 0°)
+            var origAngle = -Math.PI / 2;
+            ctxWheel.strokeStyle = 'rgba(255,255,255,0.9)';
+            ctxWheel.lineWidth = 2.5;
+            ctxWheel.beginPath();
+            ctxWheel.moveTo(cx + Math.cos(origAngle) * (innerR - 4), cy + Math.sin(origAngle) * (innerR - 4));
+            ctxWheel.lineTo(cx + Math.cos(origAngle) * (outerR + 2), cy + Math.sin(origAngle) * (outerR + 2));
+            ctxWheel.stroke();
+
+            // Draw rotated position marker (yellow line at hueShift°)
+            var rotAngle = (hueShift / 180) * Math.PI - Math.PI / 2;
+            ctxWheel.strokeStyle = 'rgba(250,204,21,0.95)';
+            ctxWheel.lineWidth = 2.5;
+            ctxWheel.beginPath();
+            ctxWheel.moveTo(cx + Math.cos(rotAngle) * (innerR - 4), cy + Math.sin(rotAngle) * (innerR - 4));
+            ctxWheel.lineTo(cx + Math.cos(rotAngle) * (outerR + 2), cy + Math.sin(rotAngle) * (outerR + 2));
+            ctxWheel.stroke();
+
+            // Dot at the tip of the rotated marker
+            ctxWheel.fillStyle = 'rgba(250,204,21,0.95)';
+            ctxWheel.beginPath();
+            ctxWheel.arc(cx + Math.cos(rotAngle) * (outerR + 2), cy + Math.sin(rotAngle) * (outerR + 2), 4, 0, Math.PI * 2);
+            ctxWheel.fill();
+
+            // Arc from original to rotated position
+            if (Math.abs(hueShift) > 0.5) {
+                var arcR = innerR - 10;
+                var startA = -Math.PI / 2;
+                var endA = rotAngle;
+                ctxWheel.strokeStyle = 'rgba(250,204,21,0.3)';
+                ctxWheel.lineWidth = 2;
+                ctxWheel.beginPath();
+                ctxWheel.arc(cx, cy, arcR, startA, endA, hueShift < 0);
+                ctxWheel.stroke();
+            }
+
+            // Center text: rotation value
+            var displayDeg = ((hueShift % 360) + 360) % 360;
+            ctxWheel.fillStyle = 'rgba(255,255,255,0.7)';
+            ctxWheel.font = 'bold 24px system-ui, sans-serif';
+            ctxWheel.textAlign = 'center';
+            ctxWheel.textBaseline = 'middle';
+            ctxWheel.fillText(Math.round(displayDeg) + '°', cx, cy - 6);
+            ctxWheel.font = '13px system-ui, sans-serif';
+            ctxWheel.fillStyle = 'rgba(255,255,255,0.4)';
+            ctxWheel.fillText('rotation', cx, cy + 12);
+        }
+
+        // ---- Update everything ----
+        function scheduleUpdate() {
+            if (rafId) return;
+            rafId = requestAnimationFrame(function () {
+                rafId = null;
+                updateLabels();
+                processImage();
+                drawWheel();
+            });
+        }
+
+        function updateLabels() {
+            valLabels.hue.textContent = sliders.hue.value + '°';
+            valLabels.saturation.textContent = sliders.saturation.value + '%';
+            valLabels.temperature.textContent = sliders.temperature.value + '%';
+            valLabels.invert.textContent = sliders.invert.value + '%';
+        }
+
+        // ---- Event listeners ----
+        Object.keys(sliders).forEach(function (key) {
+            sliders[key].addEventListener('input', scheduleUpdate);
+            sliders[key].addEventListener('dblclick', function () {
+                sliders[key].value = defaults[key];
+                scheduleUpdate();
+            });
+        });
+
+        resetBtn.addEventListener('click', function () {
+            Object.keys(sliders).forEach(function (key) {
+                sliders[key].value = defaults[key];
+            });
+            scheduleUpdate();
+        });
+
+        // ---- Resize observer ----
+        var resizeObserver = new ResizeObserver(function () {
+            if (!sourceImage) return;
+            sizeCanvas();
+            processImage();
+        });
+        resizeObserver.observe(previewWrap);
+
+        // ---- Load image ----
+        var img = new Image();
+        img.onload = function () {
+            loadingEl.style.display = 'none';
+            sourceImage = img;
+            imgNaturalW = img.naturalWidth;
+            imgNaturalH = img.naturalHeight;
+
+            sizeCanvas();
+            updateLabels();
+            processImage();
+            drawWheel();
+        };
+        img.onerror = function () {
+            loadingEl.textContent = 'Failed to load image';
+        };
+        img.src = '../media/beach-ball.png';
+
+        // Initial wheel draw and labels (before image loads)
+        updateLabels();
+        drawWheel();
+    })();
+</script>

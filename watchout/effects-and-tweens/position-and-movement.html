@@ -1,0 +1,2714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHOUT User Guide - Position and Movement">
+    <title>Position and Movement - WATCHOUT 7 User Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <style>
+        .guide-switcher { position: relative; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border-subtle, #2a2a3e); }
+        .guide-switcher-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            color: var(--text-primary, #e0e0e8); cursor: pointer;
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .guide-switcher-toggle:hover { border-color: var(--accent-primary, #60a5fa); }
+        .guide-switcher-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .guide-switcher.open .guide-switcher-arrow { transform: rotate(180deg); }
+        .guide-switcher-dropdown {
+            display: none; position: absolute; left: 16px; right: 16px; bottom: 100%;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            border-radius: 6px; z-index: 100; overflow: hidden;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+        }
+        .guide-switcher.open .guide-switcher-dropdown { display: block; }
+        .guide-switcher-option {
+            display: block; padding: 8px 12px; color: var(--text-secondary, #a0a0b8);
+            text-decoration: none; font-size: 0.85rem; transition: background 0.15s, color 0.15s;
+        }
+        .guide-switcher-option:hover { background: var(--bg-hover, #22223a); color: var(--text-primary, #e0e0e8); }
+        .guide-switcher-option.active { color: var(--accent-primary, #60a5fa); font-weight: 500; }
+    </style>
+</head>
+<body data-page-id="position-and-movement">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo logo-link" aria-label="Go to home page">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHOUT GUIDE</h1>
+                </a>
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter  " data-index="0">
+            <a href="../getting-started/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Getting Started</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">First Steps</div>
+                        <a class="toc-subsection " href="../getting-started/welcome-to-watchout-7.html">
+                            Welcome To Watchout 7
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/system-requirements.html">
+                            System Requirements
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/installing-watchout.html">
+                            Installing Watchout
+                        </a>
+                        
+                        <div class="toc-group-label">Setup and Configuration</div>
+                        <a class="toc-subsection " href="../getting-started/launching-the-application.html">
+                            Launching The Application
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/network-configuration.html">
+                            Network Configuration
+                        </a>
+                        
+                        <div class="toc-group-label">Your First Show</div>
+                        <a class="toc-subsection " href="../getting-started/quick-start-tutorial.html">
+                            Quick Start Tutorial
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/architectural-differences-watchout-6-vs-7.html">
+                            Architectural Differences Watchout 6 Vs 7
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="1">
+            <a href="../working-with-shows/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">2. Working with Shows</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
+                            Creating A New Show
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
+                            Opening Existing Shows
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/saving-your-work.html">
+                            Saving Your Work
+                        </a>
+                        
+                        <div class="toc-group-label">Show Configuration</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-properties.html">
+                            Show Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Archiving and Auditing</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-consolidation.html">
+                            Show Consolidation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-information.html">
+                            Show Information
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="2">
+            <a href="../displays-and-outputs/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
+                <span class="toc-chapter-title">3. Displays and Outputs</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/adding-displays.html">
+                            Adding Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-properties.html">
+                            Display Properties
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-grid-setup.html">
+                            Display Grid Setup
+                        </a>
+                        
+                        <div class="toc-group-label">Core Display Types</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/virtual-displays.html">
+                            Virtual Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/3d-mapping-projectors.html">
+                            3d Mapping Projectors
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/sdi-output.html">
+                            Sdi Output
+                        </a>
+                        
+                        <div class="toc-group-label">Geometry Correction and Blending</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/edge-blending.html">
+                            Edge Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/warp-geometry.html">
+                            Warp Geometry
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-masks.html">
+                            Display Masks
+                        </a>
+                        
+                        <div class="toc-group-label">Color, Calibration, and Diagnostics</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/hdr-and-color-management.html">
+                            HDR and Color Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-calibration.html">
+                            Display Calibration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/test-patterns.html">
+                            Test Patterns
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/compression-fundamentals.html">
+                            Compression Fundamentals
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="3">
+            <a href="../assets-asset-manager/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></span>
+                <span class="toc-chapter-title">4. Assets & Asset Manager</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager.html">
+                            Asset Manager
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-types.html">
+                            Asset Types
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-properties.html">
+                            Asset Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Media Formats and Creation</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/formats-codecs.html">
+                            Formats & Codecs
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/svg-shapes.html">
+                            SVG Shapes
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/image-sequences.html">
+                            Image Sequences
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Asset Workflows</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/dynamic-assets.html">
+                            Dynamic Assets
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/web-user-interface.html">
+                            Web User Interface
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-watcher.html">
+                            Asset Watcher
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-transfer.html">
+                            Asset Transfer
+                        </a>
+                        
+                        <div class="toc-group-label">Settings and Data Management</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager-settings.html">
+                            Asset Manager Settings
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/import-export-and-mapping.html">
+                            Import, Export, and Mapping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/importing-gdtf-files.html">
+                            Importing GDTF Files
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="4">
+            <a href="../timeline-and-cues/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                <span class="toc-chapter-title">5. Timeline and Cues</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/understanding-the-timeline.html">
+                            Understanding The Timeline
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adding-media-cues.html">
+                            Adding Media Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/working-with-layers.html">
+                            Working With Layers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adjusting-timing.html">
+                            Adjusting Timing
+                        </a>
+                        
+                        <div class="toc-group-label">Cue Types</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/control-cues.html">
+                            Control Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/marker-cues.html">
+                            Marker Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/output-cues.html">
+                            Output Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/variables-and-variable-cues.html">
+                            Variables and Variable Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/artnet-fixture-cues.html">
+                            ArtNet Fixture Cues
+                        </a>
+                        
+                        <div class="toc-group-label">Compositions and Organization</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/compositions.html">
+                            Compositions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cue-sets-and-variants.html">
+                            Cue Sets and Variants
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/media-snapshots.html">
+                            Media Snapshots
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/stacking-order.html">
+                            Stacking Order
+                        </a>
+                        
+                        <div class="toc-group-label">Automation and Advanced Workflows</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/timeline-triggers-and-expressions.html">
+                            Timeline Triggers and Expressions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/conditional-cues.html">
+                            Conditional Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/blind-edit-mode.html">
+                            Blind Edit Mode
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/insert-and-delete-time.html">
+                            Insert and Delete Time
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cues-window.html">
+                            Cues Window
+                        </a>
+                        
+                        <div class="toc-group-label">Output Reference</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/output-types-overview.html">
+                            Output Types Overview
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter expanded " data-index="5">
+            <a href="../effects-and-tweens/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">6. Effects and Tweens</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/understanding-tweens.html">
+                            Understanding Tweens
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/opacity-and-fades.html">
+                            Opacity and Fades
+                        </a>
+                        
+                        <div class="toc-group-label">Transform Effects</div>
+                        <a class="toc-subsection active" href="../effects-and-tweens/position-and-movement.html">
+                            Position and Movement
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/scale-and-size.html">
+                            Scale and Size
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/rotation-effects.html">
+                            Rotation Effects
+                        </a>
+                        
+                        <div class="toc-group-label">Visual Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/cropping.html">
+                            Cropping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/color-adjustments.html">
+                            Color Adjustments
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blur-effects.html">
+                            Blur Effects
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blend-modes.html">
+                            Blend Modes
+                        </a>
+                        
+                        <div class="toc-group-label">Audio</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/audio-volume.html">
+                            Audio Volume
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/corner-pinning.html">
+                            Corner Pinning
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/linear-wipe.html">
+                            Linear Wipe
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/frame-blending.html">
+                            Frame Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/chroma-key.html">
+                            Chroma Key
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/key-and-fill.html">
+                            Key and Fill
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/tween-expressions.html">
+                            Tween Expressions
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="6">
+            <a href="../playback/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>
+                <span class="toc-chapter-title">7. Playback</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../playback/starting-and-stopping.html">
+                            Starting and Stopping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/preview-mode.html">
+                            Preview Mode
+                        </a>
+                        
+                        <div class="toc-group-label">Going Live</div>
+                        <a class="toc-subsection " href="../playback/connecting-to-display-servers.html">
+                            Connecting to Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/going-online.html">
+                            Going Online
+                        </a>
+                        
+                        <div class="toc-group-label">Show Operation</div>
+                        <a class="toc-subsection " href="../playback/running-your-show.html">
+                            Running Your Show
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="7">
+            <a href="../the-interface/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></span>
+                <span class="toc-chapter-title">8. The Interface</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Overview</div>
+                        <a class="toc-subsection " href="../the-interface/main-window-overview.html">
+                            Main Window Overview
+                        </a>
+                        
+                        <div class="toc-group-label">Window Reference</div>
+                        <a class="toc-subsection " href="../the-interface/the-stage-window.html">
+                            The Stage Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-timeline-window.html">
+                            The Timeline Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-cue-list-window.html">
+                            The Cue List Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-assets-window.html">
+                            The Assets Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-properties-panel.html">
+                            The Properties Panel
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-nodes-window.html">
+                            The Nodes Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-devices-window.html">
+                            The Devices Window
+                        </a>
+                        
+                        <div class="toc-group-label">Customization</div>
+                        <a class="toc-subsection " href="../the-interface/customizing-your-workspace.html">
+                            Customizing Your Workspace
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="8">
+            <a href="../network-setup/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                <span class="toc-chapter-title">9. Network Setup</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Architecture and Basics</div>
+                        <a class="toc-subsection " href="../network-setup/network-overview.html">
+                            Network Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/display-servers.html">
+                            Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/connecting-devices.html">
+                            Connecting Devices
+                        </a>
+                        
+                        <div class="toc-group-label">Protocols and Services</div>
+                        <a class="toc-subsection " href="../network-setup/firewall-configuration.html">
+                            Firewall Configuration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/ndi-video-sources.html">
+                            NDI Video Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/capture-sources.html">
+                            Capture Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/dante-audio.html">
+                            Dante Audio
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/time-synchronization.html">
+                            Time Synchronization
+                        </a>
+                        
+                        <div class="toc-group-label">Maintenance and Management</div>
+                        <a class="toc-subsection " href="../network-setup/node-management-and-maintenance.html">
+                            Node Management and Maintenance
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/remote-file-access.html">
+                            Remote File Access
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/working-directory-management.html">
+                            Working Directory Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/software-updates.html">
+                            Software Updates
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="9">
+            <a href="../external-control/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">10. External Control</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Foundations</div>
+                        <a class="toc-subsection " href="../external-control/external-control-overview.html">
+                            External Control Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/variables-and-inputs.html">
+                            Variables and Inputs
+                        </a>
+                        
+                        <div class="toc-group-label">Primary Protocols</div>
+                        <a class="toc-subsection " href="../external-control/http-rest-api.html">
+                            HTTP REST API
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/osc-protocol.html">
+                            OSC Protocol
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/artnet-input.html">
+                            ArtNet Input
+                        </a>
+                        
+                        <div class="toc-group-label">Specialized Protocols</div>
+                        <a class="toc-subsection " href="../external-control/midi-bridge.html">
+                            MIDI Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/ltc-bridge.html">
+                            LTC Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/posistagenet.html">
+                            PosiStageNet
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/midi-show-control.html">
+                            MIDI Show Control
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/watchout-6-protocol.html">
+                            WATCHOUT 6 Protocol
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="10">
+            <a href="../keyboard-shortcuts/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.001"></path><path d="M10 8h.001"></path><path d="M14 8h.001"></path><path d="M18 8h.001"></path><path d="M8 12h.001"></path><path d="M12 12h.001"></path><path d="M16 12h.001"></path><path d="M7 16h10"></path></svg></span>
+                <span class="toc-chapter-title">11. Keyboard Shortcuts</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Input and Editing</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/file-operations.html">
+                            File Operations
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/edit-commands.html">
+                            Edit Commands
+                        </a>
+                        
+                        <div class="toc-group-label">Navigation and Playback</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/stage-navigation.html">
+                            Stage Navigation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/timeline-controls.html">
+                            Timeline Controls
+                        </a>
+                        
+                        <div class="toc-group-label">Effects and Layout</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/tween-shortcuts.html">
+                            Tween Shortcuts
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/window-management.html">
+                            Window Management
+                        </a>
+                        
+                        <div class="toc-group-label">Properties and Tables</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/property-editing.html">
+                            Property Editing
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/table-views.html">
+                            Table Views
+                        </a>
+                        
+                        <div class="toc-group-label">Hardware Input</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/xbox-controller.html">
+                            Xbox Controller
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/display-warp.html">
+                            Display & Warp
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="11">
+            <a href="../troubleshooting/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">12. Troubleshooting</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Common Issues</div>
+                        <a class="toc-subsection " href="../troubleshooting/common-issues.html">
+                            Common Issues
+                        </a>
+                        
+                        <div class="toc-group-label">By Category</div>
+                        <a class="toc-subsection " href="../troubleshooting/performance-tips.html">
+                            Performance Tips
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/display-problems.html">
+                            Display Problems
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/network-issues.html">
+                            Network Issues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/media-playback-issues.html">
+                            Media Playback Issues
+                        </a>
+                        
+                        <div class="toc-group-label">Getting Support</div>
+                        <a class="toc-subsection " href="../troubleshooting/feedback-reports.html">
+                            Feedback Reports
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/getting-help.html">
+                            Getting Help
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="12">
+            <a href="../glossary/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">13. Glossary</span>
+                
+            </a>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="13">
+            <a href="../legal/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">14. Legal</span>
+                
+            </a>
+            
+        </div>
+        
+            </nav>
+            
+            <div class="guide-switcher" id="guide-switcher">
+                <button class="guide-switcher-toggle" id="guide-switcher-toggle" aria-label="Switch guide">
+                    <span class="guide-switcher-label">WATCHOUT</span>
+                    <svg class="guide-switcher-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="guide-switcher-dropdown" id="guide-switcher-dropdown">
+                    <a class="guide-switcher-option active" href="../../watchout/index.html">WATCHOUT</a>
+                        <a class="guide-switcher-option" href="../../wp64/index.html">WATCHPAX 64</a>
+                        <a class="guide-switcher-option" href="../../wp30/index.html">WATCHPAX 30</a>
+                        <a class="guide-switcher-option" href="../../wp50/index.html">WATCHPAX 50</a>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">6. Effects and Tweens</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">Position and Movement</span>
+        
+                </div>
+                <a href="../index.html" class="header-home-link" aria-label="Go to home page">
+                    <img src="../media/dataton-logo.png" alt="Dataton" class="header-logo">
+                </a>
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><h2>Position and Movement</h2>
+
+<p>Position tweens animate where a cue appears on Stage over time. By defining a path of positions across the cue's duration, you can create slide-ins, tracking moves, orbital motion, camera-like pans, and any other spatial animation. Position is one of the most commonly used tweens and provides the richest set of editing tools, including three-axis control, Bezier path handles for curved motion, and an option to automatically orient the cue along its travel direction.</p>
+
+<h3>Position Tween Channels</h3>
+
+<p>The Position tween controls three axes simultaneously:</p>
+
+<ul>
+<li><strong>Position X</strong> — horizontal placement on Stage.</li>
+<li><strong>Position Y</strong> — vertical placement on Stage.</li>
+<li><strong>Position Z</strong> — depth (used for 3D layering and perspective effects).</li>
+
+</ul>
+
+<p>All three channels share the same tween points — each position tween point defines a complete X, Y, Z coordinate. The range is unlimited in all directions, with a default of 0 (the cue's initial placement as set in cue properties). Values represent Stage coordinates relative to the cue's base position.</p>
+
+<h3>Adding a Position Tween</h3>
+
+<p>To add position animation to a cue:</p>
+
+<ol>
+<li>Select one or more cues in the Timeline.</li>
+<li>Open the <strong>Effect</strong> menu and click <strong>Position</strong>, or press <strong>Alt+P</strong>.</li>
+<li>The Position tween appears in the tween area beneath the cue, within the <strong>Transform</strong> group.</li>
+
+</ol>
+
+<p>The tween starts with a single point at the cue's current position. Add additional tween points at different times to define the motion path.</p>
+
+<h3>Creating Position Points on Stage</h3>
+
+<p>You can create new position tween points directly from the Stage view. With a Position effect active on a cue:</p>
+
+<ol>
+<li>Move the <strong>playhead</strong> to the desired time on the timeline.</li>
+<li><strong>Click and drag the cue</strong> on Stage to a new position.</li>
+
+</ol>
+
+<p>WATCHOUT automatically creates a new position tween point at the current playhead time with the coordinates you dragged to. This is the fastest way to build motion paths — you define "where" on Stage and "when" on the timeline in a single action.</p>
+
+<h3>Position Points and Handles on Stage</h3>
+
+<p>Position tween points and their Bezier handles are visualized directly on the Stage view:</p>
+
+<ul>
+<li><strong>Position points</strong> appear as <strong>green diamonds</strong> on Stage, connected by the motion path line. You can select and drag these diamonds to reposition points visually.</li>
+<li><strong>Smooth handles</strong> (Bezier control handles) appear as <strong>yellow diamonds</strong> extending from position points that have Smooth In or Smooth Out enabled. Drag the yellow diamonds to reshape curves directly on Stage.</li>
+
+</ul>
+
+<p>This on-Stage visualization gives you a spatial overview of the entire motion path and lets you edit it in context with the display layout.</p>
+
+<h3>Tween Point Properties</h3>
+
+<p>When you select a position tween point, the Properties panel shows:</p>
+
+<table>
+<tr><th>Property</th><th>Description</th></tr>
+<tr><td><strong>Time from Start of Cue</strong></td><td>When this point occurs in the cue's timeline</td></tr>
+<tr><td><strong>Position X</strong></td><td>Horizontal coordinate at this moment</td></tr>
+<tr><td><strong>Position Y</strong></td><td>Vertical coordinate at this moment</td></tr>
+<tr><td><strong>Position Z</strong></td><td>Depth coordinate at this moment</td></tr>
+<tr><td><strong>Transition Type</strong></td><td>Easing curve from the previous point to this one</td></tr>
+<tr><td><strong>Smooth In</strong></td><td>Enables a Bezier control handle for the incoming path segment</td></tr>
+<tr><td><strong>Handle In X / Y / Z</strong></td><td>Coordinates of the incoming Bezier handle (visible when Smooth In is enabled)</td></tr>
+<tr><td><strong>Smooth Out</strong></td><td>Enables a Bezier control handle for the outgoing path segment</td></tr>
+<tr><td><strong>Handle Out X / Y / Z</strong></td><td>Coordinates of the outgoing Bezier handle (visible when Smooth Out is enabled)</td></tr>
+<tr><td><strong>Linked Handles</strong></td><td>When enabled, the In and Out handles move together to maintain a smooth curve through the point</td></tr>
+</table>
+
+<h3>Straight vs. Curved Motion</h3>
+
+<p>By default, the cue moves in straight lines between tween points. To create curved paths:</p>
+
+<ol>
+<li>Select a position tween point.</li>
+<li>Enable <strong>Smooth In</strong> and/or <strong>Smooth Out</strong> in the Properties panel. This adds Bezier control handles to the point.</li>
+<li>Adjust the <strong>Handle In</strong> and <strong>Handle Out</strong> coordinates to shape the curve. The handles define the tangent direction and curvature magnitude at that point.</li>
+
+</ol>
+
+<p>When <strong>Linked Handles</strong> is enabled, the In and Out handles are locked together so that adjusting one automatically adjusts the other, maintaining a smooth, continuous curve through the point. Disable Linked Handles when you need a sharp change of direction at a specific point — for example, a cue that slides in from the left, pauses, then exits upward.</p>
+
+<div class="interactive-widget" id="pbp-widget">
+<style>
+    #pbp-widget {
+        width: 100%;
+        font-family: var(--font-family, system-ui, sans-serif);
+    }
+
+    #pbp-widget .pbp-layout {
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+    }
+
+    #pbp-widget .pbp-canvas-col {
+        flex: 1 1 0;
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    #pbp-widget canvas {
+        width: 100%;
+        height: auto;
+        display: block;
+        border-radius: 8px;
+        border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+        cursor: crosshair;
+        touch-action: none;
+        user-select: none;
+        -webkit-user-select: none;
+    }
+
+    #pbp-widget .pbp-btn-row {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+    }
+
+    #pbp-widget .pbp-btn {
+        padding: 6px 14px;
+        border-radius: 6px;
+        border: 1px solid var(--border-subtle, rgba(255,255,255,0.12));
+        background: rgba(255,255,255,0.04);
+        color: var(--text-primary, #e8e8f0);
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.82rem;
+        font-weight: 600;
+        transition: background 150ms ease, border-color 150ms ease;
+    }
+
+    #pbp-widget .pbp-btn:hover {
+        background: rgba(107,37,221,0.15);
+        border-color: var(--accent-primary, #6B25DD);
+    }
+
+    #pbp-widget .pbp-btn.pbp-btn-active {
+        background: rgba(107,37,221,0.25);
+        border-color: var(--accent-primary, #6B25DD);
+        color: #c4a0ff;
+    }
+
+    #pbp-widget .pbp-btn-danger {
+        background: rgba(239,68,68,0.08);
+        border-color: rgba(239,68,68,0.25);
+        color: #f87171;
+    }
+
+    #pbp-widget .pbp-btn-danger:hover {
+        background: rgba(239,68,68,0.2);
+        border-color: rgba(239,68,68,0.5);
+    }
+
+    #pbp-widget .pbp-btn-danger:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+
+    #pbp-widget .pbp-info {
+        padding: 7px 12px;
+        border-radius: 6px;
+        background: rgba(107,37,221,0.06);
+        border-left: 3px solid var(--accent-primary, #6B25DD);
+        font-size: 0.78rem;
+        line-height: 1.45;
+        color: var(--text-secondary, #9090a8);
+        min-height: 32px;
+        margin-top: 12px;
+    }
+
+    #pbp-widget .pbp-props {
+        width: 188px;
+        flex-shrink: 0;
+        border-radius: 10px;
+        border: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+        background: var(--bg-secondary, #1a1a2e);
+        padding: 12px;
+        font-size: 0.82rem;
+        color: var(--text-primary, #e8e8f0);
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #pbp-widget .pbp-props-header {
+        font-weight: 700;
+        font-size: 0.8rem;
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        color: var(--text-secondary, #9090a8);
+        padding-bottom: 6px;
+        border-bottom: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+    }
+
+    #pbp-widget .pbp-props-title {
+        font-weight: 600;
+        font-size: 0.85rem;
+        color: var(--text-primary, #e8e8f0);
+    }
+
+    #pbp-widget .pbp-check-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        padding: 5px 7px;
+        border-radius: 5px;
+        border: 1px solid transparent;
+        transition: background 120ms, border-color 120ms;
+    }
+
+    #pbp-widget .pbp-check-row:hover {
+        background: rgba(107,37,221,0.1);
+        border-color: rgba(107,37,221,0.2);
+    }
+
+    #pbp-widget .pbp-check-row input[type=checkbox] {
+        accent-color: var(--accent-primary, #6B25DD);
+        width: 14px;
+        height: 14px;
+        cursor: pointer;
+        flex-shrink: 0;
+    }
+
+    #pbp-widget .pbp-check-label {
+        font-size: 0.82rem;
+        color: var(--text-primary, #e8e8f0);
+        line-height: 1.3;
+    }
+
+    #pbp-widget .pbp-check-row.pbp-locked {
+        opacity: 0.35;
+        pointer-events: none;
+    }
+
+    #pbp-widget .pbp-props-empty {
+        color: var(--text-secondary, #9090a8);
+        font-size: 0.8rem;
+        font-style: italic;
+        text-align: center;
+        padding: 16px 0;
+    }
+
+    #pbp-widget .pbp-divider {
+        border: none;
+        border-top: 1px solid var(--border-subtle, rgba(255,255,255,0.06));
+        margin: 0;
+    }
+
+    @media (max-width: 680px) {
+        #pbp-widget .pbp-layout {
+            flex-direction: column;
+        }
+        #pbp-widget .pbp-props {
+            width: 100%;
+        }
+    }
+</style>
+
+<div class="pbp-layout">
+    <!-- Left: canvas + buttons + info -->
+    <div class="pbp-canvas-col">
+        <canvas id="pbp-canvas" width="700" height="460"></canvas>
+        <div class="pbp-btn-row">
+            <button class="pbp-btn" id="pbp-play-btn">Play</button>
+            <button class="pbp-btn pbp-btn-danger" id="pbp-clear-btn">Clear All</button>
+        </div>
+        <div class="pbp-info" id="pbp-info">Click empty area to add a point. Drag points or handles to reshape the path.</div>
+    </div>
+
+    <!-- Right: properties panel -->
+    <div class="pbp-props" id="pbp-props">
+        <div class="pbp-props-header">Point Properties</div>
+        <div class="pbp-props-empty" id="pbp-props-empty">No point selected.<br>Click a point to inspect it.</div>
+
+        <div id="pbp-props-content" style="display:none; display:flex; flex-direction:column; gap:8px;">
+            <div class="pbp-props-title" id="pbp-props-title">Point 1 of 3</div>
+
+            <hr class="pbp-divider">
+
+            <label class="pbp-check-row" id="pbp-linked-row">
+                <input type="checkbox" id="pbp-linked-chk">
+                <span class="pbp-check-label">Linked Handles</span>
+            </label>
+
+            <label class="pbp-check-row" id="pbp-smooth-in-row">
+                <input type="checkbox" id="pbp-smooth-in-chk">
+                <span class="pbp-check-label">Smooth In</span>
+            </label>
+
+            <label class="pbp-check-row" id="pbp-smooth-out-row">
+                <input type="checkbox" id="pbp-smooth-out-chk">
+                <span class="pbp-check-label">Smooth Out</span>
+            </label>
+
+            <hr class="pbp-divider">
+
+            <button class="pbp-btn pbp-btn-danger" id="pbp-delete-btn" style="width:100%;">Delete Point</button>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    var canvas = document.getElementById('pbp-canvas');
+    if (!canvas) return;
+    var ctx = canvas.getContext('2d');
+
+    var playBtn    = document.getElementById('pbp-play-btn');
+    var clearBtn   = document.getElementById('pbp-clear-btn');
+    var infoEl     = document.getElementById('pbp-info');
+    var propsEmpty = document.getElementById('pbp-props-empty');
+    var propsContent = document.getElementById('pbp-props-content');
+    var propsTitle = document.getElementById('pbp-props-title');
+    var linkedChk   = document.getElementById('pbp-linked-chk');
+    var smoothInChk = document.getElementById('pbp-smooth-in-chk');
+    var smoothOutChk= document.getElementById('pbp-smooth-out-chk');
+    var linkedRow   = document.getElementById('pbp-linked-row');
+    var smoothInRow = document.getElementById('pbp-smooth-in-row');
+    var smoothOutRow= document.getElementById('pbp-smooth-out-row');
+    var deleteBtn   = document.getElementById('pbp-delete-btn');
+
+    // ── constants ──────────────────────────────────────────────────────────
+    var W = 700, H = 460;
+    var MAX_POINTS = 6;
+    var ACCENT = '#6B25DD';
+    var ACCENT_GLOW = 'rgba(107,37,221,0.45)';
+    var GOLD = '#f5c842';
+    var HIT_POINT   = 12;
+    var HIT_HANDLE  = 8;
+
+    // ── data ───────────────────────────────────────────────────────────────
+    var pts = [];   // array of point objects
+    var sel = -1;   // selected point index
+    var playing = false;
+    var playT = 0;
+    var playStart = 0;
+    var playRAF = 0;
+    var PLAY_DURATION = 3000; // ms
+
+    // drag state
+    var dragging = false;
+    var dragWhat = null; // 'point', 'handleIn', 'handleOut'
+    var dragIdx  = -1;
+    var hoveredPt = -1;
+    var hoveredHandle = null; // 'in' | 'out' | null
+
+    // ── init ───────────────────────────────────────────────────────────────
+    function makePoint(x, y, prevPt, nextPt) {
+        var pt = { x: x, y: y, smoothIn: true, smoothOut: true, linked: true,
+                   handleIn:  { x: x - 60, y: y },
+                   handleOut: { x: x + 60, y: y } };
+        if (prevPt) {
+            pt.handleIn.x  = x + (prevPt.x - x) * 0.33;
+            pt.handleIn.y  = y + (prevPt.y - y) * 0.33;
+        }
+        if (nextPt) {
+            pt.handleOut.x = x + (nextPt.x - x) * 0.33;
+            pt.handleOut.y = y + (nextPt.y - y) * 0.33;
+        }
+        return pt;
+    }
+
+    function initPoints() {
+        // 3-point gentle S-curve
+        var p1 = { x: 120, y: 300, smoothIn: true, smoothOut: true, linked: true,
+                   handleIn:  { x: 60,  y: 320 },
+                   handleOut: { x: 220, y: 200 } };
+        var p2 = { x: 350, y: 230, smoothIn: true, smoothOut: true, linked: true,
+                   handleIn:  { x: 250, y: 260 },
+                   handleOut: { x: 450, y: 200 } };
+        var p3 = { x: 580, y: 160, smoothIn: true, smoothOut: true, linked: true,
+                   handleIn:  { x: 480, y: 200 },
+                   handleOut: { x: 640, y: 140 } };
+        pts = [p1, p2, p3];
+        sel = -1;
+    }
+
+    initPoints();
+
+    // ── math helpers ──────────────────────────────────────────────────────
+    function dist(ax, ay, bx, by) {
+        var dx = ax - bx, dy = ay - by;
+        return Math.sqrt(dx*dx + dy*dy);
+    }
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+
+    // Cubic bezier point
+    function cubicBezier(p0, p1, p2, p3, t) {
+        var mt = 1 - t;
+        return mt*mt*mt*p0 + 3*mt*mt*t*p1 + 3*mt*t*t*p2 + t*t*t*p3;
+    }
+
+    // Chord-length parameterisation: returns canvas {x,y} for global t in [0,1]
+    function pathPoint(globalT) {
+        if (pts.length < 2) return { x: pts[0].x, y: pts[0].y };
+        // compute segment chord lengths
+        var STEPS = 20;
+        var segs = pts.length - 1;
+        var segLens = [];
+        var total = 0;
+        for (var s = 0; s < segs; s++) {
+            var a = pts[s], b = pts[s+1];
+            var cp1x = a.smoothOut ? a.handleOut.x : a.x;
+            var cp1y = a.smoothOut ? a.handleOut.y : a.y;
+            var cp2x = b.smoothIn  ? b.handleIn.x  : b.x;
+            var cp2y = b.smoothIn  ? b.handleIn.y  : b.y;
+            var len = 0, px = a.x, py = a.y;
+            for (var i = 1; i <= STEPS; i++) {
+                var tt = i / STEPS;
+                var nx = cubicBezier(a.x, cp1x, cp2x, b.x, tt);
+                var ny = cubicBezier(a.y, cp1y, cp2y, b.y, tt);
+                len += dist(px, py, nx, ny);
+                px = nx; py = ny;
+            }
+            segLens.push(len);
+            total += len;
+        }
+        if (total === 0) return { x: pts[0].x, y: pts[0].y };
+
+        var target = globalT * total;
+        var acc = 0;
+        for (var s = 0; s < segs; s++) {
+            if (acc + segLens[s] >= target || s === segs - 1) {
+                var localT = segLens[s] > 0 ? (target - acc) / segLens[s] : 0;
+                localT = Math.max(0, Math.min(1, localT));
+                var a = pts[s], b = pts[s+1];
+                var cp1x = a.smoothOut ? a.handleOut.x : a.x;
+                var cp1y = a.smoothOut ? a.handleOut.y : a.y;
+                var cp2x = b.smoothIn  ? b.handleIn.x  : b.x;
+                var cp2y = b.smoothIn  ? b.handleIn.y  : b.y;
+                return {
+                    x: cubicBezier(a.x, cp1x, cp2x, b.x, localT),
+                    y: cubicBezier(a.y, cp1y, cp2y, b.y, localT)
+                };
+            }
+            acc += segLens[s];
+        }
+        return { x: pts[pts.length-1].x, y: pts[pts.length-1].y };
+    }
+
+    // ── drawing ───────────────────────────────────────────────────────────
+    function draw() {
+        ctx.clearRect(0, 0, W, H);
+        drawBackground();
+        drawGrid();
+        drawWatermark();
+        drawPath();
+        if (sel >= 0) drawHandles(sel);
+        drawPoints();
+        if (playing && pts.length >= 2) drawMovingDot();
+    }
+
+    function drawBackground() {
+        var grad = ctx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, '#0a0a1a');
+        grad.addColorStop(1, '#111126');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+    }
+
+    function drawGrid() {
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.lineWidth = 1;
+        var step = 40;
+        ctx.beginPath();
+        for (var x = 0; x <= W; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+        for (var y = 0; y <= H; y += step) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
+        ctx.stroke();
+    }
+
+    function drawWatermark() {
+        ctx.save();
+        ctx.font = 'bold 72px var(--font-family, system-ui)';
+        ctx.fillStyle = 'rgba(255,255,255,0.025)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('STAGE', W/2, H/2);
+        ctx.restore();
+    }
+
+    function drawPath() {
+        if (pts.length < 2) return;
+        ctx.save();
+        ctx.strokeStyle = 'rgba(107,37,221,0.7)';
+        ctx.lineWidth = 2.5;
+        ctx.shadowColor = 'rgba(107,37,221,0.4)';
+        ctx.shadowBlur = 6;
+        ctx.beginPath();
+        ctx.moveTo(pts[0].x, pts[0].y);
+        for (var i = 0; i < pts.length - 1; i++) {
+            var a = pts[i], b = pts[i+1];
+            var cp1x = a.smoothOut ? a.handleOut.x : a.x;
+            var cp1y = a.smoothOut ? a.handleOut.y : a.y;
+            var cp2x = b.smoothIn  ? b.handleIn.x  : b.x;
+            var cp2y = b.smoothIn  ? b.handleIn.y  : b.y;
+            ctx.bezierCurveTo(cp1x, cp1y, cp2x, cp2y, b.x, b.y);
+        }
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    function drawHandles(idx) {
+        var pt = pts[idx];
+        ctx.save();
+        // draw stems + handle dots
+        var handles = [];
+        if (idx > 0 && pt.smoothIn)   handles.push({ key:'in',  hx: pt.handleIn.x,  hy: pt.handleIn.y });
+        if (idx < pts.length-1 && pt.smoothOut) handles.push({ key:'out', hx: pt.handleOut.x, hy: pt.handleOut.y });
+
+        for (var h = 0; h < handles.length; h++) {
+            var hd = handles[h];
+            var isHovH = (hoveredHandle === hd.key && hoveredPt === idx);
+            var isDragH = (dragging && dragWhat === 'handle' + hd.key && dragIdx === idx);
+            var active = isHovH || isDragH;
+
+            // stem
+            ctx.beginPath();
+            ctx.moveTo(pt.x, pt.y);
+            ctx.lineTo(hd.hx, hd.hy);
+            ctx.strokeStyle = active ? 'rgba(245,200,66,0.7)' : 'rgba(255,255,255,0.25)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([3, 3]);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // handle dot
+            ctx.beginPath();
+            ctx.arc(hd.hx, hd.hy, active ? 6 : 5, 0, Math.PI*2);
+            ctx.fillStyle = active ? GOLD : 'rgba(255,255,255,0.65)';
+            if (active) {
+                ctx.shadowColor = GOLD;
+                ctx.shadowBlur = 8;
+            }
+            ctx.fill();
+            ctx.strokeStyle = active ? GOLD : 'rgba(255,255,255,0.4)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+            ctx.shadowBlur = 0;
+        }
+        ctx.restore();
+    }
+
+    function drawPoints() {
+        for (var i = 0; i < pts.length; i++) {
+            var pt = pts[i];
+            var isSel  = (i === sel);
+            var isHov  = (i === hoveredPt && !dragging);
+            var isDrag = (dragging && dragWhat === 'point' && dragIdx === i);
+
+            ctx.save();
+
+            // glow for hover / selected
+            if (isSel || isHov || isDrag) {
+                ctx.shadowColor = ACCENT_GLOW;
+                ctx.shadowBlur  = 14;
+            }
+
+            // outer ring for selected
+            if (isSel || isDrag) {
+                ctx.beginPath();
+                ctx.arc(pt.x, pt.y, 13, 0, Math.PI*2);
+                ctx.strokeStyle = 'rgba(107,37,221,0.5)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            // main dot
+            var r = isSel || isDrag ? 9 : isHov ? 8 : 7;
+            ctx.beginPath();
+            ctx.arc(pt.x, pt.y, r, 0, Math.PI*2);
+            ctx.fillStyle = isSel || isDrag ? '#9B5DFF' : ACCENT;
+            ctx.fill();
+            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            ctx.shadowBlur = 0;
+            ctx.restore();
+
+            // label
+            ctx.save();
+            ctx.font = 'bold 11px var(--font-family, system-ui)';
+            ctx.fillStyle = isSel ? '#c4a0ff' : 'rgba(255,255,255,0.55)';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'bottom';
+            ctx.fillText(String(i + 1), pt.x, pt.y - 11);
+            ctx.restore();
+        }
+    }
+
+    function drawMovingDot() {
+        var pp = pathPoint(playT);
+        ctx.save();
+        ctx.shadowColor = '#f5c842';
+        ctx.shadowBlur  = 18;
+        ctx.beginPath();
+        ctx.arc(pp.x, pp.y, 8, 0, Math.PI*2);
+        ctx.fillStyle = GOLD;
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.restore();
+    }
+
+    // ── playback ──────────────────────────────────────────────────────────
+    function startPlay() {
+        if (pts.length < 2) { setInfo('Add at least 2 points before playing.'); return; }
+        playing  = true;
+        playT    = 0;
+        playStart = performance.now();
+        playBtn.textContent = 'Stop';
+        playBtn.classList.add('pbp-btn-active');
+        setInfo('Playing path preview…');
+        playFrame();
+    }
+
+    function stopPlay() {
+        playing = false;
+        cancelAnimationFrame(playRAF);
+        playBtn.textContent = 'Play';
+        playBtn.classList.remove('pbp-btn-active');
+        setInfo(sel >= 0 ? 'Point ' + (sel+1) + ' selected. Drag to reposition.' : 'Click empty area to add a point. Drag points or handles to reshape the path.');
+        draw();
+    }
+
+    function playFrame() {
+        var now = performance.now();
+        playT = Math.min(1, (now - playStart) / PLAY_DURATION);
+        draw();
+        if (playT < 1) {
+            playRAF = requestAnimationFrame(playFrame);
+        } else {
+            // bounce back immediately
+            playStart = performance.now();
+            playT = 0;
+            playRAF = requestAnimationFrame(playFrame);
+        }
+    }
+
+    // ── hit testing ───────────────────────────────────────────────────────
+    function hitHandle(mx, my, idx) {
+        if (idx < 0 || idx >= pts.length) return null;
+        var pt = pts[idx];
+        if (idx > 0 && pt.smoothIn && dist(mx, my, pt.handleIn.x, pt.handleIn.y) <= HIT_HANDLE)
+            return 'handlein';
+        if (idx < pts.length-1 && pt.smoothOut && dist(mx, my, pt.handleOut.x, pt.handleOut.y) <= HIT_HANDLE)
+            return 'handleout';
+        return null;
+    }
+
+    function hitPoint(mx, my) {
+        for (var i = 0; i < pts.length; i++) {
+            if (dist(mx, my, pts[i].x, pts[i].y) <= HIT_POINT) return i;
+        }
+        return -1;
+    }
+
+    // ── handle mirroring ──────────────────────────────────────────────────
+    function mirrorHandle(idx, moved) {
+        var pt = pts[idx];
+        if (!pt.linked) return;
+        if (moved === 'handleout') {
+            // mirror in = reflect out through pt
+            pt.handleIn.x = 2*pt.x - pt.handleOut.x;
+            pt.handleIn.y = 2*pt.y - pt.handleOut.y;
+        } else {
+            pt.handleOut.x = 2*pt.x - pt.handleIn.x;
+            pt.handleOut.y = 2*pt.y - pt.handleIn.y;
+        }
+    }
+
+    // ── pointer events ────────────────────────────────────────────────────
+    function canvasXY(e) {
+        var rect = canvas.getBoundingClientRect();
+        var scaleX = W / rect.width;
+        var scaleY = H / rect.height;
+        var src = e.touches ? e.touches[0] : e;
+        return { x: (src.clientX - rect.left) * scaleX, y: (src.clientY - rect.top) * scaleY };
+    }
+
+    canvas.addEventListener('pointerdown', function(e) {
+        e.preventDefault();
+        canvas.setPointerCapture(e.pointerId);
+        var pos = canvasXY(e);
+        var mx = pos.x, my = pos.y;
+
+        // 1. handles of selected point
+        if (sel >= 0) {
+            var h = hitHandle(mx, my, sel);
+            if (h) {
+                dragging = true;
+                dragWhat = h;   // 'handlein' | 'handleout'
+                dragIdx  = sel;
+                hoveredHandle = null;
+                draw();
+                return;
+            }
+        }
+
+        // 2. any point
+        var pi = hitPoint(mx, my);
+        if (pi >= 0) {
+            sel = pi;
+            dragging = true;
+            dragWhat = 'point';
+            dragIdx  = pi;
+            updatePanel();
+            draw();
+            return;
+        }
+
+        // 3. empty space → add point
+        if (pts.length < MAX_POINTS) {
+            var prev = pts[pts.length - 1];
+            var np = makePoint(mx, my, prev, null);
+            // fix prev handleOut toward new point
+            prev.handleOut.x = prev.x + (mx - prev.x) * 0.33;
+            prev.handleOut.y = prev.y + (my - prev.y) * 0.33;
+            pts.push(np);
+            sel = pts.length - 1;
+            updatePanel();
+            setInfo('Added point ' + pts.length + '. ' + (pts.length < MAX_POINTS ? (MAX_POINTS - pts.length) + ' more can be added.' : 'Maximum points reached.'));
+            draw();
+        } else {
+            setInfo('Maximum of ' + MAX_POINTS + ' points reached. Delete a point to add another.');
+        }
+    });
+
+    canvas.addEventListener('pointermove', function(e) {
+        e.preventDefault();
+        var pos = canvasXY(e);
+        var mx = pos.x, my = pos.y;
+
+        if (dragging) {
+            if (dragWhat === 'point') {
+                var pt = pts[dragIdx];
+                var dx = mx - pt.x, dy = my - pt.y;
+                pt.x = mx; pt.y = my;
+                // move handles with point
+                pt.handleIn.x  += dx; pt.handleIn.y  += dy;
+                pt.handleOut.x += dx; pt.handleOut.y += dy;
+                setInfo('Point ' + (dragIdx+1) + ': (' + Math.round(mx) + ', ' + Math.round(my) + ')');
+            } else if (dragWhat === 'handlein') {
+                pts[dragIdx].handleIn.x = mx;
+                pts[dragIdx].handleIn.y = my;
+                mirrorHandle(dragIdx, 'handlein');
+                setInfo('Handle In of point ' + (dragIdx+1));
+            } else if (dragWhat === 'handleout') {
+                pts[dragIdx].handleOut.x = mx;
+                pts[dragIdx].handleOut.y = my;
+                mirrorHandle(dragIdx, 'handleout');
+                setInfo('Handle Out of point ' + (dragIdx+1));
+            }
+            draw();
+            return;
+        }
+
+        // hover detection
+        var newHovPt = -1;
+        var newHovH  = null;
+
+        if (sel >= 0) {
+            var h = hitHandle(mx, my, sel);
+            if (h) {
+                newHovH  = h === 'handlein' ? 'in' : 'out';
+                newHovPt = sel;
+                canvas.style.cursor = 'grab';
+            }
+        }
+
+        if (!newHovH) {
+            var pi = hitPoint(mx, my);
+            if (pi >= 0) {
+                newHovPt = pi;
+                canvas.style.cursor = 'grab';
+            } else {
+                canvas.style.cursor = pts.length < MAX_POINTS ? 'crosshair' : 'default';
+            }
+        }
+
+        if (newHovPt !== hoveredPt || newHovH !== hoveredHandle) {
+            hoveredPt = newHovPt;
+            hoveredHandle = newHovH;
+            draw();
+        }
+    });
+
+    canvas.addEventListener('pointerup', function(e) {
+        if (dragging) {
+            dragging  = false;
+            dragWhat  = null;
+            dragIdx   = -1;
+            updatePanel();
+            setInfo(sel >= 0 ? 'Point ' + (sel+1) + ' selected.' : 'Click empty area to add a point.');
+            draw();
+        }
+    });
+
+    canvas.addEventListener('pointerleave', function() {
+        hoveredPt = -1;
+        hoveredHandle = null;
+        if (!dragging) draw();
+    });
+
+    // ── properties panel ──────────────────────────────────────────────────
+    function updatePanel() {
+        if (sel < 0 || sel >= pts.length) {
+            propsEmpty.style.display = '';
+            propsContent.style.display = 'none';
+            deleteBtn.disabled = true;
+            return;
+        }
+        var pt = pts[sel];
+        propsEmpty.style.display = 'none';
+        propsContent.style.display = 'flex';
+        propsTitle.textContent = 'Point ' + (sel+1) + ' of ' + pts.length;
+
+        linkedChk.checked   = pt.linked;
+        smoothInChk.checked  = pt.smoothIn;
+        smoothOutChk.checked = pt.smoothOut;
+
+        // lock smooth in/out when linked
+        var locked = pt.linked;
+        smoothInRow.classList.toggle('pbp-locked', locked);
+        smoothOutRow.classList.toggle('pbp-locked', locked);
+
+        // only show handleIn row if not first point, handleOut if not last
+        smoothInRow.style.visibility  = (sel > 0)              ? '' : 'hidden';
+        smoothOutRow.style.visibility = (sel < pts.length - 1) ? '' : 'hidden';
+
+        deleteBtn.disabled = pts.length <= 2;
+    }
+
+    linkedChk.addEventListener('change', function() {
+        if (sel < 0) return;
+        pts[sel].linked = linkedChk.checked;
+        if (linkedChk.checked) {
+            pts[sel].smoothIn  = true;
+            pts[sel].smoothOut = true;
+            // re-mirror so handles are consistent
+            mirrorHandle(sel, 'handleout');
+        }
+        updatePanel();
+        draw();
+    });
+
+    smoothInChk.addEventListener('change', function() {
+        if (sel < 0 || pts[sel].linked) return;
+        pts[sel].smoothIn = smoothInChk.checked;
+        draw();
+    });
+
+    smoothOutChk.addEventListener('change', function() {
+        if (sel < 0 || pts[sel].linked) return;
+        pts[sel].smoothOut = smoothOutChk.checked;
+        draw();
+    });
+
+    deleteBtn.addEventListener('click', function() {
+        if (sel < 0 || pts.length <= 2) return;
+        pts.splice(sel, 1);
+        sel = Math.min(sel, pts.length - 1);
+        updatePanel();
+        setInfo('Point deleted. ' + pts.length + ' points remain.');
+        draw();
+    });
+
+    // ── toolbar buttons ───────────────────────────────────────────────────
+    playBtn.addEventListener('click', function() {
+        if (playing) stopPlay(); else startPlay();
+    });
+
+    clearBtn.addEventListener('click', function() {
+        stopPlay();
+        initPoints();
+        updatePanel();
+        setInfo('Reset to default path.');
+        draw();
+    });
+
+    // ── info bar ─────────────────────────────────────────────────────────
+    function setInfo(msg) {
+        infoEl.textContent = msg;
+    }
+
+    // ── initial render ────────────────────────────────────────────────────
+    updatePanel();
+    draw();
+})();
+</script>
+</div>
+
+<div class='info-box'><p>When Linked Handles is active, the individual Smooth In and Smooth Out toggles are locked on. To control them independently, first disable Linked Handles.
+</p></div>
+
+<h3>Align with Trajectory</h3>
+
+<p>The <strong>Align with Trajectory</strong> option (shown in the tween-level Properties panel when a Position tween is selected) automatically rotates the cue so that it faces the direction it is currently moving. This is useful for:</p>
+
+<ul>
+<li>Objects that should always point in their direction of travel (arrows, vehicles, characters).</li>
+<li>Content that needs to follow a curved path while maintaining a natural orientation relative to the path.</li>
+
+</ul>
+
+<p>When enabled, the cue's rotation is continuously updated based on the tangent of the motion path at each moment. Manual rotation tweens (Rotation X/Y/Z) are overridden along the affected axes while this option is active.</p>
+
+<div class="interactive-widget" id="pat-widget">
+    <style>
+        #pat-widget {
+            width: 100%;
+            font-family: var(--font-family, system-ui, sans-serif);
+        }
+
+        #pat-widget .pat-panels {
+            display: flex;
+            gap: 12px;
+            align-items: stretch;
+        }
+
+        #pat-widget .pat-panel {
+            flex: 1;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #pat-widget .pat-panel-header {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            padding: 7px 10px;
+            border-radius: 6px 6px 0 0;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.02em;
+        }
+
+        #pat-widget .pat-panel-header.pat-off {
+            background: rgba(156, 163, 175, 0.12);
+            color: #9ca3af;
+            border: 1px solid rgba(156, 163, 175, 0.25);
+            border-bottom: none;
+        }
+
+        #pat-widget .pat-panel-header.pat-on {
+            background: rgba(99, 102, 241, 0.12);
+            color: var(--accent-primary, #6366f1);
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-bottom: none;
+        }
+
+        #pat-widget .pat-badge {
+            font-size: 0.65rem;
+            padding: 1px 6px;
+            border-radius: 3px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+
+        #pat-widget .pat-off .pat-badge {
+            background: rgba(156, 163, 175, 0.2);
+            color: #d1d5db;
+        }
+
+        #pat-widget .pat-on .pat-badge {
+            background: rgba(99, 102, 241, 0.2);
+            color: var(--accent-primary, #a5b4fc);
+        }
+
+        #pat-widget canvas {
+            width: 100%;
+            height: 300px;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0d0d1a 100%);
+            border-radius: 0 0 8px 8px;
+            display: block;
+        }
+
+        #pat-widget .pat-panel:first-child canvas {
+            border: 1px solid rgba(156, 163, 175, 0.18);
+            border-top: none;
+        }
+
+        #pat-widget .pat-panel:last-child canvas {
+            border: 1px solid rgba(99, 102, 241, 0.18);
+            border-top: none;
+        }
+
+        #pat-widget .pat-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 14px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        #pat-widget .pat-btn {
+            padding: 6px 18px;
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--bg-tertiary, #292524);
+            color: var(--text-secondary, #a8a29e);
+            font-family: inherit;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 70px;
+            text-align: center;
+        }
+
+        #pat-widget .pat-btn:hover {
+            background: rgba(107, 37, 221, 0.15);
+            border-color: var(--accent-primary, #6B25DD);
+            color: var(--text-primary, #e7e5e4);
+        }
+
+        #pat-widget .pat-btn.pat-active {
+            background: rgba(107, 37, 221, 0.25);
+            border-color: var(--accent-primary, #6B25DD);
+            color: #c4a0ff;
+        }
+
+        #pat-widget .pat-path-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        #pat-widget .pat-path-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary, #a8a29e);
+            white-space: nowrap;
+        }
+
+        #pat-widget .pat-path-group select {
+            padding: 4px 8px;
+            border-radius: 4px;
+            background: var(--input-bg, #1c1917);
+            border: 1px solid var(--border-subtle, rgba(255,255,255,0.1));
+            color: var(--text-primary, #e7e5e4);
+            font-size: 0.8rem;
+            font-family: inherit;
+            cursor: pointer;
+        }
+
+        #pat-widget .pat-speed-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        #pat-widget .pat-speed-group label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary, #a8a29e);
+            white-space: nowrap;
+        }
+
+        #pat-widget .pat-speed-group input[type=range] {
+            width: 80px;
+            height: 5px;
+            cursor: pointer;
+            accent-color: var(--accent-primary, #6B25DD);
+        }
+
+        #pat-widget .pat-speed-val {
+            font-size: 0.7rem;
+            color: var(--text-muted, #78716c);
+            font-variant-numeric: tabular-nums;
+            min-width: 28px;
+        }
+
+        #pat-widget .pat-explain {
+            margin-top: 10px;
+            min-height: 44px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            background: rgba(99, 102, 241, 0.06);
+            border-left: 3px solid var(--accent-primary, #6366f1);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: var(--text-secondary, #a8a29e);
+        }
+
+        #pat-widget .pat-explain strong {
+            color: var(--text-primary, #e7e5e4);
+        }
+
+        @media (max-width: 680px) {
+            #pat-widget .pat-panels {
+                flex-direction: column;
+            }
+
+            #pat-widget canvas {
+                height: 220px;
+            }
+
+            #pat-widget .pat-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            #pat-widget .pat-controls > * {
+                justify-content: center;
+            }
+
+            #pat-widget .pat-speed-group input[type=range] {
+                flex: 1;
+            }
+        }
+    </style>
+
+    <div class="pat-panels">
+        <div class="pat-panel">
+            <div class="pat-panel-header pat-off">
+                <span class="pat-badge">OFF</span>
+                <span>Align with Trajectory</span>
+            </div>
+            <canvas id="pat-canvas-off" width="700" height="460"></canvas>
+        </div>
+        <div class="pat-panel">
+            <div class="pat-panel-header pat-on">
+                <span class="pat-badge">ON</span>
+                <span>Align with Trajectory</span>
+            </div>
+            <canvas id="pat-canvas-on" width="700" height="460"></canvas>
+        </div>
+    </div>
+
+    <div class="pat-controls">
+        <button class="pat-btn" id="pat-play-btn">Play</button>
+        <div class="pat-path-group">
+            <label>Path</label>
+            <select id="pat-path-select">
+                <option value="s-curve" selected>S-Curve</option>
+                <option value="loop">Loop</option>
+                <option value="zigzag">Zigzag</option>
+                <option value="arc">Wide Arc</option>
+            </select>
+        </div>
+        <div class="pat-speed-group">
+            <label>Speed</label>
+            <input type="range" id="pat-speed" min="1" max="5" value="2" step="0.5">
+            <span class="pat-speed-val" id="pat-speed-val">1&times;</span>
+        </div>
+    </div>
+
+    <div class="pat-explain" id="pat-explain">
+        Press <strong>Play</strong> to see the difference. The left object keeps a <strong>fixed rotation</strong> as it moves along the path, while the right object <strong>automatically rotates</strong> to face its direction of travel &mdash; aligning its orientation with the tangent of the motion path.
+    </div>
+</div>
+
+<script>
+(function() {
+    /* ── DOM refs ──────────────────────────────────────────────────────── */
+    var cOff = document.getElementById('pat-canvas-off');
+    var cOn  = document.getElementById('pat-canvas-on');
+    if (!cOff || !cOn) return;
+    var ctxOff = cOff.getContext('2d');
+    var ctxOn  = cOn.getContext('2d');
+    var W = cOff.width, H = cOff.height;
+
+    var playBtn   = document.getElementById('pat-play-btn');
+    var pathSel   = document.getElementById('pat-path-select');
+    var speedSldr = document.getElementById('pat-speed');
+    var speedVal  = document.getElementById('pat-speed-val');
+    var explainEl = document.getElementById('pat-explain');
+
+    /* ── state ─────────────────────────────────────────────────────────── */
+    var playing   = false;
+    var animT     = 0;       // 0..1 progress (linear)
+    var animStart = 0;
+    var animRAF   = 0;
+    var baseDuration = 3000; // ms at speed 1×
+
+    /* ── path definitions ──────────────────────────────────────────────── */
+    // Format: array of segments, each segment = { p0, cp1, cp2, p1 }
+
+    var paths = {
+        's-curve': [
+            { p0:{x:80,y:360}, cp1:{x:180,y:140}, cp2:{x:300,y:360}, p1:{x:380,y:230} },
+            { p0:{x:380,y:230}, cp1:{x:460,y:100}, cp2:{x:540,y:300}, p1:{x:620,y:120} }
+        ],
+        'loop': [
+            { p0:{x:100,y:300}, cp1:{x:100,y:80},  cp2:{x:420,y:80},  p1:{x:420,y:230} },
+            { p0:{x:420,y:230}, cp1:{x:420,y:380}, cp2:{x:200,y:420}, p1:{x:260,y:300} },
+            { p0:{x:260,y:300}, cp1:{x:320,y:180}, cp2:{x:560,y:200}, p1:{x:600,y:140} }
+        ],
+        'zigzag': [
+            { p0:{x:80,y:350},  cp1:{x:120,y:340}, cp2:{x:160,y:120}, p1:{x:220,y:110} },
+            { p0:{x:220,y:110}, cp1:{x:280,y:100}, cp2:{x:320,y:360}, p1:{x:380,y:350} },
+            { p0:{x:380,y:350}, cp1:{x:440,y:340}, cp2:{x:480,y:120}, p1:{x:540,y:110} },
+            { p0:{x:540,y:110}, cp1:{x:580,y:104}, cp2:{x:610,y:180}, p1:{x:630,y:220} }
+        ],
+        'arc': [
+            { p0:{x:80,y:380}, cp1:{x:80,y:60}, cp2:{x:620,y:60}, p1:{x:620,y:380} }
+        ]
+    };
+
+    var currentPath = 's-curve';
+
+    function getSegments() {
+        return paths[currentPath] || paths['s-curve'];
+    }
+
+    /* ── math helpers ──────────────────────────────────────────────────── */
+    function cubicBezier(a, b, c, d, t) {
+        var mt = 1 - t;
+        return mt*mt*mt*a + 3*mt*mt*t*b + 3*mt*t*t*c + t*t*t*d;
+    }
+
+    function cubicBezierDeriv(a, b, c, d, t) {
+        var mt = 1 - t;
+        return 3*mt*mt*(b - a) + 6*mt*t*(c - b) + 3*t*t*(d - c);
+    }
+
+    function dist(ax, ay, bx, by) {
+        var dx = ax - bx, dy = ay - by;
+        return Math.sqrt(dx*dx + dy*dy);
+    }
+
+    /* ── chord-length parameterization with caching ────────────────────── */
+    var SAMPLE_STEPS = 40;
+    var cachedPathKey = '';
+    var cachedLengths = null;
+    var cachedTotal   = 0;
+
+    function ensureLengthCache() {
+        var key = currentPath;
+        if (key === cachedPathKey && cachedLengths) return;
+        var segs = getSegments();
+        var lengths = [];
+        var total = 0;
+        for (var s = 0; s < segs.length; s++) {
+            var seg = segs[s];
+            var len = 0, px = seg.p0.x, py = seg.p0.y;
+            for (var i = 1; i <= SAMPLE_STEPS; i++) {
+                var t = i / SAMPLE_STEPS;
+                var nx = cubicBezier(seg.p0.x, seg.cp1.x, seg.cp2.x, seg.p1.x, t);
+                var ny = cubicBezier(seg.p0.y, seg.cp1.y, seg.cp2.y, seg.p1.y, t);
+                len += dist(px, py, nx, ny);
+                px = nx; py = ny;
+            }
+            lengths.push(len);
+            total += len;
+        }
+        cachedPathKey = key;
+        cachedLengths = lengths;
+        cachedTotal   = total;
+    }
+
+    // Returns {x, y, angle} for globalT in [0..1]
+    function pathPointAndAngle(globalT) {
+        var segs = getSegments();
+        ensureLengthCache();
+        if (cachedTotal === 0) return { x: segs[0].p0.x, y: segs[0].p0.y, angle: 0 };
+
+        var target = globalT * cachedTotal;
+        var acc = 0;
+
+        for (var s = 0; s < segs.length; s++) {
+            if (acc + cachedLengths[s] >= target || s === segs.length - 1) {
+                var localT = cachedLengths[s] > 0 ? (target - acc) / cachedLengths[s] : 0;
+                localT = Math.max(0, Math.min(1, localT));
+                var seg = segs[s];
+
+                var x = cubicBezier(seg.p0.x, seg.cp1.x, seg.cp2.x, seg.p1.x, localT);
+                var y = cubicBezier(seg.p0.y, seg.cp1.y, seg.cp2.y, seg.p1.y, localT);
+
+                // tangent via analytic derivative
+                var dx = cubicBezierDeriv(seg.p0.x, seg.cp1.x, seg.cp2.x, seg.p1.x, localT);
+                var dy = cubicBezierDeriv(seg.p0.y, seg.cp1.y, seg.cp2.y, seg.p1.y, localT);
+
+                // fallback for near-zero derivative (cusp)
+                if (Math.abs(dx) < 0.001 && Math.abs(dy) < 0.001) {
+                    var eps = 0.002;
+                    var t2 = Math.min(1, localT + eps);
+                    var t1 = Math.max(0, localT - eps);
+                    dx = cubicBezier(seg.p0.x, seg.cp1.x, seg.cp2.x, seg.p1.x, t2)
+                       - cubicBezier(seg.p0.x, seg.cp1.x, seg.cp2.x, seg.p1.x, t1);
+                    dy = cubicBezier(seg.p0.y, seg.cp1.y, seg.cp2.y, seg.p1.y, t2)
+                       - cubicBezier(seg.p0.y, seg.cp1.y, seg.cp2.y, seg.p1.y, t1);
+                }
+
+                var angle = Math.atan2(dy, dx);
+                return { x: x, y: y, angle: angle };
+            }
+            acc += cachedLengths[s];
+        }
+
+        var last = segs[segs.length - 1];
+        return { x: last.p1.x, y: last.p1.y, angle: 0 };
+    }
+
+    /* ── drawing helpers ───────────────────────────────────────────────── */
+    function drawBackground(ctx) {
+        var grad = ctx.createLinearGradient(0, 0, 0, H);
+        grad.addColorStop(0, '#0a0a1a');
+        grad.addColorStop(1, '#111126');
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, W, H);
+    }
+
+    function drawGrid(ctx) {
+        ctx.strokeStyle = 'rgba(255,255,255,0.04)';
+        ctx.lineWidth = 1;
+        var step = 40;
+        ctx.beginPath();
+        for (var x = 0; x <= W; x += step) { ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+        for (var y = 0; y <= H; y += step) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
+        ctx.stroke();
+    }
+
+    function drawPath(ctx) {
+        var segs = getSegments();
+        ctx.save();
+        ctx.strokeStyle = 'rgba(107,37,221,0.5)';
+        ctx.lineWidth = 2;
+        ctx.shadowColor = 'rgba(107,37,221,0.3)';
+        ctx.shadowBlur = 6;
+        ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        ctx.moveTo(segs[0].p0.x, segs[0].p0.y);
+        for (var i = 0; i < segs.length; i++) {
+            var s = segs[i];
+            ctx.bezierCurveTo(s.cp1.x, s.cp1.y, s.cp2.x, s.cp2.y, s.p1.x, s.p1.y);
+        }
+        ctx.stroke();
+        ctx.restore();
+
+        // start and end dots
+        var first = segs[0].p0;
+        var last = segs[segs.length - 1].p1;
+        ctx.save();
+        ctx.fillStyle = 'rgba(107,37,221,0.4)';
+        ctx.beginPath(); ctx.arc(first.x, first.y, 5, 0, Math.PI * 2); ctx.fill();
+        ctx.beginPath(); ctx.arc(last.x, last.y, 5, 0, Math.PI * 2); ctx.fill();
+
+        // tiny labels
+        ctx.font = '600 10px var(--font-family, system-ui)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillStyle = 'rgba(107,37,221,0.5)';
+        ctx.fillText('START', first.x, first.y - 8);
+        ctx.fillText('END', last.x, last.y - 8);
+        ctx.restore();
+    }
+
+    // Arrow shape — points right at angle=0
+    function drawArrow(ctx, x, y, angle, color, ghost) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+
+        var size = 16;
+
+        if (!ghost) {
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 14;
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(size, 0);                    // tip
+        ctx.lineTo(-size * 0.5, -size * 0.7);   // upper wing
+        ctx.lineTo(-size * 0.15, 0);             // notch
+        ctx.lineTo(-size * 0.5, size * 0.7);    // lower wing
+        ctx.closePath();
+
+        ctx.fillStyle = ghost ? 'rgba(120,120,140,0.3)' : color;
+        ctx.fill();
+
+        if (!ghost) {
+            ctx.strokeStyle = 'rgba(255,255,255,0.5)';
+            ctx.lineWidth = 1.2;
+            ctx.stroke();
+        }
+
+        ctx.restore();
+    }
+
+    // Tangent direction line on the "on" canvas
+    function drawTangentIndicator(ctx, x, y, angle) {
+        ctx.save();
+        ctx.translate(x, y);
+        ctx.rotate(angle);
+        ctx.strokeStyle = 'rgba(245,200,66,0.3)';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([3, 3]);
+        ctx.beginPath();
+        ctx.moveTo(-30, 0);
+        ctx.lineTo(40, 0);
+        ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.restore();
+    }
+
+    // Ghost trail of recent positions
+    function drawTrail(ctx, t, aligned) {
+        var trailCount = 6;
+        var trailSpacing = 0.035;
+        for (var i = trailCount; i >= 1; i--) {
+            var tt = t - i * trailSpacing;
+            if (tt < 0) continue;
+            var pt = pathPointAndAngle(tt);
+            var alpha = (1 - i / (trailCount + 1)) * 0.25;
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            drawArrow(ctx, pt.x, pt.y, aligned ? pt.angle : 0, '#f5c842', true);
+            ctx.restore();
+        }
+    }
+
+    /* ── main draw ─────────────────────────────────────────────────────── */
+    function drawScene(ctx, aligned) {
+        ctx.clearRect(0, 0, W, H);
+        drawBackground(ctx);
+        drawGrid(ctx);
+        drawPath(ctx);
+
+        if (!playing && animT === 0) {
+            // static state: arrow at start + hint text
+            var pt = pathPointAndAngle(0);
+            drawArrow(ctx, pt.x, pt.y, aligned ? pt.angle : 0, '#f5c842', false);
+
+            ctx.save();
+            ctx.font = '600 13px var(--font-family, system-ui)';
+            ctx.fillStyle = 'rgba(255,255,255,0.12)';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('Press Play', W / 2, H / 2);
+            ctx.restore();
+            return;
+        }
+
+        // trail
+        drawTrail(ctx, animT, aligned);
+
+        // current position
+        var pt = pathPointAndAngle(animT);
+        var ang = aligned ? pt.angle : 0;
+
+        if (aligned) {
+            drawTangentIndicator(ctx, pt.x, pt.y, pt.angle);
+        }
+
+        drawArrow(ctx, pt.x, pt.y, ang, '#f5c842', false);
+    }
+
+    function drawAll() {
+        drawScene(ctxOff, false);
+        drawScene(ctxOn, true);
+    }
+
+    /* ── animation loop ────────────────────────────────────────────────── */
+    function getSpeed() {
+        return parseFloat(speedSldr.value) / 2;
+    }
+
+    function getDuration() {
+        return baseDuration / getSpeed();
+    }
+
+    function startPlay() {
+        playing = true;
+        animT = 0;
+        animStart = performance.now();
+        playBtn.textContent = 'Stop';
+        playBtn.classList.add('pat-active');
+        updateExplain();
+        animFrame();
+    }
+
+    function stopPlay() {
+        playing = false;
+        cancelAnimationFrame(animRAF);
+        playBtn.textContent = 'Play';
+        playBtn.classList.remove('pat-active');
+        animT = 0;
+        updateExplain();
+        drawAll();
+    }
+
+    function animFrame() {
+        if (!playing) return;
+        var elapsed = performance.now() - animStart;
+        var duration = getDuration();
+        // linear progress, looping
+        animT = (elapsed % duration) / duration;
+        drawAll();
+        animRAF = requestAnimationFrame(animFrame);
+    }
+
+    /* ── explainer text ────────────────────────────────────────────────── */
+    function updateExplain() {
+        if (playing) {
+            var name = pathSel.options[pathSel.selectedIndex].text;
+            explainEl.innerHTML = 'Animating on the <strong>' + name + '</strong> path. '
+                + 'Notice how the left arrow always faces right, while the right arrow <strong>rotates to follow the curve</strong>. '
+                + 'This is the <strong>tangent direction</strong> \u2014 the instantaneous direction of travel at each point on the path.';
+        } else {
+            explainEl.innerHTML = 'Press <strong>Play</strong> to see the difference. '
+                + 'The left object keeps a <strong>fixed rotation</strong> as it moves along the path, '
+                + 'while the right object <strong>automatically rotates</strong> to face its direction of travel \u2014 '
+                + 'aligning its orientation with the tangent of the motion path.';
+        }
+    }
+
+    /* ── events ────────────────────────────────────────────────────────── */
+    playBtn.addEventListener('click', function() {
+        if (playing) stopPlay(); else startPlay();
+    });
+
+    pathSel.addEventListener('change', function() {
+        currentPath = pathSel.value;
+        cachedPathKey = '';  // invalidate cache
+        if (playing) {
+            animStart = performance.now();
+            animT = 0;
+        }
+        updateExplain();
+        drawAll();
+    });
+
+    speedSldr.addEventListener('input', function() {
+        var spd = getSpeed();
+        var label = spd < 1 ? spd.toFixed(1) : spd.toFixed(1).replace(/\.0$/, '');
+        speedVal.textContent = label + '\u00d7';
+        if (playing) {
+            // maintain current position when speed changes
+            var duration = getDuration();
+            animStart = performance.now() - animT * duration;
+        }
+    });
+
+    /* ── init ──────────────────────────────────────────────────────────── */
+    speedVal.textContent = getSpeed().toFixed(1).replace(/\.0$/, '') + '\u00d7';
+    drawAll();
+})();
+</script>
+
+<h3>Understanding the Position Curve</h3>
+
+<p>Unlike other effect curves where the vertical axis represents the property value directly, the <strong>Position effect curve represents progress along the path</strong>, not a specific X, Y, or Z value. The first point always sits at the <strong>bottom</strong> of the curve view (start of the path) and the last point sits at the <strong>top</strong> (end of the path). Points in between are distributed vertically according to their relative position along the total path length.</p>
+
+<p>This design lets you read <strong>movement speed</strong> directly from the curve's shape:</p>
+
+<table>
+<tr><th>Curve Shape</th><th>Meaning</th></tr>
+<tr><td><strong>Steep incline</strong></td><td>Higher speed — the cue covers more of the path per unit of time</td></tr>
+<tr><td><strong>Shallow incline</strong></td><td>Lower speed — the cue moves slowly through that segment</td></tr>
+<tr><td><strong>Flat section</strong></td><td>Zero speed — the cue holds position (dwell)</td></tr>
+</table>
+
+<p>To equalize speed across segments, adjust the horizontal spacing of points on the timeline until the incline between consecutive points is uniform. To create acceleration or deceleration, space points closer together (slow) or farther apart (fast) in the curve view, or use appropriate easing curves on the tween points.</p>
+
+<h3>First Person Mode and the Axis Gizmo</h3>
+
+<p>When working with 3D position animation (using the Z axis), you can switch the Stage view to <strong>First Person mode</strong> for a perspective view of the 3D space. In this mode, an <strong>axis gizmo</strong> appears on the selected cue, showing the X, Y, and Z movement axes as colored arrows. Drag an axis arrow to constrain movement to that single axis, making precise 3D positioning easier without accidentally shifting the cue on unintended axes.</p>
+
+<h3>Building a Motion Path</h3>
+
+<p>A typical workflow for position animation:</p>
+
+<ol>
+<li><strong>Place tween points at key moments.</strong> Decide where the cue should be at the start, at significant scene beats, and at the end. Add a tween point at each of these times and set the X/Y/Z coordinates.</li>
+<li><strong>Choose easing curves.</strong> Set the <strong>Transition Type</strong> on each point to control the speed profile between positions. Use <strong>Linear</strong> for constant-speed movement, <strong>Quadratic InOut</strong> or <strong>Cubic InOut</strong> for natural acceleration and deceleration.</li>
+<li><strong>Add curves where needed.</strong> Enable Smooth handles on points where the path should curve rather than make a sharp turn. Adjust handle coordinates to shape arcs and sweeps.</li>
+<li><strong>Preview and refine.</strong> Play back the cue and watch the motion on Stage. Adjust point timing, positions, and handle shapes until the movement feels right.</li>
+
+</ol>
+
+<h3>Common Use Cases</h3>
+
+<ul>
+<li><strong>Slide-in and slide-out</strong> — animate Position X (or Y) from off-screen to the final position, then back off-screen at the end. Use an InOut easing curve for a natural entrance.</li>
+<li><strong>Tracking across LED walls</strong> — move content horizontally across a wide Stage surface, synchronized to physical movement or a scenic cue.</li>
+<li><strong>Camera-like pans</strong> — with layered content at different scales, animate position on multiple cues at different speeds to create a parallax depth effect.</li>
+<li><strong>Orbital motion</strong> — use curved paths with Smooth handles to move a cue in an arc or circle around a central point.</li>
+<li><strong>Z-depth animation</strong> — animate Position Z to bring content forward or push it back in 3D space, useful when combined with perspective projection settings.</li>
+
+</ul>
+
+<h3>Combining with Other Tweens</h3>
+
+<p>Position animation works well alongside:</p>
+
+<ul>
+<li><strong>Scale</strong> — grow or shrink content as it moves, for zoom-in or zoom-out effects.</li>
+<li><strong>Rotation</strong> — spin content while it travels for dynamic motion graphics.</li>
+<li><strong>Opacity</strong> — fade in while sliding on, or fade out while sliding off.</li>
+<li><strong>Gaussian Blur</strong> — blur content during fast movement for a motion-blur aesthetic.</li>
+
+</ul>
+
+<h3>Practical Tips</h3>
+
+<ul>
+<li>Animate one axis at a time to start, then layer in secondary motion once the primary path is correct.</li>
+<li>Keep motion paths simple for shows that need reliable, repeatable live operation. Complex multi-point paths are harder to adjust under time pressure.</li>
+<li>When combining position with rotation tweens, be aware that Align with Trajectory overrides rotation on the affected axes. If you need both automatic trajectory alignment and manual rotation adjustments, apply them on separate axes.</li>
+<li>Use Position Z sparingly — it is most effective when the display configuration includes perspective projection. On flat 2D setups, Z movement has no visible effect.</li>
+
+</ul></div><div class="section-nav">
+                <a href="understanding-tweens.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="scale-and-size.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script>var wikiBasePath = '../';</script>
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+    
+    <script>
+        (function() {
+            var sw = document.getElementById('guide-switcher');
+            var btn = document.getElementById('guide-switcher-toggle');
+            if (!sw || !btn) return;
+            btn.addEventListener('click', function(e) { e.stopPropagation(); sw.classList.toggle('open'); });
+            document.addEventListener('click', function(e) { if (!sw.contains(e.target)) sw.classList.remove('open'); });
+        })();
+    </script>
+</body>
+</html>

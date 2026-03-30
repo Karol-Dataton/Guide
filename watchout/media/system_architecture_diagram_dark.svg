@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="600" height="420" viewBox="0 0 600 420">
+  <defs>
+    <style>
+      /* Dark Mode Colors */
+      .box { fill: #1e293b; stroke: #a78bfa; stroke-width: 2; rx: 8; ry: 8; }
+      .box-net { fill: #0f172a; stroke: #60a5fa; stroke-width: 2; rx: 4; ry: 4; }
+      .box-out { fill: #831843; stroke: #f472b6; stroke-width: 2; rx: 4; ry: 4; }
+      .line { stroke: #cbd5e1; stroke-width: 2; fill: none; marker-end: url(#arrow); }
+      .text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 14px; text-anchor: middle; fill: #f1f5f9; }
+      .text-small { font-size: 11px; fill: #94a3b8; }
+      .title { font-size: 15px; font-weight: 600; }
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L9,3 z" fill="#cbd5e1" />
+    </marker>
+  </defs>
+
+  <!-- Background for visibility context (optional, can be transparent) -->
+  <!-- <rect width="600" height="420" fill="#000000" /> -->
+
+  <!-- Top: Production Computer -->
+  <g transform="translate(220, 20)">
+    <rect width="160" height="60" class="box" />
+    <text x="80" y="25" class="text title">Production Computer</text>
+    <text x="80" y="45" class="text text-small">Producer Software</text>
+  </g>
+
+  <!-- Middle: Network -->
+  <g transform="translate(220, 140)">
+    <rect width="160" height="40" class="box-net" />
+    <text x="80" y="25" class="text title" style="fill:#bfdbfe">Network (TCP/UDP)</text>
+  </g>
+
+  <!-- Connection: Prod -> Net -->
+  <path d="M300,80 L300,134" class="line" />
+
+  <!-- Bottom: Display Computers -->
+  <g transform="translate(30, 240)">
+    <rect width="150" height="60" class="box" />
+    <text x="75" y="25" class="text title">Display Comp 1</text>
+    <text x="75" y="45" class="text text-small">Display Software</text>
+  </g>
+
+  <g transform="translate(225, 240)">
+    <rect width="150" height="60" class="box" />
+    <text x="75" y="25" class="text title">Display Comp 2</text>
+    <text x="75" y="45" class="text text-small">Display Software</text>
+  </g>
+
+  <g transform="translate(420, 240)">
+    <rect width="150" height="60" class="box" />
+    <text x="75" y="25" class="text title">Display Comp 3</text>
+    <text x="75" y="45" class="text text-small">Display Software</text>
+  </g>
+
+  <!-- Connections: Net -> Displays -->
+  <!-- Center to Left -->
+  <path d="M300,180 L300,210 L105,210 L105,234" class="line" />
+  <!-- Center to Center -->
+  <path d="M300,180 L300,234" class="line" />
+  <!-- Center to Right -->
+  <path d="M300,180 L300,210 L495,210 L495,234" class="line" />
+
+  <!-- Outputs (Projectors/Screens) -->
+  <g transform="translate(80, 350)">
+    <rect width="50" height="30" class="box-out" />
+    <text x="25" y="20" class="text text-small" style="fill:#fbcfe8">Screen</text> 
+    <path d="M25,-50 L25,-6" class="line" style="stroke:#cbd5e1; marker-end: url(#arrow);" />
+  </g>
+
+  <g transform="translate(275, 350)">
+    <rect width="50" height="30" class="box-out" />
+    <text x="25" y="20" class="text text-small" style="fill:#fbcfe8">Screen</text>
+    <path d="M25,-50 L25,-6" class="line" style="stroke:#cbd5e1;" />
+  </g>
+
+  <g transform="translate(470, 350)">
+    <rect width="50" height="30" class="box-out" />
+    <text x="25" y="20" class="text text-small" style="fill:#fbcfe8">Screen</text>
+    <path d="M25,-50 L25,-6" class="line" style="stroke:#cbd5e1;" />
+  </g>
+
+</svg>

@@ -1,0 +1,1746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHOUT User Guide - Warp Geometry">
+    <title>Warp Geometry - WATCHOUT 7 User Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <style>
+        .guide-switcher { position: relative; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border-subtle, #2a2a3e); }
+        .guide-switcher-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            color: var(--text-primary, #e0e0e8); cursor: pointer;
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .guide-switcher-toggle:hover { border-color: var(--accent-primary, #60a5fa); }
+        .guide-switcher-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .guide-switcher.open .guide-switcher-arrow { transform: rotate(180deg); }
+        .guide-switcher-dropdown {
+            display: none; position: absolute; left: 16px; right: 16px; bottom: 100%;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            border-radius: 6px; z-index: 100; overflow: hidden;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+        }
+        .guide-switcher.open .guide-switcher-dropdown { display: block; }
+        .guide-switcher-option {
+            display: block; padding: 8px 12px; color: var(--text-secondary, #a0a0b8);
+            text-decoration: none; font-size: 0.85rem; transition: background 0.15s, color 0.15s;
+        }
+        .guide-switcher-option:hover { background: var(--bg-hover, #22223a); color: var(--text-primary, #e0e0e8); }
+        .guide-switcher-option.active { color: var(--accent-primary, #60a5fa); font-weight: 500; }
+    </style>
+</head>
+<body data-page-id="warp-geometry">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo logo-link" aria-label="Go to home page">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHOUT GUIDE</h1>
+                </a>
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter  " data-index="0">
+            <a href="../getting-started/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Getting Started</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">First Steps</div>
+                        <a class="toc-subsection " href="../getting-started/welcome-to-watchout-7.html">
+                            Welcome To Watchout 7
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/system-requirements.html">
+                            System Requirements
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/installing-watchout.html">
+                            Installing Watchout
+                        </a>
+                        
+                        <div class="toc-group-label">Setup and Configuration</div>
+                        <a class="toc-subsection " href="../getting-started/launching-the-application.html">
+                            Launching The Application
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/network-configuration.html">
+                            Network Configuration
+                        </a>
+                        
+                        <div class="toc-group-label">Your First Show</div>
+                        <a class="toc-subsection " href="../getting-started/quick-start-tutorial.html">
+                            Quick Start Tutorial
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/architectural-differences-watchout-6-vs-7.html">
+                            Architectural Differences Watchout 6 Vs 7
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="1">
+            <a href="../working-with-shows/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">2. Working with Shows</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
+                            Creating A New Show
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
+                            Opening Existing Shows
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/saving-your-work.html">
+                            Saving Your Work
+                        </a>
+                        
+                        <div class="toc-group-label">Show Configuration</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-properties.html">
+                            Show Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Archiving and Auditing</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-consolidation.html">
+                            Show Consolidation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-information.html">
+                            Show Information
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter expanded " data-index="2">
+            <a href="../displays-and-outputs/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
+                <span class="toc-chapter-title">3. Displays and Outputs</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/adding-displays.html">
+                            Adding Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-properties.html">
+                            Display Properties
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-grid-setup.html">
+                            Display Grid Setup
+                        </a>
+                        
+                        <div class="toc-group-label">Core Display Types</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/virtual-displays.html">
+                            Virtual Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/3d-mapping-projectors.html">
+                            3d Mapping Projectors
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/sdi-output.html">
+                            Sdi Output
+                        </a>
+                        
+                        <div class="toc-group-label">Geometry Correction and Blending</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/edge-blending.html">
+                            Edge Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection active" href="../displays-and-outputs/warp-geometry.html">
+                            Warp Geometry
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-masks.html">
+                            Display Masks
+                        </a>
+                        
+                        <div class="toc-group-label">Color, Calibration, and Diagnostics</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/hdr-and-color-management.html">
+                            HDR and Color Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-calibration.html">
+                            Display Calibration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/test-patterns.html">
+                            Test Patterns
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/compression-fundamentals.html">
+                            Compression Fundamentals
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="3">
+            <a href="../assets-asset-manager/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></span>
+                <span class="toc-chapter-title">4. Assets & Asset Manager</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager.html">
+                            Asset Manager
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-types.html">
+                            Asset Types
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-properties.html">
+                            Asset Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Media Formats and Creation</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/formats-codecs.html">
+                            Formats & Codecs
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/svg-shapes.html">
+                            SVG Shapes
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/image-sequences.html">
+                            Image Sequences
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Asset Workflows</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/dynamic-assets.html">
+                            Dynamic Assets
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/web-user-interface.html">
+                            Web User Interface
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-watcher.html">
+                            Asset Watcher
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-transfer.html">
+                            Asset Transfer
+                        </a>
+                        
+                        <div class="toc-group-label">Settings and Data Management</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager-settings.html">
+                            Asset Manager Settings
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/import-export-and-mapping.html">
+                            Import, Export, and Mapping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/importing-gdtf-files.html">
+                            Importing GDTF Files
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="4">
+            <a href="../timeline-and-cues/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                <span class="toc-chapter-title">5. Timeline and Cues</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/understanding-the-timeline.html">
+                            Understanding The Timeline
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adding-media-cues.html">
+                            Adding Media Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/working-with-layers.html">
+                            Working With Layers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adjusting-timing.html">
+                            Adjusting Timing
+                        </a>
+                        
+                        <div class="toc-group-label">Cue Types</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/control-cues.html">
+                            Control Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/marker-cues.html">
+                            Marker Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/output-cues.html">
+                            Output Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/variables-and-variable-cues.html">
+                            Variables and Variable Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/artnet-fixture-cues.html">
+                            ArtNet Fixture Cues
+                        </a>
+                        
+                        <div class="toc-group-label">Compositions and Organization</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/compositions.html">
+                            Compositions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cue-sets-and-variants.html">
+                            Cue Sets and Variants
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/media-snapshots.html">
+                            Media Snapshots
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/stacking-order.html">
+                            Stacking Order
+                        </a>
+                        
+                        <div class="toc-group-label">Automation and Advanced Workflows</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/timeline-triggers-and-expressions.html">
+                            Timeline Triggers and Expressions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/conditional-cues.html">
+                            Conditional Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/blind-edit-mode.html">
+                            Blind Edit Mode
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/insert-and-delete-time.html">
+                            Insert and Delete Time
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cues-window.html">
+                            Cues Window
+                        </a>
+                        
+                        <div class="toc-group-label">Output Reference</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/output-types-overview.html">
+                            Output Types Overview
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="5">
+            <a href="../effects-and-tweens/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">6. Effects and Tweens</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/understanding-tweens.html">
+                            Understanding Tweens
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/opacity-and-fades.html">
+                            Opacity and Fades
+                        </a>
+                        
+                        <div class="toc-group-label">Transform Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/position-and-movement.html">
+                            Position and Movement
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/scale-and-size.html">
+                            Scale and Size
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/rotation-effects.html">
+                            Rotation Effects
+                        </a>
+                        
+                        <div class="toc-group-label">Visual Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/cropping.html">
+                            Cropping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/color-adjustments.html">
+                            Color Adjustments
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blur-effects.html">
+                            Blur Effects
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blend-modes.html">
+                            Blend Modes
+                        </a>
+                        
+                        <div class="toc-group-label">Audio</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/audio-volume.html">
+                            Audio Volume
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/corner-pinning.html">
+                            Corner Pinning
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/linear-wipe.html">
+                            Linear Wipe
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/frame-blending.html">
+                            Frame Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/chroma-key.html">
+                            Chroma Key
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/key-and-fill.html">
+                            Key and Fill
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/tween-expressions.html">
+                            Tween Expressions
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="6">
+            <a href="../playback/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>
+                <span class="toc-chapter-title">7. Playback</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../playback/starting-and-stopping.html">
+                            Starting and Stopping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/preview-mode.html">
+                            Preview Mode
+                        </a>
+                        
+                        <div class="toc-group-label">Going Live</div>
+                        <a class="toc-subsection " href="../playback/connecting-to-display-servers.html">
+                            Connecting to Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/going-online.html">
+                            Going Online
+                        </a>
+                        
+                        <div class="toc-group-label">Show Operation</div>
+                        <a class="toc-subsection " href="../playback/running-your-show.html">
+                            Running Your Show
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="7">
+            <a href="../the-interface/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></span>
+                <span class="toc-chapter-title">8. The Interface</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Overview</div>
+                        <a class="toc-subsection " href="../the-interface/main-window-overview.html">
+                            Main Window Overview
+                        </a>
+                        
+                        <div class="toc-group-label">Window Reference</div>
+                        <a class="toc-subsection " href="../the-interface/the-stage-window.html">
+                            The Stage Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-timeline-window.html">
+                            The Timeline Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-cue-list-window.html">
+                            The Cue List Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-assets-window.html">
+                            The Assets Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-properties-panel.html">
+                            The Properties Panel
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-nodes-window.html">
+                            The Nodes Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-devices-window.html">
+                            The Devices Window
+                        </a>
+                        
+                        <div class="toc-group-label">Customization</div>
+                        <a class="toc-subsection " href="../the-interface/customizing-your-workspace.html">
+                            Customizing Your Workspace
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="8">
+            <a href="../network-setup/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                <span class="toc-chapter-title">9. Network Setup</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Architecture and Basics</div>
+                        <a class="toc-subsection " href="../network-setup/network-overview.html">
+                            Network Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/display-servers.html">
+                            Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/connecting-devices.html">
+                            Connecting Devices
+                        </a>
+                        
+                        <div class="toc-group-label">Protocols and Services</div>
+                        <a class="toc-subsection " href="../network-setup/firewall-configuration.html">
+                            Firewall Configuration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/ndi-video-sources.html">
+                            NDI Video Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/capture-sources.html">
+                            Capture Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/dante-audio.html">
+                            Dante Audio
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/time-synchronization.html">
+                            Time Synchronization
+                        </a>
+                        
+                        <div class="toc-group-label">Maintenance and Management</div>
+                        <a class="toc-subsection " href="../network-setup/node-management-and-maintenance.html">
+                            Node Management and Maintenance
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/remote-file-access.html">
+                            Remote File Access
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/working-directory-management.html">
+                            Working Directory Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/software-updates.html">
+                            Software Updates
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="9">
+            <a href="../external-control/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">10. External Control</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Foundations</div>
+                        <a class="toc-subsection " href="../external-control/external-control-overview.html">
+                            External Control Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/variables-and-inputs.html">
+                            Variables and Inputs
+                        </a>
+                        
+                        <div class="toc-group-label">Primary Protocols</div>
+                        <a class="toc-subsection " href="../external-control/http-rest-api.html">
+                            HTTP REST API
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/osc-protocol.html">
+                            OSC Protocol
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/artnet-input.html">
+                            ArtNet Input
+                        </a>
+                        
+                        <div class="toc-group-label">Specialized Protocols</div>
+                        <a class="toc-subsection " href="../external-control/midi-bridge.html">
+                            MIDI Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/ltc-bridge.html">
+                            LTC Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/posistagenet.html">
+                            PosiStageNet
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/midi-show-control.html">
+                            MIDI Show Control
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/watchout-6-protocol.html">
+                            WATCHOUT 6 Protocol
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="10">
+            <a href="../keyboard-shortcuts/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.001"></path><path d="M10 8h.001"></path><path d="M14 8h.001"></path><path d="M18 8h.001"></path><path d="M8 12h.001"></path><path d="M12 12h.001"></path><path d="M16 12h.001"></path><path d="M7 16h10"></path></svg></span>
+                <span class="toc-chapter-title">11. Keyboard Shortcuts</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Input and Editing</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/file-operations.html">
+                            File Operations
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/edit-commands.html">
+                            Edit Commands
+                        </a>
+                        
+                        <div class="toc-group-label">Navigation and Playback</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/stage-navigation.html">
+                            Stage Navigation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/timeline-controls.html">
+                            Timeline Controls
+                        </a>
+                        
+                        <div class="toc-group-label">Effects and Layout</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/tween-shortcuts.html">
+                            Tween Shortcuts
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/window-management.html">
+                            Window Management
+                        </a>
+                        
+                        <div class="toc-group-label">Properties and Tables</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/property-editing.html">
+                            Property Editing
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/table-views.html">
+                            Table Views
+                        </a>
+                        
+                        <div class="toc-group-label">Hardware Input</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/xbox-controller.html">
+                            Xbox Controller
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/display-warp.html">
+                            Display & Warp
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="11">
+            <a href="../troubleshooting/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">12. Troubleshooting</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Common Issues</div>
+                        <a class="toc-subsection " href="../troubleshooting/common-issues.html">
+                            Common Issues
+                        </a>
+                        
+                        <div class="toc-group-label">By Category</div>
+                        <a class="toc-subsection " href="../troubleshooting/performance-tips.html">
+                            Performance Tips
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/display-problems.html">
+                            Display Problems
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/network-issues.html">
+                            Network Issues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/media-playback-issues.html">
+                            Media Playback Issues
+                        </a>
+                        
+                        <div class="toc-group-label">Getting Support</div>
+                        <a class="toc-subsection " href="../troubleshooting/feedback-reports.html">
+                            Feedback Reports
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/getting-help.html">
+                            Getting Help
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="12">
+            <a href="../glossary/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">13. Glossary</span>
+                
+            </a>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="13">
+            <a href="../legal/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">14. Legal</span>
+                
+            </a>
+            
+        </div>
+        
+            </nav>
+            
+            <div class="guide-switcher" id="guide-switcher">
+                <button class="guide-switcher-toggle" id="guide-switcher-toggle" aria-label="Switch guide">
+                    <span class="guide-switcher-label">WATCHOUT</span>
+                    <svg class="guide-switcher-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="guide-switcher-dropdown" id="guide-switcher-dropdown">
+                    <a class="guide-switcher-option active" href="../../watchout/index.html">WATCHOUT</a>
+                        <a class="guide-switcher-option" href="../../wp64/index.html">WATCHPAX 64</a>
+                        <a class="guide-switcher-option" href="../../wp30/index.html">WATCHPAX 30</a>
+                        <a class="guide-switcher-option" href="../../wp50/index.html">WATCHPAX 50</a>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">3. Displays and Outputs</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">Warp Geometry</span>
+        
+                </div>
+                <a href="../index.html" class="header-home-link" aria-label="Go to home page">
+                    <img src="../media/dataton-logo.png" alt="Dataton" class="header-logo">
+                </a>
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><h2>Warp Geometry</h2>
+
+<p>Warp geometry is WATCHOUT's system for correcting the shape of rendered output so that it aligns with the physical surface it is projected or displayed on. In any real-world installation, the target surface is rarely a perfect rectangle oriented exactly perpendicular to the projector or display. Screens may be curved, projectors may be mounted at an angle, LED panels may follow an arc, or scenic elements may present irregular shapes. Warp geometry compensates for all of these by repositioning pixels across the entire display output, bending and stretching the rendered image so that it appears correct on the actual surface.</p>
+
+<p>Every display in WATCHOUT — GPU, SDI, NDI, or Virtual — supports its own independent warp mesh. Warp is applied as a post-rendering transformation: content is first composited flat, then the warp mesh remaps every pixel to its corrected position on the output.</p>
+
+<div class="interactive-widget" id="warp-geometry-widget">
+    <div class="widget-controls"
+        style="display: flex; gap: 12px; align-items: center; flex-wrap: wrap; margin-bottom: 16px;">
+        <div class="control-group" style="display: flex; align-items: center; gap: 8px;">
+            <label style="font-weight: 500; white-space: nowrap;">Grid</label>
+            <select id="warp-grid-select"
+                style="padding: 6px 10px; border-radius: 6px; background: var(--input-bg); border: 1px solid var(--border-subtle); color: var(--text-primary); font-family: var(--font-family);">
+                <option value="3">3 × 3</option>
+                <option value="4" selected>4 × 4</option>
+                <option value="5">5 × 5</option>
+                <option value="6">6 × 6</option>
+            </select>
+        </div>
+        <div class="control-group" style="display: flex; align-items: center; gap: 8px;">
+            <label style="font-weight: 500; white-space: nowrap;">Texture</label>
+            <select id="warp-texture-select"
+                style="padding: 6px 10px; border-radius: 6px; background: var(--input-bg); border: 1px solid var(--border-subtle); color: var(--text-primary); font-family: var(--font-family);">
+                <option value="grid">Grid Pattern</option>
+                <option value="image">Image Overlay</option>
+            </select>
+        </div>
+
+        <div class="control-group" style="display: flex; gap: 6px; flex-wrap: wrap;">
+            <button id="warp-preset-barrel" class="warp-btn"
+                style="padding: 6px 12px; border-radius: 6px; background: var(--input-bg); border: 1px solid var(--border-subtle); color: var(--text-primary); cursor: pointer; font-family: var(--font-family); font-size: 0.85rem; transition: all 150ms ease;">Barrel</button>
+            <button id="warp-preset-pincushion" class="warp-btn"
+                style="padding: 6px 12px; border-radius: 6px; background: var(--input-bg); border: 1px solid var(--border-subtle); color: var(--text-primary); cursor: pointer; font-family: var(--font-family); font-size: 0.85rem; transition: all 150ms ease;">Pincushion</button>
+            <button id="warp-preset-keystone" class="warp-btn"
+                style="padding: 6px 12px; border-radius: 6px; background: var(--input-bg); border: 1px solid var(--border-subtle); color: var(--text-primary); cursor: pointer; font-family: var(--font-family); font-size: 0.85rem; transition: all 150ms ease;">Keystone</button>
+            <button id="warp-reset" class="warp-btn"
+                style="padding: 6px 12px; border-radius: 6px; background: var(--accent-primary); border: 1px solid transparent; color: #fff; cursor: pointer; font-family: var(--font-family); font-size: 0.85rem; font-weight: 600; transition: all 150ms ease;">Reset</button>
+        </div>
+    </div>
+
+    <div
+        style="position: relative; border-radius: 10px; overflow: hidden; border: 1px solid var(--border-subtle); background: var(--bg-tertiary);">
+        <canvas id="warp-canvas" width="700" height="500"
+            style="width: 100%; height: auto; display: block; cursor: crosshair; touch-action: none;"></canvas>
+    </div>
+
+    <div
+        style="margin-top: 12px; display: flex; gap: 20px; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-secondary);">
+        <span style="display: flex; align-items: center; gap: 6px;">
+            <span
+                style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: var(--accent-primary);"></span>
+            Control Point (drag to warp)
+        </span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+            <span style="display: inline-block; width: 12px; height: 3px; background: rgba(167, 139, 250, 0.6);"></span>
+            Warp Mesh
+        </span>
+        <span style="display: flex; align-items: center; gap: 6px;">
+            <span style="display: inline-block; width: 12px; height: 3px; background: rgba(255,255,255,0.15);"></span>
+            Original Grid (reference)
+        </span>
+        <span style="margin-left: auto; font-size: 0.75rem; opacity: 0.7;">
+            Image: <a href="https://commons.wikimedia.org/wiki/File:Gamla_Link%C3%B6ping_11.jpg" target="_blank"
+                style="color: inherit; text-decoration: underline;">Gamla Linköping</a>
+        </span>
+    </div>
+</div>
+
+<script>
+    (function () {
+        const canvas = document.getElementById('warp-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        const gridSelect = document.getElementById('warp-grid-select');
+        const textureSelect = document.getElementById('warp-texture-select');
+        const btnBarrel = document.getElementById('warp-preset-barrel');
+        const btnPincushion = document.getElementById('warp-preset-pincushion');
+        const btnKeystone = document.getElementById('warp-preset-keystone');
+        const btnReset = document.getElementById('warp-reset');
+
+        const W = canvas.width;
+        const H = canvas.height;
+        const PAD = 40; // padding from canvas edge
+
+        let gridSize = 4;
+        let controlPoints = []; // flat array of {x, y}
+        let defaultPoints = [];
+        let dragIndex = -1;
+        let hoverIndex = -1;
+
+        // --- Checkerboard test pattern (cached) ---
+        let patternCanvas = null;
+        let imageTexture = null;
+        let useImage = false;
+
+        function createTestPattern() {
+            patternCanvas = document.createElement('canvas');
+            patternCanvas.width = W;
+            patternCanvas.height = H;
+            const pctx = patternCanvas.getContext('2d');
+
+            const cols = 16;
+            const rows = 12;
+            const cw = W / cols;
+            const ch = H / rows;
+
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const isDark = (r + c) % 2 === 0;
+                    pctx.fillStyle = isDark ? '#1e293b' : '#334155';
+                    pctx.fillRect(c * cw, r * ch, cw, ch);
+                }
+            }
+
+            // Draw some colored reference lines
+            pctx.strokeStyle = 'rgba(99, 102, 241, 0.3)';
+            pctx.lineWidth = 1;
+            // Horizontal center
+            pctx.beginPath();
+            pctx.moveTo(0, H / 2);
+            pctx.lineTo(W, H / 2);
+            pctx.stroke();
+            // Vertical center
+            pctx.beginPath();
+            pctx.moveTo(W / 2, 0);
+            pctx.lineTo(W / 2, H);
+            pctx.stroke();
+
+            // Edge crosshairs
+            pctx.strokeStyle = 'rgba(239, 68, 68, 0.25)';
+            pctx.beginPath();
+            pctx.moveTo(0, 0); pctx.lineTo(W, H);
+            pctx.moveTo(W, 0); pctx.lineTo(0, H);
+            pctx.stroke();
+        }
+
+        function loadImage() {
+            if (imageTexture) return; // already loaded
+            const img = new Image();
+            img.onload = () => {
+                imageTexture = img;
+                if (useImage) draw();
+            };
+            img.src = '../media/gamla.png';
+        }
+
+        // --- Grid management ---
+        function initGrid(size) {
+            gridSize = size;
+            controlPoints = [];
+            defaultPoints = [];
+            for (let row = 0; row < gridSize; row++) {
+                for (let col = 0; col < gridSize; col++) {
+                    const x = PAD + (col / (gridSize - 1)) * (W - 2 * PAD);
+                    const y = PAD + (row / (gridSize - 1)) * (H - 2 * PAD);
+                    controlPoints.push({ x, y });
+                    defaultPoints.push({ x, y });
+                }
+            }
+        }
+
+        function resetGrid() {
+            for (let i = 0; i < controlPoints.length; i++) {
+                controlPoints[i].x = defaultPoints[i].x;
+                controlPoints[i].y = defaultPoints[i].y;
+            }
+        }
+
+        // --- Presets ---
+        function applyBarrel(strength) {
+            resetGrid();
+            const cx = W / 2;
+            const cy = H / 2;
+            const maxR = Math.sqrt(cx * cx + cy * cy);
+            for (let i = 0; i < controlPoints.length; i++) {
+                const dx = defaultPoints[i].x - cx;
+                const dy = defaultPoints[i].y - cy;
+                const r = Math.sqrt(dx * dx + dy * dy);
+                const nr = r / maxR;
+                const factor = 1 + strength * nr * nr;
+                controlPoints[i].x = cx + dx * factor;
+                controlPoints[i].y = cy + dy * factor;
+            }
+        }
+
+        function applyPincushion(strength) {
+            resetGrid();
+            const cx = W / 2;
+            const cy = H / 2;
+            const maxR = Math.sqrt(cx * cx + cy * cy);
+            for (let i = 0; i < controlPoints.length; i++) {
+                const dx = defaultPoints[i].x - cx;
+                const dy = defaultPoints[i].y - cy;
+                const r = Math.sqrt(dx * dx + dy * dy);
+                const nr = r / maxR;
+                const factor = 1 - strength * nr * nr;
+                controlPoints[i].x = cx + dx * factor;
+                controlPoints[i].y = cy + dy * factor;
+            }
+        }
+
+        function applyKeystone(strength) {
+            resetGrid();
+            for (let i = 0; i < controlPoints.length; i++) {
+                const row = Math.floor(i / gridSize);
+                const t = row / (gridSize - 1); // 0 at top, 1 at bottom
+                const cx = W / 2;
+                const dx = defaultPoints[i].x - cx;
+                // Top row narrows, bottom widens
+                const scale = 1 + strength * (t - 0.5);
+                controlPoints[i].x = cx + dx * scale;
+            }
+        }
+
+        // --- Rendering ---
+        function bilinearInterp(x0, y0, x1, y1, x2, y2, x3, y3, u, v) {
+            // Corners: 0=TL, 1=TR, 2=BL, 3=BR
+            const x = (1 - u) * (1 - v) * x0 + u * (1 - v) * x1 + (1 - u) * v * x2 + u * v * x3;
+            const y = (1 - u) * (1 - v) * y0 + u * (1 - v) * y1 + (1 - u) * v * y2 + u * v * y3;
+            return { x, y };
+        }
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H);
+
+            const source = (useImage && imageTexture) ? imageTexture : patternCanvas;
+            const opacity = (useImage && imageTexture) ? 0.9 : 1.0;
+
+            // Draw background (unwarped, faded)
+            if (source) {
+                ctx.globalAlpha = 0.25;
+                ctx.drawImage(source, 0, 0, W, H);
+                ctx.globalAlpha = 1.0;
+            }
+
+            // Draw original (default) grid as faint reference
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+            ctx.lineWidth = 1;
+            for (let row = 0; row < gridSize; row++) {
+                ctx.beginPath();
+                for (let col = 0; col < gridSize; col++) {
+                    const p = defaultPoints[row * gridSize + col];
+                    if (col === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                }
+                ctx.stroke();
+            }
+            for (let col = 0; col < gridSize; col++) {
+                ctx.beginPath();
+                for (let row = 0; row < gridSize; row++) {
+                    const p = defaultPoints[row * gridSize + col];
+                    if (row === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                }
+                ctx.stroke();
+            }
+
+            // Draw warped texture cells
+            if (source) {
+                const subDiv = 8; // subdivisions per cell for smooth warping
+                for (let row = 0; row < gridSize - 1; row++) {
+                    for (let col = 0; col < gridSize - 1; col++) {
+                        const tl = controlPoints[row * gridSize + col];
+                        const tr = controlPoints[row * gridSize + col + 1];
+                        const bl = controlPoints[(row + 1) * gridSize + col];
+                        const br = controlPoints[(row + 1) * gridSize + col + 1];
+
+                        const dtl = defaultPoints[row * gridSize + col];
+                        const dtr = defaultPoints[row * gridSize + col + 1];
+                        const dbl = defaultPoints[(row + 1) * gridSize + col];
+                        const dbr = defaultPoints[(row + 1) * gridSize + col + 1];
+
+                        for (let sv = 0; sv < subDiv; sv++) {
+                            for (let su = 0; su < subDiv; su++) {
+                                const u0 = su / subDiv;
+                                const v0 = sv / subDiv;
+                                const u1 = (su + 1) / subDiv;
+                                const v1 = (sv + 1) / subDiv;
+
+                                // Source (unwarped) quad corners
+                                const s0 = bilinearInterp(dtl.x, dtl.y, dtr.x, dtr.y, dbl.x, dbl.y, dbr.x, dbr.y, u0, v0);
+                                const s1 = bilinearInterp(dtl.x, dtl.y, dtr.x, dtr.y, dbl.x, dbl.y, dbr.x, dbr.y, u1, v0);
+                                const s2 = bilinearInterp(dtl.x, dtl.y, dtr.x, dtr.y, dbl.x, dbl.y, dbr.x, dbr.y, u0, v1);
+                                const s3 = bilinearInterp(dtl.x, dtl.y, dtr.x, dtr.y, dbl.x, dbl.y, dbr.x, dbr.y, u1, v1);
+
+                                // Destination (warped) quad corners
+                                const d0 = bilinearInterp(tl.x, tl.y, tr.x, tr.y, bl.x, bl.y, br.x, br.y, u0, v0);
+                                const d1 = bilinearInterp(tl.x, tl.y, tr.x, tr.y, bl.x, bl.y, br.x, br.y, u1, v0);
+                                const d2 = bilinearInterp(tl.x, tl.y, tr.x, tr.y, bl.x, bl.y, br.x, br.y, u0, v1);
+                                const d3 = bilinearInterp(tl.x, tl.y, tr.x, tr.y, bl.x, bl.y, br.x, br.y, u1, v1);
+
+                                // Draw two triangles mapping source texture to destination
+                                drawTexturedTriangle(
+                                    source,
+                                    s0.x, s0.y, s1.x, s1.y, s2.x, s2.y,
+                                    d0.x, d0.y, d1.x, d1.y, d2.x, d2.y,
+                                    opacity
+                                );
+                                drawTexturedTriangle(
+                                    source,
+                                    s1.x, s1.y, s3.x, s3.y, s2.x, s2.y,
+                                    d1.x, d1.y, d3.x, d3.y, d2.x, d2.y,
+                                    opacity
+                                );
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Draw warped mesh lines
+            ctx.strokeStyle = 'rgba(167, 139, 250, 0.5)';
+            ctx.lineWidth = 1.5;
+            // Horizontal lines
+            for (let row = 0; row < gridSize; row++) {
+                ctx.beginPath();
+                for (let col = 0; col < gridSize; col++) {
+                    const p = controlPoints[row * gridSize + col];
+                    if (col === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                }
+                ctx.stroke();
+            }
+            // Vertical lines
+            for (let col = 0; col < gridSize; col++) {
+                ctx.beginPath();
+                for (let row = 0; row < gridSize; row++) {
+                    const p = controlPoints[row * gridSize + col];
+                    if (row === 0) ctx.moveTo(p.x, p.y);
+                    else ctx.lineTo(p.x, p.y);
+                }
+                ctx.stroke();
+            }
+
+            // Draw control points
+            for (let i = 0; i < controlPoints.length; i++) {
+                const p = controlPoints[i];
+                const isHover = (i === hoverIndex);
+                const isDrag = (i === dragIndex);
+                const r = isDrag ? 8 : isHover ? 7 : 5;
+
+                // Glow
+                if (isHover || isDrag) {
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, r + 4, 0, Math.PI * 2);
+                    ctx.fillStyle = 'rgba(107, 37, 221, 0.3)';
+                    ctx.fill();
+                }
+
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, r, 0, Math.PI * 2);
+                ctx.fillStyle = isDrag ? '#a78bfa' : isHover ? '#8b5cf6' : '#6B25DD';
+                ctx.fill();
+                ctx.strokeStyle = '#fff';
+                ctx.lineWidth = isDrag ? 2.5 : 1.5;
+                ctx.stroke();
+            }
+        }
+
+        // Affine texture mapping via canvas drawImage with transform
+        function drawTexturedTriangle(img, sx0, sy0, sx1, sy1, sx2, sy2, dx0, dy0, dx1, dy1, dx2, dy2, alpha = 1.0) {
+            ctx.save();
+            ctx.beginPath();
+            ctx.moveTo(dx0, dy0);
+            ctx.lineTo(dx1, dy1);
+            ctx.lineTo(dx2, dy2);
+            ctx.closePath();
+            ctx.clip();
+
+            // Compute affine transform from source to destination triangle
+            // Source triangle: (sx0,sy0), (sx1,sy1), (sx2,sy2)
+            // Dest triangle:   (dx0,dy0), (dx1,dy1), (dx2,dy2)
+
+            const denom = (sx0 * (sy1 - sy2) + sx1 * (sy2 - sy0) + sx2 * (sy0 - sy1));
+            if (Math.abs(denom) < 0.001) { ctx.restore(); return; }
+
+            const m11 = (dx0 * (sy1 - sy2) + dx1 * (sy2 - sy0) + dx2 * (sy0 - sy1)) / denom;
+            const m12 = -(dx0 * (sx1 - sx2) + dx1 * (sx2 - sx0) + dx2 * (sx0 - sx1)) / denom;
+            const m13 = (dx0 * (sx1 * sy2 - sx2 * sy1) + dx1 * (sx2 * sy0 - sx0 * sy2) + dx2 * (sx0 * sy1 - sx1 * sy0)) / denom;
+            const m21 = (dy0 * (sy1 - sy2) + dy1 * (sy2 - sy0) + dy2 * (sy0 - sy1)) / denom;
+            const m22 = -(dy0 * (sx1 - sx2) + dy1 * (sx2 - sx0) + dy2 * (sx0 - sx1)) / denom;
+            const m23 = (dy0 * (sx1 * sy2 - sx2 * sy1) + dy1 * (sx2 * sy0 - sx0 * sy2) + dy2 * (sx0 * sy1 - sx1 * sy0)) / denom;
+
+            ctx.setTransform(m11, m21, m12, m22, m13, m23);
+            ctx.globalAlpha = alpha;
+            // Draw image. For patternCanvas we draw 1:1. For imageTexture we might need to scale if dimensions differ?
+            // The logic assumes source coordinates (s*) are in 0..W, 0..H space. 
+            // If image is different size, we should scale drawImage? 
+            // For simplicity, let's assume we map the entire source image to the 0..W, 0..H coords.
+            // But texture mapping relies on source coords matching the image pixels.
+            // If we use 0..W/H for s* points, we need to draw image at that size.
+            ctx.drawImage(img, 0, 0, W, H);
+            ctx.globalAlpha = 1.0;
+            ctx.restore();
+        }
+
+        // --- Interaction ---
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = W / rect.width;
+            const scaleY = H / rect.height;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
+        }
+
+        function findClosestPoint(mx, my, threshold) {
+            let closest = -1;
+            let minDist = threshold * threshold;
+            for (let i = 0; i < controlPoints.length; i++) {
+                const dx = controlPoints[i].x - mx;
+                const dy = controlPoints[i].y - my;
+                const d2 = dx * dx + dy * dy;
+                if (d2 < minDist) {
+                    minDist = d2;
+                    closest = i;
+                }
+            }
+            return closest;
+        }
+
+        canvas.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            const { x, y } = getCanvasCoords(e);
+            dragIndex = findClosestPoint(x, y, 20);
+            if (dragIndex >= 0) {
+                canvas.setPointerCapture(e.pointerId);
+            }
+        });
+
+        canvas.addEventListener('pointermove', (e) => {
+            const { x, y } = getCanvasCoords(e);
+            if (dragIndex >= 0) {
+                controlPoints[dragIndex].x = Math.max(5, Math.min(W - 5, x));
+                controlPoints[dragIndex].y = Math.max(5, Math.min(H - 5, y));
+                draw();
+            } else {
+                const prev = hoverIndex;
+                hoverIndex = findClosestPoint(x, y, 20);
+                if (hoverIndex !== prev) draw();
+                canvas.style.cursor = hoverIndex >= 0 ? 'grab' : 'crosshair';
+            }
+        });
+
+        canvas.addEventListener('pointerup', (e) => {
+            if (dragIndex >= 0) {
+                canvas.releasePointerCapture(e.pointerId);
+            }
+            dragIndex = -1;
+            canvas.style.cursor = 'crosshair';
+        });
+
+        canvas.addEventListener('pointerleave', () => {
+            if (dragIndex < 0) {
+                hoverIndex = -1;
+                draw();
+            }
+        });
+
+        // --- Controls ---
+        textureSelect.addEventListener('change', () => {
+            useImage = (textureSelect.value === 'image');
+            if (useImage) loadImage();
+            draw();
+        });
+
+        gridSelect.addEventListener('change', () => {
+            initGrid(parseInt(gridSelect.value));
+            draw();
+        });
+
+        btnReset.addEventListener('click', () => {
+            resetGrid();
+            draw();
+        });
+
+        btnBarrel.addEventListener('click', () => {
+            applyBarrel(0.25);
+            draw();
+        });
+
+        btnPincushion.addEventListener('click', () => {
+            applyPincushion(0.25);
+            draw();
+        });
+
+        btnKeystone.addEventListener('click', () => {
+            applyKeystone(0.4);
+            draw();
+        });
+
+        // --- Init ---
+        createTestPattern();
+        initGrid(gridSize);
+        draw();
+    })();
+</script>
+
+<h3>When Warp Geometry is Needed</h3>
+
+<p>Warp geometry is used whenever the real projection surface or display alignment is not a perfect rectangle. Common scenarios include:</p>
+
+<ul>
+<li><strong>Curved screens and LED walls</strong> — surfaces that follow an arc or compound curve require pixel repositioning so that straight lines in the content remain visually straight on the surface.</li>
+<li><strong>Imperfect projector mounting</strong> — when a projector cannot be aimed perfectly perpendicular to the screen, the projected image is trapezoidal or skewed. Warp corrects this without requiring physical re-mounting.</li>
+<li><strong>Non-rectangular targets</strong> — scenic facades, architectural surfaces, and stage set pieces that do not have standard rectangular proportions.</li>
+<li><strong>Multi-projector blends</strong> — in edge-blended setups, warp ensures that adjacent projectors align precisely at their overlap boundaries so that the combined image appears seamless.</li>
+<li><strong>Domes and immersive surfaces</strong> — environments where content must wrap around the viewer require significant pixel remapping to maintain correct geometry.</li>
+<li><strong>Transport and re-rigging</strong> — after a show moves between venues or projectors are re-positioned, warp corrections can be updated to match the new physical alignment without re-authoring content.</li>
+
+</ul>
+
+<p>The normal workflow is to do as much mechanical alignment as possible first, then use warp geometry to correct the remaining discrepancies.</p>
+
+<h3>How Warp Geometry Works</h3>
+
+<p>Warp geometry is mesh-based. The warp mesh is a grid of <strong>junction points</strong> that defines how pixels are repositioned across the display output. Each junction point has a source position (where the pixel comes from in the rendered content) and a destination position (where it should appear on the display surface). Between junction points, the mesh interpolates smoothly using Bézier curves, producing continuous, artifact-free distortion.</p>
+
+<p>When the warp mesh is in its default state, every junction sits at its neutral position and no correction is applied — pixels pass through unchanged. When you move junction points away from their neutral positions, the mesh stretches, compresses, or curves the image in that region to match the physical surface.</p>
+
+<p>The density of the mesh — how many rows and columns of junction points it contains — determines how much local control you have. A coarse mesh (2×2, four corners) provides global perspective correction. A finer mesh (3×3 or larger) allows localized adjustments for curved or irregular surfaces.</p>
+
+<h3>Warp Mesh Presets</h3>
+
+<p>WATCHOUT provides four built-in presets that initialize the warp mesh with a specific grid density:</p>
+
+<table>
+<tr><th>Preset</th><th>Grid Size</th><th>Typical Use</th></tr>
+<tr><td><strong>2×2</strong></td><td>2 rows × 2 columns (4 corner points)</td><td>Basic corner adjustment, simple keystoning, flat surfaces with minor alignment errors</td></tr>
+<tr><td><strong>Horizontal</strong></td><td>2 rows × 3 columns (6 points)</td><td>Surfaces that need more horizontal control, such as wide-format screens with lateral curvature</td></tr>
+<tr><td><strong>Vertical</strong></td><td>3 rows × 2 columns (6 points)</td><td>Surfaces that need more vertical control, such as tall screens or projectors with vertical offset</td></tr>
+<tr><td><strong>3×3</strong></td><td>3 rows × 3 columns (9 points)</td><td>General-purpose mesh for curved surfaces, providing both edge and center control</td></tr>
+</table>
+
+<p>Loading a preset replaces the current warp mesh. After loading, you can add additional rows and columns by clicking on mesh edges to insert new junction points wherever finer control is needed.</p>
+
+<h3>Editing Junction Points</h3>
+
+<p>Each junction point on the warp mesh has the following properties:</p>
+
+<ul>
+<li><strong>Position (X / Y pixel offset)</strong> — the offset of the junction from its neutral (uncorrected) position. Moving a junction shifts all pixels in that region of the mesh accordingly.</li>
+<li><strong>Bézier handles</strong> — each junction can have up to four directional handles: <strong>Left</strong>, <strong>Right</strong>, <strong>Up</strong>, and <strong>Down</strong>. These control the curvature of the mesh edges passing through that point. Each handle has two parameters:</li>
+<li><strong>Length</strong> — how far the handle extends from the junction, controlling the extent of the curve's influence.</li>
+<li><strong>Angle</strong> — the direction of the handle in degrees, controlling the curve's trajectory.</li>
+<li><strong>Smooth toggle</strong> — when enabled, forces the handles at a junction to maintain tangent continuity (G¹ continuity), creating smooth, kink-free curves through the point. Disable this when you need a sharp corner or abrupt direction change. Corner points (at the four corners of the mesh) do not have a smooth toggle.</li>
+
+</ul>
+
+<p>You can select junction points in the Stage view and adjust their properties in the Properties panel, or drag them directly on stage. To navigate between junctions, use the arrow keys to move selection to the next point in the corresponding direction. To add a new junction point, hold <strong>Ctrl</strong> and click on a mesh edge — a new point is inserted at that position, splitting the adjacent curves while preserving the overall shape.</p>
+
+<h3>Advanced Settings</h3>
+
+<p>The warp editor exposes two advanced options under the <strong>Advanced</strong> section:</p>
+
+<ul>
+<li><strong>Perspective Correction</strong> — when enabled, the warp mesh applies a perspective-correct interpolation rather than simple bilinear interpolation. This produces more accurate results when the warp involves significant perspective changes (such as correcting for a steeply angled projector), preventing the texture swimming artifacts that bilinear interpolation can produce in those cases.</li>
+<li><strong>Corner Shapes</strong> — when enabled, allows Bézier handles to be edited on corner junction points (the four corners of the mesh). By default, corner points do not expose handles. Enabling this option gives you curve control at the corners, which is useful when the physical surface has rounded or irregular corners.</li>
+
+</ul>
+
+<h3>Show-Level Warp Defaults</h3>
+
+<p>The <strong>Show Properties → Warp</strong> section provides two defaults that apply whenever new warp points are created in any display:</p>
+
+<ul>
+<li><strong>New Warp Handles Should Have Fixed Length</strong> — when enabled, newly created warp control handles start with a fixed pixel length that you specify, rather than being free-form. This helps maintain consistency across warp meshes in a multi-display setup.</li>
+<li><strong>New Warp Points Should be Smooth</strong> — when enabled, new warp junction points are created with smooth (G¹ continuous) tangent handles by default.</li>
+
+</ul>
+
+<p>These defaults affect only newly created points. Existing points retain their current settings.</p>
+
+<h3>Accessing the Warp Editor</h3>
+
+<p>There are several ways to open the warp editor for a display:</p>
+
+<ul>
+<li><strong>Device Properties → Warp section:</strong> Toggle <strong>Enabled</strong> to activate warp on the selected display, then click <strong>Edit</strong> to enter the warp editing mode in the Stage view.</li>
+<li><strong>Stage context menu:</strong> Right-click a display and choose <strong>Edit Warp</strong>.</li>
+<li><strong>Nodes window context menu:</strong> Right-click a display node and choose <strong>Edit Warp</strong>.</li>
+
+</ul>
+
+<p>When the warp editor is active, the Stage view shows the warp mesh overlaid on the display output. You can toggle <strong>Show on Display</strong> to render the warp mesh grid on the actual display output, which is useful when working with test patterns to see the mesh relative to the projected image.</p>
+
+<h3>Keyboard Shortcuts</h3>
+
+<p>The following shortcuts are available when editing warp geometry:</p>
+
+<table>
+<tr><th>Shortcut</th><th>Action</th></tr>
+<tr><td><strong>Arrow keys</strong> (Up / Down / Left / Right)</td><td>Select the next warp junction point in the corresponding direction</td></tr>
+<tr><td><strong>Ctrl + Left Click</strong> (on a mesh edge)</td><td>Add a new warp junction point at the clicked position</td></tr>
+</table>
+
+<h3>Position in the Rendering Pipeline</h3>
+
+<p>Warp geometry occupies a specific position in WATCHOUT's rendering pipeline, and understanding this order is important when combining it with other correction tools:</p>
+
+<ol>
+<li><strong>Corner pinning</strong> (per-cue effect) — applied first, during individual cue rendering. This is a creative or per-content adjustment, not a display-level correction. See <a href="../06-effects-and-tweens/corner-pinning.html">Corner Pinning</a>.</li>
+<li><strong>Compositing</strong> — all cues are composited into the display's output buffer.</li>
+<li><strong>Warp geometry</strong> — the warp mesh transforms the entire composited output, repositioning pixels to match the physical surface.</li>
+<li><strong>Display masks</strong> — applied after warp, controlling which pixels are visible and shaping edges and blend zones. Mask coordinates correspond to the final (post-warp) display surface. See <a href="display-masks.html">Display Masks</a>.</li>
+
+</ol>
+
+<p>This means corner pinning and warp geometry complement each other without conflict: use corner pinning for cue-specific adjustments (fitting individual content to specific surfaces) and warp for global projector/display alignment.</p>
+
+<h3>Relationship to Edge Blending and Masks</h3>
+
+<p>Warp geometry works alongside <a href="edge-blending.html">Edge Blending</a> and <a href="display-masks.html">Display Masks</a> to produce the final output:</p>
+
+<ul>
+<li><strong>Warp</strong> corrects surface geometry — making the image fit the physical shape.</li>
+<li><strong>Masks</strong> shape the visible boundary — hiding spill, defining blend zones, and cutting output to scenic limits.</li>
+<li><strong>Edge blending</strong> (automatic soft edges) feathers brightness in overlap regions between adjacent displays.</li>
+
+</ul>
+
+<p>As a general rule: get the warp geometry correct first, then apply masks and edge blending on top of the corrected output. Since masks are applied after warp, their coordinates always refer to the final display surface rather than the pre-warp content space.</p>
+
+<p>For a complete guide to mask editing, built-in mask types, mask images, gamma correction, and automatic soft edges, see <a href="display-masks.html">Display Masks</a>.</p>
+
+<h3>Recommended Workflow</h3>
+
+<ol>
+<li><strong>Complete physical alignment first.</strong> Mount and aim projectors or position displays as accurately as possible mechanically. The less correction warp has to do, the better the image quality.</li>
+<li><strong>Choose a warp preset.</strong> Load a 2×2 mesh for simple keystoning, or a 3×3 mesh for curved surfaces. Add rows or columns if finer control is needed.</li>
+<li><strong>Apply coarse corrections.</strong> Move corner and edge junctions to roughly align the projected image with the physical surface. Work from large corrections to small.</li>
+<li><strong>Refine with curve handles.</strong> Adjust Bézier handles to smooth out curves between junction points. Enable Perspective Correction if the projector angle is steep.</li>
+<li><strong>Check edge continuity.</strong> For multi-projector setups, verify that adjacent warp meshes produce continuous straight lines across the boundary. Fine-tune junction points at the edges of neighboring displays.</li>
+<li><strong>Add masks.</strong> Apply masks for spill cutoffs, scenic limits, and blend zones. See <a href="display-masks.html">Display Masks</a>.</li>
+<li><strong>Re-check with representative content.</strong> Play back actual show media at final brightness to verify that the corrections hold under real conditions.</li>
+
+</ol>
+
+<h3>Quality Control</h3>
+
+<p>Validate warp geometry using:</p>
+
+<ul>
+<li><strong>Grid test patterns</strong> — reveal mesh distortion by showing evenly spaced lines across the entire display. Misalignment appears as bent or unevenly spaced grid lines.</li>
+<li><strong>Straight-line graphics</strong> — horizontal and vertical lines that span the full output are particularly sensitive to warp errors, especially at mesh boundaries and junction transitions.</li>
+<li><strong>Real show media at final brightness</strong> — small geometry errors that are invisible with test patterns can become obvious once high-contrast or motion content plays back.</li>
+
+</ul>
+
+<p>Use the display's <strong>Test Pattern</strong> mode to switch between Pattern (renders through warp and mask pipeline), Masked (shows warp and mask result), and White (bypasses warp and mask for raw output comparison). See <a href="test-patterns.html">Test Patterns</a>.</p>
+
+<p>Keep warp and geometry edits versioned like any other critical show state. After transport, re-rigging, or lamp/lens changes, revisit the warp mesh and fine-tune as needed rather than starting from scratch.</p></div><div class="section-nav">
+                <a href="edge-blending.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="display-masks.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script>var wikiBasePath = '../';</script>
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+    
+    <script>
+        (function() {
+            var sw = document.getElementById('guide-switcher');
+            var btn = document.getElementById('guide-switcher-toggle');
+            if (!sw || !btn) return;
+            btn.addEventListener('click', function(e) { e.stopPropagation(); sw.classList.toggle('open'); });
+            document.addEventListener('click', function(e) { if (!sw.contains(e.target)) sw.classList.remove('open'); });
+        })();
+    </script>
+</body>
+</html>

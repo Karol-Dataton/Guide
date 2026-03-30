@@ -1,0 +1,144 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="520" viewBox="0 0 760 520">
+  <defs>
+    <style>
+      .title { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 700; fill: #a78bfa; text-anchor: middle; }
+      .row-label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 14px; font-weight: 700; text-anchor: middle; }
+      .box-text { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 13px; font-weight: 600; fill: #f1f5f9; text-anchor: middle; }
+      .box-sub { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 10px; fill: #94a3b8; text-anchor: middle; }
+      .arrow-label { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 11px; font-weight: 600; text-anchor: middle; }
+      .tag { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 10px; text-anchor: middle; }
+      .tag-bg { rx: 3; ry: 3; }
+      .note { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; font-size: 10px; fill: #94a3b8; text-anchor: middle; }
+      .divider { stroke: #334155; stroke-width: 1; }
+    </style>
+    <marker id="arr" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#cbd5e1" />
+    </marker>
+    <marker id="arr-tcp" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#60a5fa" />
+    </marker>
+    <marker id="arr-tcp-back" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6" />
+    </marker>
+    <marker id="arr-udp" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#fbbf24" />
+    </marker>
+    <marker id="arr-http" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#34d399" />
+    </marker>
+    <marker id="arr-http-back" markerWidth="8" markerHeight="8" refX="7" refY="3" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,6 L8,3 z" fill="#10b981" />
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="380" y="30" class="title">OUTPUT CUE PROTOCOLS</text>
+
+  <!-- ==================== TCP ROW ==================== -->
+  <g transform="translate(0, 50)">
+    <!-- Row background -->
+    <rect x="20" y="0" width="720" height="140" rx="8" ry="8" fill="#0c1a2e" stroke="#1e3a5f" stroke-width="1" />
+    <text x="380" y="22" class="row-label" fill="#60a5fa">TCP</text>
+
+    <!-- WATCHOUT box -->
+    <rect x="50" y="35" width="140" height="55" rx="6" ry="6" fill="#1e293b" stroke="#a78bfa" stroke-width="2" />
+    <text x="120" y="58" class="box-text">WATCHOUT</text>
+    <text x="120" y="74" class="box-sub">Output Cue fires</text>
+
+    <!-- Target box -->
+    <rect x="540" y="35" width="170" height="55" rx="6" ry="6" fill="#1e293b" stroke="#a78bfa" stroke-width="2" />
+    <text x="625" y="58" class="box-text">Target Device</text>
+    <text x="625" y="74" class="box-sub">192.168.1.100:9000</text>
+
+    <!-- Forward arrow (data) -->
+    <line x1="190" y1="55" x2="535" y2="55" stroke="#60a5fa" stroke-width="2.5" marker-end="url(#arr-tcp)" />
+    <text x="362" y="48" class="arrow-label" fill="#93c5fd">Payload Data</text>
+
+    <!-- Return arrow (ACK) -->
+    <line x1="535" y1="72" x2="195" y2="72" stroke="#3b82f6" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-tcp-back)" />
+    <text x="362" y="86" class="arrow-label" fill="#3b82f6" style="font-weight:400; font-size:10px;">ACK (delivery confirmed)</text>
+
+    <!-- Tags -->
+    <rect x="220" y="100" width="90" height="20" class="tag-bg" fill="#172554" stroke="#1e40af" stroke-width="1" />
+    <text x="265" y="114" class="tag" fill="#93c5fd">Reliable</text>
+
+    <rect x="320" y="100" width="90" height="20" class="tag-bg" fill="#172554" stroke="#1e40af" stroke-width="1" />
+    <text x="365" y="114" class="tag" fill="#93c5fd">Ordered</text>
+
+    <rect x="420" y="100" width="110" height="20" class="tag-bg" fill="#172554" stroke="#1e40af" stroke-width="1" />
+    <text x="475" y="114" class="tag" fill="#93c5fd">Keep-Alive</text>
+  </g>
+
+  <!-- ==================== UDP ROW ==================== -->
+  <g transform="translate(0, 205)">
+    <!-- Row background -->
+    <rect x="20" y="0" width="720" height="140" rx="8" ry="8" fill="#1a1508" stroke="#3d2e08" stroke-width="1" />
+    <text x="380" y="22" class="row-label" fill="#fbbf24">UDP</text>
+
+    <!-- WATCHOUT box -->
+    <rect x="50" y="35" width="140" height="55" rx="6" ry="6" fill="#1e293b" stroke="#a78bfa" stroke-width="2" />
+    <text x="120" y="58" class="box-text">WATCHOUT</text>
+    <text x="120" y="74" class="box-sub">Output Cue fires</text>
+
+    <!-- Target box -->
+    <rect x="540" y="35" width="170" height="55" rx="6" ry="6" fill="#1e293b" stroke="#a78bfa" stroke-width="2" />
+    <text x="625" y="58" class="box-text">Target Device</text>
+    <text x="625" y="74" class="box-sub">192.168.1.100:9000</text>
+
+    <!-- Forward arrow (single datagram, dashed) -->
+    <line x1="190" y1="62" x2="535" y2="62" stroke="#fbbf24" stroke-width="2.5" stroke-dasharray="8,4" marker-end="url(#arr-udp)" />
+    <text x="362" y="55" class="arrow-label" fill="#fcd34d">Single Datagram</text>
+
+    <!-- No return arrow — label it -->
+    <text x="362" y="82" class="note" style="font-style: italic;">No acknowledgement — fire and forget</text>
+
+    <!-- Tags -->
+    <rect x="220" y="100" width="120" height="20" class="tag-bg" fill="#2d2006" stroke="#92400e" stroke-width="1" />
+    <text x="280" y="114" class="tag" fill="#fcd34d">No Guarantee</text>
+
+    <rect x="350" y="100" width="110" height="20" class="tag-bg" fill="#2d2006" stroke="#92400e" stroke-width="1" />
+    <text x="405" y="114" class="tag" fill="#fcd34d">Lowest Latency</text>
+
+    <rect x="470" y="100" width="120" height="20" class="tag-bg" fill="#2d2006" stroke="#92400e" stroke-width="1" />
+    <text x="530" y="114" class="tag" fill="#fcd34d">Connectionless</text>
+  </g>
+
+  <!-- ==================== HTTP ROW ==================== -->
+  <g transform="translate(0, 360)">
+    <!-- Row background -->
+    <rect x="20" y="0" width="720" height="150" rx="8" ry="8" fill="#052e16" stroke="#14532d" stroke-width="1" />
+    <text x="380" y="22" class="row-label" fill="#34d399">HTTP</text>
+
+    <!-- WATCHOUT box -->
+    <rect x="50" y="35" width="140" height="55" rx="6" ry="6" fill="#1e293b" stroke="#a78bfa" stroke-width="2" />
+    <text x="120" y="58" class="box-text">WATCHOUT</text>
+    <text x="120" y="74" class="box-sub">Output Cue fires</text>
+
+    <!-- Target box -->
+    <rect x="540" y="35" width="170" height="55" rx="6" ry="6" fill="#1e293b" stroke="#a78bfa" stroke-width="2" />
+    <text x="625" y="58" class="box-text">Target Device</text>
+    <text x="625" y="74" class="box-sub">REST API / Webhook</text>
+
+    <!-- Forward arrow (request) -->
+    <line x1="190" y1="52" x2="535" y2="52" stroke="#34d399" stroke-width="2.5" marker-end="url(#arr-http)" />
+    <text x="362" y="45" class="arrow-label" fill="#6ee7b7">POST /api/trigger</text>
+
+    <!-- Return arrow (response) -->
+    <line x1="535" y1="72" x2="195" y2="72" stroke="#10b981" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arr-http-back)" />
+    <text x="362" y="86" class="arrow-label" fill="#10b981" style="font-weight:400; font-size:10px;">HTTP Response (200 OK)</text>
+
+    <!-- URL construction note -->
+    <rect x="130" y="102" width="470" height="20" rx="4" ry="4" fill="#064e3b" stroke="#10b981" stroke-width="1" />
+    <text x="365" y="116" style="font-family: monospace; font-size: 11px; fill: #a7f3d0; text-anchor: middle;">http://address:port/path  +  Method  +  Content-Type  +  Body</text>
+
+    <!-- Tags -->
+    <rect x="200" y="130" width="120" height="20" class="tag-bg" fill="#064e3b" stroke="#10b981" stroke-width="1" />
+    <text x="260" y="144" class="tag" fill="#6ee7b7">Request/Response</text>
+
+    <rect x="330" y="130" width="110" height="20" class="tag-bg" fill="#064e3b" stroke="#10b981" stroke-width="1" />
+    <text x="385" y="144" class="tag" fill="#6ee7b7">Keep-Alive</text>
+
+    <rect x="450" y="130" width="130" height="20" class="tag-bg" fill="#064e3b" stroke="#10b981" stroke-width="1" />
+    <text x="515" y="144" class="tag" fill="#6ee7b7">JSON / XML / Text</text>
+  </g>
+</svg>

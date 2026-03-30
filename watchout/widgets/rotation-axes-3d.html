@@ -1,0 +1,513 @@
+<div class="interactive-widget" id="rotation-axes-3d-widget">
+    <style>
+        #rotation-axes-3d-widget {
+            width: 100%;
+        }
+
+        #rotation-axes-3d-widget .ra-layout {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        #rotation-axes-3d-widget .ra-canvas-wrap {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+        }
+
+        #rotation-axes-3d-widget canvas {
+            width: 100%;
+            height: 380px;
+            background: radial-gradient(ellipse at center, #1a1a2e 0%, #0d0d1a 100%);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: block;
+        }
+
+        #rotation-axes-3d-widget .ra-controls {
+            width: 200px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #rotation-axes-3d-widget .ra-control {
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            padding: 8px 10px;
+            border-radius: 6px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.02);
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        #rotation-axes-3d-widget .ra-control:hover,
+        #rotation-axes-3d-widget .ra-control.active {
+            border-color: var(--accent-primary, #6366f1);
+            background: rgba(99, 102, 241, 0.08);
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="z"]:hover,
+        #rotation-axes-3d-widget .ra-control[data-axis="z"].active {
+            border-color: #60a5fa;
+            background: rgba(96, 165, 250, 0.08);
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="y"]:hover,
+        #rotation-axes-3d-widget .ra-control[data-axis="y"].active {
+            border-color: #4ade80;
+            background: rgba(74, 222, 128, 0.08);
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="x"]:hover,
+        #rotation-axes-3d-widget .ra-control[data-axis="x"].active {
+            border-color: #f87171;
+            background: rgba(248, 113, 113, 0.08);
+        }
+
+        #rotation-axes-3d-widget .ra-control label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-primary, #e7e5e4);
+            pointer-events: none;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="x"] label {
+            color: #f87171;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="y"] label {
+            color: #4ade80;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="z"] label {
+            color: #60a5fa;
+        }
+
+        #rotation-axes-3d-widget .ra-control input[type=range] {
+            width: 100%;
+            height: 5px;
+            cursor: pointer;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="x"] input[type=range] {
+            accent-color: #f87171;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="y"] input[type=range] {
+            accent-color: #4ade80;
+        }
+
+        #rotation-axes-3d-widget .ra-control[data-axis="z"] input[type=range] {
+            accent-color: #60a5fa;
+        }
+
+        #rotation-axes-3d-widget .ra-val {
+            font-size: 0.7rem;
+            color: var(--text-muted, #78716c);
+            font-variant-numeric: tabular-nums;
+        }
+
+        #rotation-axes-3d-widget .ra-reset-btn {
+            margin-top: 4px;
+            padding: 5px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 50px;
+            background: var(--bg-tertiary, #292524);
+            color: var(--text-secondary, #a8a29e);
+            font-family: inherit;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+
+        #rotation-axes-3d-widget .ra-reset-btn:hover {
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-primary);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        #rotation-axes-3d-widget .ra-explain {
+            margin-top: 10px;
+            min-height: 44px;
+            padding: 10px 12px;
+            border-radius: 6px;
+            background: rgba(99, 102, 241, 0.06);
+            border-left: 3px solid var(--accent-primary, #6366f1);
+            font-size: 0.82rem;
+            line-height: 1.45;
+            color: var(--text-secondary, #a8a29e);
+        }
+
+        #rotation-axes-3d-widget .ra-explain strong {
+            color: var(--text-primary, #e7e5e4);
+        }
+
+        #rotation-axes-3d-widget .ra-legend {
+            display: flex;
+            gap: 14px;
+            margin-top: 6px;
+            font-size: 0.72rem;
+            color: var(--text-muted, #78716c);
+        }
+
+        #rotation-axes-3d-widget .ra-legend span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        #rotation-axes-3d-widget .ra-legend .dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        @media (max-width: 680px) {
+            #rotation-axes-3d-widget .ra-layout {
+                flex-direction: column;
+            }
+
+            #rotation-axes-3d-widget .ra-controls {
+                width: 100%;
+                flex-direction: row;
+                flex-wrap: wrap;
+            }
+
+            #rotation-axes-3d-widget .ra-control {
+                flex: 1 1 45%;
+                min-width: 130px;
+            }
+        }
+    </style>
+
+    <div class="ra-layout">
+        <div class="ra-canvas-wrap">
+            <canvas id="ra-canvas" width="1200" height="760"></canvas>
+            <div class="ra-legend">
+                <span><span class="dot" style="background:#f87171;"></span> X axis (tilt)</span>
+                <span><span class="dot" style="background:#4ade80;"></span> Y axis (turn)</span>
+                <span><span class="dot" style="background:#60a5fa;"></span> Z axis (spin)</span>
+            </div>
+        </div>
+        <div class="ra-controls">
+            <div class="ra-control" data-axis="z" tabindex="0">
+                <label>Rotation Z (Spin)</label>
+                <input type="range" id="ra-rotZ" min="-360" max="360" value="0" step="1">
+                <span class="ra-val" id="ra-rotZ-val">0&deg;</span>
+            </div>
+            <div class="ra-control" data-axis="y" tabindex="0">
+                <label>Rotation Y (Turn)</label>
+                <input type="range" id="ra-rotY" min="-360" max="360" value="0" step="1">
+                <span class="ra-val" id="ra-rotY-val">0&deg;</span>
+            </div>
+            <div class="ra-control" data-axis="x" tabindex="0">
+                <label>Rotation X (Tilt)</label>
+                <input type="range" id="ra-rotX" min="-360" max="360" value="0" step="1">
+                <span class="ra-val" id="ra-rotX-val">0&deg;</span>
+            </div>
+            <button class="ra-reset-btn" id="ra-reset">Reset All</button>
+        </div>
+    </div>
+    <div class="ra-explain" id="ra-explain">
+        Drag the sliders to rotate the card around each axis. WATCHOUT applies rotations in order: <strong>Z first, then Y, then X</strong>.
+    </div>
+</div>
+
+<script>
+    (function () {
+        var canvas = document.getElementById('ra-canvas');
+        if (!canvas) return;
+        var ctx = canvas.getContext('2d');
+        var W = canvas.width, H = canvas.height;
+
+        var sliderZ = document.getElementById('ra-rotZ');
+        var sliderY = document.getElementById('ra-rotY');
+        var sliderX = document.getElementById('ra-rotX');
+        var valZ = document.getElementById('ra-rotZ-val');
+        var valY = document.getElementById('ra-rotY-val');
+        var valX = document.getElementById('ra-rotX-val');
+        var explainEl = document.getElementById('ra-explain');
+
+        var explanations = {
+            z: '<strong>Rotation Z</strong> — Rotates the cue in the plane of the screen, like a clock hand. This is the classic 2D spin. Positive values rotate clockwise.',
+            y: '<strong>Rotation Y</strong> — Rotates around a vertical axis, like opening a door. The left and right edges move toward and away from the viewer.',
+            x: '<strong>Rotation X</strong> — Rotates around a horizontal axis, like tilting a sign forward or backward. The top and bottom edges move toward and away from the viewer.',
+            none: 'Drag the sliders to rotate the card around each axis. WATCHOUT applies rotations in order: <strong>Z first, then Y, then X</strong>.'
+        };
+
+        // Axis highlighting
+        var controlEls = document.querySelectorAll('#rotation-axes-3d-widget .ra-control');
+        var activeAxis = null;
+        controlEls.forEach(function (el) {
+            var a = el.dataset.axis;
+            el.addEventListener('mouseenter', function () { setActive(a); });
+            el.addEventListener('mouseleave', function () { setActive(null); });
+            el.addEventListener('focusin', function () { setActive(a); });
+            el.addEventListener('focusout', function () { setActive(null); });
+        });
+
+        function setActive(a) {
+            activeAxis = a;
+            controlEls.forEach(function (el) {
+                el.classList.toggle('active', el.dataset.axis === a);
+            });
+            explainEl.innerHTML = explanations[a] || explanations.none;
+            draw();
+        }
+
+        // --- 3D Math ---
+        var DEG = Math.PI / 180;
+
+        function rotateZ(p, a) {
+            var c = Math.cos(a), s = Math.sin(a);
+            return [c * p[0] - s * p[1], s * p[0] + c * p[1], p[2]];
+        }
+
+        function rotateY(p, a) {
+            var c = Math.cos(a), s = Math.sin(a);
+            return [c * p[0] + s * p[2], p[1], -s * p[0] + c * p[2]];
+        }
+
+        function rotateX(p, a) {
+            var c = Math.cos(a), s = Math.sin(a);
+            return [p[0], c * p[1] - s * p[2], s * p[1] + c * p[2]];
+        }
+
+        // Apply WATCHOUT rotation order: Z -> Y -> X
+        function applyRotations(p, rz, ry, rx) {
+            p = rotateZ(p, rz);
+            p = rotateY(p, ry);
+            p = rotateX(p, rx);
+            return p;
+        }
+
+        // Perspective projection
+        var focalLen = 800;
+        var cx = W / 2, cy = H / 2;
+
+        function project(p) {
+            var z = p[2] + focalLen;
+            if (z < 1) z = 1;
+            var scale = focalLen / z;
+            return [cx + p[0] * scale, cy + p[1] * scale, z, scale];
+        }
+
+        // Card geometry: a flat rectangle in 3D
+        var cardW = 200, cardH = 140;
+        var cardVerts = [
+            [-cardW, -cardH, 0],
+            [cardW, -cardH, 0],
+            [cardW, cardH, 0],
+            [-cardW, cardH, 0]
+        ];
+
+        // Grid subdivisions on card face
+        var gridLinesH = 4;
+        var gridLinesV = 6;
+
+        function lerpXY(a, b, t) {
+            return [a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t];
+        }
+
+        function draw() {
+            var rz = parseFloat(sliderZ.value) * DEG;
+            var ry = parseFloat(sliderY.value) * DEG;
+            var rx = parseFloat(sliderX.value) * DEG;
+
+            valZ.textContent = sliderZ.value + '\u00B0';
+            valY.textContent = sliderY.value + '\u00B0';
+            valX.textContent = sliderX.value + '\u00B0';
+
+            ctx.clearRect(0, 0, W, H);
+
+            // --- Draw rotation rings ---
+            var axes = [
+                { dir: [1, 0, 0], color: '#f87171', label: 'X', active: activeAxis === 'x' },
+                { dir: [0, 1, 0], color: '#4ade80', label: 'Y', active: activeAxis === 'y' },
+                { dir: [0, 0, 1], color: '#60a5fa', label: 'Z', active: activeAxis === 'z' }
+            ];
+
+            var ringR = 220;
+            var segments = 72;
+
+            axes.forEach(function (axis) {
+                var alpha = axis.active ? 0.5 : 0.15;
+                ctx.strokeStyle = axis.color;
+                ctx.globalAlpha = alpha;
+                ctx.lineWidth = axis.active ? 3 : 1.5;
+                ctx.setLineDash(axis.active ? [] : [4, 4]);
+
+                ctx.beginPath();
+                for (var i = 0; i <= segments; i++) {
+                    var t = (i / segments) * Math.PI * 2;
+                    var pt;
+                    if (axis.label === 'X') {
+                        pt = [0, Math.cos(t) * ringR, Math.sin(t) * ringR];
+                    } else if (axis.label === 'Y') {
+                        pt = [Math.cos(t) * ringR, 0, Math.sin(t) * ringR];
+                    } else {
+                        pt = [Math.cos(t) * ringR, Math.sin(t) * ringR, 0];
+                    }
+                    pt = applyRotations(pt, rz, ry, rx);
+                    var pp = project(pt);
+                    if (i === 0) ctx.moveTo(pp[0], pp[1]);
+                    else ctx.lineTo(pp[0], pp[1]);
+                }
+                ctx.stroke();
+                ctx.setLineDash([]);
+                ctx.globalAlpha = 1;
+            });
+
+            // --- Draw axis arrows ---
+            var axisLen = 280;
+            axes.forEach(function (axis) {
+                var alpha = axis.active ? 0.9 : 0.3;
+                ctx.strokeStyle = axis.color;
+                ctx.globalAlpha = alpha;
+                ctx.lineWidth = axis.active ? 3 : 1.5;
+
+                var dir = [axis.dir[0] * axisLen, axis.dir[1] * axisLen, axis.dir[2] * axisLen];
+                var negDir = [-dir[0], -dir[1], -dir[2]];
+
+                var tip = applyRotations(dir, rz, ry, rx);
+                var negTip = applyRotations(negDir, rz, ry, rx);
+                var origin = applyRotations([0, 0, 0], rz, ry, rx);
+                var pt = project(tip);
+                var pn = project(negTip);
+                var po = project(origin);
+
+                // Full axis line
+                ctx.beginPath();
+                ctx.moveTo(pn[0], pn[1]);
+                ctx.lineTo(pt[0], pt[1]);
+                ctx.stroke();
+
+                // Arrow head
+                ctx.fillStyle = axis.color;
+                ctx.globalAlpha = alpha;
+                var dx = pt[0] - po[0];
+                var dy = pt[1] - po[1];
+                var len = Math.sqrt(dx * dx + dy * dy) || 1;
+                var ux = dx / len, uy = dy / len;
+                var arrowSize = 10 * pt[3];
+                if (arrowSize > 18) arrowSize = 18;
+                if (arrowSize < 5) arrowSize = 5;
+                ctx.beginPath();
+                ctx.moveTo(pt[0], pt[1]);
+                ctx.lineTo(pt[0] - ux * arrowSize - uy * arrowSize * 0.5, pt[1] - uy * arrowSize + ux * arrowSize * 0.5);
+                ctx.lineTo(pt[0] - ux * arrowSize + uy * arrowSize * 0.5, pt[1] - uy * arrowSize - ux * arrowSize * 0.5);
+                ctx.closePath();
+                ctx.fill();
+
+                // Axis label
+                ctx.globalAlpha = axis.active ? 1 : 0.5;
+                ctx.fillStyle = axis.color;
+                ctx.font = (axis.active ? 'bold ' : '') + '22px "Futura Now Headline", Futura, system-ui, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                var labelOff = 22;
+                ctx.fillText(axis.label, pt[0] + ux * labelOff, pt[1] + uy * labelOff);
+                ctx.globalAlpha = 1;
+            });
+
+            // --- Draw the card ---
+            var transformed = cardVerts.map(function (v) {
+                return applyRotations(v, rz, ry, rx);
+            });
+            var projected = transformed.map(function (v) {
+                return project(v);
+            });
+
+            // Face direction via cross product
+            var eax = projected[1][0] - projected[0][0], eay = projected[1][1] - projected[0][1];
+            var ebx = projected[3][0] - projected[0][0], eby = projected[3][1] - projected[0][1];
+            var cross = eax * eby - eay * ebx;
+            var isFront = cross > 0;
+
+            // Card face fill
+            ctx.beginPath();
+            ctx.moveTo(projected[0][0], projected[0][1]);
+            ctx.lineTo(projected[1][0], projected[1][1]);
+            ctx.lineTo(projected[2][0], projected[2][1]);
+            ctx.lineTo(projected[3][0], projected[3][1]);
+            ctx.closePath();
+
+            if (isFront) {
+                var grad = ctx.createLinearGradient(projected[0][0], projected[0][1], projected[2][0], projected[2][1]);
+                grad.addColorStop(0, 'rgba(99, 102, 241, 0.35)');
+                grad.addColorStop(1, 'rgba(139, 92, 246, 0.25)');
+                ctx.fillStyle = grad;
+            } else {
+                ctx.fillStyle = 'rgba(80, 60, 60, 0.3)';
+            }
+            ctx.fill();
+
+            // Card border
+            ctx.strokeStyle = isFront ? 'rgba(165, 160, 255, 0.7)' : 'rgba(120, 100, 100, 0.5)';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+
+            // Grid lines on card
+            ctx.strokeStyle = isFront ? 'rgba(165, 160, 255, 0.2)' : 'rgba(120, 100, 100, 0.15)';
+            ctx.lineWidth = 1;
+
+            for (var gi = 1; gi < gridLinesH; gi++) {
+                var t = gi / gridLinesH;
+                var leftPt = lerpXY(projected[0], projected[3], t);
+                var rightPt = lerpXY(projected[1], projected[2], t);
+                ctx.beginPath();
+                ctx.moveTo(leftPt[0], leftPt[1]);
+                ctx.lineTo(rightPt[0], rightPt[1]);
+                ctx.stroke();
+            }
+            for (var gi = 1; gi < gridLinesV; gi++) {
+                var t = gi / gridLinesV;
+                var topPt = lerpXY(projected[0], projected[1], t);
+                var bottomPt = lerpXY(projected[3], projected[2], t);
+                ctx.beginPath();
+                ctx.moveTo(topPt[0], topPt[1]);
+                ctx.lineTo(bottomPt[0], bottomPt[1]);
+                ctx.stroke();
+            }
+
+            // Card face label
+            var labelCx = (projected[0][0] + projected[2][0]) / 2;
+            var labelCy = (projected[0][1] + projected[2][1]) / 2;
+            ctx.fillStyle = isFront ? 'rgba(200, 200, 255, 0.8)' : 'rgba(180, 150, 150, 0.6)';
+            ctx.font = '28px "Futura Now Headline", Futura, system-ui, sans-serif';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(isFront ? 'FRONT' : 'BACK', labelCx, labelCy);
+
+            // Corner dots
+            projected.forEach(function (p) {
+                ctx.fillStyle = isFront ? 'rgba(165, 160, 255, 0.9)' : 'rgba(120, 100, 100, 0.7)';
+                ctx.beginPath();
+                ctx.arc(p[0], p[1], 4, 0, Math.PI * 2);
+                ctx.fill();
+            });
+        }
+
+        // Events
+        sliderZ.addEventListener('input', draw);
+        sliderY.addEventListener('input', draw);
+        sliderX.addEventListener('input', draw);
+
+        document.getElementById('ra-reset').addEventListener('click', function () {
+            sliderZ.value = 0;
+            sliderY.value = 0;
+            sliderX.value = 0;
+            draw();
+        });
+
+        // Initial draw
+        draw();
+    })();
+</script>

@@ -1,0 +1,2381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHOUT User Guide - Formats & Codecs">
+    <title>Formats & Codecs - WATCHOUT 7 User Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <style>
+        .guide-switcher { position: relative; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border-subtle, #2a2a3e); }
+        .guide-switcher-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            color: var(--text-primary, #e0e0e8); cursor: pointer;
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .guide-switcher-toggle:hover { border-color: var(--accent-primary, #60a5fa); }
+        .guide-switcher-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .guide-switcher.open .guide-switcher-arrow { transform: rotate(180deg); }
+        .guide-switcher-dropdown {
+            display: none; position: absolute; left: 16px; right: 16px; bottom: 100%;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            border-radius: 6px; z-index: 100; overflow: hidden;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+        }
+        .guide-switcher.open .guide-switcher-dropdown { display: block; }
+        .guide-switcher-option {
+            display: block; padding: 8px 12px; color: var(--text-secondary, #a0a0b8);
+            text-decoration: none; font-size: 0.85rem; transition: background 0.15s, color 0.15s;
+        }
+        .guide-switcher-option:hover { background: var(--bg-hover, #22223a); color: var(--text-primary, #e0e0e8); }
+        .guide-switcher-option.active { color: var(--accent-primary, #60a5fa); font-weight: 500; }
+    </style>
+</head>
+<body data-page-id="formats-codecs">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo logo-link" aria-label="Go to home page">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHOUT GUIDE</h1>
+                </a>
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter  " data-index="0">
+            <a href="../getting-started/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Getting Started</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">First Steps</div>
+                        <a class="toc-subsection " href="../getting-started/welcome-to-watchout-7.html">
+                            Welcome To Watchout 7
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/system-requirements.html">
+                            System Requirements
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/installing-watchout.html">
+                            Installing Watchout
+                        </a>
+                        
+                        <div class="toc-group-label">Setup and Configuration</div>
+                        <a class="toc-subsection " href="../getting-started/launching-the-application.html">
+                            Launching The Application
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/network-configuration.html">
+                            Network Configuration
+                        </a>
+                        
+                        <div class="toc-group-label">Your First Show</div>
+                        <a class="toc-subsection " href="../getting-started/quick-start-tutorial.html">
+                            Quick Start Tutorial
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/architectural-differences-watchout-6-vs-7.html">
+                            Architectural Differences Watchout 6 Vs 7
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="1">
+            <a href="../working-with-shows/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">2. Working with Shows</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
+                            Creating A New Show
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
+                            Opening Existing Shows
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/saving-your-work.html">
+                            Saving Your Work
+                        </a>
+                        
+                        <div class="toc-group-label">Show Configuration</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-properties.html">
+                            Show Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Archiving and Auditing</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-consolidation.html">
+                            Show Consolidation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-information.html">
+                            Show Information
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="2">
+            <a href="../displays-and-outputs/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
+                <span class="toc-chapter-title">3. Displays and Outputs</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/adding-displays.html">
+                            Adding Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-properties.html">
+                            Display Properties
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-grid-setup.html">
+                            Display Grid Setup
+                        </a>
+                        
+                        <div class="toc-group-label">Core Display Types</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/virtual-displays.html">
+                            Virtual Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/3d-mapping-projectors.html">
+                            3d Mapping Projectors
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/sdi-output.html">
+                            Sdi Output
+                        </a>
+                        
+                        <div class="toc-group-label">Geometry Correction and Blending</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/edge-blending.html">
+                            Edge Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/warp-geometry.html">
+                            Warp Geometry
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-masks.html">
+                            Display Masks
+                        </a>
+                        
+                        <div class="toc-group-label">Color, Calibration, and Diagnostics</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/hdr-and-color-management.html">
+                            HDR and Color Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-calibration.html">
+                            Display Calibration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/test-patterns.html">
+                            Test Patterns
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/compression-fundamentals.html">
+                            Compression Fundamentals
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter expanded " data-index="3">
+            <a href="../assets-asset-manager/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></span>
+                <span class="toc-chapter-title">4. Assets & Asset Manager</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager.html">
+                            Asset Manager
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-types.html">
+                            Asset Types
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-properties.html">
+                            Asset Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Media Formats and Creation</div>
+                        <a class="toc-subsection active" href="../assets-asset-manager/formats-codecs.html">
+                            Formats & Codecs
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/svg-shapes.html">
+                            SVG Shapes
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/image-sequences.html">
+                            Image Sequences
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Asset Workflows</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/dynamic-assets.html">
+                            Dynamic Assets
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/web-user-interface.html">
+                            Web User Interface
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-watcher.html">
+                            Asset Watcher
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-transfer.html">
+                            Asset Transfer
+                        </a>
+                        
+                        <div class="toc-group-label">Settings and Data Management</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager-settings.html">
+                            Asset Manager Settings
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/import-export-and-mapping.html">
+                            Import, Export, and Mapping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/importing-gdtf-files.html">
+                            Importing GDTF Files
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="4">
+            <a href="../timeline-and-cues/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                <span class="toc-chapter-title">5. Timeline and Cues</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/understanding-the-timeline.html">
+                            Understanding The Timeline
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adding-media-cues.html">
+                            Adding Media Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/working-with-layers.html">
+                            Working With Layers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adjusting-timing.html">
+                            Adjusting Timing
+                        </a>
+                        
+                        <div class="toc-group-label">Cue Types</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/control-cues.html">
+                            Control Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/marker-cues.html">
+                            Marker Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/output-cues.html">
+                            Output Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/variables-and-variable-cues.html">
+                            Variables and Variable Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/artnet-fixture-cues.html">
+                            ArtNet Fixture Cues
+                        </a>
+                        
+                        <div class="toc-group-label">Compositions and Organization</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/compositions.html">
+                            Compositions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cue-sets-and-variants.html">
+                            Cue Sets and Variants
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/media-snapshots.html">
+                            Media Snapshots
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/stacking-order.html">
+                            Stacking Order
+                        </a>
+                        
+                        <div class="toc-group-label">Automation and Advanced Workflows</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/timeline-triggers-and-expressions.html">
+                            Timeline Triggers and Expressions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/conditional-cues.html">
+                            Conditional Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/blind-edit-mode.html">
+                            Blind Edit Mode
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/insert-and-delete-time.html">
+                            Insert and Delete Time
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cues-window.html">
+                            Cues Window
+                        </a>
+                        
+                        <div class="toc-group-label">Output Reference</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/output-types-overview.html">
+                            Output Types Overview
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="5">
+            <a href="../effects-and-tweens/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">6. Effects and Tweens</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/understanding-tweens.html">
+                            Understanding Tweens
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/opacity-and-fades.html">
+                            Opacity and Fades
+                        </a>
+                        
+                        <div class="toc-group-label">Transform Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/position-and-movement.html">
+                            Position and Movement
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/scale-and-size.html">
+                            Scale and Size
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/rotation-effects.html">
+                            Rotation Effects
+                        </a>
+                        
+                        <div class="toc-group-label">Visual Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/cropping.html">
+                            Cropping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/color-adjustments.html">
+                            Color Adjustments
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blur-effects.html">
+                            Blur Effects
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blend-modes.html">
+                            Blend Modes
+                        </a>
+                        
+                        <div class="toc-group-label">Audio</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/audio-volume.html">
+                            Audio Volume
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/corner-pinning.html">
+                            Corner Pinning
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/linear-wipe.html">
+                            Linear Wipe
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/frame-blending.html">
+                            Frame Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/chroma-key.html">
+                            Chroma Key
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/key-and-fill.html">
+                            Key and Fill
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/tween-expressions.html">
+                            Tween Expressions
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="6">
+            <a href="../playback/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>
+                <span class="toc-chapter-title">7. Playback</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../playback/starting-and-stopping.html">
+                            Starting and Stopping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/preview-mode.html">
+                            Preview Mode
+                        </a>
+                        
+                        <div class="toc-group-label">Going Live</div>
+                        <a class="toc-subsection " href="../playback/connecting-to-display-servers.html">
+                            Connecting to Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/going-online.html">
+                            Going Online
+                        </a>
+                        
+                        <div class="toc-group-label">Show Operation</div>
+                        <a class="toc-subsection " href="../playback/running-your-show.html">
+                            Running Your Show
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="7">
+            <a href="../the-interface/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></span>
+                <span class="toc-chapter-title">8. The Interface</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Overview</div>
+                        <a class="toc-subsection " href="../the-interface/main-window-overview.html">
+                            Main Window Overview
+                        </a>
+                        
+                        <div class="toc-group-label">Window Reference</div>
+                        <a class="toc-subsection " href="../the-interface/the-stage-window.html">
+                            The Stage Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-timeline-window.html">
+                            The Timeline Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-cue-list-window.html">
+                            The Cue List Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-assets-window.html">
+                            The Assets Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-properties-panel.html">
+                            The Properties Panel
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-nodes-window.html">
+                            The Nodes Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-devices-window.html">
+                            The Devices Window
+                        </a>
+                        
+                        <div class="toc-group-label">Customization</div>
+                        <a class="toc-subsection " href="../the-interface/customizing-your-workspace.html">
+                            Customizing Your Workspace
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="8">
+            <a href="../network-setup/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                <span class="toc-chapter-title">9. Network Setup</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Architecture and Basics</div>
+                        <a class="toc-subsection " href="../network-setup/network-overview.html">
+                            Network Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/display-servers.html">
+                            Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/connecting-devices.html">
+                            Connecting Devices
+                        </a>
+                        
+                        <div class="toc-group-label">Protocols and Services</div>
+                        <a class="toc-subsection " href="../network-setup/firewall-configuration.html">
+                            Firewall Configuration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/ndi-video-sources.html">
+                            NDI Video Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/capture-sources.html">
+                            Capture Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/dante-audio.html">
+                            Dante Audio
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/time-synchronization.html">
+                            Time Synchronization
+                        </a>
+                        
+                        <div class="toc-group-label">Maintenance and Management</div>
+                        <a class="toc-subsection " href="../network-setup/node-management-and-maintenance.html">
+                            Node Management and Maintenance
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/remote-file-access.html">
+                            Remote File Access
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/working-directory-management.html">
+                            Working Directory Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/software-updates.html">
+                            Software Updates
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="9">
+            <a href="../external-control/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">10. External Control</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Foundations</div>
+                        <a class="toc-subsection " href="../external-control/external-control-overview.html">
+                            External Control Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/variables-and-inputs.html">
+                            Variables and Inputs
+                        </a>
+                        
+                        <div class="toc-group-label">Primary Protocols</div>
+                        <a class="toc-subsection " href="../external-control/http-rest-api.html">
+                            HTTP REST API
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/osc-protocol.html">
+                            OSC Protocol
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/artnet-input.html">
+                            ArtNet Input
+                        </a>
+                        
+                        <div class="toc-group-label">Specialized Protocols</div>
+                        <a class="toc-subsection " href="../external-control/midi-bridge.html">
+                            MIDI Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/ltc-bridge.html">
+                            LTC Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/posistagenet.html">
+                            PosiStageNet
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/midi-show-control.html">
+                            MIDI Show Control
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/watchout-6-protocol.html">
+                            WATCHOUT 6 Protocol
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="10">
+            <a href="../keyboard-shortcuts/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.001"></path><path d="M10 8h.001"></path><path d="M14 8h.001"></path><path d="M18 8h.001"></path><path d="M8 12h.001"></path><path d="M12 12h.001"></path><path d="M16 12h.001"></path><path d="M7 16h10"></path></svg></span>
+                <span class="toc-chapter-title">11. Keyboard Shortcuts</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Input and Editing</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/file-operations.html">
+                            File Operations
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/edit-commands.html">
+                            Edit Commands
+                        </a>
+                        
+                        <div class="toc-group-label">Navigation and Playback</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/stage-navigation.html">
+                            Stage Navigation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/timeline-controls.html">
+                            Timeline Controls
+                        </a>
+                        
+                        <div class="toc-group-label">Effects and Layout</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/tween-shortcuts.html">
+                            Tween Shortcuts
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/window-management.html">
+                            Window Management
+                        </a>
+                        
+                        <div class="toc-group-label">Properties and Tables</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/property-editing.html">
+                            Property Editing
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/table-views.html">
+                            Table Views
+                        </a>
+                        
+                        <div class="toc-group-label">Hardware Input</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/xbox-controller.html">
+                            Xbox Controller
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/display-warp.html">
+                            Display & Warp
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="11">
+            <a href="../troubleshooting/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">12. Troubleshooting</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Common Issues</div>
+                        <a class="toc-subsection " href="../troubleshooting/common-issues.html">
+                            Common Issues
+                        </a>
+                        
+                        <div class="toc-group-label">By Category</div>
+                        <a class="toc-subsection " href="../troubleshooting/performance-tips.html">
+                            Performance Tips
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/display-problems.html">
+                            Display Problems
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/network-issues.html">
+                            Network Issues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/media-playback-issues.html">
+                            Media Playback Issues
+                        </a>
+                        
+                        <div class="toc-group-label">Getting Support</div>
+                        <a class="toc-subsection " href="../troubleshooting/feedback-reports.html">
+                            Feedback Reports
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/getting-help.html">
+                            Getting Help
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="12">
+            <a href="../glossary/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">13. Glossary</span>
+                
+            </a>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="13">
+            <a href="../legal/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">14. Legal</span>
+                
+            </a>
+            
+        </div>
+        
+            </nav>
+            
+            <div class="guide-switcher" id="guide-switcher">
+                <button class="guide-switcher-toggle" id="guide-switcher-toggle" aria-label="Switch guide">
+                    <span class="guide-switcher-label">WATCHOUT</span>
+                    <svg class="guide-switcher-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="guide-switcher-dropdown" id="guide-switcher-dropdown">
+                    <a class="guide-switcher-option active" href="../../watchout/index.html">WATCHOUT</a>
+                        <a class="guide-switcher-option" href="../../wp64/index.html">WATCHPAX 64</a>
+                        <a class="guide-switcher-option" href="../../wp30/index.html">WATCHPAX 30</a>
+                        <a class="guide-switcher-option" href="../../wp50/index.html">WATCHPAX 50</a>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">4. Assets & Asset Manager</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">Formats & Codecs</span>
+        
+                </div>
+                <a href="../index.html" class="header-home-link" aria-label="Go to home page">
+                    <img src="../media/dataton-logo.png" alt="Dataton" class="header-logo">
+                </a>
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><h2>Formats & Codecs</h2>
+
+<p><strong>Choosing the right source format and optimization codec is one of the most consequential decisions in show design.</strong> The codec determines GPU vs. CPU decode load, file size, scrub responsiveness, maximum resolution, and alpha channel support. This article covers every format WATCHOUT supports, how the optimizer converts between them, and when to use each option.</p>
+
+<h3>How the Optimizer Chooses an Output Codec</h3>
+
+<p>When a source file is added to the show, the optimizer does not simply re-encode it to HAP. Instead, it consults the <strong>codec mapping table</strong> — a configurable set of rules that maps each source codec to a specific output codec. The default mapping targets GPU-friendly formats:</p>
+
+<table>
+<tr><th>Source Codec</th><th>Default Output</th><th>Notes</th></tr>
+<tr><td>H.264 (AVC 4:2:0)</td><td>HEVC 4:2:0</td><td>Re-encoded for GPU-accelerated decode. Supported up to <strong>level 5.2</strong>.</td></tr>
+<tr><td>HEVC / H.265</td><td>HEVC 4:2:0</td><td>Pass-through if already HEVC; re-encode otherwise</td></tr>
+<tr><td>MPEG-2</td><td>HEVC 4:2:0</td><td>Legacy broadcast sources</td></tr>
+<tr><td>ProRes 422 / 422 LT / 422 HQ</td><td>NotchLC Opaque</td><td>High-quality intermediate → high-quality GPU codec</td></tr>
+<tr><td>ProRes 4444 (with alpha)</td><td>NotchLC Alpha</td><td>Preserves alpha channel</td></tr>
+<tr><td>ProRes 4444 XQ</td><td>NotchLC Opaque/Alpha</td><td>Depending on alpha presence</td></tr>
+<tr><td>HAP / HAP Q / HAP Alpha</td><td>Pass-through</td><td>Already GPU-optimized; copied without re-encoding</td></tr>
+<tr><td>NotchLC</td><td>Pass-through</td><td>Already GPU-optimized</td></tr>
+<tr><td>Raw RGB/RGBA 8-bit</td><td>Pass-through</td><td>Already in raw texture format</td></tr>
+<tr><td>RGB 16-bit</td><td>RGB 10-bit (R10G10B10A2)</td><td>Downsampled to 10-bit precision</td></tr>
+</table>
+
+<p>You can override any row in this table through the <a href="asset-manager-settings.html">Asset Manager Settings</a> dialog. Non-default mappings are highlighted with a colored arrow.</p>
+
+<div class='info-box'><p>If your content pipeline already outputs HAP or NotchLC, the optimizer simply copies the data without re-encoding — this saves significant time. Coordinate with your content creators to deliver in the target codec whenever possible.
+</p></div>
+
+<h3>Why HAP is Recommended</h3>
+
+<p>HAP is the default optimization target because it decodes entirely on the GPU using DXT texture compression:</p>
+
+<ul>
+<li><strong>Minimal CPU usage</strong> — leaves the CPU free for effects, compositing, and control tasks.</li>
+<li><strong>Instant scrubbing</strong> — every frame can be accessed independently (no inter-frame dependencies), so timeline navigation is smooth even with 8K content.</li>
+<li><strong>High frame rates</strong> — easily handles 60 fps and beyond without CPU bottlenecks.</li>
+<li><strong>Large resolutions</strong> — supports 4K, 8K, and higher. The GPU handles decompression in parallel with rendering.</li>
+
+</ul>
+
+<p>The trade-off is <strong>larger file sizes</strong> and higher storage bandwidth requirements compared to CPU-decoded codecs. A 1-minute 4K ProRes video at ~2 GB may become ~8 GB as HAP. Plan storage and network capacity accordingly.</p>
+
+<h3>When to Use Other Codecs</h3>
+
+<ul>
+<li><strong>NotchLC</strong> — when you need GPU decoding with smaller files than HAP. NotchLC produces higher visual quality at comparable or smaller file sizes. Ideal when your source is ProRes.</li>
+<li><strong>HEVC</strong> — when file size is the primary concern and you have GPUs with hardware HEVC decode. Seek performance is slightly worse than HAP due to GOP structure, but the size reduction is significant.</li>
+<li><strong>Raw</strong> — when you need zero decode latency and have sufficient disk bandwidth. Raw formats are used for uncompressed texture streaming, typically for smaller assets or specialized pipelines.</li>
+<li><strong>Pass-through</strong> — when your source is already in HAP, NotchLC, or Raw format. The optimizer copies without re-encoding, saving time and avoiding generational quality loss.</li>
+
+</ul>
+
+<h3>Alpha Channel Handling</h3>
+
+<p>Alpha (transparency) support depends on both the source and output codec:</p>
+
+<table>
+<tr><th>Source Has Alpha?</th><th>Output Codec Options</th></tr>
+<tr><td>Yes</td><td>HAP Alpha, HAP Q Alpha, NotchLC Alpha, Raw RGBA 8-bit</td></tr>
+<tr><td>No</td><td>HAP, HAP Q, NotchLC Opaque, HEVC, Raw RGB 8-bit/10-bit</td></tr>
+</table>
+
+<p>When the source has an alpha channel and the output codec supports it, transparency is preserved through the entire pipeline. If you map a source with alpha to a codec that does not support alpha (e.g., standard HAP), the alpha channel is discarded during optimization.</p>
+
+<div class='warning-box'><p>If you need transparent video overlays on the timeline, verify that your codec mapping preserves alpha. Check the output codec in the asset's Properties panel after optimization — if it shows a non-alpha codec (e.g., "HAP" instead of "HAP Alpha"), the transparency has been lost.
+</p></div>
+
+<div class="tab-container">
+<div class="tab-buttons">
+<button class="tab-btn active" data-tab="tab-group-1-item-1">Container Formats</button>
+<button class="tab-btn " data-tab="tab-group-1-item-2">Image Formats</button>
+<button class="tab-btn " data-tab="tab-group-1-item-3">Audio Formats</button>
+</div>
+<div class="tab-content active" id="tab-group-1-item-1">
+
+<p>WATCHOUT supports the following video container formats:</p>
+
+<table>
+<tr><th>Container</th><th>Extension</th><th>Common Codecs</th><th>Notes</th></tr>
+<tr><td>QuickTime</td><td><code>.mov</code></td><td>HAP, ProRes, H.264, NotchLC</td><td>Most common for professional content</td></tr>
+<tr><td>MPEG-4</td><td><code>.mp4</code></td><td>H.264, HEVC, AAC</td><td>Standard delivery format</td></tr>
+<tr><td>AVI</td><td><code>.avi</code></td><td>HAP</td><td>Legacy; sometimes used for HAP on Windows</td></tr>
+<tr><td>Matroska</td><td><code>.mkv</code></td><td>H.264, HEVC, Vorbis</td><td>Open container; supports many codecs</td></tr>
+<tr><td>MPEG TS/PS</td><td><code>.ts</code>, <code>.mpg</code></td><td>MPEG-2, H.264, HEVC</td><td>Broadcast transport streams</td></tr>
+<tr><td>MXF</td><td><code>.mxf</code></td><td>ProRes 422</td><td>Professional broadcast exchange</td></tr>
+</table>
+
+</div>
+<div class="tab-content " id="tab-group-1-item-2">
+
+<table>
+<tr><th>Format</th><th>Extension</th><th>Alpha</th><th>Bit Depth</th><th>Compression</th><th>Best For</th></tr>
+<tr><td>JPEG</td><td><code>.jpg</code></td><td>No</td><td>8-bit</td><td>Lossy</td><td>Photos and backgrounds</td></tr>
+<tr><td>PNG</td><td><code>.png</code></td><td>Yes (8-bit)</td><td>8-bit</td><td>Lossless</td><td>Graphics, logos, overlays</td></tr>
+<tr><td>TIFF</td><td><code>.tiff</code></td><td>Optional</td><td>8/16-bit</td><td>Lossless</td><td>Archival, image sequences</td></tr>
+<tr><td>TGA</td><td><code>.tga</code></td><td>Yes</td><td>8-bit</td><td>Lossless</td><td>Legacy pipelines, image sequences</td></tr>
+<tr><td>BMP</td><td><code>.bmp</code></td><td>No</td><td>8-bit</td><td>None</td><td>Uncompressed bitmap</td></tr>
+<tr><td>WebP</td><td><code>.webp</code></td><td>Yes</td><td>8-bit</td><td>Lossy/Lossless</td><td>Web-sourced content</td></tr>
+<tr><td>EXR</td><td><code>.exr</code></td><td>Yes</td><td>32-bit float</td><td>Lossless</td><td>HDR, high-precision color</td></tr>
+<tr><td>PSD</td><td><code>.psd</code></td><td>No</td><td>8-bit</td><td>—</td><td>Imported as flattened image</td></tr>
+<tr><td>GIF</td><td><code>.gif</code></td><td>No</td><td>8-bit</td><td>Lossless</td><td>Single frame only</td></tr>
+<tr><td>ICO</td><td><code>.ico</code></td><td>Yes</td><td>8-bit</td><td>—</td><td>Icon files</td></tr>
+</table>
+
+</div>
+<div class="tab-content " id="tab-group-1-item-3">
+
+<table>
+<tr><th>Format</th><th>Extension</th><th>Compression</th><th>Recommendation</th></tr>
+<tr><td>WAV</td><td><code>.wav</code></td><td>None (PCM)</td><td>Recommended — best quality, lowest latency</td></tr>
+<tr><td>AIFF</td><td><code>.aiff</code></td><td>None</td><td>Similar to WAV; Apple ecosystem</td></tr>
+<tr><td>MP3</td><td><code>.mp3</code></td><td>Lossy</td><td>Widely compatible; acceptable for non-critical audio</td></tr>
+<tr><td>AAC-LC</td><td><code>.aac</code>, <code>.m4a</code></td><td>Lossy</td><td>Higher quality than MP3 at similar bitrates</td></tr>
+<tr><td>FLAC</td><td><code>.flac</code></td><td>Lossless</td><td>When you need lossless compression</td></tr>
+<tr><td>OGG Vorbis</td><td><code>.ogg</code></td><td>Lossy</td><td>Open-source alternative to MP3</td></tr>
+<tr><td>ALAC</td><td><code>.m4a</code></td><td>Lossless</td><td>Apple Lossless; equivalent to FLAC</td></tr>
+<tr><td>ADPCM</td><td><code>.wav</code></td><td>Lossy</td><td>Legacy compressed WAV</td></tr>
+</table>
+
+<p>Audio codecs are supported in the following containers: WAV, ISO/MP4, MKV/WebM, and OGG.</p>
+
+<h4>Audio Codecs</h4>
+
+<p>WATCHOUT supports the following audio codecs for input:</p>
+
+<ul>
+<li><strong>PCM 16-bit</strong> — standard uncompressed audio</li>
+<li><strong>PCM 24-bit</strong> — high-resolution uncompressed audio</li>
+<li><strong>PCM 32-bit float</strong> — highest precision uncompressed audio, used in professional production workflows</li>
+<li><strong>MP3</strong> — compressed lossy (various bitrates)</li>
+<li><strong>AAC</strong> — compressed lossy (various profiles)</li>
+<li><strong>Vorbis</strong> — compressed lossy (OGG container)</li>
+<li><strong>WMA</strong> — Windows Media Audio (compressed lossy)</li>
+<li><strong>FLAC</strong> — compressed lossless</li>
+
+</ul>
+
+<h4>Audio Channel Configurations</h4>
+
+<table>
+<tr><th>Configuration</th><th>Channels</th><th>Notes</th></tr>
+<tr><td>Mono</td><td>1</td><td>Single channel</td></tr>
+<tr><td>Stereo</td><td>2</td><td>Standard left/right</td></tr>
+<tr><td>5.1 Surround</td><td>6</td><td>Front L/R, Center, LFE, Surround L/R</td></tr>
+<tr><td>7.1 Surround</td><td>8</td><td>Adds rear L/R to 5.1 layout</td></tr>
+<tr><td>Multi-channel</td><td>Up to 64</td><td>For immersive audio and custom speaker configurations</td></tr>
+</table>
+
+<h4>Audio Sample Rates</h4>
+
+<table>
+<tr><th>Rate</th><th>Description</th></tr>
+<tr><td><strong>44.1 kHz</strong></td><td>CD quality</td></tr>
+<tr><td><strong>48 kHz</strong></td><td>Professional standard — recommended for most shows</td></tr>
+<tr><td><strong>96 kHz</strong></td><td>High resolution</td></tr>
+</table>
+
+</div>
+</div>
+
+<h3>The Optimization Pipeline</h3>
+
+<p>When a source file is added, it passes through these stages:</p>
+
+<ol>
+<li><strong>Upload</strong> — the source file is copied to the Asset Manager's internal storage.</li>
+<li><strong>Codec mapping lookup</strong> — the optimizer reads the source codec and consults the mapping table to determine the output codec.</li>
+<li><strong>Transcode</strong> — the source is decoded and re-encoded to the output codec at the configured quality level. Pass-through codecs skip this step.</li>
+<li><strong>Chunk storage</strong> — the optimized output is written as content-addressed chunks (Blake3 hashed). Identical data across assets is deduplicated.</li>
+<li><strong>Distribution</strong> — the optimized file is transferred to display servers when the show goes online.</li>
+
+</ol>
+
+<div class="interactive-widget" id="codec-comparison-widget">
+    <canvas id="codec-comparison-canvas" width="960" height="560"
+        style="width: 100%; height: auto; display: block; touch-action: none;"></canvas>
+
+    <div class="widget-controls" style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+        <span style="font-size: 0.85rem; color: var(--text-secondary);">Decode:</span>
+        <button id="codec-filter-all" class="codec-filter-btn active" type="button">All</button>
+        <button id="codec-filter-gpu" class="codec-filter-btn" type="button">GPU</button>
+        <button id="codec-filter-cpu" class="codec-filter-btn" type="button">CPU</button>
+        <button id="codec-filter-raw" class="codec-filter-btn" type="button">Raw</button>
+
+        <button id="codec-alpha-toggle" class="codec-toggle-btn" type="button">Alpha only: Off</button>
+        <button id="codec-bitdepth-toggle" class="codec-toggle-btn" type="button">10/12-bit: Off</button>
+
+        <span style="margin-left: auto; font-size: 0.85rem; color: var(--text-secondary);">Sort:</span>
+        <select id="codec-sort-select" style="min-width: 180px;">
+            <option value="file-desc">File size (largest first)</option>
+            <option value="file-asc">File size (smallest first)</option>
+            <option value="scrub-desc">Scrub performance</option>
+            <option value="name-asc">Name</option>
+            <option value="decode">Decode method</option>
+        </select>
+    </div>
+
+    <div class="widget-explainer">
+        Click codec chips to include or remove them from the comparison. Use filters and sorting to compare tradeoffs
+        across <strong>file size</strong>, <strong>scrub performance</strong>, <strong>decode method</strong>,
+        <strong>alpha support</strong>, and <strong>10/12-bit capability</strong>. If rows exceed the view,
+        scroll inside the chart with your mouse wheel.
+    </div>
+</div>
+
+<style>
+    #codec-comparison-canvas {
+        background: transparent !important;
+    }
+
+    #codec-comparison-widget .codec-filter-btn,
+    #codec-comparison-widget .codec-toggle-btn {
+        padding: 7px 12px;
+        border-radius: 8px;
+        border: 1px solid var(--border-subtle);
+        background: var(--bg-tertiary);
+        color: var(--text-primary);
+        cursor: pointer;
+        font-size: 0.8rem;
+        font-family: inherit;
+        transition: all 140ms ease;
+    }
+
+    #codec-comparison-widget .codec-filter-btn:hover,
+    #codec-comparison-widget .codec-toggle-btn:hover {
+        border-color: var(--accent-primary);
+        transform: translateY(-1px);
+    }
+
+    #codec-comparison-widget .codec-filter-btn.active,
+    #codec-comparison-widget .codec-toggle-btn.active {
+        background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+        border-color: transparent;
+        color: #fff;
+    }
+</style>
+
+<script>
+    (function () {
+        const canvas = document.getElementById('codec-comparison-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        // High DPI / Retina display support
+        const dpr = window.devicePixelRatio || 1;
+        const logicalW = 960;
+        const logicalH = 560;
+
+        canvas.width = logicalW * dpr;
+        canvas.height = logicalH * dpr;
+
+        // Scale context to match logical coordinate system
+        ctx.scale(dpr, dpr);
+
+        const W = logicalW;
+        const H = logicalH;
+
+        // Theme management
+        const theme = {
+            bg: '#0f1729',
+            grid: 'rgba(255,255,255,0.05)',
+            textPrimary: '#ffffff',
+            textSecondary: '#94a3b8',
+            fontFamily: '-apple-system, sans-serif',
+            fontHeader: '-apple-system, sans-serif',
+            accent: '#6366f1',
+            gpu: '#6366f1',
+            cpu: '#f59e0b',
+            raw: '#22c55e',
+            border: 'rgba(255,255,255,0.1)',
+            tooltipBg: '#1e293b'
+        };
+
+        function colorFromVar(varName, fallback) {
+            if (typeof window === 'undefined') return fallback;
+            const val = getComputedStyle(document.documentElement).getPropertyValue(varName).trim();
+            return val || fallback;
+        }
+
+        function updateTheme() {
+            theme.bg = colorFromVar('--bg-secondary', '#12121a');
+            theme.grid = colorFromVar('--border-subtle', 'rgba(255,255,255,0.06)');
+            theme.textPrimary = colorFromVar('--text-primary', '#f8fafc');
+            theme.textSecondary = colorFromVar('--text-secondary', '#94a3b8');
+            theme.fontFamily = colorFromVar('--font-family', '-apple-system, BlinkMacSystemFont, sans-serif');
+            theme.fontHeader = colorFromVar('--font-header', 'sans-serif');
+            theme.accent = colorFromVar('--accent-primary', '#6B25DD');
+
+            // Map groups to wiki category colors
+            theme.gpu = colorFromVar('--accent-primary', '#6B25DD'); // Main brand color for GPU
+            theme.cpu = colorFromVar('--cat-timeline', '#f59e0b'); // Timeline color for CPU
+            theme.raw = colorFromVar('--cat-general', '#22c55e'); // Green for raw/general
+
+            theme.border = colorFromVar('--border-subtle', 'rgba(255,255,255,0.1)');
+            theme.tooltipBg = colorFromVar('--bg-tertiary', '#1a1a25');
+        }
+
+        // Helper to apply alpha to any CSS color (hex, rgb, hsl, var)
+        function setFill(color, alpha) {
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = color;
+        }
+
+        function setStroke(color, alpha) {
+            ctx.globalAlpha = alpha;
+            ctx.strokeStyle = color;
+        }
+
+        // Initialize theme
+        updateTheme();
+
+        // Watch for theme changes
+        const observer = new MutationObserver(() => {
+            updateTheme();
+            requestAnimation();
+        });
+        observer.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+        const codecData = [
+            {
+                name: 'HAP',
+                decode: 'GPU (DXT1)',
+                group: 'gpu',
+                alpha: false,
+                fileScore: 4,
+                fileLabel: 'Large (5-10x H.264)',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'Most standard video content',
+                recommended: true
+            },
+            {
+                name: 'HAP Alpha',
+                decode: 'GPU (DXT5)',
+                group: 'gpu',
+                alpha: true,
+                fileScore: 4,
+                fileLabel: 'Large',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'Transparent video overlays',
+                recommended: true
+            },
+            {
+                name: 'HAP Q',
+                decode: 'GPU (BC7)',
+                group: 'gpu',
+                alpha: false,
+                fileScore: 5,
+                fileLabel: 'Very large',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'Higher visual fidelity content',
+                recommended: false
+            },
+            {
+                name: 'HAP Q Alpha',
+                decode: 'GPU (BC7 + DXT5)',
+                group: 'gpu',
+                alpha: true,
+                fileScore: 5,
+                fileLabel: 'Very large',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'High quality transparent content',
+                recommended: false
+            },
+            {
+                name: 'NotchLC Opaque',
+                decode: 'GPU',
+                group: 'gpu',
+                alpha: false,
+                fileScore: 3,
+                fileLabel: 'Medium-large',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'ProRes replacement, high quality',
+                recommended: true
+            },
+            {
+                name: 'NotchLC Alpha',
+                decode: 'GPU',
+                group: 'gpu',
+                alpha: true,
+                fileScore: 3,
+                fileLabel: 'Medium-large',
+                scrubScore: 3,
+                scrubLabel: 'Excellent',
+                bestFor: 'ProRes 4444 replacement with alpha',
+                recommended: true
+            },
+            {
+                name: 'HEVC 4:2:0',
+                decode: 'GPU (HW accel)',
+                group: 'gpu',
+                alpha: false,
+                fileScore: 1,
+                fileLabel: 'Small',
+                scrubScore: 2,
+                scrubLabel: 'Good',
+                bestFor: 'Standard video when size matters',
+                recommended: false
+            },
+            {
+                name: 'HEVC X010',
+                decode: 'GPU (HW accel)',
+                group: 'gpu',
+                highBitDepth: true,
+                alpha: false,
+                fileScore: 1,
+                fileLabel: 'Small',
+                scrubScore: 2,
+                scrubLabel: 'Good',
+                bestFor: '10-bit color depth content',
+                recommended: false
+            },
+            {
+                name: 'ProRes 422',
+                decode: 'CPU',
+                group: 'cpu',
+                highBitDepth: true,
+                alpha: false,
+                fileScore: 2,
+                fileLabel: 'Medium',
+                scrubScore: 2,
+                scrubLabel: 'Good',
+                bestFor: 'Intermediate editing codec',
+                recommended: false
+            },
+            {
+                name: 'ProRes 4444',
+                decode: 'CPU',
+                group: 'cpu',
+                highBitDepth: true,
+                alpha: true,
+                fileScore: 4,
+                fileLabel: 'Large',
+                scrubScore: 2,
+                scrubLabel: 'Good',
+                bestFor: 'High quality content with alpha',
+                recommended: false
+            },
+            {
+                name: 'H.264',
+                decode: 'CPU',
+                group: 'cpu',
+                alpha: false,
+                fileScore: 1,
+                fileLabel: 'Small',
+                scrubScore: 1,
+                scrubLabel: 'Moderate',
+                bestFor: 'Source delivery, not ideal output',
+                recommended: false
+            },
+            {
+                name: 'MPEG-2',
+                decode: 'CPU',
+                group: 'cpu',
+                alpha: false,
+                fileScore: 2,
+                fileLabel: 'Medium',
+                scrubScore: 1,
+                scrubLabel: 'Moderate',
+                bestFor: 'Legacy broadcast sources',
+                recommended: false
+            },
+            {
+                name: 'Raw RGB 8-bit',
+                decode: 'Direct (none)',
+                group: 'raw',
+                alpha: false,
+                fileScore: 5,
+                fileLabel: 'Very large',
+                scrubScore: 4,
+                scrubLabel: 'Instant',
+                bestFor: 'Uncompressed texture data',
+                recommended: false
+            },
+            {
+                name: 'Raw RGBA 8-bit',
+                decode: 'Direct (none)',
+                group: 'raw',
+                alpha: true,
+                fileScore: 5,
+                fileLabel: 'Very large',
+                scrubScore: 4,
+                scrubLabel: 'Instant',
+                bestFor: 'Uncompressed content with alpha',
+                recommended: false
+            },
+            {
+                name: 'Raw RGB 10-bit',
+                decode: 'Direct (none)',
+                group: 'raw',
+                highBitDepth: true,
+                alpha: false,
+                fileScore: 5,
+                fileLabel: 'Very large',
+                scrubScore: 4,
+                scrubLabel: 'Instant',
+                bestFor: '10-bit uncompressed workflows',
+                recommended: false
+            }
+        ];
+
+        const byName = Object.create(null);
+        codecData.forEach(codec => {
+            byName[codec.name] = codec;
+        });
+
+        // Computed group colors function
+        function getGroupColor(group) {
+            return theme[group] || theme.textSecondary;
+        }
+
+        const state = {
+            selected: new Set(['HAP', 'HAP Q', 'NotchLC Opaque', 'HEVC 4:2:0', 'H.264']),
+            decodeFilter: 'all',
+            alphaOnly: false,
+            bitDepthOnly: false,
+            sort: 'file-desc',
+            hoverChip: null,
+            hoverRow: null,
+            mouseX: 0,
+            mouseY: 0,
+            scrollY: 0,
+            scrollMax: 0,
+            isDragging: false,
+            dragStartY: 0,
+            dragStartScrollY: 0
+        };
+
+        const visuals = Object.create(null);
+        codecData.forEach((codec, index) => {
+            visuals[codec.name] = {
+                y: index * 56,
+                targetY: index * 56,
+                alpha: 0,
+                targetAlpha: 0,
+                bar: 0,
+                targetBar: 0
+            };
+        });
+
+        let chipHitboxes = [];
+        let rowHitboxes = [];
+        let visibleNames = [];
+        let rowViewportRect = null;
+        let scrollThumbRect = null;
+        let animationFrame = null;
+
+        const filterAllBtn = document.getElementById('codec-filter-all');
+        const filterGpuBtn = document.getElementById('codec-filter-gpu');
+        const filterCpuBtn = document.getElementById('codec-filter-cpu');
+        const filterRawBtn = document.getElementById('codec-filter-raw');
+        const alphaToggleBtn = document.getElementById('codec-alpha-toggle');
+        const bitDepthToggleBtn = document.getElementById('codec-bitdepth-toggle');
+        const sortSelect = document.getElementById('codec-sort-select');
+
+        function pointInRect(px, py, r) {
+            return px >= r.x && px <= r.x + r.w && py >= r.y && py <= r.y + r.h;
+        }
+
+        function passesFilter(codec) {
+            if (state.decodeFilter !== 'all' && codec.group !== state.decodeFilter) {
+                return false;
+            }
+            if (state.alphaOnly && !codec.alpha) {
+                return false;
+            }
+            if (state.bitDepthOnly && !codec.highBitDepth) {
+                return false;
+            }
+            return true;
+        }
+
+        function getVisibleCodecs() {
+            const selectedAndFiltered = codecData.filter(codec => state.selected.has(codec.name) && passesFilter(codec));
+            const sorted = selectedAndFiltered.slice();
+
+            if (state.sort === 'file-desc') {
+                sorted.sort((a, b) => b.fileScore - a.fileScore || a.name.localeCompare(b.name));
+            } else if (state.sort === 'file-asc') {
+                sorted.sort((a, b) => a.fileScore - b.fileScore || a.name.localeCompare(b.name));
+            } else if (state.sort === 'scrub-desc') {
+                sorted.sort((a, b) => b.scrubScore - a.scrubScore || a.name.localeCompare(b.name));
+            } else if (state.sort === 'decode') {
+                const order = { gpu: 0, cpu: 1, raw: 2 };
+                sorted.sort((a, b) => order[a.group] - order[b.group] || a.name.localeCompare(b.name));
+            } else {
+                sorted.sort((a, b) => a.name.localeCompare(b.name));
+            }
+
+            return sorted;
+        }
+
+        function updateTargets() {
+            const visible = getVisibleCodecs();
+            visibleNames = visible.map(codec => codec.name);
+
+            const rowPitch = 56;
+
+            visible.forEach((codec, index) => {
+                const v = visuals[codec.name];
+                v.targetY = index * rowPitch;
+                v.targetAlpha = 1;
+                v.targetBar = 1;
+            });
+
+            codecData.forEach(codec => {
+                if (visibleNames.indexOf(codec.name) === -1) {
+                    const v = visuals[codec.name];
+                    v.targetAlpha = 0;
+                    v.targetBar = 0;
+                }
+            });
+
+            state.scrollY = 0;
+
+            requestAnimation();
+        }
+
+        function requestAnimation() {
+            if (animationFrame !== null) return;
+            animationFrame = requestAnimationFrame(step);
+        }
+
+        function step() {
+            animationFrame = null;
+            let moving = false;
+
+            codecData.forEach(codec => {
+                const v = visuals[codec.name];
+
+                const nextY = v.y + (v.targetY - v.y) * 0.22;
+                const nextAlpha = v.alpha + (v.targetAlpha - v.alpha) * 0.2;
+                const nextBar = v.bar + (v.targetBar - v.bar) * 0.2;
+
+                if (Math.abs(nextY - v.targetY) > 0.3) moving = true;
+                if (Math.abs(nextAlpha - v.targetAlpha) > 0.01) moving = true;
+                if (Math.abs(nextBar - v.targetBar) > 0.01) moving = true;
+
+                v.y = nextY;
+                v.alpha = nextAlpha;
+                v.bar = nextBar;
+            });
+
+            draw();
+
+            if (moving) {
+                animationFrame = requestAnimationFrame(step);
+            }
+        }
+
+        function drawBackground() {
+            // Clear background to remove container panel look
+            ctx.clearRect(0, 0, W, H);
+        }
+
+        function drawTitle() {
+            ctx.font = 'bold 16px ' + theme.fontHeader; // Increased size slightly to match wiki size
+            ctx.textAlign = 'left';
+
+            setFill(theme.textPrimary, 0.9);
+            ctx.fillText('Codec Comparison', 24, 28);
+
+            const visibleCount = visibleNames.length;
+            ctx.font = '11px ' + theme.fontFamily;
+            setFill(theme.textSecondary, 0.8);
+
+            let subline = 'Visible rows: ' + visibleCount;
+            if (state.scrollMax > 0) {
+                subline += ' | Scroll to see all';
+            }
+            ctx.fillText(subline, 24, 47);
+            ctx.globalAlpha = 1; // Reset
+        }
+
+        function drawChips() {
+            chipHitboxes = [];
+            ctx.font = '11px ' + theme.fontFamily;
+            ctx.textAlign = 'left';
+            ctx.textBaseline = 'middle';
+
+            const left = 24;
+            const right = W - 24;
+            const chipH = 24;
+            let x = left;
+            let y = 62;
+
+            // Draw Select All chip
+            const selectAllLabel = "Select All";
+            const saTextW = Math.ceil(ctx.measureText(selectAllLabel).width);
+            const saChipW = saTextW + 18;
+
+            const isSAHovered = state.hoverChip === 'SELECT_ALL';
+            const saBorderAlpha = isSAHovered ? 0.9 : 0.4;
+            const saFillAlpha = isSAHovered ? 0.2 : 0.1;
+
+            roundRect(x, y, saChipW, chipH, 7);
+            const saColor = theme.textSecondary;
+            setFill(saColor, saFillAlpha);
+            ctx.fill();
+            setStroke(saColor, saBorderAlpha);
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            setFill(theme.textPrimary, 0.9);
+            ctx.fillText(selectAllLabel, x + 9, y + chipH / 2 + 0.5);
+
+            chipHitboxes.push({ x, y, w: saChipW, h: chipH, name: 'SELECT_ALL', action: true });
+            x += saChipW + 8;
+
+            codecData.forEach(codec => {
+                const label = codec.name + (codec.recommended ? ' *' : '');
+                const textW = Math.ceil(ctx.measureText(label).width);
+                const chipW = textW + 18;
+
+                if (x + chipW > right) {
+                    x = left;
+                    y += 30;
+                }
+
+                const isSelected = state.selected.has(codec.name);
+                const isDimmed = !passesFilter(codec);
+                const isHovered = state.hoverChip === codec.name;
+                const color = getGroupColor(codec.group);
+
+                const fillAlpha = isSelected ? (isDimmed ? 0.12 : 0.22) : (isDimmed ? 0.02 : 0.06);
+                const borderAlpha = isHovered ? 0.75 : isSelected ? 0.55 : 0.25;
+
+                roundRect(x, y, chipW, chipH, 7);
+                setFill(color, fillAlpha);
+                ctx.fill();
+                setStroke(color, borderAlpha);
+                ctx.lineWidth = isSelected ? 1.4 : 1;
+                ctx.stroke();
+
+                setFill(theme.textPrimary, isDimmed ? 0.45 : 0.9);
+                ctx.fillText(label, x + 9, y + chipH / 2 + 0.5);
+
+                chipHitboxes.push({ x, y, w: chipW, h: chipH, name: codec.name });
+                x += chipW + 8;
+            });
+            ctx.globalAlpha = 1;
+            return y + chipH;
+        }
+
+        function drawRows(rowsStartY) {
+            rowHitboxes = [];
+            scrollThumbRect = null;
+            const rowX = 24;
+            // Shorten row width so scrollbar is not over content
+            const rowW = W - 64;
+            const rowH = 48;
+            const rowPitch = 56;
+
+            rowViewportRect = {
+                x: rowX,
+                y: rowsStartY + 2,
+                w: rowW + 40, // Viewport is slightly wider than rows
+                h: H - (rowsStartY + 2) - 52
+            };
+
+            if (rowViewportRect.h < 80) {
+                rowViewportRect.h = 80;
+            }
+
+            // Removed container panel background/border drawing here
+
+            const contentHeight = visibleNames.length === 0
+                ? 0
+                : rowH + (visibleNames.length - 1) * rowPitch;
+
+            state.scrollMax = Math.max(0, contentHeight - rowViewportRect.h);
+            if (state.scrollY > state.scrollMax) {
+                state.scrollY = state.scrollMax;
+            }
+
+            ctx.save();
+            // Clip to viewport area
+            roundRect(rowViewportRect.x - 10, rowViewportRect.y - 10, rowViewportRect.w + 20, rowViewportRect.h + 20, 0);
+            ctx.clip();
+
+            const sortedVisuals = codecData
+                .map(codec => ({ codec, visual: visuals[codec.name] }))
+                .filter(item => item.visual.alpha > 0.01)
+                .sort((a, b) => a.visual.y - b.visual.y);
+
+            sortedVisuals.forEach(item => {
+                const codec = item.codec;
+                const v = item.visual;
+                const y = rowViewportRect.y + v.y - state.scrollY;
+                const alpha = v.alpha;
+                const isHover = state.hoverRow === codec.name;
+                const rowColor = getGroupColor(codec.group);
+
+                // Culling
+                if (y + rowH < rowViewportRect.y - 20 || y > rowViewportRect.y + rowViewportRect.h + 20) {
+                    return;
+                }
+
+                const fillAlpha = 0.08 * alpha + (isHover ? 0.05 : 0);
+                const borderAlpha = 0.28 * alpha + (isHover ? 0.35 : 0);
+
+                roundRect(rowX, y, rowW, rowH, 9);
+                setFill(rowColor, fillAlpha);
+                ctx.fill();
+                setStroke(rowColor, borderAlpha);
+                ctx.lineWidth = isHover ? 1.5 : 1;
+                ctx.stroke();
+
+                ctx.globalAlpha = alpha;
+
+                ctx.font = 'bold 12px ' + theme.fontFamily;
+                ctx.textAlign = 'left';
+                ctx.textBaseline = 'middle';
+
+                setFill(theme.textPrimary, 0.95);
+                ctx.fillText(codec.name + (codec.recommended ? ' *' : ''), rowX + 12, y + 16);
+
+                roundRect(rowX + 12, y + 26, 90, 16, 8);
+                setFill(rowColor, 0.25);
+                ctx.fill();
+                setStroke(rowColor, 0.45);
+                ctx.stroke();
+
+                ctx.font = '10px ' + theme.fontFamily;
+                setFill(theme.textPrimary, 0.9);
+                ctx.fillText(codec.decode, rowX + 17, y + 34);
+
+                const barX = rowX + 170;
+                const barW = 190;
+                const fileY = y + 15;
+                const scrubY = y + 31;
+
+                setFill(theme.textSecondary, 0.15);
+                roundRect(barX, fileY, barW, 8, 4);
+                ctx.fill();
+                roundRect(barX, scrubY, barW, 8, 4);
+                ctx.fill();
+
+                const fileFill = barW * (codec.fileScore / 5) * v.bar;
+                const scrubFill = barW * (codec.scrubScore / 4) * v.bar;
+
+                ctx.fillStyle = fileScaleColor(codec.fileScore);
+                roundRect(barX, fileY, Math.max(2, fileFill), 8, 4);
+                ctx.fill();
+
+                ctx.fillStyle = scrubScaleColor(codec.scrubScore);
+                roundRect(barX, scrubY, Math.max(2, scrubFill), 8, 4);
+                ctx.fill();
+
+                ctx.font = '10px ' + theme.fontFamily;
+                setFill(theme.textSecondary, 0.8);
+                ctx.fillText('File: ' + codec.fileLabel, barX + barW + 10, fileY + 4);
+                ctx.fillText('Scrub: ' + codec.scrubLabel, barX + barW + 10, scrubY + 4);
+
+                // Right column for Alpha and Description
+                const rightColW = 220;
+                const rightColX = rowX + rowW - rightColW;
+                const centerX = rightColX + rightColW / 2;
+
+                // Alpha Badge
+                const badgeW = 64;
+                const badgeH = 18;
+                const badgeX = centerX - badgeW / 2;
+                const badgeY = y + 8;
+
+                roundRect(badgeX, badgeY, badgeW, badgeH, 9);
+
+                const yesColor = theme.raw; // green
+                const noColor = theme.textSecondary;
+
+                if (codec.alpha) {
+                    setFill(yesColor, 0.2);
+                    ctx.fill();
+                    setStroke(yesColor, 0.55);
+                    ctx.stroke();
+
+                    ctx.font = '10px ' + theme.fontFamily;
+                    ctx.textAlign = 'center';
+                    setFill(yesColor, 0.95);
+                    ctx.fillText('Alpha', centerX, badgeY + badgeH / 2 + 1);
+                } else {
+                    setFill(noColor, 0.1);
+                    ctx.fill();
+                    setStroke(noColor, 0.25);
+                    ctx.stroke();
+
+                    ctx.font = '10px ' + theme.fontFamily;
+                    ctx.textAlign = 'center';
+                    setFill(noColor, 0.6);
+                    ctx.fillText('No Alpha', centerX, badgeY + badgeH / 2 + 1);
+                }
+
+                // Description
+                ctx.font = '10px ' + theme.fontFamily;
+                ctx.textAlign = 'center';
+                setFill(theme.textSecondary, 0.7);
+                ctx.fillText(codec.bestFor, centerX, y + 36);
+
+                ctx.globalAlpha = 1;
+
+                if (visibleNames.indexOf(codec.name) !== -1 && alpha > 0.4) {
+                    rowHitboxes.push({ x: rowX, y, w: rowW, h: rowH, name: codec.name });
+                }
+            });
+
+            if (visibleNames.length === 0) {
+                // Centered empty state
+                const emptyY = rowViewportRect.y + 60;
+                ctx.font = '12px ' + theme.fontFamily;
+                ctx.textAlign = 'center';
+                setFill(theme.textPrimary, 0.75);
+                ctx.fillText('No codecs are currently visible.', W / 2, emptyY);
+                ctx.font = '11px ' + theme.fontFamily;
+                setFill(theme.textSecondary, 0.9);
+                ctx.fillText('Select codec chips or relax filters to compare.', W / 2, emptyY + 21);
+            }
+
+            ctx.restore();
+
+            if (state.scrollMax > 0) {
+                // Scrollbar on the far right
+                const trackX = W - 24;
+                const trackY = rowViewportRect.y + 8;
+                const trackH = rowViewportRect.h - 16;
+
+                roundRect(trackX, trackY, 4, trackH, 2);
+                setFill(theme.textSecondary, 0.15);
+                ctx.fill();
+
+                const thumbH = Math.max(28, (rowViewportRect.h / contentHeight) * trackH);
+                const thumbRange = trackH - thumbH;
+                const thumbY = trackY + (state.scrollY / state.scrollMax) * thumbRange;
+
+                roundRect(trackX - 1, thumbY, 6, thumbH, 3);
+                setFill(theme.accent, 0.75);
+                ctx.fill();
+
+                scrollThumbRect = {
+                    x: trackX - 3,
+                    y: thumbY,
+                    w: 10,
+                    h: thumbH,
+                    trackY,
+                    trackH,
+                    thumbH
+                };
+            }
+        }
+
+        function drawLegend() {
+            const y = H - 34;
+            ctx.font = '10px ' + theme.fontFamily;
+            ctx.textAlign = 'left';
+            setFill(theme.textSecondary, 0.7);
+
+            drawLegendDot(24, y - 5, theme.gpu, 'GPU decode');
+            drawLegendDot(132, y - 5, theme.cpu, 'CPU decode');
+            drawLegendDot(240, y - 5, theme.raw, 'Direct/raw');
+
+            setFill(theme.textSecondary, 0.5);
+            let suffix = '* Recommended defaults';
+            if (state.scrollMax > 0) {
+                suffix += ' | Scroll to see all';
+            }
+            ctx.fillText(suffix, W - 250, y);
+            ctx.globalAlpha = 1;
+        }
+
+        function drawLegendDot(x, y, color, label) {
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, Math.PI * 2);
+            setFill(color, 1);
+            ctx.fill();
+            setFill(theme.textSecondary, 0.7);
+            ctx.fillText(label, x + 9, y + 3);
+        }
+
+        function drawTooltip() {
+            if (!state.hoverRow) return;
+            const codec = byName[state.hoverRow];
+            if (!codec) return;
+
+            const lines = [
+                codec.name,
+                'Decode: ' + codec.decode,
+                'File size: ' + codec.fileLabel,
+                'Scrub: ' + codec.scrubLabel,
+                'Alpha: ' + (codec.alpha ? 'Yes' : 'No'),
+                '10/12-bit: ' + (codec.highBitDepth ? 'Supported' : 'No'),
+                'Best for: ' + codec.bestFor
+            ];
+
+            const tipW = 290;
+            const tipH = 139;
+            let x = state.mouseX + 14;
+            let y = state.mouseY + 14;
+
+            if (x + tipW > W - 8) x = state.mouseX - tipW - 14;
+            if (y + tipH > H - 8) y = state.mouseY - tipH - 14;
+            if (x < 8) x = 8;
+            if (y < 8) y = 8;
+
+            roundRect(x, y, tipW, tipH, 8);
+            setFill(theme.tooltipBg, 0.98); // High opacity for tooltip
+            ctx.fill();
+            setStroke(getGroupColor(codec.group), 0.75);
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.font = '11px ' + theme.fontFamily;
+            ctx.textAlign = 'left';
+
+            setFill(theme.textPrimary, 0.95);
+            ctx.fillText(lines[0], x + 12, y + 19);
+
+            ctx.font = '10px ' + theme.fontFamily;
+            setFill(theme.textSecondary, 0.9);
+            for (let i = 1; i < lines.length; i++) {
+                ctx.fillText(lines[i], x + 12, y + 19 + i * 17);
+            }
+            ctx.globalAlpha = 1;
+        }
+
+        function draw() {
+            drawBackground();
+            drawTitle();
+            const chipsBottom = drawChips();
+
+            drawRows(chipsBottom + 16);
+            drawLegend();
+            drawTooltip();
+        }
+
+        function updateButtons() {
+            filterAllBtn.classList.toggle('active', state.decodeFilter === 'all');
+            filterGpuBtn.classList.toggle('active', state.decodeFilter === 'gpu');
+            filterCpuBtn.classList.toggle('active', state.decodeFilter === 'cpu');
+            filterRawBtn.classList.toggle('active', state.decodeFilter === 'raw');
+
+            alphaToggleBtn.classList.toggle('active', state.alphaOnly);
+            alphaToggleBtn.textContent = 'Alpha only: ' + (state.alphaOnly ? 'On' : 'Off');
+
+            bitDepthToggleBtn.classList.toggle('active', state.bitDepthOnly);
+            bitDepthToggleBtn.textContent = '10/12-bit: ' + (state.bitDepthOnly ? 'On' : 'Off');
+        }
+
+        function setDecodeFilter(filterName) {
+            state.decodeFilter = filterName;
+            updateButtons();
+            updateTargets();
+        }
+
+        filterAllBtn.addEventListener('click', () => setDecodeFilter('all'));
+        filterGpuBtn.addEventListener('click', () => setDecodeFilter('gpu'));
+        filterCpuBtn.addEventListener('click', () => setDecodeFilter('cpu'));
+        filterCpuBtn.addEventListener('click', () => setDecodeFilter('cpu'));
+        filterRawBtn.addEventListener('click', () => setDecodeFilter('raw'));
+        alphaToggleBtn.addEventListener('click', () => {
+            state.alphaOnly = !state.alphaOnly;
+            updateButtons();
+            updateTargets();
+        });
+        bitDepthToggleBtn.addEventListener('click', () => {
+            state.bitDepthOnly = !state.bitDepthOnly;
+            updateButtons();
+            updateTargets();
+        });
+
+        sortSelect.addEventListener('change', () => {
+            state.sort = sortSelect.value;
+            updateTargets();
+        });
+
+        function getCanvasCoords(evt) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = W / rect.width;
+            const scaleY = H / rect.height;
+            return {
+                x: (evt.clientX - rect.left) * scaleX,
+                y: (evt.clientY - rect.top) * scaleY
+            };
+        }
+
+        canvas.addEventListener('pointermove', (evt) => {
+            const p = getCanvasCoords(evt);
+            state.mouseX = p.x;
+            state.mouseY = p.y;
+
+            let hoverChip = null;
+            for (let i = 0; i < chipHitboxes.length; i++) {
+                if (pointInRect(p.x, p.y, chipHitboxes[i])) {
+                    hoverChip = chipHitboxes[i].name;
+                    break;
+                }
+            }
+
+            let hoverRow = null;
+            for (let i = 0; i < rowHitboxes.length; i++) {
+                if (pointInRect(p.x, p.y, rowHitboxes[i])) {
+                    hoverRow = rowHitboxes[i].name;
+                    break;
+                }
+            }
+
+            const hoverScrollThumb = scrollThumbRect && pointInRect(p.x, p.y, scrollThumbRect);
+
+            if (state.isDragging) {
+                const dy = p.y - state.dragStartY;
+                if (scrollThumbRect && state.scrollMax > 0) {
+                    const thumbRange = scrollThumbRect.trackH - scrollThumbRect.thumbH;
+                    if (thumbRange > 0) {
+                        const deltaScroll = (dy / thumbRange) * state.scrollMax;
+                        state.scrollY = Math.max(0, Math.min(state.scrollMax, state.dragStartScrollY + deltaScroll));
+                        draw();
+                    }
+                }
+                return;
+            }
+
+            const nextCursor = hoverScrollThumb ? 'ns-resize' : (hoverChip || hoverRow ? 'pointer' : 'default');
+            canvas.style.cursor = nextCursor;
+
+            if (hoverChip !== state.hoverChip || hoverRow !== state.hoverRow) {
+                state.hoverChip = hoverChip;
+                state.hoverRow = hoverRow;
+                draw();
+            }
+        });
+
+        canvas.addEventListener('pointerup', (evt) => {
+            if (state.isDragging) {
+                state.isDragging = false;
+                canvas.releasePointerCapture(evt.pointerId);
+            }
+        });
+
+        canvas.addEventListener('pointerleave', () => {
+            state.hoverChip = null;
+            state.hoverRow = null;
+            canvas.style.cursor = 'default';
+            draw();
+        });
+
+        canvas.addEventListener('pointerdown', (evt) => {
+            const p = getCanvasCoords(evt);
+
+            if (scrollThumbRect && pointInRect(p.x, p.y, scrollThumbRect)) {
+                state.isDragging = true;
+                state.dragStartY = p.y;
+                state.dragStartScrollY = state.scrollY;
+                canvas.setPointerCapture(evt.pointerId);
+                return;
+            }
+
+            for (let i = 0; i < chipHitboxes.length; i++) {
+                const chip = chipHitboxes[i];
+                if (pointInRect(p.x, p.y, chip)) {
+                    if (chip.action && chip.name === 'SELECT_ALL') {
+                        // Select All Action
+                        const allSelected = codecData.every(c => state.selected.has(c.name));
+                        if (allSelected) {
+                            state.selected.clear();
+                        } else {
+                            codecData.forEach(c => state.selected.add(c.name));
+                        }
+                    } else {
+                        // Toggle regular chip
+                        if (state.selected.has(chip.name)) {
+                            state.selected.delete(chip.name);
+                        } else {
+                            state.selected.add(chip.name);
+                        }
+                    }
+                    updateTargets();
+                    return;
+                }
+            }
+        });
+
+        canvas.addEventListener('wheel', (evt) => {
+            if (!rowViewportRect || state.scrollMax <= 0) return;
+
+            const p = getCanvasCoords(evt);
+            if (!pointInRect(p.x, p.y, rowViewportRect)) return;
+
+            const delta = evt.deltaY;
+            const next = Math.max(0, Math.min(state.scrollMax, state.scrollY + delta));
+            if (next !== state.scrollY) {
+                state.scrollY = next;
+                state.hoverRow = null;
+                draw();
+                evt.preventDefault();
+            }
+        }, { passive: false });
+
+        function roundRect(x, y, w, h, r) {
+            const rr = Math.max(0, Math.min(r, Math.min(w, h) / 2));
+            ctx.beginPath();
+            ctx.moveTo(x + rr, y);
+            ctx.lineTo(x + w - rr, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + rr);
+            ctx.lineTo(x + w, y + h - rr);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - rr, y + h);
+            ctx.lineTo(x + rr, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - rr);
+            ctx.lineTo(x, y + rr);
+            ctx.quadraticCurveTo(x, y, x + rr, y);
+            ctx.closePath();
+        }
+
+        // Kept for backward compat with score functions
+        function rgbaFromHex(hex, alpha) {
+            // This might fail if hex is not hex.
+            // But score functions return rgba string now.
+            // This function was used in old draw loop.
+            // Helper: if hex starts with # parse it.
+            if (hex.startsWith('#')) {
+                const r = parseInt(hex.slice(1, 3), 16);
+                const g = parseInt(hex.slice(3, 5), 16);
+                const b = parseInt(hex.slice(5, 7), 16);
+                return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + alpha + ')';
+            }
+            return hex; // Fallback
+        }
+
+        function fileScaleColor(score) {
+            if (score <= 1) return 'rgba(34,197,94,0.9)';
+            if (score === 2) return 'rgba(132,204,22,0.9)';
+            if (score === 3) return 'rgba(250,204,21,0.9)';
+            if (score === 4) return 'rgba(249,115,22,0.9)';
+            return 'rgba(239,68,68,0.9)';
+        }
+
+        function scrubScaleColor(score) {
+            if (score <= 1) return 'rgba(239,68,68,0.9)';
+            if (score === 2) return 'rgba(245,158,11,0.9)';
+            if (score === 3) return 'rgba(34,197,94,0.9)';
+            return 'rgba(16,185,129,0.9)';
+        }
+
+        updateButtons();
+        updateTargets();
+        draw();
+    })();
+</script>
+
+<h3>Track Management</h3>
+
+<p>For source files that contain both video and audio tracks, the optimizer offers four track management modes (configured in <a href="asset-manager-settings.html">Asset Manager Settings</a>):</p>
+
+<table>
+<tr><th>Mode</th><th>Behavior</th></tr>
+<tr><td><strong>Skip Audio</strong></td><td>Optimize only the video track; discard audio</td></tr>
+<tr><td><strong>Skip Video</strong></td><td>Optimize only the audio track; discard video</td></tr>
+<tr><td><strong>Composition</strong></td><td>Keep both tracks as a single composition asset (video + audio in sync)</td></tr>
+<tr><td><strong>Individual Assets</strong></td><td>Split video and audio into separate, independent assets</td></tr>
+</table>
+
+<h3>Bandwidth Limit</h3>
+
+<p>The Asset Manager Settings dialog includes a <strong>Bandwidth Limit</strong> setting (in Mbit/s) that caps the data rate used when transferring assets to display servers. Set to <strong>0</strong> for unlimited bandwidth. Use this when WATCHOUT shares a network with other traffic. See <a href="asset-transfer.html">Asset Transfer</a> for transfer optimization guidance.</p>
+
+<h3>Best Practices</h3>
+
+<ul>
+<li><strong>Deliver in the target codec.</strong> If possible, have content creators export directly in HAP or NotchLC. This eliminates transcoding time and avoids generational quality loss.</li>
+
+<p><li><strong>Match frame rates.</strong> Source frame rate should match the show's frame rate (or be an exact multiple/divisor). Mismatched frame rates cause dropped or duplicated frames during playback.</li></p>
+
+<p><li><strong>Use HAP Q for hero content.</strong> For content that will be displayed prominently (e.g., main stage, close-up screens), HAP Q provides visibly better quality than standard HAP at the cost of larger files.</li></p>
+
+<p><li><strong>Reserve HEVC for constrained storage.</strong> HEVC produces much smaller files but requires hardware decode support on the GPU. Verify your display servers have compatible GPUs before committing to HEVC as the output codec.</li></p>
+
+<p><li><strong>Test alpha pipelines end-to-end.</strong> Verify that the source → optimize → playback chain preserves alpha correctly by placing a transparent asset over a colored background and checking the result on a display server.</li></p>
+
+</ul>
+
+<h3>Troubleshooting</h3>
+
+<table>
+<tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>Optimization fails with codec error</td><td>Source uses an unsupported or corrupt codec</td><td>Re-encode the source in a supported format (ProRes, H.264, or HAP); verify the file plays in a media player</td></tr>
+<tr><td>Output file is unexpectedly large</td><td>Source was re-encoded to HAP (which is larger by design)</td><td>Expected behavior — plan storage accordingly. If file size is critical, consider NotchLC or HEVC as the output codec</td></tr>
+<tr><td>Alpha transparency lost after optimization</td><td>Codec mapping routes to a non-alpha output codec</td><td>Change the codec mapping to HAP Alpha, NotchLC Alpha, or Raw RGBA in <a href="asset-manager-settings.html">Asset Manager Settings</a></td></tr>
+<tr><td>Playback stutters on display server</td><td>CPU-decoded codec at high resolution, or insufficient disk bandwidth for HAP</td><td>Switch to a GPU-decoded codec (HAP, NotchLC, HEVC); ensure display server has SSD storage with sufficient read speed</td></tr>
+<tr><td>Color looks wrong after optimization</td><td>Color space mismatch between source and output</td><td>Check the color space in <a href="asset-properties.html">Asset Properties</a>; ensure the source color space metadata is correct</td></tr>
+<tr><td>Scrubbing is sluggish</td><td>Using a GOP-based codec (H.264, HEVC) as the output</td><td>Switch to HAP or NotchLC, which support frame-independent access</td></tr>
+</table></div><div class="section-nav">
+                <a href="asset-properties.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="svg-shapes.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script>var wikiBasePath = '../';</script>
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+    
+    <script>
+        (function() {
+            var sw = document.getElementById('guide-switcher');
+            var btn = document.getElementById('guide-switcher-toggle');
+            if (!sw || !btn) return;
+            btn.addEventListener('click', function(e) { e.stopPropagation(); sw.classList.toggle('open'); });
+            document.addEventListener('click', function(e) { if (!sw.contains(e.target)) sw.classList.remove('open'); });
+        })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHPAX 64 User Guide - Reset WATCHPAX 64">
+    <title>Reset WATCHPAX 64 - WATCHPAX 64 User Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <style>
+        .guide-switcher { position: relative; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border-subtle, #2a2a3e); }
+        .guide-switcher-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            color: var(--text-primary, #e0e0e8); cursor: pointer;
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .guide-switcher-toggle:hover { border-color: var(--accent-primary, #60a5fa); }
+        .guide-switcher-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .guide-switcher.open .guide-switcher-arrow { transform: rotate(180deg); }
+        .guide-switcher-dropdown {
+            display: none; position: absolute; left: 16px; right: 16px; bottom: 100%;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            border-radius: 6px; z-index: 100; overflow: hidden;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+        }
+        .guide-switcher.open .guide-switcher-dropdown { display: block; }
+        .guide-switcher-option {
+            display: block; padding: 8px 12px; color: var(--text-secondary, #a0a0b8);
+            text-decoration: none; font-size: 0.85rem; transition: background 0.15s, color 0.15s;
+        }
+        .guide-switcher-option:hover { background: var(--bg-hover, #22223a); color: var(--text-primary, #e0e0e8); }
+        .guide-switcher-option.active { color: var(--accent-primary, #60a5fa); font-weight: 500; }
+    </style>
+</head>
+<body data-page-id="reset-watchpax-64" data-canonical-path="installation-and-operation/reset-watchpax-64.html">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo" style="text-decoration: none; color: inherit;">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHPAX 64 GUIDE</h1>
+                </a>
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter  " data-index="0">
+            <a href="../introduction/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Introduction</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Overview</div>
+                        <a class="toc-subsection " href="../introduction/welcome-to-watchpax-64.html">
+                            Welcome to WATCHPAX 64
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/introduction-to-watchpax-64.html">
+                            Introduction to WATCHPAX 64
+                        </a>
+                        
+                        <div class="toc-group-label">Hardware</div>
+                        <a class="toc-subsection " href="../introduction/accessories.html">
+                            Accessories
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/dimensions.html">
+                            Dimensions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/power.html">
+                            Power
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/start-up-screen.html">
+                            Start Up Screen
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/environmental.html">
+                            Environmental
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../introduction/connectors.html">
+                            Connectors
+                        </a>
+                        
+                        <div class="toc-group-label">Software</div>
+                        <a class="toc-subsection " href="../introduction/media-server-operating-system.html">
+                            Media Server Operating System
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter expanded " data-index="1">
+            <a href="../installation-and-operation/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg></span>
+                <span class="toc-chapter-title">2. Installation and Operation</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Getting Started</div>
+                        <a class="toc-subsection " href="../installation-and-operation/before-using-your-watchpax-64.html">
+                            Before Using Your WATCHPAX 64
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../installation-and-operation/ventilation.html">
+                            Ventilation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../installation-and-operation/installation.html">
+                            Installation
+                        </a>
+                        
+                        <div class="toc-group-label">Operation</div>
+                        <a class="toc-subsection " href="../installation-and-operation/quick-start.html">
+                            Quick Start
+                        </a>
+                        
+                        
+                        <a class="toc-subsection active" href="../installation-and-operation/reset-watchpax-64.html">
+                            Reset WATCHPAX 64
+                        </a>
+                        
+                        <div class="toc-group-label">Additional Features</div>
+                        <a class="toc-subsection " href="../installation-and-operation/audio-output-and-watchpax-config.html">
+                            Audio Output and WATCHPAX Config
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../installation-and-operation/dante-license-activation.html">
+                            Dante License Activation
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="2">
+            <a href="../synchronization/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg></span>
+                <span class="toc-chapter-title">3. Synchronization</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Configuration</div>
+                        <a class="toc-subsection " href="../synchronization/accessing-watchpax-config.html">
+                            Accessing WATCHPAX Config
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../synchronization/setting-up-edid-emulation.html">
+                            Setting Up EDID Emulation
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Setup</div>
+                        <a class="toc-subsection " href="../synchronization/enabling-mosaic.html">
+                            Enabling Mosaic
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../synchronization/hardware-sync.html">
+                            Hardware Sync
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="3">
+            <a href="../warranty-conformity-and-disposal/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">4. Warranty, Conformity and Disposal</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Legal</div>
+                        <a class="toc-subsection " href="../warranty-conformity-and-disposal/limited-warranty.html">
+                            Limited Warranty
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../warranty-conformity-and-disposal/declaration-of-conformity.html">
+                            Declaration of Conformity
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../warranty-conformity-and-disposal/disposal.html">
+                            Disposal
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="4">
+            <a href="../glossary/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">5. Glossary</span>
+                
+            </a>
+            
+        </div>
+        
+            </nav>
+            
+            <div class="guide-switcher" id="guide-switcher">
+                <button class="guide-switcher-toggle" id="guide-switcher-toggle" aria-label="Switch guide">
+                    <span class="guide-switcher-label">WATCHPAX 64</span>
+                    <svg class="guide-switcher-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="guide-switcher-dropdown" id="guide-switcher-dropdown">
+                    <a class="guide-switcher-option" href="../../watchout/index.html">WATCHOUT</a>
+                        <a class="guide-switcher-option active" href="../../wp64/index.html">WATCHPAX 64</a>
+                        <a class="guide-switcher-option" href="../../wp30/index.html">WATCHPAX 30</a>
+                        <a class="guide-switcher-option" href="../../wp50/index.html">WATCHPAX 50</a>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">2. Installation and Operation</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">Reset WATCHPAX 64</span>
+        
+                </div>
+                <img src="../media/dataton-logo.png" alt="Dataton" class="header-logo">
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><h2>Reset WATCHPAX 64</h2>
+
+<p><strong>There are occasions when you may want to reset a WATCHPAX 64</strong>, for example, if the unit has been corrupted, or if it is a rental unit and user-specific info has to be removed between rentals.</p>
+
+<p>There are two levels of reset:</p>
+
+<ul>
+<li><strong>Reset and keep user data.</strong> This resets the operating system, display, GPU and capture settings but retains user data, such as shows and media.</li>
+<li><strong>Reset to factory settings.</strong> This takes the unit all the way back to the original factory settings and you lose all user data.</li>
+
+</ul>
+
+<div class='warning-box'><p>A reset, regardless of level, is an advanced measure. Make sure you are fully aware of what data you lose when you reset!
+</p></div>
+
+<h3>Reset and Keep User Data</h3>
+
+<p>This option resets the system partitions but keeps all user data. The table below shows what is retained and what is reset.</p>
+
+<table>
+<tr><th>Setting</th><th>Kept</th></tr>
+<tr><td>Shows</td><td>&#10003;</td></tr>
+<tr><td>Media</td><td>&#10003;</td></tr>
+<tr><td>WATCHOUT settings</td><td>&#10003;</td></tr>
+<tr><td>Startup script</td><td>&#10003;</td></tr>
+<tr><td>Network settings</td><td>&#10003;</td></tr>
+<tr><td>Timecode settings</td><td>&#10003;</td></tr>
+<tr><td>Display settings</td><td>&#10007;</td></tr>
+<tr><td>Display mode</td><td>&#10007;</td></tr>
+<tr><td>GPU settings</td><td>&#10007;</td></tr>
+<tr><td>Capture settings</td><td>&#10007;</td></tr>
+</table>
+
+<h3>Reset to Factory Settings</h3>
+
+<p>This resets all partitions to factory settings and all user data will be lost. This level of reset is suitable when you want to remove all settings between projects.</p>
+
+<h3>Reset Procedure</h3>
+
+<p>The reset menu is hidden by design in order to avoid accidental resets or misuse. To reset your WATCHPAX 64 device, follow the steps below.</p>
+
+<div class="carousel" data-carousel="1" data-total="10">
+<div class="carousel-viewport">
+<div class="carousel-track">
+<div class="carousel-slide active" data-slide="0"><div class="carousel-slide-header"><span class="carousel-step-number">1</span><h3 class="carousel-step-title">Power Off the WATCHPAX 64</h3></div><div class="carousel-slide-body">
+
+<p>Shut down the WATCHPAX 64 by pressing the power button on the front panel. Wait until all LED indicators on the unit have turned off completely before proceeding. This ensures the operating system has fully shut down and no files are being written to disk. If the unit is unresponsive, press and hold the power button for approximately five seconds to force a hardware shutdown -- only use this as a last resort.</p>
+
+</div></div>
+<div class="carousel-slide" data-slide="1"><div class="carousel-slide-header"><span class="carousel-step-number">2</span><h3 class="carousel-step-title">Disconnect USB Devices</h3></div><div class="carousel-slide-body">
+
+<p>Remove all USB devices currently connected to the WATCHPAX 64, including mice, flash drives, dongles, and any other peripherals. This is important because external USB devices can interfere with the reset process or cause unexpected behavior during system reconfiguration. Check both the front and rear USB ports to make sure nothing is plugged in.</p>
+
+</div></div>
+<div class="carousel-slide" data-slide="2"><div class="carousel-slide-header"><span class="carousel-step-number">3</span><h3 class="carousel-step-title">Connect a Keyboard</h3></div><div class="carousel-slide-body">
+
+<p>Connect a USB keyboard to one of the USB ports on the WATCHPAX 64. You will need the keyboard to interact with the reset menu during the boot sequence. Any standard wired USB keyboard will work -- there is no need for special drivers or a specific model. A wireless keyboard with a USB receiver is also acceptable. Make sure the keyboard is securely connected before powering on.</p>
+
+</div></div>
+<div class="carousel-slide" data-slide="3"><div class="carousel-slide-header"><span class="carousel-step-number">4</span><h3 class="carousel-step-title">Connect a Display</h3></div><div class="carousel-slide-body">
+
+<p>Connect at least one display device to one of the DisplayPort outputs on the rear panel of the WATCHPAX 64. The display is required so you can see the boot countdown and the reset menu. If you have multiple displays available, connecting just one is sufficient for the reset process. The display must be powered on and set to the correct input source.</p>
+
+</div></div>
+<div class="carousel-slide" data-slide="4"><div class="carousel-slide-header"><span class="carousel-step-number">5</span><h3 class="carousel-step-title">Power On the WATCHPAX 64</h3></div><div class="carousel-slide-body">
+
+<p>Press the power button on the front panel to turn on the WATCHPAX 64. The unit will begin its startup sequence and a five-second countdown will appear in the top-left corner of the connected display. You need to act quickly during this window, so keep your hand on the keyboard and be ready to press <strong>Esc</strong> as soon as the countdown appears.</p>
+
+</div></div>
+<div class="carousel-slide" data-slide="5"><div class="carousel-slide-header"><span class="carousel-step-number">6</span><h3 class="carousel-step-title">Press Esc During the Countdown</h3></div><div class="carousel-slide-body">
+
+<p>As shown below, a five-second countdown appears in the top-left corner of the display. <strong>Press the Esc key on the keyboard before the countdown reaches zero</strong> to enter the reset menu.</p>
+
+<img src="../media/wp64/installationscreens_01.jpg" alt="Reset Countdown" class="content-image">
+
+<div class='info-box'><p>If you don't see a counter, it means the display device is slow to lock to the output signal. In that case, press Esc repeatedly right after power-on. The key presses will be registered even if the display has not yet shown the countdown, and the reset menu will appear once the display locks.
+</p></div>
+
+</div></div>
+<div class="carousel-slide" data-slide="6"><div class="carousel-slide-header"><span class="carousel-step-number">7</span><h3 class="carousel-step-title">Select a Reset Option</h3></div><div class="carousel-slide-body">
+
+<p>Once you have entered the reset menu, you will see the available reset options listed on screen. Use the <strong>arrow keys</strong> on the keyboard to highlight the desired option, then <strong>press Enter</strong> to confirm:</p>
+
+<ul>
+<li><strong>Reset and keep user data</strong> -- resets system settings but retains your shows, media, and WATCHOUT configuration.</li>
+<li><strong>Reset to factory settings</strong> -- erases everything and restores the unit to its original factory state.</li>
+
+</ul>
+
+<div class='warning-box'><p>There will be no confirmation prompt -- the reset process starts immediately after you press Enter! Double-check that you have selected the correct option before confirming.
+</p></div>
+
+<img src="../media/wp64/installationscreens_02.jpg" alt="Reset Menu" class="content-image">
+
+</div></div>
+<div class="carousel-slide" data-slide="7"><div class="carousel-slide-header"><span class="carousel-step-number">8</span><h3 class="carousel-step-title">Reset in Progress</h3></div><div class="carousel-slide-body">
+
+<p>The reset process begins immediately after your selection, and progress indicators will be shown on the connected display. Depending on the reset level you chose, this process may take several minutes as the system partitions are rewritten. Do not press any keys, disconnect the power cable, or unplug the display while the reset is in progress.</p>
+
+<img src="../media/wp64/installation_04.jpg" alt="Reset in Progress" class="content-image">
+
+</div></div>
+<div class="carousel-slide" data-slide="8"><div class="carousel-slide-header"><span class="carousel-step-number">9</span><h3 class="carousel-step-title">System Reconfiguration</h3></div><div class="carousel-slide-body">
+
+<p>After the initial reset completes, the WATCHPAX 64 will automatically restart several times in order to reconfigure the operating system, GPU drivers, and hardware settings. This is normal behavior -- each restart configures a different component of the system. The number of restarts may vary, but typically the unit will restart two to three times.</p>
+
+<img src="../media/wp64/installation_05.jpg" alt="Reset Restarting" class="content-image">
+
+<div class='warning-box'><p>Do not power off the unit during the configuration process! Interrupting the reconfiguration can leave the system in an incomplete state and may require you to repeat the entire reset procedure.
+</p></div>
+
+</div></div>
+<div class="carousel-slide" data-slide="9"><div class="carousel-slide-header"><span class="carousel-step-number">10</span><h3 class="carousel-step-title">Reset Complete</h3></div><div class="carousel-slide-body">
+
+<p>WATCHOUT will start automatically when the entire reset and reconfiguration process is complete. You will see the standard WATCHOUT display output with the system image version number shown after the serial number -- this confirms the reset was successful. You can now disconnect the keyboard, reconnect your USB devices, and resume normal operation.</p>
+
+<img src="../media/wp64/installation_06.jpg" alt="Reset Complete" class="content-image">
+
+</div></div>
+</div>
+</div>
+<div class="carousel-controls">
+<button class="carousel-prev" aria-label="Previous step" disabled><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg></button>
+<div class="carousel-dots">
+<button class="carousel-dot active" data-slide="0" aria-label="Go to step 1"></button>
+<button class="carousel-dot" data-slide="1" aria-label="Go to step 2"></button>
+<button class="carousel-dot" data-slide="2" aria-label="Go to step 3"></button>
+<button class="carousel-dot" data-slide="3" aria-label="Go to step 4"></button>
+<button class="carousel-dot" data-slide="4" aria-label="Go to step 5"></button>
+<button class="carousel-dot" data-slide="5" aria-label="Go to step 6"></button>
+<button class="carousel-dot" data-slide="6" aria-label="Go to step 7"></button>
+<button class="carousel-dot" data-slide="7" aria-label="Go to step 8"></button>
+<button class="carousel-dot" data-slide="8" aria-label="Go to step 9"></button>
+<button class="carousel-dot" data-slide="9" aria-label="Go to step 10"></button>
+</div>
+<button class="carousel-next" aria-label="Next step"><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg></button>
+</div>
+<div class="carousel-counter"><span class="carousel-counter-current">1</span> / 10</div>
+</div></div><div class="section-nav">
+                <a href="quick-start.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="audio-output-and-watchpax-config.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHPAX 64 User Guide • Dataton Documentation • Generated March 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+    
+    <script>
+        (function() {
+            var sw = document.getElementById('guide-switcher');
+            var btn = document.getElementById('guide-switcher-toggle');
+            if (!sw || !btn) return;
+            btn.addEventListener('click', function(e) { e.stopPropagation(); sw.classList.toggle('open'); });
+            document.addEventListener('click', function(e) { if (!sw.contains(e.target)) sw.classList.remove('open'); });
+        })();
+    </script>
+</body>
+</html>

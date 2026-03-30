@@ -1,0 +1,1037 @@
+<div class="interactive-widget" id="tween-expr-viz">
+    <style>
+        #tween-expr-viz {
+            width: 100%;
+            max-width: 960px;
+        }
+
+        #tween-expr-viz .tev-top-controls {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        #tween-expr-viz .tev-preset-select {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 7px 12px;
+            color: var(--text-primary);
+            font-family: inherit;
+            font-size: 0.85rem;
+            outline: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            transition: border-color 0.2s;
+        }
+
+        #tween-expr-viz .tev-preset-select:hover,
+        #tween-expr-viz .tev-preset-select:focus {
+            border-color: var(--accent-primary);
+        }
+
+        #tween-expr-viz .tev-expr-input-wrap {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        #tween-expr-viz .tev-expr-input {
+            width: 100%;
+            box-sizing: border-box;
+            background: var(--input-bg);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+            padding: 7px 12px;
+            color: var(--text-primary);
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.85rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        #tween-expr-viz .tev-expr-input:focus {
+            border-color: var(--accent-primary);
+        }
+
+        #tween-expr-viz .tev-expr-input.tev-error {
+            border-color: #ef4444;
+        }
+
+        #tween-expr-viz .tev-error-msg {
+            color: #ef4444;
+            font-size: 0.75rem;
+            margin-top: 4px;
+            min-height: 1em;
+        }
+
+        #tween-expr-viz .tev-graph-row {
+            display: flex;
+            gap: 14px;
+            align-items: stretch;
+            margin-bottom: 14px;
+        }
+
+        #tween-expr-viz .tev-canvas-wrap {
+            flex: 1;
+            min-width: 0;
+            position: relative;
+        }
+
+        #tween-expr-viz canvas {
+            width: 100%;
+            height: 300px;
+            background: radial-gradient(ellipse at center, rgba(30, 30, 50, 0.5) 0%, rgba(10, 10, 20, 0.8) 100%);
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            display: block;
+        }
+
+        #tween-expr-viz .tev-preview-panel {
+            width: 220px;
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        #tween-expr-viz .tev-preview-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        #tween-expr-viz .tev-preview-stage {
+            flex: 1;
+            border-radius: 8px;
+            border: 1px solid var(--border-subtle);
+            background: #0a0a12;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 160px;
+        }
+
+        #tween-expr-viz .tev-preview-img {
+            width: 160px;
+            height: 110px;
+            border-radius: 5px;
+            background:
+                linear-gradient(135deg, #6366f1 0%, #a855f7 40%, #ec4899 70%, #f43f5e 100%);
+            box-shadow: 0 2px 16px rgba(99, 102, 241, 0.25);
+            transition: opacity 0.05s linear;
+            position: relative;
+        }
+
+        #tween-expr-viz .tev-preview-img::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 5px;
+            background:
+                linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 40%),
+                linear-gradient(90deg, transparent 30%, rgba(255,255,255,0.08) 50%, transparent 70%);
+            pointer-events: none;
+        }
+
+        #tween-expr-viz .tev-preview-readout {
+            text-align: center;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            line-height: 1.4;
+        }
+
+        #tween-expr-viz .tev-preview-readout strong {
+            color: #a78bfa;
+            font-weight: 600;
+        }
+
+        #tween-expr-viz .tev-sliders-row {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        #tween-expr-viz .tev-slider-control {
+            flex: 1;
+            min-width: 180px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-subtle);
+            border-radius: 6px;
+        }
+
+        #tween-expr-viz .tev-slider-label {
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.8rem;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        #tween-expr-viz .tev-slider-label.tev-blue { color: #60a5fa; }
+        #tween-expr-viz .tev-slider-label.tev-yellow { color: #fbbf24; }
+
+        #tween-expr-viz .tev-slider-range {
+            flex: 1;
+            cursor: pointer;
+            height: 4px;
+        }
+
+        #tween-expr-viz .tev-slider-range.tev-blue { accent-color: #60a5fa; }
+        #tween-expr-viz .tev-slider-range.tev-yellow { accent-color: #fbbf24; }
+
+        #tween-expr-viz .tev-slider-val {
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.8rem;
+            min-width: 28px;
+            text-align: right;
+        }
+
+        #tween-expr-viz .tev-slider-val.tev-blue { color: #60a5fa; }
+        #tween-expr-viz .tev-slider-val.tev-yellow { color: #fbbf24; }
+
+        #tween-expr-viz .tev-anim-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 14px;
+            flex-wrap: wrap;
+        }
+
+        #tween-expr-viz .tev-anim-hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            flex: 1;
+        }
+
+        #tween-expr-viz .tev-anim-controls {
+            display: flex;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        #tween-expr-viz .tev-btn {
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border-subtle);
+            color: var(--text-primary);
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+            padding: 0;
+        }
+
+        #tween-expr-viz .tev-btn:hover {
+            border-color: var(--accent-primary);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        #tween-expr-viz .tev-btn.tev-active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: #fff;
+        }
+
+        #tween-expr-viz .tev-legend {
+            display: flex;
+            gap: 18px;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            flex-wrap: wrap;
+        }
+
+        #tween-expr-viz .tev-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #tween-expr-viz .tev-legend-line {
+            width: 24px;
+            height: 3px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        #tween-expr-viz .tev-explainer {
+            margin-top: 0;
+            padding: 10px 14px;
+            background: rgba(139, 92, 246, 0.05);
+            border: 1px solid rgba(139, 92, 246, 0.1);
+            border-radius: 6px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        #tween-expr-viz .tev-explainer code {
+            background: var(--code-bg);
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-family: 'SF Mono', 'Fira Code', 'Cascadia Code', monospace;
+            font-size: 0.8rem;
+            color: var(--accent-tertiary);
+        }
+
+        @media (max-width: 560px) {
+            #tween-expr-viz .tev-graph-row {
+                flex-direction: column;
+            }
+            #tween-expr-viz .tev-preview-panel {
+                width: 100%;
+                flex-direction: row;
+                align-items: center;
+            }
+            #tween-expr-viz .tev-preview-stage {
+                min-height: 80px;
+                flex: 1;
+            }
+            #tween-expr-viz .tev-preview-readout {
+                min-width: 80px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            #tween-expr-viz .tev-top-controls {
+                flex-direction: column;
+            }
+            #tween-expr-viz .tev-sliders-row {
+                flex-direction: column;
+            }
+        }
+    </style>
+
+    <div class="tev-top-controls">
+        <select class="tev-preset-select" id="tev-presets">
+            <option value="tweenValue">tweenValue (passthrough)</option>
+            <option value="tweenValue * 2">tweenValue * 2</option>
+            <option value="tweenValue + 10">tweenValue + 10</option>
+            <option value="100 - tweenValue">100 - tweenValue (invert)</option>
+            <option value="tweenValue * myVariable / 100" selected>tweenValue * myVariable / 100</option>
+            <option value="sin(myVariable * pi / 50) * 50 + 50">sin(myVariable) oscillation</option>
+            <option value="if(myVariable > 50, tweenValue, 0)">if() threshold gate</option>
+            <option value="max(tweenValue, myVariable)">max(tweenValue, myVariable)</option>
+            <option value="myVariable ^ 2 / 100">myVariable ^ 2 / 100</option>
+            <option value="myVariable">myVariable (direct control)</option>
+            <option value="custom">Custom expression...</option>
+        </select>
+        <div class="tev-expr-input-wrap">
+            <input type="text" class="tev-expr-input" id="tev-expr" value="tweenValue * myVariable / 100"
+                   spellcheck="false" autocomplete="off" placeholder="Enter expression...">
+            <div class="tev-error-msg" id="tev-error"></div>
+        </div>
+    </div>
+
+    <div class="tev-graph-row">
+        <div class="tev-canvas-wrap">
+            <canvas id="tev-canvas"></canvas>
+        </div>
+        <div class="tev-preview-panel">
+            <div class="tev-preview-label">Opacity Preview</div>
+            <div class="tev-preview-stage">
+                <div class="tev-preview-img" id="tev-preview-img"></div>
+            </div>
+            <div class="tev-preview-readout" id="tev-preview-readout">
+                Opacity: <strong>75%</strong>
+            </div>
+        </div>
+    </div>
+
+    <div class="tev-sliders-row">
+        <div class="tev-slider-control">
+            <span class="tev-slider-label tev-blue">tweenValue</span>
+            <input type="range" class="tev-slider-range tev-blue" id="tev-tween-slider" min="0" max="100" value="100">
+            <span class="tev-slider-val tev-blue" id="tev-tween-val">100</span>
+        </div>
+        <div class="tev-slider-control">
+            <span class="tev-slider-label tev-yellow">myVariable</span>
+            <input type="range" class="tev-slider-range tev-yellow" id="tev-var-slider" min="0" max="100" value="75">
+            <span class="tev-slider-val tev-yellow" id="tev-var-val">75</span>
+        </div>
+    </div>
+
+    <div class="tev-anim-row">
+        <span class="tev-anim-hint">Animate <strong>myVariable</strong> 0&rarr;100 to simulate external input</span>
+        <div class="tev-anim-controls">
+            <button class="tev-btn" id="tev-play" title="Play / Pause">&#9654;</button>
+            <button class="tev-btn" id="tev-reset" title="Reset">&#8634;</button>
+        </div>
+    </div>
+
+    <div class="tev-legend">
+        <span class="tev-legend-item">
+            <span class="tev-legend-line" style="border-top: 2px dashed #60a5fa; background: none;"></span>
+            tweenValue
+        </span>
+        <span class="tev-legend-item">
+            <span class="tev-legend-line" style="background: #a78bfa;"></span>
+            Expression result
+        </span>
+    </div>
+
+    <div class="tev-explainer" id="tev-explainer"></div>
+</div>
+
+<script>
+(function() {
+    // ========================================================================
+    // Expression Parser - safe recursive-descent, no eval()
+    // ========================================================================
+
+    function tokenize(expr) {
+        var tokens = [];
+        var i = 0;
+        var s = expr.trim();
+        while (i < s.length) {
+            var ch = s[i];
+            if (ch === ' ' || ch === '\t') { i++; continue; }
+            if ((ch >= '0' && ch <= '9') || (ch === '.' && i + 1 < s.length && s[i + 1] >= '0' && s[i + 1] <= '9')) {
+                var start = i;
+                while (i < s.length && ((s[i] >= '0' && s[i] <= '9') || s[i] === '.')) i++;
+                tokens.push({ type: 'num', value: parseFloat(s.substring(start, i)) });
+                continue;
+            }
+            if ((ch >= 'a' && ch <= 'z') || (ch >= 'A' && ch <= 'Z') || ch === '_') {
+                var start = i;
+                while (i < s.length && ((s[i] >= 'a' && s[i] <= 'z') || (s[i] >= 'A' && s[i] <= 'Z') || (s[i] >= '0' && s[i] <= '9') || s[i] === '_')) i++;
+                tokens.push({ type: 'id', value: s.substring(start, i) });
+                continue;
+            }
+            if (i + 1 < s.length) {
+                var two = s.substring(i, i + 2);
+                if (two === '<=' || two === '>=' || two === '==' || two === '!=') {
+                    tokens.push({ type: 'op', value: two }); i += 2; continue;
+                }
+            }
+            if ('+-*/%^<>(),'.indexOf(ch) >= 0) {
+                tokens.push({ type: 'op', value: ch }); i++; continue;
+            }
+            throw new Error('Unexpected character: "' + ch + '"');
+        }
+        tokens.push({ type: 'end' });
+        return tokens;
+    }
+
+    var MATH_FUNCS = {
+        'sin': Math.sin, 'cos': Math.cos, 'tan': Math.tan,
+        'asin': Math.asin, 'acos': Math.acos, 'atan': Math.atan,
+        'sqrt': Math.sqrt, 'abs': Math.abs,
+        'log': Math.log, 'log10': Math.log10,
+        'ceil': Math.ceil, 'floor': Math.floor, 'round': Math.round
+    };
+    var MULTI_ARG_FUNCS = { 'min': Math.min, 'max': Math.max };
+    var CONSTANTS = { 'pi': Math.PI, 'e': Math.E };
+
+    function parse(expr) {
+        var tokens = tokenize(expr);
+        var pos = 0;
+
+        function peek() { return tokens[pos]; }
+        function expect(val) {
+            var t = tokens[pos];
+            if (t.type !== 'op' || t.value !== val) throw new Error('Expected "' + val + '"');
+            pos++;
+            return t;
+        }
+
+        function parseExpr() { return parseOr(); }
+
+        function parseOr() {
+            var left = parseAnd();
+            while (peek().type === 'id' && peek().value.toLowerCase() === 'or') {
+                pos++;
+                var right = parseAnd();
+                left = (function(l, r) { return function(v) { return (l(v) ? 1 : 0) || (r(v) ? 1 : 0) ? 1 : 0; }; })(left, right);
+            }
+            return left;
+        }
+
+        function parseAnd() {
+            var left = parseCmp();
+            while (peek().type === 'id' && peek().value.toLowerCase() === 'and') {
+                pos++;
+                var right = parseCmp();
+                left = (function(l, r) { return function(v) { return (l(v) ? 1 : 0) && (r(v) ? 1 : 0) ? 1 : 0; }; })(left, right);
+            }
+            return left;
+        }
+
+        function parseCmp() {
+            var left = parseAdd();
+            var t = peek();
+            if (t.type === 'op' && (t.value === '<' || t.value === '>' || t.value === '<=' || t.value === '>=' || t.value === '==' || t.value === '!=')) {
+                var op = t.value; pos++;
+                var right = parseAdd();
+                return (function(l, r, o) {
+                    return function(v) {
+                        var a = l(v), b = r(v);
+                        switch (o) {
+                            case '<':  return a < b ? 1 : 0;
+                            case '>':  return a > b ? 1 : 0;
+                            case '<=': return a <= b ? 1 : 0;
+                            case '>=': return a >= b ? 1 : 0;
+                            case '==': return a === b ? 1 : 0;
+                            case '!=': return a !== b ? 1 : 0;
+                        }
+                        return 0;
+                    };
+                })(left, right, op);
+            }
+            return left;
+        }
+
+        function parseAdd() {
+            var left = parseMul();
+            while (peek().type === 'op' && (peek().value === '+' || peek().value === '-')) {
+                var op = peek().value; pos++;
+                var right = parseMul();
+                left = (function(l, r, o) {
+                    return function(v) { return o === '+' ? l(v) + r(v) : l(v) - r(v); };
+                })(left, right, op);
+            }
+            return left;
+        }
+
+        function parseMul() {
+            var left = parsePow();
+            while (peek().type === 'op' && (peek().value === '*' || peek().value === '/' || peek().value === '%')) {
+                var op = peek().value; pos++;
+                var right = parsePow();
+                left = (function(l, r, o) {
+                    return function(v) {
+                        if (o === '*') return l(v) * r(v);
+                        if (o === '/') { var d = r(v); return d === 0 ? 0 : l(v) / d; }
+                        return l(v) % r(v);
+                    };
+                })(left, right, op);
+            }
+            return left;
+        }
+
+        function parsePow() {
+            var base = parseUnary();
+            if (peek().type === 'op' && peek().value === '^') {
+                pos++;
+                var exp = parsePow();
+                return (function(b, e) {
+                    return function(v) { return Math.pow(b(v), e(v)); };
+                })(base, exp);
+            }
+            return base;
+        }
+
+        function parseUnary() {
+            var t = peek();
+            if (t.type === 'op' && t.value === '-') {
+                pos++;
+                var inner = parseUnary();
+                return function(v) { return -inner(v); };
+            }
+            if (t.type === 'id' && t.value.toLowerCase() === 'not') {
+                pos++;
+                var inner = parseUnary();
+                return function(v) { return inner(v) ? 0 : 1; };
+            }
+            return parsePrimary();
+        }
+
+        function parsePrimary() {
+            var t = peek();
+
+            if (t.type === 'num') {
+                pos++;
+                var val = t.value;
+                return function() { return val; };
+            }
+
+            if (t.type === 'op' && t.value === '(') {
+                pos++;
+                var inner = parseExpr();
+                expect(')');
+                return inner;
+            }
+
+            if (t.type === 'id') {
+                var name = t.value;
+                var nameLower = name.toLowerCase();
+                pos++;
+
+                if (nameLower === 'if') {
+                    expect('(');
+                    var cond = parseExpr();
+                    expect(',');
+                    var thenVal = parseExpr();
+                    expect(',');
+                    var elseVal = parseExpr();
+                    expect(')');
+                    return function(v) { return cond(v) ? thenVal(v) : elseVal(v); };
+                }
+
+                if (MATH_FUNCS[nameLower]) {
+                    var fn = MATH_FUNCS[nameLower];
+                    expect('(');
+                    var arg = parseExpr();
+                    expect(')');
+                    return (function(fn, arg) {
+                        return function(v) { return fn(arg(v)); };
+                    })(fn, arg);
+                }
+
+                if (MULTI_ARG_FUNCS[nameLower]) {
+                    var fn = MULTI_ARG_FUNCS[nameLower];
+                    expect('(');
+                    var args = [parseExpr()];
+                    while (peek().type === 'op' && peek().value === ',') {
+                        pos++;
+                        args.push(parseExpr());
+                    }
+                    expect(')');
+                    return (function(fn, args) {
+                        return function(v) {
+                            var vals = [];
+                            for (var i = 0; i < args.length; i++) vals.push(args[i](v));
+                            return fn.apply(null, vals);
+                        };
+                    })(fn, args);
+                }
+
+                if (CONSTANTS[nameLower] !== undefined) {
+                    var cv = CONSTANTS[nameLower];
+                    return function() { return cv; };
+                }
+
+                if (nameLower === 'tweenvalue') {
+                    return function(v) { return v.tweenValue; };
+                }
+                if (nameLower === 'myvariable') {
+                    return function(v) { return v.myVariable; };
+                }
+
+                throw new Error('Unknown identifier: "' + name + '"');
+            }
+
+            throw new Error('Unexpected token');
+        }
+
+        var evaluator = parseExpr();
+        if (peek().type !== 'end') throw new Error('Unexpected input after expression');
+        return evaluator;
+    }
+
+    // ========================================================================
+    // DOM References
+    // ========================================================================
+
+    var canvas = document.getElementById('tev-canvas');
+    var ctx = canvas.getContext('2d');
+    var presetSelect = document.getElementById('tev-presets');
+    var exprInput = document.getElementById('tev-expr');
+    var errorEl = document.getElementById('tev-error');
+    var tweenSlider = document.getElementById('tev-tween-slider');
+    var tweenValEl = document.getElementById('tev-tween-val');
+    var varSlider = document.getElementById('tev-var-slider');
+    var varValEl = document.getElementById('tev-var-val');
+    var playBtn = document.getElementById('tev-play');
+    var resetBtn = document.getElementById('tev-reset');
+    var explainerEl = document.getElementById('tev-explainer');
+    var previewImg = document.getElementById('tev-preview-img');
+    var previewReadout = document.getElementById('tev-preview-readout');
+
+    // ========================================================================
+    // State
+    // ========================================================================
+
+    var currentEvaluator = null;
+    var tweenValue = 100;   // fixed keyframe value set by user
+    var myVariable = 75;    // the variable that changes (external input)
+    var playing = false;
+    var animFrame = null;
+    var lastTime = 0;
+    var animT = 0;          // 0..1 animation progress for myVariable sweep
+    var hasError = false;
+
+    // ========================================================================
+    // Expression compilation and evaluation
+    // ========================================================================
+
+    function compileExpr(str) {
+        try {
+            currentEvaluator = parse(str);
+            errorEl.textContent = '';
+            exprInput.classList.remove('tev-error');
+            hasError = false;
+        } catch (e) {
+            errorEl.textContent = e.message;
+            exprInput.classList.add('tev-error');
+            hasError = true;
+            currentEvaluator = null;
+        }
+    }
+
+    function evalExpr(tv, mv) {
+        if (!currentEvaluator) return tv;
+        try {
+            var result = currentEvaluator({ tweenValue: tv, myVariable: mv });
+            if (typeof result !== 'number' || !isFinite(result)) return tv;
+            return result;
+        } catch (e) {
+            return tv;
+        }
+    }
+
+    // ========================================================================
+    // Preview Panel
+    // ========================================================================
+
+    function updatePreview() {
+        var ev = evalExpr(tweenValue, myVariable);
+        var opacityPct = Math.max(0, Math.min(100, ev));
+        previewImg.style.opacity = opacityPct / 100;
+        previewReadout.innerHTML = 'Opacity: <strong>' + Math.round(opacityPct) + '%</strong>';
+    }
+
+    // ========================================================================
+    // Canvas Drawing
+    // ========================================================================
+
+    var PAD_L = 52, PAD_R = 20, PAD_T = 24, PAD_B = 38;
+
+    function resizeCanvas() {
+        var rect = canvas.getBoundingClientRect();
+        var dpr = window.devicePixelRatio || 1;
+        canvas.width = rect.width * dpr;
+        canvas.height = rect.height * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function niceStep(range, maxTicks) {
+        var rough = range / maxTicks;
+        var mag = Math.pow(10, Math.floor(Math.log10(rough)));
+        var frac = rough / mag;
+        var nice;
+        if (frac <= 1.5) nice = 1;
+        else if (frac <= 3) nice = 2;
+        else if (frac <= 7) nice = 5;
+        else nice = 10;
+        return nice * mag;
+    }
+
+    function draw() {
+        var w = canvas.getBoundingClientRect().width;
+        var h = canvas.getBoundingClientRect().height;
+        var gx = PAD_L, gy = PAD_T;
+        var gw = w - PAD_L - PAD_R;
+        var gh = h - PAD_T - PAD_B;
+
+        ctx.clearRect(0, 0, w, h);
+
+        // The graph: X axis = myVariable (0..100), Y axis = expression result
+        // We also draw a horizontal reference for tweenValue
+
+        var N = 200;
+        var exprVals = new Array(N + 1);
+        for (var i = 0; i <= N; i++) {
+            var mv = (i / N) * 100;
+            exprVals[i] = evalExpr(tweenValue, mv);
+        }
+
+        // Auto-scale Y axis
+        var minV = tweenValue, maxV = tweenValue;
+        if (!hasError) {
+            for (var i = 0; i <= N; i++) {
+                if (exprVals[i] < minV) minV = exprVals[i];
+                if (exprVals[i] > maxV) maxV = exprVals[i];
+            }
+        }
+        // Include 0 and 100 in range for context since we deal with percentages
+        if (minV > 0) minV = 0;
+        if (maxV < 100) maxV = 100;
+        var range = maxV - minV;
+        if (range < 1) { minV = -5; maxV = 105; range = 110; }
+        var pad = range * 0.08;
+        minV -= pad; maxV += pad;
+
+        function valToY(v) { return gy + gh - (v - minV) / (maxV - minV) * gh; }
+        function mvToX(mv) { return gx + (mv / 100) * gw; }
+
+        // -- Grid lines --
+        ctx.lineWidth = 1;
+        var step = niceStep(maxV - minV, 5);
+        var gridStart = Math.ceil(minV / step) * step;
+
+        ctx.font = '11px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.textBaseline = 'middle';
+
+        // Horizontal grid
+        ctx.textAlign = 'right';
+        for (var v = gridStart; v <= maxV; v += step) {
+            var yy = valToY(v);
+            ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+            ctx.beginPath(); ctx.moveTo(gx, yy); ctx.lineTo(gx + gw, yy); ctx.stroke();
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fillText(Math.round(v * 10) / 10, gx - 7, yy);
+        }
+
+        // Vertical grid
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        for (var p = 0; p <= 100; p += 25) {
+            var xx = mvToX(p);
+            ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+            ctx.beginPath(); ctx.moveTo(xx, gy); ctx.lineTo(xx, gy + gh); ctx.stroke();
+            ctx.fillStyle = 'rgba(255,255,255,0.3)';
+            ctx.fillText(p, xx, gy + gh + 6);
+        }
+
+        // -- tweenValue horizontal reference (blue dashed) --
+        ctx.save();
+        ctx.strokeStyle = '#60a5fa';
+        ctx.lineWidth = 1.5;
+        ctx.setLineDash([6, 4]);
+        ctx.beginPath();
+        ctx.moveTo(gx, valToY(tweenValue));
+        ctx.lineTo(gx + gw, valToY(tweenValue));
+        ctx.stroke();
+        ctx.restore();
+
+        // tweenValue label
+        ctx.font = '10px "SF Mono", "Fira Code", monospace';
+        ctx.fillStyle = 'rgba(96, 165, 250, 0.6)';
+        ctx.textAlign = 'right';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('tweenValue = ' + tweenValue, gx + gw, valToY(tweenValue) - 4);
+
+        // -- Expression result curve (purple solid) --
+        if (!hasError) {
+            ctx.strokeStyle = '#a78bfa';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            for (var i = 0; i <= N; i++) {
+                var x = mvToX((i / N) * 100);
+                var y = valToY(exprVals[i]);
+                var cy = Math.max(gy - 5, Math.min(gy + gh + 5, y));
+                if (i === 0) ctx.moveTo(x, cy); else ctx.lineTo(x, cy);
+            }
+            ctx.stroke();
+        }
+
+        // -- Current myVariable marker (vertical line + dot) --
+        var curX = mvToX(myVariable);
+        var curResult = evalExpr(tweenValue, myVariable);
+
+        // Vertical marker line
+        ctx.strokeStyle = 'rgba(251, 191, 36, 0.3)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(curX, gy);
+        ctx.lineTo(curX, gy + gh);
+        ctx.stroke();
+
+        // Dot on expression curve at current myVariable
+        if (!hasError) {
+            var dotY = Math.max(gy - 5, Math.min(gy + gh + 5, valToY(curResult)));
+            ctx.beginPath();
+            ctx.arc(curX, dotY, 6, 0, Math.PI * 2);
+            ctx.fillStyle = '#a78bfa';
+            ctx.fill();
+            ctx.strokeStyle = '#fff';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+        }
+
+        // Value readout at top
+        ctx.font = '11px "SF Mono", "Fira Code", monospace';
+        ctx.fillStyle = 'rgba(255,255,255,0.7)';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'bottom';
+        var readout = 'myVariable: ' + myVariable + '    tweenValue: ' + tweenValue;
+        if (!hasError) readout += '    result: ' + curResult.toFixed(1);
+        ctx.fillText(readout, gx + 4, gy - 5);
+
+        // -- Axes --
+        ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(gx, gy);
+        ctx.lineTo(gx, gy + gh);
+        ctx.lineTo(gx + gw, gy + gh);
+        ctx.stroke();
+
+        // Axis labels
+        ctx.font = '10px -apple-system, BlinkMacSystemFont, sans-serif';
+        ctx.fillStyle = 'rgba(255,255,255,0.35)';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'top';
+        ctx.fillText('myVariable', gx + gw / 2, gy + gh + 22);
+
+        ctx.save();
+        ctx.translate(13, gy + gh / 2);
+        ctx.rotate(-Math.PI / 2);
+        ctx.fillText('Expression Result', 0, 0);
+        ctx.restore();
+
+        // Update preview
+        updatePreview();
+    }
+
+    // ========================================================================
+    // Animation Loop - sweeps myVariable from 0 to 100
+    // ========================================================================
+
+    function animLoop(ts) {
+        if (!playing) return;
+        if (lastTime === 0) lastTime = ts;
+        var dt = (ts - lastTime) / 1000;
+        lastTime = ts;
+        animT += dt / 3; // 3-second sweep
+        if (animT >= 1) { animT = 0; }
+
+        // Update myVariable from animation
+        myVariable = Math.round(animT * 100);
+        varSlider.value = myVariable;
+        varValEl.textContent = myVariable;
+
+        draw();
+        animFrame = requestAnimationFrame(animLoop);
+    }
+
+    function startAnim() {
+        playing = true;
+        lastTime = 0;
+        playBtn.innerHTML = '&#9646;&#9646;';
+        playBtn.classList.add('tev-active');
+        animFrame = requestAnimationFrame(animLoop);
+    }
+
+    function stopAnim() {
+        playing = false;
+        playBtn.innerHTML = '&#9654;';
+        playBtn.classList.remove('tev-active');
+        if (animFrame) { cancelAnimationFrame(animFrame); animFrame = null; }
+    }
+
+    // ========================================================================
+    // Preset Descriptions
+    // ========================================================================
+
+    var descriptions = {
+        'tweenValue': 'The expression ignores <code>myVariable</code> and passes the keyframe value through unmodified. The result is constant regardless of external input.',
+        'tweenValue * 2': 'Doubles the keyframed value regardless of <code>myVariable</code>. The result is a constant 200 when <code>tweenValue</code> is 100.',
+        'tweenValue + 10': 'Adds a constant offset of 10. The result is always 10 above the keyframe value, unaffected by the variable.',
+        '100 - tweenValue': 'Inverts the keyframe value. At <code>tweenValue = 100</code>, the result is 0. Not variable-driven.',
+        'tweenValue * myVariable / 100': 'Scales the keyframed value by an external variable. At <code>myVariable = 100</code>, full output. At <code>0</code>, the cue is invisible. This is a common pattern for master dimming via OSC or ArtNet. Press play to simulate an incoming fader.',
+        'sin(myVariable * pi / 50) * 50 + 50': 'Drives the output with a sinusoidal function of <code>myVariable</code>. As an OSC fader sweeps 0&rarr;100, the result oscillates. Press play to see the wave.',
+        'if(myVariable > 50, tweenValue, 0)': 'A gate: the cue is visible only when <code>myVariable</code> exceeds 50 (e.g., a trigger threshold from a sensor). Below 50, the output is 0.',
+        'max(tweenValue, myVariable)': 'Output is whichever is larger. When <code>myVariable</code> is below <code>tweenValue</code>, the keyframe wins. Above it, the variable takes over.',
+        'myVariable ^ 2 / 100': 'Squares the variable input (normalized). This creates a non-linear response curve &mdash; useful for perceptually even fader control.',
+        'myVariable': 'Completely replaces the keyframe value with direct external control. The tween\'s keyframes are ignored. Common for fully variable-driven properties.',
+        'custom': 'Type any expression using <code>tweenValue</code>, <code>myVariable</code>, arithmetic operators, and math functions like <code>sin()</code>, <code>if()</code>, <code>max()</code>.'
+    };
+
+    function updateExplainer(key) {
+        explainerEl.innerHTML = descriptions[key] || descriptions['custom'];
+    }
+
+    // ========================================================================
+    // Event Handlers
+    // ========================================================================
+
+    presetSelect.addEventListener('change', function() {
+        var val = presetSelect.value;
+        if (val !== 'custom') {
+            exprInput.value = val;
+            compileExpr(val);
+            updateExplainer(val);
+        } else {
+            exprInput.value = '';
+            exprInput.focus();
+            updateExplainer('custom');
+            compileExpr('tweenValue');
+        }
+        if (!playing) draw();
+    });
+
+    exprInput.addEventListener('input', function() {
+        var val = exprInput.value.trim();
+        var matched = false;
+        for (var i = 0; i < presetSelect.options.length; i++) {
+            if (presetSelect.options[i].value === val) {
+                presetSelect.value = val;
+                updateExplainer(val);
+                matched = true;
+                break;
+            }
+        }
+        if (!matched) {
+            presetSelect.value = 'custom';
+            updateExplainer('custom');
+        }
+        compileExpr(val || 'tweenValue');
+        if (!playing) draw();
+    });
+
+    tweenSlider.addEventListener('input', function() {
+        tweenValue = parseInt(tweenSlider.value, 10);
+        tweenValEl.textContent = tweenValue;
+        if (!playing) draw();
+    });
+
+    varSlider.addEventListener('input', function() {
+        myVariable = parseInt(varSlider.value, 10);
+        varValEl.textContent = myVariable;
+        // If user manually drags during animation, stop animation
+        if (playing) stopAnim();
+        draw();
+    });
+
+    playBtn.addEventListener('click', function() {
+        if (playing) {
+            stopAnim();
+        } else {
+            animT = 0;
+            startAnim();
+        }
+    });
+
+    resetBtn.addEventListener('click', function() {
+        stopAnim();
+        myVariable = 0;
+        varSlider.value = 0;
+        varValEl.textContent = '0';
+        animT = 0;
+        draw();
+    });
+
+    var resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(function() { resizeCanvas(); draw(); }, 100);
+    });
+
+    // ========================================================================
+    // Init
+    // ========================================================================
+
+    compileExpr('tweenValue * myVariable / 100');
+    updateExplainer('tweenValue * myVariable / 100');
+    resizeCanvas();
+    draw();
+})();
+</script>

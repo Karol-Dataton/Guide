@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="WATCHOUT User Guide - Asset Manager">
+    <title>Asset Manager - WATCHOUT 7 User Guide</title>
+    <link rel="stylesheet" href="../styles.css">
+    <script>
+        // Apply saved theme immediately to prevent flash
+        (function () {
+            const theme = localStorage.getItem('watchout-wiki-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+    </script>
+    
+    <style>
+        .guide-switcher { position: relative; margin-top: auto; padding: 12px 16px; border-top: 1px solid var(--border-subtle, #2a2a3e); }
+        .guide-switcher-toggle {
+            display: flex; align-items: center; justify-content: space-between;
+            width: 100%; padding: 8px 12px; border-radius: 6px;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            color: var(--text-primary, #e0e0e8); cursor: pointer;
+            font-family: inherit; font-size: 0.85rem; font-weight: 500;
+            transition: border-color 0.2s;
+        }
+        .guide-switcher-toggle:hover { border-color: var(--accent-primary, #60a5fa); }
+        .guide-switcher-arrow { transition: transform 0.2s; flex-shrink: 0; margin-left: 8px; }
+        .guide-switcher.open .guide-switcher-arrow { transform: rotate(180deg); }
+        .guide-switcher-dropdown {
+            display: none; position: absolute; left: 16px; right: 16px; bottom: 100%;
+            background: var(--bg-secondary, #1a1a2e); border: 1px solid var(--border-subtle, #2a2a3e);
+            border-radius: 6px; z-index: 100; overflow: hidden;
+            box-shadow: 0 -8px 24px rgba(0,0,0,0.3);
+        }
+        .guide-switcher.open .guide-switcher-dropdown { display: block; }
+        .guide-switcher-option {
+            display: block; padding: 8px 12px; color: var(--text-secondary, #a0a0b8);
+            text-decoration: none; font-size: 0.85rem; transition: background 0.15s, color 0.15s;
+        }
+        .guide-switcher-option:hover { background: var(--bg-hover, #22223a); color: var(--text-primary, #e0e0e8); }
+        .guide-switcher-option.active { color: var(--accent-primary, #60a5fa); font-weight: 500; }
+    </style>
+</head>
+<body data-page-id="asset-manager">
+    <div class="app">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="../index.html" class="logo logo-link" aria-label="Go to home page">
+                    <span class="logo-icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                    </span>
+                    <h1>WATCHOUT GUIDE</h1>
+                </a>
+                <button class="sidebar-theme-toggle" id="theme-toggle" aria-label="Toggle theme" title="Toggle light/dark theme">
+                    <svg class="moon-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                    </svg>
+                    <svg class="sun-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="midnight-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"></line>
+                        <line x1="19.07" y1="19.07" x2="14.83" y2="14.83"></line>
+                        <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"></line>
+                        <line x1="19.07" y1="4.93" x2="14.83" y2="9.17"></line>
+                    </svg>
+                    <svg class="rust-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                        <polyline points="2 17 12 22 22 17"></polyline>
+                        <polyline points="2 12 12 17 22 12"></polyline>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="search-container">
+                <span class="search-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                </span>
+                <input type="text" id="search-input" class="search-input" placeholder="Search documentation...">
+                <button class="search-clear" id="search-clear" aria-label="Clear search">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+
+            <nav class="toc-nav" id="toc-nav">
+                
+        <div class="toc-chapter  " data-index="0">
+            <a href="../getting-started/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">1. Getting Started</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">First Steps</div>
+                        <a class="toc-subsection " href="../getting-started/welcome-to-watchout-7.html">
+                            Welcome To Watchout 7
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/system-requirements.html">
+                            System Requirements
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/installing-watchout.html">
+                            Installing Watchout
+                        </a>
+                        
+                        <div class="toc-group-label">Setup and Configuration</div>
+                        <a class="toc-subsection " href="../getting-started/launching-the-application.html">
+                            Launching The Application
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/network-configuration.html">
+                            Network Configuration
+                        </a>
+                        
+                        <div class="toc-group-label">Your First Show</div>
+                        <a class="toc-subsection " href="../getting-started/quick-start-tutorial.html">
+                            Quick Start Tutorial
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../getting-started/architectural-differences-watchout-6-vs-7.html">
+                            Architectural Differences Watchout 6 Vs 7
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="1">
+            <a href="../working-with-shows/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">2. Working with Shows</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../working-with-shows/creating-a-new-show.html">
+                            Creating A New Show
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/opening-existing-shows.html">
+                            Opening Existing Shows
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/saving-your-work.html">
+                            Saving Your Work
+                        </a>
+                        
+                        <div class="toc-group-label">Show Configuration</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-properties.html">
+                            Show Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Archiving and Auditing</div>
+                        <a class="toc-subsection " href="../working-with-shows/show-consolidation.html">
+                            Show Consolidation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../working-with-shows/show-information.html">
+                            Show Information
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="2">
+            <a href="../displays-and-outputs/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg></span>
+                <span class="toc-chapter-title">3. Displays and Outputs</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Essentials</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/adding-displays.html">
+                            Adding Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-properties.html">
+                            Display Properties
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-grid-setup.html">
+                            Display Grid Setup
+                        </a>
+                        
+                        <div class="toc-group-label">Core Display Types</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/virtual-displays.html">
+                            Virtual Displays
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/3d-mapping-projectors.html">
+                            3d Mapping Projectors
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/sdi-output.html">
+                            Sdi Output
+                        </a>
+                        
+                        <div class="toc-group-label">Geometry Correction and Blending</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/edge-blending.html">
+                            Edge Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/warp-geometry.html">
+                            Warp Geometry
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-masks.html">
+                            Display Masks
+                        </a>
+                        
+                        <div class="toc-group-label">Color, Calibration, and Diagnostics</div>
+                        <a class="toc-subsection " href="../displays-and-outputs/hdr-and-color-management.html">
+                            HDR and Color Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/display-calibration.html">
+                            Display Calibration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/test-patterns.html">
+                            Test Patterns
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../displays-and-outputs/compression-fundamentals.html">
+                            Compression Fundamentals
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter expanded " data-index="3">
+            <a href="../assets-asset-manager/index.html" class="toc-chapter-header  expanded" style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"></rect><line x1="7" y1="2" x2="7" y2="22"></line><line x1="17" y1="2" x2="17" y2="22"></line><line x1="2" y1="12" x2="22" y2="12"></line><line x1="2" y1="7" x2="7" y2="7"></line><line x1="2" y1="17" x2="7" y2="17"></line><line x1="17" y1="17" x2="22" y2="17"></line><line x1="17" y1="7" x2="22" y2="7"></line></svg></span>
+                <span class="toc-chapter-title">4. Assets & Asset Manager</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections expanded">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection active" href="../assets-asset-manager/asset-manager.html">
+                            Asset Manager
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-types.html">
+                            Asset Types
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-properties.html">
+                            Asset Properties
+                        </a>
+                        
+                        <div class="toc-group-label">Media Formats and Creation</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/formats-codecs.html">
+                            Formats & Codecs
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/svg-shapes.html">
+                            SVG Shapes
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/image-sequences.html">
+                            Image Sequences
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Asset Workflows</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/dynamic-assets.html">
+                            Dynamic Assets
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/web-user-interface.html">
+                            Web User Interface
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-watcher.html">
+                            Asset Watcher
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-transfer.html">
+                            Asset Transfer
+                        </a>
+                        
+                        <div class="toc-group-label">Settings and Data Management</div>
+                        <a class="toc-subsection " href="../assets-asset-manager/asset-manager-settings.html">
+                            Asset Manager Settings
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/import-export-and-mapping.html">
+                            Import, Export, and Mapping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../assets-asset-manager/importing-gdtf-files.html">
+                            Importing GDTF Files
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="4">
+            <a href="../timeline-and-cues/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></span>
+                <span class="toc-chapter-title">5. Timeline and Cues</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/understanding-the-timeline.html">
+                            Understanding The Timeline
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adding-media-cues.html">
+                            Adding Media Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/working-with-layers.html">
+                            Working With Layers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/adjusting-timing.html">
+                            Adjusting Timing
+                        </a>
+                        
+                        <div class="toc-group-label">Cue Types</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/control-cues.html">
+                            Control Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/marker-cues.html">
+                            Marker Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/output-cues.html">
+                            Output Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/variables-and-variable-cues.html">
+                            Variables and Variable Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/artnet-fixture-cues.html">
+                            ArtNet Fixture Cues
+                        </a>
+                        
+                        <div class="toc-group-label">Compositions and Organization</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/compositions.html">
+                            Compositions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cue-sets-and-variants.html">
+                            Cue Sets and Variants
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/media-snapshots.html">
+                            Media Snapshots
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/stacking-order.html">
+                            Stacking Order
+                        </a>
+                        
+                        <div class="toc-group-label">Automation and Advanced Workflows</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/timeline-triggers-and-expressions.html">
+                            Timeline Triggers and Expressions
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/conditional-cues.html">
+                            Conditional Cues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/blind-edit-mode.html">
+                            Blind Edit Mode
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/insert-and-delete-time.html">
+                            Insert and Delete Time
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../timeline-and-cues/cues-window.html">
+                            Cues Window
+                        </a>
+                        
+                        <div class="toc-group-label">Output Reference</div>
+                        <a class="toc-subsection " href="../timeline-and-cues/output-types-overview.html">
+                            Output Types Overview
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="5">
+            <a href="../effects-and-tweens/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="21" x2="4" y2="14"></line><line x1="4" y1="10" x2="4" y2="3"></line><line x1="12" y1="21" x2="12" y2="12"></line><line x1="12" y1="8" x2="12" y2="3"></line><line x1="20" y1="21" x2="20" y2="16"></line><line x1="20" y1="12" x2="20" y2="3"></line><line x1="1" y1="14" x2="7" y2="14"></line><line x1="9" y1="8" x2="15" y2="8"></line><line x1="17" y1="16" x2="23" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">6. Effects and Tweens</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/understanding-tweens.html">
+                            Understanding Tweens
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/opacity-and-fades.html">
+                            Opacity and Fades
+                        </a>
+                        
+                        <div class="toc-group-label">Transform Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/position-and-movement.html">
+                            Position and Movement
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/scale-and-size.html">
+                            Scale and Size
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/rotation-effects.html">
+                            Rotation Effects
+                        </a>
+                        
+                        <div class="toc-group-label">Visual Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/cropping.html">
+                            Cropping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/color-adjustments.html">
+                            Color Adjustments
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blur-effects.html">
+                            Blur Effects
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/blend-modes.html">
+                            Blend Modes
+                        </a>
+                        
+                        <div class="toc-group-label">Audio</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/audio-volume.html">
+                            Audio Volume
+                        </a>
+                        
+                        <div class="toc-group-label">Advanced Effects</div>
+                        <a class="toc-subsection " href="../effects-and-tweens/corner-pinning.html">
+                            Corner Pinning
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/linear-wipe.html">
+                            Linear Wipe
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/frame-blending.html">
+                            Frame Blending
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/chroma-key.html">
+                            Chroma Key
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/key-and-fill.html">
+                            Key and Fill
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../effects-and-tweens/tween-expressions.html">
+                            Tween Expressions
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="6">
+            <a href="../playback/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg></span>
+                <span class="toc-chapter-title">7. Playback</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Core Concepts</div>
+                        <a class="toc-subsection " href="../playback/starting-and-stopping.html">
+                            Starting and Stopping
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/preview-mode.html">
+                            Preview Mode
+                        </a>
+                        
+                        <div class="toc-group-label">Going Live</div>
+                        <a class="toc-subsection " href="../playback/connecting-to-display-servers.html">
+                            Connecting to Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../playback/going-online.html">
+                            Going Online
+                        </a>
+                        
+                        <div class="toc-group-label">Show Operation</div>
+                        <a class="toc-subsection " href="../playback/running-your-show.html">
+                            Running Your Show
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="7">
+            <a href="../the-interface/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg></span>
+                <span class="toc-chapter-title">8. The Interface</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Overview</div>
+                        <a class="toc-subsection " href="../the-interface/main-window-overview.html">
+                            Main Window Overview
+                        </a>
+                        
+                        <div class="toc-group-label">Window Reference</div>
+                        <a class="toc-subsection " href="../the-interface/the-stage-window.html">
+                            The Stage Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-timeline-window.html">
+                            The Timeline Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-cue-list-window.html">
+                            The Cue List Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-assets-window.html">
+                            The Assets Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-properties-panel.html">
+                            The Properties Panel
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-nodes-window.html">
+                            The Nodes Window
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../the-interface/the-devices-window.html">
+                            The Devices Window
+                        </a>
+                        
+                        <div class="toc-group-label">Customization</div>
+                        <a class="toc-subsection " href="../the-interface/customizing-your-workspace.html">
+                            Customizing Your Workspace
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="8">
+            <a href="../network-setup/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg></span>
+                <span class="toc-chapter-title">9. Network Setup</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Architecture and Basics</div>
+                        <a class="toc-subsection " href="../network-setup/network-overview.html">
+                            Network Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/display-servers.html">
+                            Display Servers
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/connecting-devices.html">
+                            Connecting Devices
+                        </a>
+                        
+                        <div class="toc-group-label">Protocols and Services</div>
+                        <a class="toc-subsection " href="../network-setup/firewall-configuration.html">
+                            Firewall Configuration
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/ndi-video-sources.html">
+                            NDI Video Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/capture-sources.html">
+                            Capture Sources
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/dante-audio.html">
+                            Dante Audio
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/time-synchronization.html">
+                            Time Synchronization
+                        </a>
+                        
+                        <div class="toc-group-label">Maintenance and Management</div>
+                        <a class="toc-subsection " href="../network-setup/node-management-and-maintenance.html">
+                            Node Management and Maintenance
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/remote-file-access.html">
+                            Remote File Access
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/working-directory-management.html">
+                            Working Directory Management
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../network-setup/software-updates.html">
+                            Software Updates
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="9">
+            <a href="../external-control/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">10. External Control</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Foundations</div>
+                        <a class="toc-subsection " href="../external-control/external-control-overview.html">
+                            External Control Overview
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/variables-and-inputs.html">
+                            Variables and Inputs
+                        </a>
+                        
+                        <div class="toc-group-label">Primary Protocols</div>
+                        <a class="toc-subsection " href="../external-control/http-rest-api.html">
+                            HTTP REST API
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/osc-protocol.html">
+                            OSC Protocol
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/artnet-input.html">
+                            ArtNet Input
+                        </a>
+                        
+                        <div class="toc-group-label">Specialized Protocols</div>
+                        <a class="toc-subsection " href="../external-control/midi-bridge.html">
+                            MIDI Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/ltc-bridge.html">
+                            LTC Bridge
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/posistagenet.html">
+                            PosiStageNet
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/midi-show-control.html">
+                            MIDI Show Control
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../external-control/watchout-6-protocol.html">
+                            WATCHOUT 6 Protocol
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="10">
+            <a href="../keyboard-shortcuts/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2" ry="2"></rect><path d="M6 8h.001"></path><path d="M10 8h.001"></path><path d="M14 8h.001"></path><path d="M18 8h.001"></path><path d="M8 12h.001"></path><path d="M12 12h.001"></path><path d="M16 12h.001"></path><path d="M7 16h10"></path></svg></span>
+                <span class="toc-chapter-title">11. Keyboard Shortcuts</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Input and Editing</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/file-operations.html">
+                            File Operations
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/edit-commands.html">
+                            Edit Commands
+                        </a>
+                        
+                        <div class="toc-group-label">Navigation and Playback</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/stage-navigation.html">
+                            Stage Navigation
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/timeline-controls.html">
+                            Timeline Controls
+                        </a>
+                        
+                        <div class="toc-group-label">Effects and Layout</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/tween-shortcuts.html">
+                            Tween Shortcuts
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/window-management.html">
+                            Window Management
+                        </a>
+                        
+                        <div class="toc-group-label">Properties and Tables</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/property-editing.html">
+                            Property Editing
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/table-views.html">
+                            Table Views
+                        </a>
+                        
+                        <div class="toc-group-label">Hardware Input</div>
+                        <a class="toc-subsection " href="../keyboard-shortcuts/xbox-controller.html">
+                            Xbox Controller
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../keyboard-shortcuts/display-warp.html">
+                            Display & Warp
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="11">
+            <a href="../troubleshooting/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></span>
+                <span class="toc-chapter-title">12. Troubleshooting</span>
+                
+                    <svg class="toc-chapter-arrow" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                
+            </a>
+            
+                <div class="toc-subsections ">
+                    <div class="toc-subsections-inner">
+                    
+                        <div class="toc-group-label">Common Issues</div>
+                        <a class="toc-subsection " href="../troubleshooting/common-issues.html">
+                            Common Issues
+                        </a>
+                        
+                        <div class="toc-group-label">By Category</div>
+                        <a class="toc-subsection " href="../troubleshooting/performance-tips.html">
+                            Performance Tips
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/display-problems.html">
+                            Display Problems
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/network-issues.html">
+                            Network Issues
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/media-playback-issues.html">
+                            Media Playback Issues
+                        </a>
+                        
+                        <div class="toc-group-label">Getting Support</div>
+                        <a class="toc-subsection " href="../troubleshooting/feedback-reports.html">
+                            Feedback Reports
+                        </a>
+                        
+                        
+                        <a class="toc-subsection " href="../troubleshooting/getting-help.html">
+                            Getting Help
+                        </a>
+                        
+                    </div>
+                </div>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="12">
+            <a href="../glossary/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg></span>
+                <span class="toc-chapter-title">13. Glossary</span>
+                
+            </a>
+            
+        </div>
+        
+        <div class="toc-chapter  " data-index="13">
+            <a href="../legal/index.html" class="toc-chapter-header  " style="text-decoration: none; display: flex;">
+                <span class="toc-chapter-icon"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg></span>
+                <span class="toc-chapter-title">14. Legal</span>
+                
+            </a>
+            
+        </div>
+        
+            </nav>
+            
+            <div class="guide-switcher" id="guide-switcher">
+                <button class="guide-switcher-toggle" id="guide-switcher-toggle" aria-label="Switch guide">
+                    <span class="guide-switcher-label">WATCHOUT</span>
+                    <svg class="guide-switcher-arrow" xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                    </svg>
+                </button>
+                <div class="guide-switcher-dropdown" id="guide-switcher-dropdown">
+                    <a class="guide-switcher-option active" href="../../watchout/index.html">WATCHOUT</a>
+                        <a class="guide-switcher-option" href="../../wp64/index.html">WATCHPAX 64</a>
+                        <a class="guide-switcher-option" href="../../wp30/index.html">WATCHPAX 30</a>
+                        <a class="guide-switcher-option" href="../../wp50/index.html">WATCHPAX 50</a>
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Main Content Area -->
+        <main class="main-content" id="main-content">
+            <header class="content-header">
+                <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Open Menu">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="3" y1="12" x2="21" y2="12"></line>
+                        <line x1="3" y1="6" x2="21" y2="6"></line>
+                        <line x1="3" y1="18" x2="21" y2="18"></line>
+                    </svg>
+                </button>
+                <div class="breadcrumb" id="breadcrumb">
+                    
+            <a href="../index.html" class="breadcrumb-item">Home</a>
+            <span class="breadcrumb-separator">›</span>
+            <a href="index.html" class="breadcrumb-item">4. Assets & Asset Manager</a>
+            <span class="breadcrumb-separator">›</span>
+            <span class="breadcrumb-item current">Asset Manager</span>
+        
+                </div>
+                <a href="../index.html" class="header-home-link" aria-label="Go to home page">
+                    <img src="../media/dataton-logo.png" alt="Dataton" class="header-logo">
+                </a>
+            </header>
+
+            <article class="content-body" id="content-body">
+                <div class="section-content" style="display: block;">
+                    <div class="section-content-body"><h2>Asset Manager</h2>
+
+<p><strong>The Asset Manager is the centralized service that handles the entire lifecycle of media in a WATCHOUT 7 show</strong> — from ingesting source files, through optimization (transcoding to GPU-friendly playback codecs), to distributing the results across every display server on the network. Every show has exactly one Asset Manager, and understanding how it works is essential for managing media at any scale.</p>
+
+<h3>How the Asset Pipeline Works</h3>
+
+<p>When a source file is added to the show — whether by drag-and-drop, the Web UI, or a watched folder — it passes through a multi-stage pipeline before it reaches the display servers:</p>
+
+<ol>
+<li><strong>Upload</strong> — the source file is copied into the Asset Manager's internal storage, organized by asset UUID. The asset state changes to <code>Uploading</code> with tracked progress.</li>
+<li><strong>Pending</strong> — the asset is queued and waiting to be optimized. The asset state shows as <code>Pending</code> (hourglass icon in the Assets window).</li>
+<li><strong>Optimization</strong> — the optimizer transcodes the source into a GPU-friendly playback codec (HAP by default). The asset state changes to <code>Optimizing</code>. Optimized data is stored as content-addressed chunks using Blake3 hashes, enabling deduplication across assets.</li>
+<li><strong>New</strong> — the asset is optimized and ready to be used in WATCHOUT shows. The asset state shows as <code>New</code> (star icon) until it has been viewed or used.</li>
+<li><strong>Storage</strong> — both the original source and the optimized output are retained. The asset database (<code>assetdb.json</code>) is updated atomically to prevent corruption. Each asset's storage is split into <strong>exclusive</strong> data (unique to that asset) and <strong>shared</strong> data (deduplicated chunks referenced by multiple assets).</li>
+<li><strong>Distribution</strong> — when the show goes online, optimized assets are transferred to each Runner (display server) over the network. Runners use 2 concurrent download workers to pull data from the Asset Manager on port 3023.</li>
+
+</ol>
+
+<div class="interactive-widget" id="asset-pipeline-widget">
+    <canvas id="asset-pipeline-canvas" width="900" height="420"></canvas>
+
+    <div class="widget-controls">
+        <div class="controls-left">
+            <button id="apf-play-btn" class="widget-btn primary">
+                &#9654; Simulate
+            </button>
+            <button id="apf-reset-btn" class="widget-btn">
+                Reset
+            </button>
+        </div>
+        <div class="controls-right">
+            <span class="state-label">State:</span>
+            <span id="apf-state-badge" class="state-badge">Idle</span>
+        </div>
+    </div>
+
+    <div class="widget-explainer">
+        Click <strong>Simulate</strong> to watch a file travel through the four pipeline stages:
+        <strong>Upload</strong>,
+        <strong>Optimization</strong>, <strong>Storage</strong>, and <strong>Distribution</strong>. Hover over any stage
+        for details.
+    </div>
+</div>
+
+<style>
+    /* Scoped styles for the widget to match Wiki theme */
+    #asset-pipeline-widget {
+        background: var(--bg-glass);
+        border: 1px solid var(--border-subtle);
+        border-radius: var(--border-radius-lg);
+        padding: 24px;
+        margin: 24px 0;
+        box-shadow: 0 4px 6px var(--shadow-color);
+        font-family: var(--font-family);
+    }
+
+    #asset-pipeline-canvas {
+        width: 100%;
+        height: auto;
+        display: block;
+        cursor: default;
+        touch-action: none;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: var(--border-radius);
+        margin-bottom: 20px;
+        border: 1px solid var(--border-subtle);
+    }
+
+    .widget-controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 16px;
+        margin-bottom: 16px;
+    }
+
+    .controls-left,
+    .controls-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .widget-btn {
+        padding: 8px 20px;
+        border-radius: var(--border-radius);
+        background: var(--input-bg);
+        border: 1px solid var(--border-subtle);
+        color: var(--text-primary);
+        cursor: pointer;
+        font-family: var(--font-family);
+        font-size: 0.9rem;
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .widget-btn:hover {
+        background: var(--input-bg-hover);
+        border-color: var(--accent-primary);
+        transform: translateY(-1px);
+    }
+
+    .widget-btn:active {
+        transform: translateY(0);
+    }
+
+    .widget-btn.primary {
+        background: rgba(107, 37, 221, 0.2);
+        border-color: var(--accent-primary);
+        color: #fff;
+    }
+
+    .widget-btn.primary:hover {
+        background: rgba(107, 37, 221, 0.3);
+        box-shadow: 0 0 15px var(--accent-glow);
+    }
+
+    .state-label {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+    }
+
+    .state-badge {
+        display: inline-block;
+        padding: 4px 12px;
+        border-radius: 12px;
+        font-size: 0.85rem;
+        font-weight: 600;
+        min-width: 80px;
+        text-align: center;
+        background: var(--input-bg);
+        color: var(--text-muted);
+        border: 1px solid var(--border-subtle);
+        transition: all 0.3s ease;
+    }
+
+    .widget-explainer {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+        padding-top: 16px;
+        border-top: 1px solid var(--border-subtle);
+    }
+
+    .widget-explainer strong {
+        color: var(--text-primary);
+        font-weight: 600;
+    }
+</style>
+
+<script>
+    (function () {
+        const canvas = document.getElementById('asset-pipeline-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+
+        // Get styles from CSS variables for consistency
+        const computedStyle = getComputedStyle(document.body);
+        const getVar = (name) => computedStyle.getPropertyValue(name).trim();
+
+        const themeFonts = getVar('--font-family');
+        const themeBg = getVar('--bg-primary'); // Fallback
+
+        // High-DPI scaling
+        const dpr = window.devicePixelRatio || 1;
+        const W = canvas.width;
+        const H = canvas.height;
+        canvas.width = W * dpr;
+        canvas.height = H * dpr;
+        ctx.scale(dpr, dpr);
+
+        const playBtn = document.getElementById('apf-play-btn');
+        const resetBtn = document.getElementById('apf-reset-btn');
+        const stateBadge = document.getElementById('apf-state-badge');
+
+        // --- Stage definitions ---
+        const stages = [
+            {
+                id: 'upload',
+                label: 'Upload',
+                icon: '\u2B06',
+                color: '#60a5fa', // Blue
+                desc: 'Source file is copied into\nthe Asset Manager',
+                detail: 'State: Uploading\nFiles are organized automatically\nProgress is tracked in real time'
+            },
+            {
+                id: 'optimize',
+                label: 'Optimization',
+                icon: '\u2699',
+                color: '#a78bfa', // Purple
+                desc: 'Converted to a GPU-optimized\nformat (HAP) for playback',
+                detail: 'State: Optimizing\nConverts media for fast GPU playback\nDuplicate content is detected and reused'
+            },
+            {
+                id: 'storage',
+                label: 'Storage',
+                icon: '\uD83D\uDCBE',
+                color: '#34d399', // Green
+                desc: 'Original and optimized files\nare saved to the asset database',
+                detail: 'Asset database is updated safely\nOriginal source file is preserved\nShared data is deduplicated to save space'
+            },
+            {
+                id: 'distribute',
+                label: 'Distribution',
+                icon: '\uD83C\uDF10',
+                color: '#fb923c', // Orange
+                desc: 'Optimized files are sent\nto all Display Computers',
+                detail: 'Files transfer to each Display Computer\nMultiple transfers run in parallel\nThe show must be online to distribute'
+            }
+        ];
+
+        // Layout constants
+        const stageW = 160;
+        const stageH = 120;
+        const stageY = 140;
+        const stageGap = 40;
+        const totalStagesW = stages.length * stageW + (stages.length - 1) * stageGap;
+        const startX = (W - totalStagesW) / 2;
+
+        // Animation state
+        let animPhase = -1;
+        let animProgress = 0;
+        let animRAF = null;
+        let animStartTime = 0;
+        let isRunning = false;
+        let hoverStage = -1;
+
+        // Runner nodes
+        const runners = [
+            { label: 'Runner 1', x: 0, y: 0 },
+            { label: 'Runner 2', x: 0, y: 0 },
+            { label: 'Runner 3', x: 0, y: 0 }
+        ];
+
+        function getStageRect(i) {
+            const x = startX + i * (stageW + stageGap);
+            return { x, y: stageY, w: stageW, h: stageH };
+        }
+
+        // --- Drawing ---
+
+        function draw() {
+            ctx.clearRect(0, 0, W, H); // Clear transparency
+            // No background fill -> transparent to show CSS background
+
+            // Grid (lighter)
+            ctx.strokeStyle = 'rgba(255, 255, 255, 0.03)';
+            ctx.lineWidth = 1;
+            const step = 30;
+            for (let x = 0; x < W; x += step) {
+                ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, H); ctx.stroke();
+            }
+            for (let y = 0; y < H; y += step) {
+                ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+            }
+
+            drawTitle();
+            drawConnectors();
+            drawStages();
+            drawRunnerNodes();
+            drawParticle();
+            drawTooltip();
+        }
+
+        function drawTitle() {
+            ctx.font = 'bold 14px ' + themeFonts;
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.4)';
+            ctx.fillText('ASSET PIPELINE', W / 2, 30);
+
+            // Source file icon
+            ctx.font = '22px ' + themeFonts;
+            ctx.textAlign = 'center';
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.55)';
+            ctx.fillText('\uD83D\uDCC1', startX - 40, stageY + stageH / 2 + 6);
+            ctx.font = '9px ' + themeFonts;
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.45)';
+            ctx.fillText('Source File', startX - 40, stageY + stageH / 2 + 24);
+        }
+
+        function drawConnectors() {
+            for (let i = 0; i < stages.length - 1; i++) {
+                const r1 = getStageRect(i);
+                const r2 = getStageRect(i + 1);
+                const fromX = r1.x + r1.w;
+                const toX = r2.x;
+                const y = stageY + stageH / 2;
+
+                const isActive = (animPhase > i) || (animPhase === i && animProgress > 0.8);
+                const alpha = isActive ? 0.8 : 0.2;
+
+                ctx.strokeStyle = `rgba(255, 255, 255, ${alpha})`;
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(fromX + 4, y);
+                ctx.lineTo(toX - 12, y);
+                ctx.stroke();
+
+                ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+                ctx.beginPath();
+                ctx.moveTo(toX - 4, y);
+                ctx.lineTo(toX - 14, y - 6);
+                ctx.lineTo(toX - 14, y + 6);
+                ctx.closePath();
+                ctx.fill();
+
+                if (animPhase === i && animProgress > 0.7) {
+                    const dashProgress = (animProgress - 0.7) / 0.3;
+                    const dx = toX - fromX;
+                    const px = fromX + 4 + dx * dashProgress;
+                    ctx.fillStyle = stages[i].color;
+                    ctx.beginPath();
+                    ctx.arc(px, y, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            const r0 = getStageRect(0);
+            const entryFromX = startX - 20;
+            const entryToX = r0.x;
+            const entryY = stageY + stageH / 2;
+            const entryActive = animPhase >= 0;
+            const entryAlpha = entryActive ? 0.7 : 0.2;
+
+            ctx.strokeStyle = `rgba(255, 255, 255, ${entryAlpha})`;
+            ctx.lineWidth = 2;
+            ctx.setLineDash([4, 4]);
+            ctx.beginPath();
+            ctx.moveTo(entryFromX, entryY);
+            ctx.lineTo(entryToX - 8, entryY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+        }
+
+        function drawStages() {
+            for (let i = 0; i < stages.length; i++) {
+                const stage = stages[i];
+                const rect = getStageRect(i);
+                const isActive = (animPhase === i);
+                const isCompleted = (animPhase > i);
+                const isHovered = (hoverStage === i);
+
+                const boxAlpha = isActive ? 0.3 : isCompleted ? 0.2 : 0.08;
+                const borderAlpha = isActive ? 0.9 : isCompleted ? 0.6 : isHovered ? 0.4 : 0.2;
+
+                if (isActive) {
+                    ctx.shadowColor = stage.color;
+                    ctx.shadowBlur = 15;
+                }
+
+                roundRect(ctx, rect.x, rect.y, rect.w, rect.h, 10);
+                ctx.fillStyle = hexToRgba(stage.color, boxAlpha);
+                ctx.fill();
+                ctx.strokeStyle = hexToRgba(stage.color, borderAlpha);
+                ctx.lineWidth = isActive ? 2 : 1;
+                ctx.stroke();
+
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+
+                // Progress bar
+                if (isActive) {
+                    const barY = rect.y + rect.h - 8;
+                    const barPad = 12;
+                    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                    roundRect(ctx, rect.x + barPad, barY, rect.w - barPad * 2, 3, 2);
+                    ctx.fill();
+                    ctx.fillStyle = hexToRgba(stage.color, 0.8);
+                    const fillW = (rect.w - barPad * 2) * animProgress;
+                    if (fillW > 0) {
+                        roundRect(ctx, rect.x + barPad, barY, fillW, 3, 2);
+                        ctx.fill();
+                    }
+                }
+
+                // Checkmark
+                if (isCompleted) {
+                    ctx.font = '14px ' + themeFonts;
+                    ctx.textAlign = 'right';
+                    ctx.fillStyle = '#22c55e';
+                    ctx.fillText('\u2713', rect.x + rect.w - 8, rect.y + 18);
+                }
+
+                // Number
+                ctx.font = 'bold 10px ' + themeFonts;
+                ctx.textAlign = 'left';
+                ctx.fillStyle = hexToRgba(stage.color, isActive || isCompleted ? 0.9 : 0.5);
+                ctx.fillText((i + 1).toString(), rect.x + 10, rect.y + 16);
+
+                // Icon
+                ctx.font = '26px ' + themeFonts;
+                ctx.textAlign = 'center';
+                ctx.fillStyle = hexToRgba(stage.color, isActive ? 1 : isCompleted ? 0.85 : 0.6);
+                ctx.fillText(stage.icon, rect.x + rect.w / 2, rect.y + 50);
+
+                // Label
+                ctx.font = 'bold 12px ' + themeFonts;
+                ctx.textAlign = 'center';
+                ctx.fillStyle = isActive || isCompleted ? 'rgba(255,255,255,0.95)' : 'rgba(255,255,255,0.7)';
+                ctx.fillText(stage.label, rect.x + rect.w / 2, rect.y + 72);
+
+                // Description
+                ctx.font = '10px ' + themeFonts;
+                ctx.fillStyle = 'rgba(255,255,255,0.5)';
+                const descLines = stage.desc.split('\n');
+                for (let l = 0; l < descLines.length; l++) {
+                    ctx.fillText(descLines[l], rect.x + rect.w / 2, rect.y + 88 + l * 13);
+                }
+            }
+        }
+
+        function drawRunnerNodes() {
+            const distRect = getStageRect(3);
+            const runnerW = 80;
+            const runnerH = 36;
+            const runnerGap = 12;
+            const totalRunnersW = runners.length * runnerW + (runners.length - 1) * runnerGap;
+            const runnerStartX = distRect.x + (distRect.w - totalRunnersW) / 2;
+            const runnerY = distRect.y + distRect.h + 50;
+
+            const isDistActive = (animPhase === 3);
+            const isDistDone = (animPhase > 3);
+
+            for (let i = 0; i < runners.length; i++) {
+                const rx = runnerStartX + i * (runnerW + runnerGap);
+                const ry = runnerY;
+                runners[i].x = rx + runnerW / 2;
+                runners[i].y = ry + runnerH / 2;
+
+                const fillProgress = isDistActive ? Math.max(0, Math.min(1, (animProgress - i * 0.15) / 0.6)) : (isDistDone ? 1 : 0);
+
+                // Line
+                const lineFromX = distRect.x + distRect.w / 2;
+                const lineFromY = distRect.y + distRect.h;
+                const lineToX = rx + runnerW / 2;
+                const lineToY = ry;
+                const lineAlpha = fillProgress > 0 ? 0.6 : 0.2;
+
+                ctx.strokeStyle = `rgba(251, 146, 60, ${lineAlpha})`;
+                ctx.lineWidth = 1;
+                ctx.beginPath();
+                ctx.moveTo(lineFromX, lineFromY + 4);
+                ctx.quadraticCurveTo(lineFromX, (lineFromY + lineToY) / 2, lineToX, lineToY - 2);
+                ctx.stroke();
+
+                // Dot
+                if (isDistActive && fillProgress > 0 && fillProgress < 1) {
+                    const t = fillProgress;
+                    const cx = lineFromX + (lineToX - lineFromX) * t;
+                    const bcy = (lineFromY + lineToY) / 2;
+                    const cy = (1 - t) * (1 - t) * (lineFromY + 4) + 2 * (1 - t) * t * bcy + t * t * (lineToY - 2);
+                    ctx.fillStyle = '#fb923c';
+                    ctx.beginPath();
+                    ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+
+                // Runner Box
+                const boxAlpha = fillProgress > 0 ? 0.25 : 0.1;
+                const borderAlpha = fillProgress > 0 ? 0.6 : 0.2;
+
+                ctx.fillStyle = `rgba(251, 146, 60, ${boxAlpha})`;
+                roundRect(ctx, rx, ry, runnerW, runnerH, 6);
+                ctx.fill();
+                ctx.strokeStyle = `rgba(251, 146, 60, ${borderAlpha})`;
+                ctx.stroke();
+
+                // Progress Fill
+                if (fillProgress > 0 && fillProgress < 1) {
+                    ctx.save();
+                    roundRect(ctx, rx, ry, runnerW, runnerH, 6);
+                    ctx.clip();
+                    ctx.fillStyle = 'rgba(251, 146, 60, 0.15)';
+                    ctx.fillRect(rx, ry, runnerW * fillProgress, runnerH);
+                    ctx.restore();
+                }
+
+                // Checkmark
+                if (fillProgress >= 1) {
+                    ctx.font = '11px ' + themeFonts;
+                    ctx.textAlign = 'right';
+                    ctx.fillStyle = '#22c55e';
+                    ctx.fillText('\u2713', rx + runnerW - 5, ry + 14);
+                }
+
+                // Text
+                ctx.font = '10px ' + themeFonts;
+                ctx.textAlign = 'center';
+                ctx.fillStyle = fillProgress > 0 ? 'rgba(255,255,255,0.85)' : 'rgba(255,255,255,0.5)';
+                ctx.fillText(runners[i].label, rx + runnerW / 2, ry + runnerH / 2 + 4);
+            }
+        }
+
+        function drawParticle() {
+            if (animPhase < 0 || animPhase > 3) return;
+
+            const rect = getStageRect(animPhase);
+            const cx = rect.x + rect.w / 2;
+            const cy = rect.y - 20;
+            const pulse = Math.sin(performance.now() * 0.005) * 0.3 + 0.7;
+            const stage = stages[animPhase];
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, 6 * pulse, 0, Math.PI * 2);
+            ctx.fillStyle = hexToRgba(stage.color, 0.6 * pulse);
+            ctx.fill();
+
+            ctx.beginPath();
+            ctx.arc(cx, cy, 3, 0, Math.PI * 2);
+            ctx.fillStyle = stage.color;
+            ctx.fill();
+        }
+
+        function drawTooltip() {
+            if (hoverStage < 0 || hoverStage >= stages.length) return;
+
+            const stage = stages[hoverStage];
+            const rect = getStageRect(hoverStage);
+            const lines = stage.detail.split('\n');
+            const lineH = 16;
+            const padX = 14;
+            const padY = 10;
+            const tipW = 220;
+            const tipH = padY * 2 + lines.length * lineH;
+
+            let tipX = rect.x + rect.w / 2 - tipW / 2;
+            let tipY = rect.y - tipH - 16;
+
+            if (tipX < 8) tipX = 8;
+            if (tipX + tipW > W - 8) tipX = W - 8 - tipW;
+            if (tipY < 8) tipY = rect.y + rect.h + 12;
+
+            // Tooltip Background (Glass)
+            ctx.fillStyle = 'rgba(15, 23, 42, 0.9)';
+            ctx.strokeStyle = hexToRgba(stage.color, 0.4);
+            ctx.lineWidth = 1;
+
+            roundRect(ctx, tipX, tipY, tipW, tipH, 8);
+            ctx.fill();
+            ctx.stroke();
+
+            // Text
+            ctx.font = '11px ' + themeFonts;
+            ctx.textAlign = 'left';
+            ctx.fillStyle = 'rgba(255,255,255,0.9)';
+            for (let l = 0; l < lines.length; l++) {
+                ctx.fillText(lines[l], tipX + padX, tipY + padY + 12 + l * lineH);
+            }
+        }
+
+        // --- Helpers ---
+
+        function hexToRgba(hex, alpha) {
+            const r = parseInt(hex.slice(1, 3), 16);
+            const g = parseInt(hex.slice(3, 5), 16);
+            const b = parseInt(hex.slice(5, 7), 16);
+            return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+        }
+
+        function roundRect(ctx, x, y, w, h, r) {
+            ctx.beginPath();
+            ctx.moveTo(x + r, y);
+            ctx.lineTo(x + w - r, y);
+            ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+            ctx.lineTo(x + w, y + h - r);
+            ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+            ctx.lineTo(x + r, y + h);
+            ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+            ctx.lineTo(x, y + r);
+            ctx.quadraticCurveTo(x, y, x + r, y);
+            ctx.closePath();
+        }
+
+        function updateStateBadge(text, color) {
+            stateBadge.textContent = text;
+            stateBadge.style.background = 'var(--input-bg)';
+            stateBadge.style.color = 'var(--text-muted)';
+            stateBadge.style.borderColor = 'var(--border-subtle)';
+
+            if (color === 'green') {
+                stateBadge.style.background = 'rgba(34, 197, 94, 0.2)';
+                stateBadge.style.color = '#22c55e';
+                stateBadge.style.borderColor = 'rgba(34, 197, 94, 0.3)';
+            } else if (color === 'blue') {
+                stateBadge.style.background = 'rgba(96, 165, 250, 0.2)';
+                stateBadge.style.color = '#60a5fa';
+                stateBadge.style.borderColor = 'rgba(96, 165, 250, 0.3)';
+            } else if (color === 'purple') {
+                stateBadge.style.background = 'rgba(167, 139, 250, 0.2)';
+                stateBadge.style.color = '#a78bfa';
+                stateBadge.style.borderColor = 'rgba(167, 139, 250, 0.3)';
+            } else if (color === 'orange') {
+                stateBadge.style.background = 'rgba(251, 146, 60, 0.2)';
+                stateBadge.style.color = '#fb923c';
+                stateBadge.style.borderColor = 'rgba(251, 146, 60, 0.3)';
+            }
+        }
+
+        // --- Animation ---
+        const phaseDurations = [1.8, 3.0, 1.5, 2.5];
+
+        function startSimulation() {
+            if (isRunning) return;
+            isRunning = true;
+            animPhase = 0;
+            animProgress = 0;
+            animStartTime = performance.now();
+            updateStateBadge('Uploading', 'blue');
+            tick();
+        }
+
+        function resetSimulation() {
+            isRunning = false;
+            animPhase = -1;
+            animProgress = 0;
+            if (animRAF) {
+                cancelAnimationFrame(animRAF);
+                animRAF = null;
+            }
+            updateStateBadge('Idle', 'default');
+            draw();
+        }
+
+        function tick() {
+            if (!isRunning) return;
+            const now = performance.now();
+            const elapsed = (now - animStartTime) / 1000;
+            const phaseDur = phaseDurations[animPhase] || 2;
+            animProgress = Math.min(1, elapsed / phaseDur);
+
+            draw();
+
+            if (animProgress >= 1) {
+                animPhase++;
+                animProgress = 0;
+                animStartTime = performance.now();
+
+                if (animPhase >= stages.length) {
+                    animPhase = stages.length;
+                    isRunning = false;
+                    updateStateBadge('Complete', 'green');
+                    draw();
+                    return;
+                }
+                const stateNames = ['Uploading', 'Optimizing', 'Storing', 'Distributing'];
+                const stateColors = ['blue', 'purple', 'green', 'orange'];
+                updateStateBadge(stateNames[animPhase], stateColors[animPhase]);
+            }
+            animRAF = requestAnimationFrame(tick);
+        }
+
+        // --- Interaction ---
+        function getCanvasCoords(e) {
+            const rect = canvas.getBoundingClientRect();
+            const scaleX = W / rect.width;
+            const scaleY = H / rect.height;
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: (clientX - rect.left) * scaleX,
+                y: (clientY - rect.top) * scaleY
+            };
+        }
+
+        function findHoverStage(mx, my) {
+            for (let i = 0; i < stages.length; i++) {
+                const r = getStageRect(i);
+                if (mx >= r.x && mx <= r.x + r.w && my >= r.y && my <= r.y + r.h) return i;
+            }
+            return -1;
+        }
+
+        canvas.addEventListener('pointermove', (e) => {
+            const { x, y } = getCanvasCoords(e);
+            const prev = hoverStage;
+            hoverStage = findHoverStage(x, y);
+            canvas.style.cursor = hoverStage >= 0 ? 'pointer' : 'default';
+            if (hoverStage !== prev) draw();
+        });
+
+        canvas.addEventListener('pointerleave', () => {
+            hoverStage = -1;
+            draw();
+        });
+
+        canvas.addEventListener('pointerdown', (e) => {
+            const { x, y } = getCanvasCoords(e);
+            const clicked = findHoverStage(x, y);
+            if (clicked >= 0 && !isRunning) {
+                animPhase = clicked;
+                animProgress = 0.5;
+                const stateNames = ['Uploading', 'Optimizing', 'Storing', 'Distributing'];
+                const stateColors = ['blue', 'purple', 'green', 'orange'];
+                updateStateBadge(stateNames[clicked], stateColors[clicked]);
+                draw();
+            }
+        });
+
+        playBtn.addEventListener('click', () => {
+            resetSimulation();
+            setTimeout(() => startSimulation(), 100);
+        });
+        resetBtn.addEventListener('click', () => resetSimulation());
+
+        draw();
+    })();
+</script>
+
+<div class='warning-box'><p>Only one Asset Manager can serve a show at a time. If the Asset Manager node goes offline, no new assets can be added, optimized, or distributed until it is restored. Plan your network topology accordingly — the Asset Manager node should be your most reliable machine.
+</p></div>
+
+<h3>Optimization Priority</h3>
+
+<p>The optimizer processes assets in a priority order based on type. Assets that are least efficient to stream in their raw form are prioritized highest:</p>
+
+<table>
+<tr><th>Priority</th><th>Asset Type</th><th>Reason</th></tr>
+<tr><td>Highest</td><td>Image</td><td>Small, fast to optimize — clear the queue quickly</td></tr>
+<tr><td>High</td><td>Other (Model, Font, etc.)</td><td>Lightweight processing</td></tr>
+<tr><td>Medium</td><td>Audio</td><td>Moderate processing time</td></tr>
+<tr><td>Low</td><td>Video</td><td>Longer transcoding, but source is already streamable</td></tr>
+<tr><td>Lowest</td><td>Image Sequence</td><td>Thousands of individual frames require the most processing time</td></tr>
+</table>
+
+<p>This ordering ensures that quick-to-process assets are available sooner, while long-running video and sequence optimizations proceed in the background.</p>
+
+<h3>The Assets Window</h3>
+
+<p>The Assets window is the primary interface for browsing and managing media. Open it from <strong>Window → Assets</strong> or press <strong>Ctrl+2</strong>.</p>
+
+<p><!-- screenshot: Assets window overview showing toolbar, search bar, tree table with folders and assets --></p>
+
+<p>The window displays assets in a tree table with the following default columns:</p>
+
+<ul>
+<li><strong>Name</strong> — file name, with an icon indicating asset type and status.</li>
+<li><strong>Image</strong> — thumbnail preview (shown for video, image, SVG, composition, and font assets).</li>
+<li><strong>Dimensions</strong> — pixel resolution (width × height) or 3D bounding box.</li>
+<li><strong>Duration</strong> — length for video and audio assets (HH:MM:SS.ms).</li>
+<li><strong>Date</strong> — creation or modification timestamp.</li>
+
+</ul>
+
+<p>Additional columns can be enabled from the column menu (gear icon in the top-right corner):</p>
+
+<ul>
+<li><strong>Type</strong> — the asset kind (Video, Image, Audio, etc.).</li>
+<li><strong>FPS</strong> — frame rate for video assets.</li>
+<li><strong>Codec</strong> — the optimized or original codec name.</li>
+<li><strong>Color Space</strong> — color space and transfer function (e.g. Rec. 709, sRGB, Rec. 2100 PQ).</li>
+<li><strong>Channels</strong> — audio channel count.</li>
+<li><strong>Original Path</strong> — the source file location on disk.</li>
+
+</ul>
+
+<h3>Asset Status Indicators</h3>
+
+<p>Each asset displays a status icon next to its name:</p>
+
+<ul>
+<li><strong>Star</strong> — the asset is new (not yet clicked or viewed since it was added).</li>
+<li><strong>Hourglass</strong> — the asset is pending optimization (waiting in the queue).</li>
+<li><strong>Upload arrow</strong> — the asset is currently being uploaded to the Asset Manager.</li>
+<li><strong>Gears</strong> — the asset is currently being optimized.</li>
+<li><strong>Recycle icon</strong> — the asset is a dynamic (auto-updating) asset.</li>
+<li><strong>Progress bar</strong> — a linear progress bar appears beneath the name during upload or optimization.</li>
+
+</ul>
+
+<p>Assets that failed to optimize are shown with a <strong>red name</strong>. Select the asset and check the Properties panel for error details — the <code>Fail</code> state includes a specific error message from the optimizer.</p>
+
+<h3>Missing Assets</h3>
+
+<p>An asset is considered <strong>missing</strong> when the Asset Manager can no longer locate its original source file — typically because the file was moved, renamed, or deleted from disk. Missing assets are shown with a <strong>warning indicator</strong> in the Assets window, making them easy to identify before showtime.</p>
+
+<p>Missing assets cannot be re-optimized or re-distributed. To resolve, either restore the original file to its expected path, or re-add the correct source file and update any cues that reference the missing asset.</p>
+
+<h3>Creating Asset Versions</h3>
+
+<p><strong>Create Version</strong> is available as a standalone action in the Assets window context menu (<strong>New → Create Version</strong>). It clones the selected asset with a new name, allowing you to maintain multiple content variants for the same cue slot — for example, different language versions of a title card or alternate color grades of a video. Asset versions share the same cue references, making it easy to swap between variants without re-building the timeline.</p>
+
+<h3>Adding Assets</h3>
+
+<p>There are several ways to add media to a show:</p>
+
+<ul>
+<li><strong>Drag and drop</strong> — drag files directly from your file manager into the Assets window. Drop onto a folder row to place them in that folder.</li>
+<li><strong>Add Media File</strong> — right-click in the Assets window and choose <strong>New → Add Media File</strong>, or use the menu shortcut. A file browser opens to select one or more files.</li>
+<li><strong>Add Image Sequence</strong> — right-click and choose <strong>New → Add Image Sequence</strong>, then select the folder containing the numbered frames (see <a href="image-sequences.html">Image Sequences</a>).</li>
+<li><strong>Asset Watcher</strong> — configure watched folders that automatically import new or changed files (see <a href="asset-watcher.html">Asset Watcher</a>).</li>
+<li><strong>Web User Interface</strong> — upload files remotely through the browser-based interface at <code>http://<asset-manager-ip>:3023</code> (see <a href="web-user-interface.html">Web User Interface</a>).</li>
+
+</ul>
+
+<div class='info-box'><p>When a single folder or dynamic asset is selected, newly added files are placed inside that folder automatically.
+</p></div>
+
+<h3>Organizing Assets with Folders</h3>
+
+<p>Create folders to keep large shows organized:</p>
+
+<ol>
+<li>Right-click in the Assets window and choose <strong>New → New Folder</strong>.</li>
+<li>Enter a name and press <strong>OK</strong>.</li>
+<li>Drag assets into the folder to move them.</li>
+
+</ol>
+
+<p>Folder operations:</p>
+
+<ul>
+<li><strong>Collapse All Folders</strong> / <strong>Expand All Folders</strong> — available from the context menu to quickly navigate large asset trees.</li>
+<li><strong>Drag and drop reorder</strong> — drag assets or folders to reorder them within the same parent.</li>
+<li>Folder open/closed states are remembered per-node and persist between sessions.</li>
+
+</ul>
+
+<div class='warning-box'><p>Composition and dynamic asset folders are special containers managed by the system. You cannot move assets into or out of composition folders, and dynamic asset folders enforce strict versioning rules. See <a href="dynamic-assets.html">Dynamic Assets</a> for details.
+</p></div>
+
+<h3>Searching and Filtering</h3>
+
+<p>Click the magnifying glass icon (or press <strong>Ctrl+F</strong> when the Assets window is active) to open the search panel.</p>
+
+<p><!-- screenshot: Search panel expanded, showing text field, type dropdown, and filter checkboxes --></p>
+
+<p>The search panel provides:</p>
+
+<ul>
+<li><strong>Text search</strong> — type one or more keywords. The list filters to assets whose name or folder path contains all keywords (case-insensitive).</li>
+<li><strong>Type filter</strong> — restrict results by asset type: All, Video, Image, Audio, Model, Other, Failed, Used, or Unused.</li>
+<li><strong>Only New</strong> — show only assets that haven't been viewed yet.</li>
+<li><strong>Only Selected Cues</strong> — show only assets referenced by currently selected cues.</li>
+<li><strong>Preparing</strong> — show only assets that are currently uploading or optimizing.</li>
+
+</ul>
+
+<p>When a search or type filter is active, folders expand automatically so matching assets are visible. Press <strong>Escape</strong> to clear the search and restore the previous folder state.</p>
+
+<h3>Sorting</h3>
+
+<p>Click any sortable column header to sort the asset list by that column. Click again to reverse the sort direction. When a column sort is active, the tree view temporarily flattens into a flat list — folder hierarchy is restored when sorting is cleared.</p>
+
+<h3>Context Menu</h3>
+
+<p>Right-click in the Assets window to access:</p>
+
+<ul>
+<li><strong>New</strong> — create folders, shapes (Rectangle, Ellipse, Text), Art-Net fixtures, dynamic assets, or asset versions.</li>
+<li><strong>Delete</strong> — remove selected assets (with confirmation). Assets currently in use on the timeline require additional confirmation.</li>
+<li><strong>Find Cues</strong> — select all cues on the timeline that reference the selected asset(s).</li>
+<li><strong>Collapse/Expand All Folders</strong> — toggle folder visibility.</li>
+<li><strong>Asset Manager Settings</strong> — open the codec and optimization settings dialog (see <a href="asset-manager-settings.html">Asset Manager Settings</a>).</li>
+<li><strong>Transfer Assets</strong> — export selected or all assets, import from another location, or cache assets on specific Runners (see <a href="asset-transfer.html">Asset Transfer</a> and <a href="import-export-and-mapping.html">Import, Export, and Mapping</a>).</li>
+<li><strong>Asset Web</strong> — open the web-based asset management interface in your browser.</li>
+
+</ul>
+
+<h3>Keyboard Navigation</h3>
+
+<table>
+<tr><th>Key</th><th>Action</th></tr>
+<tr><td><strong>Up / Down arrows</strong></td><td>Move selection through the asset list</td></tr>
+<tr><td><strong>Left / Right arrows</strong></td><td>Collapse or expand folders</td></tr>
+<tr><td><strong>Home / End</strong></td><td>Jump to the first or last asset</td></tr>
+<tr><td><strong>Enter</strong></td><td>Open the Properties panel for the selected asset</td></tr>
+<tr><td><strong>Delete</strong></td><td>Delete the selected asset(s)</td></tr>
+<tr><td><strong>Escape</strong></td><td>Clear the search and deselect all assets</td></tr>
+<tr><td><strong>Ctrl+A</strong></td><td>Select all visible assets</td></tr>
+<tr><td><strong>Ctrl+F</strong></td><td>Open the search panel</td></tr>
+</table>
+
+<h3>Relationship to Other Systems</h3>
+
+<p>The Asset Manager interacts with several other WATCHOUT components:</p>
+
+<table>
+<tr><th>Component</th><th>Interaction</th></tr>
+<tr><td><strong>Director</strong></td><td>Coordinates asset version upgrades across Runners; forwards show updates that reference new or changed assets</td></tr>
+<tr><td><strong>Runner</strong></td><td>Downloads optimized assets from the Asset Manager; uses previously downloaded versions as substitutes while new versions transfer</td></tr>
+<tr><td><strong>Producer</strong></td><td>Provides the UI for the Assets window; sends add/delete/organize commands to the Asset Manager</td></tr>
+<tr><td><strong>Optimizer</strong></td><td>Runs as a subprocess of the Asset Manager; transcodes source files to playback codecs</td></tr>
+<tr><td><strong>Web UI</strong></td><td>Embedded web server (port 3023) serving an upload and browse interface</td></tr>
+<tr><td><strong>Asset Watcher</strong></td><td>Monitors file system folders for new/changed files and triggers automatic import</td></tr>
+</table>
+
+<p>The Asset Manager also exposes a <strong>Server-Sent Events (SSE)</strong> endpoint at <code>/sse</code> that provides real-time state updates to connected clients (including the Producer's Assets window). A heartbeat ping is sent every 10 seconds to keep connections alive.</p>
+
+<h3>Best Practices</h3>
+
+<ul>
+<li><strong>Name assets consistently.</strong> Establish a naming convention early (e.g., <code>SCENE_ELEMENT_VERSION.ext</code>) and enforce it across the team. Consistent naming makes search filters effective and keeps large asset trees navigable.</li>
+
+<p><li><strong>Organize by scene or zone, not by type.</strong> Grouping assets by where they appear in the show (e.g., <code>Act1/</code>, <code>Lobby/</code>, <code>MainStage/</code>) is generally more useful than grouping by format (e.g., <code>Videos/</code>, <code>Images/</code>), since you typically work on one scene at a time.</li></p>
+
+<p><li><strong>Pre-optimize before show day.</strong> Large shows with hundreds of video assets can take hours to optimize. Add all media well before the first rehearsal and verify that every asset reaches the <code>Ok</code> state. Do not rely on real-time optimization during a live event.</li></p>
+
+<p><li><strong>Plan disk space.</strong> HAP-encoded video is significantly larger than the source file (typically 3–10× larger depending on codec and quality). Ensure the Asset Manager node and all Runners have sufficient storage. Use the asset footprint information (exclusive + shared bytes) to estimate requirements.</li></p>
+
+<p><li><strong>Use the dedicated network.</strong> Asset transfers saturate network bandwidth. Isolate WATCHOUT traffic on a dedicated network segment, and use 10 Gbps links for large shows.</li></p>
+
+<p><li><strong>Monitor optimization status.</strong> Use the <strong>Preparing</strong> filter to watch for assets stuck in the optimization queue. A red asset name indicates a failure — check the error in the Properties panel and re-add the asset or change codec settings.</li></p>
+
+</ul>
+
+<h3>Troubleshooting</h3>
+
+<table>
+<tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
+<tr><td>Asset stays in <code>Optimizing</code> state indefinitely</td><td>The optimizer process may have crashed or the source file is corrupt</td><td>Check the Runner logs for optimizer errors; try re-adding the asset; verify the source file plays in a media player</td></tr>
+<tr><td>Asset name is red (failed state)</td><td>The optimizer could not process the source file — unsupported codec, corrupt data, or insufficient disk space</td><td>Open the Properties panel to read the specific error message; re-encode the source in a supported format; check disk space</td></tr>
+<tr><td>Assets not appearing on Runners</td><td>Transfer has not started (show not online) or bandwidth limit is too restrictive</td><td>Verify the show is online; check bandwidth limit in <a href="asset-manager-settings.html">Asset Manager Settings</a>; verify network connectivity to each Runner</td></tr>
+<tr><td>Uploaded file via Web UI doesn't appear</td><td>Upload still in progress, or browser connection was interrupted</td><td>Check the web UI at <code>http://<asset-manager-ip>:3023</code> for upload status; retry the upload; check that the Asset Manager service is running</td></tr>
+<tr><td>Duplicate assets after re-import</td><td>Assets imported from an export package already exist in the show</td><td>Use the asset UUID to identify duplicates; delete the older copies after verifying the new ones are fully optimized</td></tr>
+<tr><td>Optimization is very slow</td><td>Large video files or image sequences with thousands of frames</td><td>This is expected behavior — see the <a href="#optimization-priority">optimization priority table</a>. Pre-optimize overnight for large shows</td></tr>
+</table></div><div class="section-nav">
+                <a href="index.html" class="nav-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                    Previous
+                </a>
+                <a href="asset-types.html" class="nav-btn">
+                    Next
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24"
+                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round">
+                        <polyline points="9 18 15 12 9 6"></polyline>
+                    </svg>
+                </a></div>
+                </div>
+            </article>
+
+            <footer class="content-footer">
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+            </footer>
+        </main>
+    </div>
+
+    <!-- Mobile overlay -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+    <script>var wikiBasePath = '../';</script>
+    <script src="../config.js"></script>
+    <script src="../toc-data.js"></script>
+    <script src="../content-data.js"></script>
+    <script src="../app.js"></script>
+    
+    <script>
+        (function() {
+            var sw = document.getElementById('guide-switcher');
+            var btn = document.getElementById('guide-switcher-toggle');
+            if (!sw || !btn) return;
+            btn.addEventListener('click', function(e) { e.stopPropagation(); sw.classList.toggle('open'); });
+            document.addEventListener('click', function(e) { if (!sw.contains(e.target)) sw.classList.remove('open'); });
+        })();
+    </script>
+</body>
+</html>

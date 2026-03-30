@@ -1,0 +1,616 @@
+<div class="interactive-widget" id="blend-mode-widget">
+
+    <div style="font-size:0.85rem; font-weight:600; letter-spacing:0.02em; text-transform:uppercase; color:var(--text-primary, #f8fafc); margin-bottom:14px;">Blend Mode Preview</div>
+
+    <div class="widget-controls" style="display:flex; align-items:center; gap:16px; margin-bottom:20px; flex-wrap:wrap;">
+        <div>
+            <label style="display:block; margin-bottom:5px; font-weight:500; font-size:0.9rem;">Blend Mode</label>
+            <select id="bm-select"
+                style="padding:8px 12px; border-radius:4px; background:var(--input-bg); border:1px solid var(--border-subtle); color:var(--text-primary); font-size:0.95rem; min-width:160px;">
+                <option value="normal">Normal</option>
+                <option value="add">Add</option>
+                <option value="multiply">Multiply</option>
+                <option value="screen">Screen</option>
+                <option value="lighten">Lighten</option>
+                <option value="darken">Darken</option>
+                <option value="linear-burn">Linear Burn</option>
+            </select>
+        </div>
+        <div id="bm-mode-desc"
+            style="font-size:0.85rem; color:var(--text-secondary); max-width:420px; line-height:1.4; padding-top:20px;"></div>
+    </div>
+
+    <!-- Canvas previews: 2-row grid so symbols align exactly with canvas row -->
+    <div style="display:grid; grid-template-columns:1fr auto 1fr auto 1fr; grid-template-rows:auto auto; column-gap:12px; row-gap:0; margin-bottom:20px;">
+
+        <!-- Row 1: canvases + symbols -->
+        <canvas id="bm-canvas-bottom" width="280" height="180"
+            style="width:100%; border-radius:8px; border:1px solid var(--border-subtle); display:block; grid-column:1; grid-row:1;"></canvas>
+
+        <div style="color:var(--text-muted); font-size:1.4rem; display:flex; align-items:center; justify-content:center; grid-column:2; grid-row:1;">+</div>
+
+        <canvas id="bm-canvas-top" width="280" height="180"
+            style="width:100%; border-radius:8px; border:1px solid var(--border-subtle); display:block; grid-column:3; grid-row:1;"></canvas>
+
+        <div style="color:var(--text-muted); font-size:1.4rem; display:flex; align-items:center; justify-content:center; grid-column:4; grid-row:1;">=</div>
+
+        <canvas id="bm-canvas-result" width="280" height="180"
+            style="width:100%; border-radius:8px; border:2px solid var(--accent-primary); display:block; grid-column:5; grid-row:1;"></canvas>
+
+        <!-- Row 2: captions -->
+        <div style="text-align:center; grid-column:1; grid-row:2; margin-top:6px;">
+            <div style="font-size:0.82rem; color:var(--text-secondary);">Background layer</div>
+            <div id="bm-label-bottom" style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;"></div>
+        </div>
+
+        <div style="text-align:center; grid-column:3; grid-row:2; margin-top:6px;">
+            <div style="font-size:0.82rem; color:var(--text-secondary);">Overlay layer</div>
+            <div id="bm-label-top" style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;"></div>
+        </div>
+
+        <div style="text-align:center; grid-column:5; grid-row:2; margin-top:6px;">
+            <div style="font-size:0.82rem; font-weight:600; color:var(--text-primary);">Result</div>
+            <div id="bm-result-label" style="font-size:0.75rem; color:var(--text-muted); margin-top:2px;"></div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+(function () {
+
+    /* ── canvas handles ── */
+    const cBottom = document.getElementById('bm-canvas-bottom');
+    const cTop    = document.getElementById('bm-canvas-top');
+    const cResult = document.getElementById('bm-canvas-result');
+    const W = cBottom.width, H = cBottom.height;
+
+    /* ══════════════════════════════════════════════════════════════
+       SCENE A  —  Normal / Add / Screen
+       Bottom: dark stage, warm spotlight, performer silhouette
+       Top:    light burst / haze on black
+    ══════════════════════════════════════════════════════════════ */
+
+    function drawSceneA_bottom(canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, W, H);
+
+        // Deep charcoal void
+        ctx.fillStyle = '#0c0c13';
+        ctx.fillRect(0, 0, W, H);
+
+        // Floor warm reflection
+        const floor = ctx.createLinearGradient(0, H * 0.62, 0, H);
+        floor.addColorStop(0, 'rgba(50,35,10,0)');
+        floor.addColorStop(1, 'rgba(70,50,18,0.6)');
+        ctx.fillStyle = floor;
+        ctx.fillRect(0, H * 0.62, W, H * 0.38);
+
+        // Lighting truss bar
+        ctx.strokeStyle = 'rgba(85,75,55,0.4)';
+        ctx.lineWidth = 1.5;
+        ctx.beginPath(); ctx.moveTo(0, 26); ctx.lineTo(W, 26); ctx.stroke();
+        ctx.beginPath(); ctx.moveTo(0, 33); ctx.lineTo(W, 33); ctx.stroke();
+        for (let x = 8; x < W; x += 18) {
+            ctx.beginPath(); ctx.moveTo(x, 26); ctx.lineTo(x + 13, 33); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x + 13, 26); ctx.lineTo(x, 33); ctx.stroke();
+        }
+
+        // Fixture silhouettes on truss
+        [W * 0.2, W * 0.5, W * 0.8].forEach(fx => {
+            ctx.fillStyle = 'rgba(55,50,35,0.8)';
+            ctx.fillRect(fx - 5, 33, 10, 13);
+            ctx.fillRect(fx - 9, 46, 18, 6);
+        });
+
+        // Main spotlight cone (warm amber)
+        const cone = ctx.createRadialGradient(W * 0.5, H * 0.7, 5, W * 0.5, 46, H * 0.85);
+        cone.addColorStop(0,    'rgba(255,225,130,0.88)');
+        cone.addColorStop(0.25, 'rgba(255,185,65,0.42)');
+        cone.addColorStop(0.6,  'rgba(210,130,25,0.14)');
+        cone.addColorStop(1,    'rgba(0,0,0,0)');
+        ctx.fillStyle = cone;
+        ctx.fillRect(0, 0, W, H);
+
+        // Cool fill from stage-left
+        const fill = ctx.createRadialGradient(0, H * 0.5, 0, 0, H * 0.5, W * 0.65);
+        fill.addColorStop(0,   'rgba(75,115,200,0.24)');
+        fill.addColorStop(1,   'rgba(0,0,0,0)');
+        ctx.fillStyle = fill;
+        ctx.fillRect(0, 0, W, H);
+
+        // Performer silhouette centre-stage
+        drawPerformer(ctx, W * 0.5, H);
+    }
+
+    function drawPerformer(ctx, cx, baseY) {
+        const s = 0.6;
+        ctx.fillStyle = 'rgba(8,6,4,0.95)';
+        // torso
+        ctx.beginPath();
+        ctx.ellipse(cx, baseY - 50*s, 13*s, 27*s, 0, 0, Math.PI*2);
+        ctx.fill();
+        // head
+        ctx.beginPath();
+        ctx.arc(cx, baseY - 88*s, 10*s, 0, Math.PI*2);
+        ctx.fill();
+        // left leg
+        ctx.beginPath();
+        ctx.moveTo(cx - 7*s, baseY - 25*s);
+        ctx.lineTo(cx - 11*s, baseY);
+        ctx.lineTo(cx - 4*s,  baseY);
+        ctx.lineTo(cx,        baseY - 22*s);
+        ctx.fill();
+        // right leg
+        ctx.beginPath();
+        ctx.moveTo(cx + 7*s, baseY - 25*s);
+        ctx.lineTo(cx + 11*s, baseY);
+        ctx.lineTo(cx + 4*s,  baseY);
+        ctx.lineTo(cx,        baseY - 22*s);
+        ctx.fill();
+        // left arm (raised)
+        ctx.beginPath();
+        ctx.moveTo(cx - 13*s, baseY - 60*s);
+        ctx.lineTo(cx - 30*s, baseY - 38*s);
+        ctx.lineTo(cx - 26*s, baseY - 34*s);
+        ctx.lineTo(cx - 9*s,  baseY - 55*s);
+        ctx.fill();
+        // right arm (raised high)
+        ctx.beginPath();
+        ctx.moveTo(cx + 13*s, baseY - 62*s);
+        ctx.lineTo(cx + 34*s, baseY - 28*s);
+        ctx.lineTo(cx + 30*s, baseY - 24*s);
+        ctx.lineTo(cx + 9*s,  baseY - 57*s);
+        ctx.fill();
+    }
+
+    function drawSceneA_top(canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, W, H);
+
+        // Black base — real effects cue
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 0, W, H);
+
+        // Central white burst (moving head / gobo)
+        const burst = ctx.createRadialGradient(W*0.5, H*0.4, 0, W*0.5, H*0.4, W*0.52);
+        burst.addColorStop(0,    'rgba(255,255,255,1)');
+        burst.addColorStop(0.07, 'rgba(255,245,205,0.92)');
+        burst.addColorStop(0.2,  'rgba(255,205,105,0.58)');
+        burst.addColorStop(0.48, 'rgba(190,125,28,0.22)');
+        burst.addColorStop(1,    'rgba(0,0,0,0)');
+        ctx.fillStyle = burst;
+        ctx.fillRect(0, 0, W, H);
+
+        // Haze wisps
+        [[W*0.27, H*0.28, W*0.3], [W*0.73, H*0.52, W*0.26], [W*0.54, H*0.2, W*0.19]].forEach(([hx,hy,hr]) => {
+            const h = ctx.createRadialGradient(hx, hy, 0, hx, hy, hr);
+            h.addColorStop(0,   'rgba(200,212,255,0.3)');
+            h.addColorStop(0.5, 'rgba(165,182,255,0.12)');
+            h.addColorStop(1,   'rgba(0,0,0,0)');
+            ctx.fillStyle = h;
+            ctx.fillRect(0, 0, W, H);
+        });
+
+        // Crepuscular rays
+        ctx.save();
+        ctx.globalAlpha = 0.17;
+        [-0.38,-0.2,-0.07,0.07,0.2,0.38].forEach(angle => {
+            ctx.save();
+            ctx.translate(W*0.5, 0);
+            ctx.rotate(angle);
+            const ray = ctx.createLinearGradient(0, 0, 0, H*1.2);
+            ray.addColorStop(0,   'rgba(255,238,175,0.72)');
+            ray.addColorStop(0.5, 'rgba(255,228,148,0.16)');
+            ray.addColorStop(1,   'rgba(0,0,0,0)');
+            ctx.fillStyle = ray;
+            ctx.fillRect(-17, 0, 34, H*1.2);
+            ctx.restore();
+        });
+        ctx.restore();
+
+        // Off-centre secondary flare
+        const f2 = ctx.createRadialGradient(W*0.71, H*0.27, 0, W*0.71, H*0.27, W*0.17);
+        f2.addColorStop(0,   'rgba(255,255,210,0.68)');
+        f2.addColorStop(0.4, 'rgba(255,222,105,0.16)');
+        f2.addColorStop(1,   'rgba(0,0,0,0)');
+        ctx.fillStyle = f2;
+        ctx.fillRect(0, 0, W, H);
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       SCENE B  —  Multiply / Linear Burn
+       Bottom: sunlit architectural surface — warm stone wall with
+               daylight gradient and window apertures
+       Top:    shadow / grunge map on white — dark vignette edges,
+               shadow patches and ink-wash smears on bright base
+    ══════════════════════════════════════════════════════════════ */
+
+    function drawSceneB_bottom(canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, W, H);
+
+        // Warm sunlit base — creamy stone
+        const sky = ctx.createLinearGradient(0, 0, 0, H);
+        sky.addColorStop(0,   '#e8d5b0');
+        sky.addColorStop(0.6, '#d4b882');
+        sky.addColorStop(1,   '#c4a060');
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, W, H);
+
+        // Subtle horizontal mortar lines (brick-like)
+        ctx.strokeStyle = 'rgba(160,120,70,0.25)';
+        ctx.lineWidth = 1;
+        for (let y = 20; y < H; y += 22) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+        }
+        // Vertical mortar (offset per row)
+        for (let row = 0; row < Math.ceil(H/22); row++) {
+            const offset = (row % 2) * 40;
+            ctx.strokeStyle = 'rgba(160,120,70,0.18)';
+            for (let x = offset; x < W; x += 80) {
+                const y0 = row * 22, y1 = y0 + 22;
+                ctx.beginPath(); ctx.moveTo(x, y0); ctx.lineTo(x, y1); ctx.stroke();
+            }
+        }
+
+        // Bright sunlight patch from upper-right
+        const sun = ctx.createRadialGradient(W*0.88, 0, 0, W*0.88, 0, W*0.95);
+        sun.addColorStop(0,   'rgba(255,245,200,0.55)');
+        sun.addColorStop(0.5, 'rgba(255,220,140,0.18)');
+        sun.addColorStop(1,   'rgba(0,0,0,0)');
+        ctx.fillStyle = sun;
+        ctx.fillRect(0, 0, W, H);
+
+        // Three arched windows
+        [[W*0.18, H*0.42], [W*0.5, H*0.42], [W*0.82, H*0.42]].forEach(([wx, wy]) => {
+            const ww = W*0.14, wh = H*0.38;
+            // Dark interior
+            ctx.fillStyle = '#1a1010';
+            ctx.beginPath();
+            ctx.rect(wx - ww/2, wy - wh*0.55, ww, wh*0.55);
+            ctx.fill();
+            // Arch cap
+            ctx.beginPath();
+            ctx.arc(wx, wy - wh*0.55, ww/2, Math.PI, 0);
+            ctx.fill();
+            // Stone surround highlight
+            ctx.strokeStyle = 'rgba(220,185,120,0.6)';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.rect(wx - ww/2 - 3, wy - wh*0.55 - 2, ww + 6, wh*0.55 + 2);
+            ctx.stroke();
+        });
+    }
+
+    function drawSceneB_top(canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, W, H);
+
+        // White base (white = no effect in Multiply)
+        ctx.fillStyle = '#ffffff';
+        ctx.fillRect(0, 0, W, H);
+
+        // Edge vignette — darkens corners/borders like a shadow map
+        const vig = ctx.createRadialGradient(W/2, H/2, H*0.2, W/2, H/2, W*0.8);
+        vig.addColorStop(0,   'rgba(255,255,255,0)');
+        vig.addColorStop(0.6, 'rgba(80,60,40,0.0)');
+        vig.addColorStop(1,   'rgba(30,20,10,0.72)');
+        ctx.fillStyle = vig;
+        ctx.fillRect(0, 0, W, H);
+
+        // Soft top-edge shadow (as if from an overhang)
+        const topShadow = ctx.createLinearGradient(0, 0, 0, H*0.3);
+        topShadow.addColorStop(0,   'rgba(20,15,5,0.65)');
+        topShadow.addColorStop(0.5, 'rgba(40,30,10,0.25)');
+        topShadow.addColorStop(1,   'rgba(0,0,0,0)');
+        ctx.fillStyle = topShadow;
+        ctx.fillRect(0, 0, W, H*0.3);
+
+        // Cast shadow from left-side object (diagonal hard-edged shadow)
+        ctx.save();
+        ctx.globalAlpha = 0.45;
+        const castShadow = ctx.createLinearGradient(0, 0, W*0.38, 0);
+        castShadow.addColorStop(0,    'rgba(25,18,8,0.85)');
+        castShadow.addColorStop(0.55, 'rgba(60,45,20,0.4)');
+        castShadow.addColorStop(1,    'rgba(0,0,0,0)');
+        ctx.fillStyle = castShadow;
+        // Angled shadow shape
+        ctx.beginPath();
+        ctx.moveTo(0, 0);
+        ctx.lineTo(W*0.42, 0);
+        ctx.lineTo(W*0.28, H);
+        ctx.lineTo(0, H);
+        ctx.closePath();
+        ctx.fill();
+        ctx.restore();
+
+        // Ink-wash texture patches (grunge)
+        const patches = [
+            [W*0.6,  H*0.18, W*0.18, H*0.14, 0.28],
+            [W*0.38, H*0.7,  W*0.22, H*0.16, 0.22],
+            [W*0.78, H*0.62, W*0.14, H*0.18, 0.32],
+            [W*0.12, H*0.45, W*0.12, H*0.12, 0.2 ],
+        ];
+        patches.forEach(([px, py, pw, ph, alpha]) => {
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.fillStyle = '#2a1a08';
+            ctx.beginPath();
+            ctx.ellipse(px, py, pw, ph, 0.3, 0, Math.PI*2);
+            ctx.fill();
+            ctx.restore();
+        });
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       SCENE C  —  Lighten / Darken
+       Bottom: warm sunset sky — orange/pink gradient with horizon glow
+       Top:    cool blue city skyline silhouette
+    ══════════════════════════════════════════════════════════════ */
+
+    function drawSceneC_bottom(canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, W, H);
+
+        // Sunset gradient — deep red at top, warm amber/yellow at horizon
+        const sky = ctx.createLinearGradient(0, 0, 0, H);
+        sky.addColorStop(0,    '#1a0a2e');
+        sky.addColorStop(0.22, '#6b1a3a');
+        sky.addColorStop(0.48, '#cc4422');
+        sky.addColorStop(0.68, '#f07830');
+        sky.addColorStop(0.82, '#f8c040');
+        sky.addColorStop(1,    '#ffe880');
+        ctx.fillStyle = sky;
+        ctx.fillRect(0, 0, W, H);
+
+        // Bright solar disc near horizon
+        const sun = ctx.createRadialGradient(W*0.62, H*0.78, 0, W*0.62, H*0.78, W*0.22);
+        sun.addColorStop(0,    'rgba(255,255,200,0.95)');
+        sun.addColorStop(0.15, 'rgba(255,230,100,0.75)');
+        sun.addColorStop(0.45, 'rgba(255,160,40,0.3)');
+        sun.addColorStop(1,    'rgba(0,0,0,0)');
+        ctx.fillStyle = sun;
+        ctx.fillRect(0, 0, W, H);
+
+        // Horizon atmospheric glow
+        const glow = ctx.createLinearGradient(0, H*0.72, 0, H);
+        glow.addColorStop(0,   'rgba(255,200,80,0.35)');
+        glow.addColorStop(1,   'rgba(255,240,140,0.5)');
+        ctx.fillStyle = glow;
+        ctx.fillRect(0, H*0.72, W, H*0.28);
+
+        // Thin cloud streaks
+        ctx.save();
+        ctx.globalAlpha = 0.22;
+        [[W*0.1,H*0.18,W*0.38,6], [W*0.55,H*0.12,W*0.3,4], [W*0.2,H*0.3,W*0.22,3]].forEach(([cx,cy,cw,ch]) => {
+            const cloud = ctx.createLinearGradient(cx, cy, cx+cw, cy);
+            cloud.addColorStop(0,   'rgba(255,200,150,0)');
+            cloud.addColorStop(0.3, 'rgba(255,220,170,0.8)');
+            cloud.addColorStop(0.7, 'rgba(255,210,160,0.8)');
+            cloud.addColorStop(1,   'rgba(255,200,150,0)');
+            ctx.fillStyle = cloud;
+            ctx.fillRect(cx, cy, cw, ch);
+        });
+        ctx.restore();
+    }
+
+    function drawSceneC_top(canvas) {
+        const ctx = canvas.getContext('2d');
+        ctx.clearRect(0, 0, W, H);
+
+        // Deep blue sky fill — contrasts warmly with sunset
+        const bg = ctx.createLinearGradient(0, 0, 0, H);
+        bg.addColorStop(0,   '#060d1e');
+        bg.addColorStop(0.5, '#0d1e3c');
+        bg.addColorStop(1,   '#163058');
+        ctx.fillStyle = bg;
+        ctx.fillRect(0, 0, W, H);
+
+        // City skyline silhouette in cool teal-grey
+        const horizon = H * 0.55;
+        ctx.fillStyle = '#1a2e4a';
+
+        // Draw a varied skyline of buildings
+        const buildings = [
+            // [x, width, height-above-horizon]
+            [0,    30, 55], [28,  22, 72], [48,  18, 48],
+            [64,  14, 95], [76,  28, 62], [102, 20, 80],
+            [120, 16, 55], [134, 22, 105],[154, 18, 68],
+            [170, 24, 85], [192, 14, 52], [204, 20, 90],
+            [222, 16, 65], [236, 28, 78], [262, 18, 58],
+            [W-18,18, 70],
+        ];
+        buildings.forEach(([bx, bw, bh]) => {
+            ctx.fillRect(bx, horizon - bh, bw, bh + (H - horizon));
+        });
+
+        // Windows — small bright rectangles on buildings
+        ctx.fillStyle = 'rgba(160,200,255,0.55)';
+        buildings.forEach(([bx, bw, bh]) => {
+            const rows = Math.floor(bh / 14);
+            const cols = Math.max(1, Math.floor(bw / 7));
+            for (let r = 1; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    if (Math.sin(bx*r + c*7) > 0.1) { // pseudo-random lit windows
+                        ctx.fillRect(bx + c*7 + 2, horizon - bh + r*13 + 2, 4, 7);
+                    }
+                }
+            }
+        });
+
+        // Reflection in water at base — mirror ripple
+        const reflGrad = ctx.createLinearGradient(0, H*0.78, 0, H);
+        reflGrad.addColorStop(0,   'rgba(10,25,55,0.85)');
+        reflGrad.addColorStop(1,   'rgba(5,15,35,1)');
+        ctx.fillStyle = reflGrad;
+        ctx.fillRect(0, H*0.78, W, H*0.22);
+
+        // Faint horizontal ripple lines
+        ctx.strokeStyle = 'rgba(80,130,200,0.18)';
+        ctx.lineWidth = 1;
+        for (let y = H*0.8; y < H; y += 5) {
+            ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(W, y); ctx.stroke();
+        }
+
+        // Moon
+        ctx.fillStyle = 'rgba(220,235,255,0.9)';
+        ctx.beginPath();
+        ctx.arc(W*0.18, H*0.18, 10, 0, Math.PI*2);
+        ctx.fill();
+        // Crescent cut
+        ctx.fillStyle = '#0d1e3c';
+        ctx.beginPath();
+        ctx.arc(W*0.18 + 5, H*0.18 - 2, 9, 0, Math.PI*2);
+        ctx.fill();
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       MODE METADATA
+    ══════════════════════════════════════════════════════════════ */
+
+    const MODES = {
+        'normal':      {
+            label: 'Normal',
+            desc:  'Top layer fully replaces the bottom (standard alpha compositing).',
+            group: 'A',
+            bottomLabel: 'Stage scene & spotlight',
+            topLabel:    'Light burst / haze effect',
+        },
+        'add':         {
+            label: 'Add',
+            desc:  'RGB values are added — always brightens. Black in the overlay has no effect. Ideal for glow, fire, lens flares.',
+            group: 'A',
+            bottomLabel: 'Stage scene & spotlight',
+            topLabel:    'Light burst / haze effect',
+        },
+        'screen':      {
+            label: 'Screen',
+            desc:  'Inverse of Multiply — always lightens. Black in the overlay is transparent. Ideal for fog, haze, light rays.',
+            group: 'A',
+            bottomLabel: 'Stage scene & spotlight',
+            topLabel:    'Light burst / haze effect',
+        },
+        'multiply':    {
+            label: 'Multiply',
+            desc:  'Values are multiplied — always darkens. White in the overlay has no effect. Ideal for shadow maps, vignettes, grunge textures.',
+            group: 'B',
+            bottomLabel: 'Sunlit stone wall & windows',
+            topLabel:    'Shadow / grunge map on white',
+        },
+        'linear-burn': {
+            label: 'Linear Burn',
+            desc:  'Adds both layers then subtracts white — darker than Multiply. Creates high-contrast deep shadow blends.',
+            group: 'B',
+            bottomLabel: 'Sunlit stone wall & windows',
+            topLabel:    'Shadow / grunge map on white',
+        },
+        'lighten':     {
+            label: 'Lighten',
+            desc:  'Per channel: brighter value wins. The warm sunset bleeds through wherever it outshines the cool city layer.',
+            group: 'C',
+            bottomLabel: 'Warm sunset sky',
+            topLabel:    'Cool city skyline silhouette',
+        },
+        'darken':      {
+            label: 'Darken',
+            desc:  'Per channel: darker value wins. The dark building silhouettes cut through wherever they are deeper than the sunset sky.',
+            group: 'C',
+            bottomLabel: 'Warm sunset sky',
+            topLabel:    'Cool city skyline silhouette',
+        },
+    };
+
+    /* ══════════════════════════════════════════════════════════════
+       STATIC SCENE CANVASES  (pre-rendered, swapped per group)
+    ══════════════════════════════════════════════════════════════ */
+
+    // Offscreen canvases for each scene pair
+    function makeOffscreen() {
+        const c = document.createElement('canvas');
+        c.width = W; c.height = H;
+        return c;
+    }
+
+    const scenes = {
+        A: { bottom: makeOffscreen(), top: makeOffscreen() },
+        B: { bottom: makeOffscreen(), top: makeOffscreen() },
+        C: { bottom: makeOffscreen(), top: makeOffscreen() },
+    };
+
+    drawSceneA_bottom(scenes.A.bottom);
+    drawSceneA_top(scenes.A.top);
+    drawSceneB_bottom(scenes.B.bottom);
+    drawSceneB_top(scenes.B.top);
+    drawSceneC_bottom(scenes.C.bottom);
+    drawSceneC_top(scenes.C.top);
+
+    /* ══════════════════════════════════════════════════════════════
+       COMPOSITING
+    ══════════════════════════════════════════════════════════════ */
+
+    const COMPOSITE_MAP = {
+        'normal':      'source-over',
+        'add':         'lighter',
+        'multiply':    'multiply',
+        'screen':      'screen',
+        'lighten':     'lighten',
+        'darken':      'darken',
+        'linear-burn': 'color-burn',
+    };
+
+    function drawResult(srcBottom, srcTop, mode) {
+        const ctx = cResult.getContext('2d');
+        ctx.clearRect(0, 0, W, H);
+        ctx.globalCompositeOperation = 'source-over';
+        ctx.drawImage(srcBottom, 0, 0);
+        ctx.globalCompositeOperation = COMPOSITE_MAP[mode] || 'source-over';
+        ctx.drawImage(srcTop, 0, 0);
+        ctx.globalCompositeOperation = 'source-over';
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       UI ELEMENTS
+    ══════════════════════════════════════════════════════════════ */
+
+    const select      = document.getElementById('bm-select');
+    const resultLabel = document.getElementById('bm-result-label');
+    const modeDescEl  = document.getElementById('bm-mode-desc');
+    const labelBottom = document.getElementById('bm-label-bottom');
+    const labelTop    = document.getElementById('bm-label-top');
+
+    let currentGroup = null;
+
+    function update() {
+        const mode  = select.value;
+        const info  = MODES[mode];
+        const group = info.group;
+        const scene = scenes[group];
+
+        // Swap layer canvases if group changed
+        if (group !== currentGroup) {
+            const ctxB = cBottom.getContext('2d');
+            ctxB.clearRect(0, 0, W, H);
+            ctxB.drawImage(scene.bottom, 0, 0);
+
+            const ctxT = cTop.getContext('2d');
+            ctxT.clearRect(0, 0, W, H);
+            ctxT.drawImage(scene.top, 0, 0);
+
+            currentGroup = group;
+        }
+
+        drawResult(scene.bottom, scene.top, mode);
+
+        // Labels
+        modeDescEl.textContent    = info.desc;
+        resultLabel.textContent   = info.label + ' composite';
+        labelBottom.textContent   = info.bottomLabel;
+        labelTop.textContent      = info.topLabel;
+    }
+
+    select.addEventListener('change', update);
+    update();
+
+})();
+</script>
