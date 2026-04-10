@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Capture Sources</h2>
+                    <div class="section-content-body"><h2 id="capture-sources">Capture Sources</h2>
 
 <p>WATCHOUT 7 supports four capture technologies for bringing live video into your show: NDI, Spout, Deltacast, and MediaFoundation. NDI capture is covered in its own article — see <a href="ndi-video-sources.html">NDI Video Sources</a>. This article covers the remaining three technologies: Spout, Deltacast, and MediaFoundation.</p>
 
 <p>Each capture technology serves a different use case, but they all follow the same workflow inside WATCHOUT: you create a capture device, add one or more capture streams to it, and then place the device on a timeline as a cue.</p>
 
-<h3>Supported Capture Technologies</h3>
+<h3 id="supported-capture-technologies">Supported Capture Technologies</h3>
 
 <table>
 <tr><th>Technology</th><th>Use Case</th><th>Requirements</th></tr>
@@ -1058,7 +1058,7 @@
 <tr><td><strong>MediaFoundation</strong></td><td>Any Windows MediaFoundation-compatible capture device — USB webcams, USB capture cards, internal capture devices.</td><td>Device drivers installed and device recognized by Windows.</td></tr>
 </table>
 
-<h3>Setup Workflow</h3>
+<h3 id="setup-workflow">Setup Workflow</h3>
 
 <p>The setup workflow is the same regardless of which capture technology you are using:</p>
 
@@ -1071,7 +1071,7 @@
 
 </ol>
 
-<h3>Capture Source Properties</h3>
+<h3 id="capture-source-properties">Capture Source Properties</h3>
 
 <p>When you click <strong>Add Capture Source</strong>, a dialog appears with the following properties:</p>
 
@@ -1086,7 +1086,7 @@
 <tr><td><strong>Sync Mode</strong></td><td>Controls how captured frames are synchronized with WATCHOUT playback.</td></tr>
 </table>
 
-<h4>Range Options</h4>
+<h4 id="range-options">Range Options</h4>
 
 <table>
 <tr><th>Option</th><th>Description</th></tr>
@@ -1095,7 +1095,7 @@
 <tr><td><strong>Full</strong></td><td>Overrides to full range (0–255 for 8-bit signals).</td></tr>
 </table>
 
-<h4>Color Space Options</h4>
+<h4 id="color-space-options">Color Space Options</h4>
 
 <table>
 <tr><th>Option</th><th>Description</th></tr>
@@ -1110,7 +1110,7 @@
 <tr><td><strong>sRGB (gamma 2.2)</strong></td><td>sRGB color space with a simple 2.2 gamma curve.</td></tr>
 </table>
 
-<h4>Sync Mode</h4>
+<h4 id="sync-mode">Sync Mode</h4>
 
 <table>
 <tr><th>Option</th><th>Description</th></tr>
@@ -1118,7 +1118,7 @@
 <tr><td><strong>Maintain</strong></td><td>Preserves the original frame timing of the captured stream. This adds latency but ensures smoother playback.</td></tr>
 </table>
 
-<h3>Source Prioritization</h3>
+<h3 id="source-prioritization">Source Prioritization</h3>
 
 <p>Each capture device supports a prioritized list of sources. WATCHOUT uses the first valid stream starting from the top of the list. If the topmost stream becomes unavailable — for example, if a Spout sender is closed or a USB device is disconnected — WATCHOUT automatically falls back to the next available stream in the list.</p>
 
@@ -1127,7 +1127,7 @@
 <div class='info-box'><p>Use source prioritization to create automatic failover between capture sources. For example, you could list a Deltacast input as the primary source and a MediaFoundation USB capture card as the fallback.
 </p></div>
 
-<h3>General Device Properties</h3>
+<h3 id="general-device-properties">General Device Properties</h3>
 
 <p>Each capture device has the following general properties:</p>
 
@@ -1138,14 +1138,14 @@
 <tr><td><strong>Height</strong></td><td>The vertical resolution of the cue associated with the captured stream.</td></tr>
 </table>
 
-<h3>Spout</h3>
+<h3 id="spout">Spout</h3>
 
 <p>Spout is a real-time video sharing framework for Windows. It allows applications running on the same machine to share video frames through shared GPU textures, providing very low latency and lossless quality at up to 32-bit float RGBA precision.</p>
 
 <div class='warning-box'><p>The Spout sender application and the WATCHOUT Runner must be running on the same machine. Spout does not transmit video over the network — it uses shared GPU memory for frame transfer.
 </p></div>
 
-<h4>Compatible Applications</h4>
+<h4 id="compatible-applications">Compatible Applications</h4>
 
 <p>The following applications can send video to WATCHOUT via Spout (this is not an exhaustive list):</p>
 
@@ -1161,7 +1161,7 @@
 
 <p>Any application that implements the Spout sender API will appear in the <strong>Stream</strong> dropdown when adding a capture source on the same machine.</p>
 
-<h3>Deltacast</h3>
+<h3 id="deltacast">Deltacast</h3>
 
 <p>Deltacast capture cards are professional video I/O devices used in broadcast and live production environments. WATCHOUT supports Deltacast cards for low-latency, high-quality video capture, including HDMI 2.1 sources.</p>
 
@@ -1170,7 +1170,7 @@
 
 <p>Deltacast inputs appear in the <strong>Stream</strong> dropdown when a supported Deltacast card is installed on the selected host machine and the appropriate drivers are loaded.</p>
 
-<h3>MediaFoundation</h3>
+<h3 id="mediafoundation">MediaFoundation</h3>
 
 <p>MediaFoundation is the standard media framework in Windows. Any capture device that exposes itself as a MediaFoundation-compatible source is supported by WATCHOUT. This includes:</p>
 
@@ -1183,11 +1183,11 @@
 
 <p>MediaFoundation devices appear in the <strong>Stream</strong> dropdown when connected to the selected host machine and recognized by Windows.</p>
 
-<h3>Monitoring Capture During Playback</h3>
+<h3 id="monitoring-capture-during-playback">Monitoring Capture During Playback</h3>
 
 <p>During playback, you can monitor the actual capture status and stream information in the <strong>Node Info</strong> window. This shows real-time data about each active capture source, including the current resolution, frame rate, and whether frames are being received successfully. Use this to verify that your capture sources are operating as expected during rehearsals and performances.</p>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li><a href="ndi-video-sources.html">NDI Video Sources</a> — NDI capture and output configuration</li>
@@ -1215,7 +1215,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Marker Cues</h2>
+                    <div class="section-content-body"><h2 id="marker-cues">Marker Cues</h2>
 
 <p><strong>Marker cues (also called comment cues) are point-in-time timeline annotations used for organization, operator guidance, and navigation.</strong> Unlike media or control cues, marker cues produce no visual or audio output and do not affect playback state. They exist purely as human-readable signposts and, when named, as jump target anchors that other cues can reference. In complex multi-timeline shows with dozens of cues, markers are what keep operators oriented and give control cues something to aim at.</p>
 
-<h3>What Marker Cues Are</h3>
+<h3 id="what-marker-cues-are">What Marker Cues Are</h3>
 
 <p>A marker cue is a zero-duration point on the timeline. It has no start-to-end range — it marks a single moment. When the playhead passes through a marker cue during playback, nothing happens to the output. The marker is visible only in the timeline editor, where it serves two distinct roles:</p>
 
@@ -1059,7 +1059,7 @@
 
 <p>Because markers carry no rendering or playback logic, they are safe to add, move, or remove at any time without affecting show output. They are a zero-risk organizational tool.</p>
 
-<h3>Creating a Marker Cue</h3>
+<h3 id="creating-a-marker-cue">Creating a Marker Cue</h3>
 
 <ol>
 <li>Position the playhead at the desired point on the timeline.</li>
@@ -1072,7 +1072,7 @@
 <div class='info-box'><p>Place marker cues on a dedicated layer reserved for annotations. This keeps markers visually separated from media and control cues and makes them easy to locate when scanning the timeline.
 </p></div>
 
-<h3>Marker Cue Properties</h3>
+<h3 id="marker-cue-properties">Marker Cue Properties</h3>
 
 <p>The following properties are available for every marker cue:</p>
 
@@ -1086,7 +1086,7 @@
 
 <p>Both the <strong>Name</strong> and <strong>Description</strong> fields are optional free-text strings. A marker with no name and no description is still valid — it appears as an unnamed marker on the timeline and can be used purely for visual reference.</p>
 
-<h3>Countdown and Count-Up Timers</h3>
+<h3 id="countdown-and-count-up-timers">Countdown and Count-Up Timers</h3>
 
 <p>Marker cues can carry a <strong>countdown timer</strong>, a <strong>count-up timer</strong>, or both. Each timer has a single configurable property: <strong>duration</strong> — the length of time the timer runs.</p>
 
@@ -1101,7 +1101,7 @@
 <div class='note-box'><p>Countdown and count-up timers are operator-facing timing references. They do not pause playback, trigger actions, or produce any output. They are purely informational overlays for the timeline editor and show-calling workflows.
 </p></div>
 
-<h3>Markers as Jump Targets</h3>
+<h3 id="markers-as-jump-targets">Markers as Jump Targets</h3>
 
 <p>One of the most important roles of marker cues is serving as <strong>named jump targets</strong>. When a marker cue has a name, WATCHOUT registers it as a jump target alongside named control cues. Any control cue configured with "jump to cue" behavior can specify a target cue name, and the playhead will jump to the position of the matching marker.</p>
 
@@ -1119,7 +1119,7 @@
 <div class='warning-box'><p>Jump target names must be unique within the scope they are resolved in. If two cues share the same name, the jump target resolution may not select the one you intend. Use distinct, descriptive names for every named marker.
 </p></div>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <p><strong>Scene change notes.</strong> Place a marker at each major scene transition with a name like "Scene 3 — Forest" and a description noting any technical requirements. Operators scanning the timeline can instantly see the show structure.</p>
 
@@ -1133,7 +1133,7 @@
 
 <p><strong>Conditional workflows.</strong> Marker cues can carry conditions just like any other cue type. A conditional marker combined with a jump target name allows control logic where the jump target itself is conditionally present. See <a href="conditional-cues.html">Conditional Cues</a> for expression syntax.</p>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Use consistent naming conventions.</strong> Establish a naming scheme before programming begins and document it for the whole team. Descriptive names like "Act2_Scene1_Start" are far more useful than "Marker 7" when debugging during tech rehearsals.</li>
@@ -1171,7 +1171,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

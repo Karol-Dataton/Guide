@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Variables and Inputs</h2>
+                    <div class="section-content-body"><h2 id="variables-and-inputs">Variables and Inputs</h2>
 
 <p>Variables are the central mechanism through which all external control reaches WATCHOUT's rendering engine. Every external protocol — whether ArtNet, OSC, MIDI, HTTP, or any other — ultimately writes values to the same pool of show variables. These variables then drive tween expressions, conditional cues, and timeline triggers, making them the bridge between the outside world and what appears on screen.</p>
 
-<h3>The Variables Window</h3>
+<h3 id="the-variables-window">The Variables Window</h3>
 
 <p>The <strong>Variables</strong> window in Producer is where you manage all show variables. From here you can:</p>
 
@@ -1061,7 +1061,7 @@
 
 <p>Each variable in the list displays its name, external key, and current value (with an interactive slider). Additional columns for minimum, maximum, default value, and interpolation type can be shown through the column menu.</p>
 
-<h3>Variable Properties</h3>
+<h3 id="variable-properties">Variable Properties</h3>
 
 <p>Each variable has the following properties:</p>
 
@@ -1075,7 +1075,7 @@
 
 </ul>
 
-<h3>External Keys and Learn Mode</h3>
+<h3 id="external-keys-and-learn-mode">External Keys and Learn Mode</h3>
 
 <p>The <strong>external key</strong> is what connects an incoming protocol message to a specific WATCHOUT variable. Different protocols generate keys in different formats:</p>
 
@@ -1089,7 +1089,7 @@
 
 <p>Rather than manually typing these key strings, WATCHOUT provides a <strong>Learn</strong> mode. Open the Variable Properties panel for a variable, then click the <strong>Learn</strong> button next to the Key field. While Learn mode is active, send a signal from your external device (move a fader, send an OSC message, etc.). WATCHOUT captures the incoming key and automatically assigns it to the selected variable. This eliminates guesswork about key format and ensures the mapping is correct.</p>
 
-<h3>Input Flow</h3>
+<h3 id="input-flow">Input Flow</h3>
 
 <p>When an external signal arrives at WATCHOUT, it goes through the following processing chain:</p>
 
@@ -1105,7 +1105,7 @@
 
 <p>This entire chain happens in real time with minimal latency, allowing responsive control of live visual content.</p>
 
-<h3>Interpolation Modes</h3>
+<h3 id="interpolation-modes">Interpolation Modes</h3>
 
 <p>The interpolation mode determines how a variable transitions from its current value to a new incoming value:</p>
 
@@ -1118,7 +1118,7 @@
 <div class='info-box'><p>For most use cases, <strong>Linear</strong> interpolation is the best default. Use <strong>None</strong> only when you need instantaneous changes, and <strong>Circular</strong> specifically for angular or cyclic values.
 </p></div>
 
-<h3>Default Values</h3>
+<h3 id="default-values">Default Values</h3>
 
 <p>Each variable has a configurable default value. Defaults are applied in two situations:</p>
 
@@ -1130,7 +1130,7 @@
 
 <p>You can update defaults at any time by adjusting variables to the desired values in the Variables window and then saving the current values as the new defaults. This is useful for establishing a known starting state for a show — for example, setting all opacity variables to 100% and all position offsets to 0.</p>
 
-<h3>Using Variables in the Show</h3>
+<h3 id="using-variables-in-the-show">Using Variables in the Show</h3>
 
 <p>Once a variable receives a value from an external source, that value can be referenced throughout the show:</p>
 
@@ -1141,7 +1141,7 @@
 
 </ul>
 
-<h3>Related Topics</h3>
+<h3 id="related-topics">Related Topics</h3>
 
 <ul>
 <li><a href="external-control-overview.html">External Control Overview</a> for the architecture connecting external protocols to variables</li>
@@ -1169,7 +1169,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

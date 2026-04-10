@@ -360,13 +360,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Hardware Sync</h2>
+                    <div class="section-content-body"><h2 id="hardware-sync">Hardware Sync</h2>
 
 <p><strong>Configure hardware synchronization between multiple WATCHPAX 64 units using the NVIDIA Quadro Sync II card.</strong></p>
 
 <p>Hardware sync ensures that all GPU outputs across multiple WATCHPAX 64 units refresh at exactly the same time, eliminating visible tearing or frame offset between displays. This is essential in multi-server video wall setups where content spans across outputs driven by different machines -- without hardware sync, each GPU runs on its own internal clock and frames will drift apart over time, causing noticeable visual seams. The NVIDIA Quadro Sync II card connects the units via dedicated sync cables and designates one output as the timing source that all others lock to.</p>
 
-<h3>Physical Setup</h3>
+<h3 id="physical-setup">Physical Setup</h3>
 
 <p>Before configuring the sync settings, make sure the servers are correctly connected together.</p>
 
@@ -385,7 +385,7 @@
 
 <p>This way, the distance that the signal needs to travel is cut down, which provides a more stable signal.</p>
 
-<h3>Configuring Sync Settings</h3>
+<h3 id="configuring-sync-settings">Configuring Sync Settings</h3>
 
 <p>Follow the steps below to configure hardware synchronization across your WATCHPAX 64 cluster. Start with the unit that will serve as the timing source, then repeat the client steps on all remaining units.</p>
 
@@ -467,7 +467,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHPAX 64 User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHPAX 64 User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

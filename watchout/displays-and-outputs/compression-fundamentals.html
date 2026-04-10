@@ -1043,7 +1043,7 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Compression Fundamentals</h2>
+                    <div class="section-content-body"><h2 id="compression-fundamentals">Compression Fundamentals</h2>
 
 <p>As display resolutions, frame rates, and color depths continue to increase, the amount of raw pixel data in a production grows rapidly. <strong>Compression</strong> is the set of strategies used to store and transmit this data efficiently — reducing file sizes, bandwidth requirements, and storage costs while preserving as much visual quality as possible.</p>
 
@@ -1063,7 +1063,7 @@
 
 </ul>
 
-<h3>Chroma Subsampling</h3>
+<h3 id="chroma-subsampling">Chroma Subsampling</h3>
 
 <p>The human visual system perceives variations in brightness (luminance) much more accurately than variations in color (chrominance). Chroma subsampling exploits this asymmetry by storing color information at a lower resolution than brightness information, significantly reducing data volume with minimal perceptible quality loss.</p>
 
@@ -1075,7 +1075,7 @@
 
 </ul>
 
-<h4>The a:b:c Notation</h4>
+<h4 id="the-abc-notation">The a:b:c Notation</h4>
 
 <p>Chroma subsampling ratios are described using the notation <strong>a:b:c</strong>, where:</p>
 
@@ -1099,13 +1099,13 @@
 <div class='info-box'><p>For critical content where fine color detail matters (graphics with thin colored lines, chroma-keyed footage, or text overlays), prefer 4:4:4 or 4:2:2 sources. The color smearing introduced by 4:2:0 subsampling is often visible on hard color edges.
 </p></div>
 
-<h3>Temporal Compression</h3>
+<h3 id="temporal-compression">Temporal Compression</h3>
 
 <p>Consecutive frames in a video sequence are typically very similar — most of the image stays the same from one frame to the next. <strong>Temporal compression</strong> (also called inter-frame compression) takes advantage of this redundancy by analyzing motion between frames and encoding only the differences rather than storing each frame independently.</p>
 
 <p>The core technique is <strong>motion compensation</strong>: the encoder predicts the current frame based on one or more reference frames and stores only the residual (the difference between prediction and reality). The smaller the difference, the less data needs to be stored.</p>
 
-<h4>Frame Types</h4>
+<h4 id="frame-types">Frame Types</h4>
 
 <p>Temporally compressed video uses three types of frames:</p>
 
@@ -1116,7 +1116,7 @@
 <tr><td><strong>B-frame</strong> (Bidirectional)</td><td>A predicted frame that references both previous and subsequent frames, looking both forward and backward for changes. Achieves the highest compression but requires multiple reference frames.</td></tr>
 </table>
 
-<h4>Group of Pictures (GOP)</h4>
+<h4 id="group-of-pictures-gop">Group of Pictures (GOP)</h4>
 
 <p>A <strong>Group of Pictures (GOP)</strong> is the sequence of frames between one I-frame and the next. It consists of a single keyframe followed by a series of predicted frames (P-frames and B-frames). The <strong>GOP length</strong> is the distance between consecutive I-frames.</p>
 
@@ -1125,7 +1125,7 @@
 <div class='warning-box'><p>Media servers need I-frames to display a complete image. When playback jumps to a position in the middle of a GOP, the system must decode forward from the nearest preceding I-frame to reconstruct the target frame. This causes seek delays and can produce visual artifacts during scrubbing — a critical consideration for live show operation where instant timeline navigation is expected.
 </p></div>
 
-<h3>Relevance to WATCHOUT</h3>
+<h3 id="relevance-to-watchout">Relevance to WATCHOUT</h3>
 
 <p>Understanding compression directly affects how you prepare and manage media in a WATCHOUT production:</p>
 
@@ -1140,7 +1140,7 @@
 <div class='info-box'><p>For the best playback experience, deliver source media in I-frame-only codecs (HAP, NotchLC, or ProRes) with 4:2:2 or 4:4:4 chroma subsampling. This minimizes optimization time and ensures instant seeking on the timeline.
 </p></div>
 
-<h3>See Also</h3>
+<h3 id="see-also">See Also</h3>
 
 <ul>
 <li><a href="hdr-and-color-management.html">HDR and Color Management</a> — how color spaces, transfer functions, and bit depth affect rendering</li>
@@ -1167,7 +1167,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

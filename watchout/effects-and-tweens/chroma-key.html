@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Chroma Key</h2>
+                    <div class="section-content-body"><h2 id="chroma-key">Chroma Key</h2>
 
 <p>Chroma Key is a per-cue compositing technique that removes a specific color from a cue's rendered output, making those areas transparent. This is commonly used to remove green screen or blue screen backgrounds from video footage, allowing the foreground subject to be composited over other content in the show.</p>
 
 <p>WATCHOUT performs chroma keying in a wide-gamut color space for accurate color matching regardless of the source media's color standard.</p>
 
-<h3>Enabling Chroma Key</h3>
+<h3 id="enabling-chroma-key">Enabling Chroma Key</h3>
 
 <p>To enable chroma keying on a cue:</p>
 
@@ -1063,7 +1063,7 @@
 
 <p>Once enabled, the cue immediately begins keying out the target color (green by default). You can then fine-tune the parameters to achieve a clean key.</p>
 
-<h3>Presets</h3>
+<h3 id="presets">Presets</h3>
 
 <p>WATCHOUT provides three preset options for quick setup:</p>
 
@@ -1076,7 +1076,7 @@
 
 <p>Selecting a preset immediately updates the target color. You can further refine the color after selecting a preset.</p>
 
-<h3>Target Color</h3>
+<h3 id="target-color">Target Color</h3>
 
 <p>The target color defines which color will be keyed out of the cue's output. You can specify the color using two sets of controls:</p>
 
@@ -1088,7 +1088,7 @@
 
 <p>A <strong>Change</strong> button opens a color picker for visual target selection. Both RGB and HSV controls update together — changing one set automatically reflects in the other.</p>
 
-<h3>Tolerance</h3>
+<h3 id="tolerance">Tolerance</h3>
 
 <p>The tolerance parameters control how closely a pixel's color must match the target color to be keyed out:</p>
 
@@ -1625,11 +1625,11 @@
     })();
 </script>
 
-<h3>Spill Removal</h3>
+<h3 id="spill-removal">Spill Removal</h3>
 
 <p>The <strong>Spill Removal</strong> control (default: 0.5) reduces color contamination — the colored fringe that often appears on foreground edges when the key color reflects onto the subject. Higher values apply more aggressive spill suppression, neutralizing the color cast on edge pixels.</p>
 
-<h3>Visualize Mask</h3>
+<h3 id="visualize-mask">Visualize Mask</h3>
 
 <p>The <strong>Visualize Mask</strong> toggle switches the cue's output to a diagnostic view that displays the generated alpha mask directly. In this mode:</p>
 
@@ -1642,11 +1642,11 @@
 
 <p>This is invaluable for fine-tuning tolerance and spill removal settings. Turn off Visualize Mask when you are satisfied with the key to return to normal composited output.</p>
 
-<h3>Reset</h3>
+<h3 id="reset">Reset</h3>
 
 <p>The <strong>Reset</strong> button restores all chroma key parameters to their default values (green target, Min tolerance 0.4, Max tolerance 0.5, spill removal 0.5, Visualize Mask off). Use this to quickly return to a clean starting point if your adjustments have become difficult to manage.</p>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>Live camera feeds</strong> — composite real-time camera input over show content by keying out the green or blue screen backdrop.</li>
@@ -1655,7 +1655,7 @@
 
 </ul>
 
-<h3>Tips for Clean Keys</h3>
+<h3 id="tips-for-clean-keys">Tips for Clean Keys</h3>
 
 <ul>
 <li><strong>Even lighting</strong> — ensure the chroma backdrop is lit uniformly without hotspots or shadows. Uneven lighting creates color variations that make consistent keying difficult.</li>
@@ -1684,7 +1684,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Frame Blending</h2>
+                    <div class="section-content-body"><h2 id="frame-blending">Frame Blending</h2>
 
 <p>Frame Blending is a per-cue option that smooths video playback when the source media's native frame rate does not match the show's output frame rate. Instead of repeating or dropping frames to fill the gap, WATCHOUT interpolates between adjacent video frames, producing a crossfade that results in visibly smoother motion.</p>
 
-<h3>How It Works</h3>
+<h3 id="how-it-works">How It Works</h3>
 
 <p>When a video plays at a different rate than the show's output (for example, 24 fps content in a 60 fps show), some output frames fall between two source frames. Without frame blending, WATCHOUT displays the nearest available source frame, which can cause stuttering or judder — especially noticeable in panning shots or smooth animations.</p>
 
@@ -1666,7 +1666,7 @@
     })();
 </script>
 
-<h3>Enabling Frame Blending</h3>
+<h3 id="enabling-frame-blending">Enabling Frame Blending</h3>
 
 <p>To enable Frame Blending on a cue:</p>
 
@@ -1680,7 +1680,7 @@
 
 <p>Frame Blending is disabled by default and must be enabled on each cue individually.</p>
 
-<h3>When to Use It</h3>
+<h3 id="when-to-use-it">When to Use It</h3>
 
 <p>Frame Blending is most beneficial in these scenarios:</p>
 
@@ -1691,7 +1691,7 @@
 
 </ul>
 
-<h3>When to Avoid It</h3>
+<h3 id="when-to-avoid-it">When to Avoid It</h3>
 
 <p>Frame Blending is not ideal for all content types. Avoid it when:</p>
 
@@ -1705,7 +1705,7 @@
 <div class='note-box'><p>Frame Blending interpolates by crossfading pixel values between frames. It does not perform optical flow or motion-vector interpolation, so very fast motion may still show some ghosting.
 </p></div>
 
-<h3>Performance Considerations</h3>
+<h3 id="performance-considerations">Performance Considerations</h3>
 
 <p>When Frame Blending is enabled, the renderer must decode and hold <strong>two adjacent frames</strong> in memory simultaneously and perform a per-pixel blend for every output frame. This roughly doubles the texture memory and bandwidth required for that cue compared to non-blended playback. On systems with many simultaneous video cues, enabling Frame Blending on all of them may impact overall GPU performance. Enable it selectively on the cues where smooth motion matters most.</p></div><div class="section-nav">
                 <a href="blend-modes.html" class="nav-btn">
@@ -1728,7 +1728,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

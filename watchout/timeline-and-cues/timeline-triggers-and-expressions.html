@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Timeline Triggers and Expressions</h2>
+                    <div class="section-content-body"><h2 id="timeline-triggers-and-expressions">Timeline Triggers and Expressions</h2>
 
 <p><strong>Timeline triggers are expression-based rules that automate playback state changes, allowing timelines to start, pause, or stop in response to show variable values without requiring manual operator intervention or control cues.</strong> Instead of relying on a cue at a fixed point in time, a trigger expression is evaluated continuously against the current state of show variables — when the expression becomes true, the corresponding playback action fires. This makes triggers the primary mechanism for building reactive, data-driven show logic at the timeline level.</p>
 
-<h3>What Timeline Triggers Are</h3>
+<h3 id="what-timeline-triggers-are">What Timeline Triggers Are</h3>
 
 <p>Every timeline in WATCHOUT can have up to three trigger expressions attached to it:</p>
 
@@ -1062,7 +1062,7 @@
 
 <p>An empty trigger expression has no effect — it does not evaluate to true or false and does not change the timeline's playback state. Only expressions that produce a numeric result participate in trigger evaluation.</p>
 
-<h3>How Expressions Work</h3>
+<h3 id="how-expressions-work">How Expressions Work</h3>
 
 <p>WATCHOUT uses a built-in expression engine to parse and evaluate all expressions at runtime. The evaluation follows these rules:</p>
 
@@ -1077,7 +1077,7 @@
 <div class='note-box'><p>Because unknown variables silently resolve to 0.0 rather than producing an error at runtime, a misspelled variable name will not cause a visible failure — the trigger will simply never fire. Use expression validation (described below) to catch these issues at edit time.
 </p></div>
 
-<h3>Expression Syntax</h3>
+<h3 id="expression-syntax">Expression Syntax</h3>
 
 <p>Expressions follow standard mathematical syntax. The supported operators are:</p>
 
@@ -1101,7 +1101,7 @@
 
 <p><strong>Variable references</strong> are bare names — write the variable name directly in the expression without any prefix or delimiter. For example, if you have a show variable named "SceneSelect", the expression <code>SceneSelect == 2</code> references that variable.</p>
 
-<h4>Expression Examples</h4>
+<h4 id="expression-examples">Expression Examples</h4>
 
 <table>
 <tr><th>Expression</th><th>Evaluates to True When</th></tr>
@@ -1116,7 +1116,7 @@
 <div class='info-box'><p>To create a logical AND condition, multiply the variables together: <code>A * B</code> is only greater than 0 when both A and B are greater than 0. To create a logical OR, use addition: <code>A + B</code> is greater than 0 when either is positive. Be mindful that negative values can produce unexpected results with addition — prefer explicit comparisons like <code>(A > 0) + (B > 0)</code> for reliable OR logic.
 </p></div>
 
-<h3>Configuring Triggers</h3>
+<h3 id="configuring-triggers">Configuring Triggers</h3>
 
 <p>Triggers are configured in the timeline properties, not on the timeline itself:</p>
 
@@ -1141,7 +1141,7 @@
 
 <p>You can set any combination of the three triggers on a single timeline. For example, a timeline might have a play trigger on one variable and a stop trigger on another, with no pause trigger at all.</p>
 
-<h3>Trigger Properties</h3>
+<h3 id="trigger-properties">Trigger Properties</h3>
 
 <table>
 <tr><th>Property</th><th>Expression Type</th><th>Default</th><th>Purpose</th></tr>
@@ -1152,7 +1152,7 @@
 
 <p>An empty expression means no trigger is active for that action — the timeline's playback state is not affected by that trigger slot.</p>
 
-<h3>Expression Validation</h3>
+<h3 id="expression-validation">Expression Validation</h3>
 
 <p>WATCHOUT validates trigger expressions in real time as you edit them. The validation checks include:</p>
 
@@ -1166,7 +1166,7 @@
 <div class='warning-box'><p>Validation rejects references to non-existent variable names at edit time. If you rename or delete a show variable, any trigger expression referencing that variable will fail validation the next time it is edited. Review all trigger expressions after modifying the variable list.
 </p></div>
 
-<h3>Expression Types in WATCHOUT</h3>
+<h3 id="expression-types-in-watchout">Expression Types in WATCHOUT</h3>
 
 <p>Timeline triggers use one of several expression types that share the same expression engine but serve different purposes across the application:</p>
 
@@ -1183,7 +1183,7 @@
 
 <p>For Cue Expressions specifically, an <strong>empty expression evaluates to true</strong> (the cue is always active), which differs from Trigger Expressions where an empty expression has no effect.</p>
 
-<h3>Reserved Variable Names</h3>
+<h3 id="reserved-variable-names">Reserved Variable Names</h3>
 
 <p>The following names are reserved by the expression system and <strong>cannot be used as show variable names</strong>:</p>
 
@@ -1196,7 +1196,7 @@
 
 <p>The reservation check is <strong>case-insensitive</strong> — you cannot create a show variable named "TweenValue", "tweenvalue", or "TWEENVALUE". Attempting to do so will be rejected by the variable name validator.</p>
 
-<h3>Auto-Run vs. Triggers</h3>
+<h3 id="auto-run-vs-triggers">Auto-Run vs. Triggers</h3>
 
 <p>Timelines have an <strong>Auto Run</strong> property (disabled by default) that is separate from trigger expressions. Understanding the difference is important:</p>
 
@@ -1211,7 +1211,7 @@
 <div class='note-box'><p>Auto-run is a one-time event at show load. If a timeline is stopped by a trigger or control cue after auto-run starts it, auto-run does not re-fire. Only the play trigger expression (or a control cue) can restart it.
 </p></div>
 
-<h3>Trigger Priority and Interaction</h3>
+<h3 id="trigger-priority-and-interaction">Trigger Priority and Interaction</h3>
 
 <p>When multiple trigger expressions on the same timeline evaluate to true simultaneously, the system must resolve the conflict. The priority order follows the same convention as <a href="control-cues.html">Control Cues</a>:</p>
 
@@ -1221,7 +1221,7 @@
 
 <p>In practice, design your expressions so that conflicting triggers do not evaluate to true simultaneously. Use mutually exclusive variable ranges or distinct variables for each trigger to keep behavior predictable.</p>
 
-<h3>Scope</h3>
+<h3 id="scope">Scope</h3>
 
 <p>Trigger expressions are a <strong>timeline-only feature</strong>. They are not available for compositions. When editing a composition's properties, the triggers section is not shown.</p>
 
@@ -1229,7 +1229,7 @@
 
 <p>If you need conditional behavior within a composition, use <a href="conditional-cues.html">Conditional Cues</a> on individual cues inside the composition.</p>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <p><strong>External start signal:</strong> A lighting console sends an OSC message that sets a "GoTimeline3" variable to 1. The timeline's play trigger expression is <code>GoTimeline3</code>, and it begins playing immediately when the variable goes positive.</p>
 
@@ -1241,7 +1241,7 @@
 
 <p><strong>Time-gated playback:</strong> A "ShowHour" variable is updated by an external clock system. A daytime content timeline uses <code>ShowHour >= 9 * (ShowHour <= 17)</code> as its play trigger and <code>ShowHour > 17</code> as its stop trigger, creating time-windowed playback.</p>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Keep expressions simple and readable.</strong> Complex nested expressions are hard to debug. If the logic requires more than two or three operators, consider breaking it into multiple variables controlled externally.</li>
@@ -1260,7 +1260,7 @@
 
 </ul>
 
-<h3>Duration Field Unit Shortcuts</h3>
+<h3 id="duration-field-unit-shortcuts">Duration Field Unit Shortcuts</h3>
 
 <p>When entering values in duration or time fields throughout WATCHOUT, you can append a unit suffix to specify the unit directly:</p>
 
@@ -1273,7 +1273,7 @@
 
 <p>Without a suffix, the value is interpreted in the field's default unit (typically seconds). These shortcuts work in any duration or time input field, including cue duration, tween point time, and trigger-related timing fields.</p>
 
-<h3>FAQ</h3>
+<h3 id="faq">FAQ</h3>
 
 <p><strong>How do I use triggers with three timelines and Always on Top?</strong></p>
 
@@ -1297,7 +1297,7 @@
 
 <p>Because Overlay uses Always on Top, you can freely reorder Background and Content A in the Timelines panel without affecting the overlay's visibility. The trigger expressions and stacking mode work together to create a clean, layered show structure driven entirely by a single variable.</p>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1311,7 +1311,7 @@
 <tr><td>Expression works in one trigger but not another</td><td>Expression is correct but the wrong trigger field was populated</td><td>Verify the expression is entered in the correct field (play, pause, or stop).</td></tr>
 </table>
 
-<h3>See Also</h3>
+<h3 id="see-also">See Also</h3>
 
 <ul>
 <li><a href="variables-and-variable-cues.html">Variables and Variable Cues</a> — show variables that drive trigger expressions</li>
@@ -1340,7 +1340,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

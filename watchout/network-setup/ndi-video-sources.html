@@ -1043,15 +1043,15 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>NDI Video Sources</h2>
+                    <div class="section-content-body"><h2 id="ndi-video-sources">NDI Video Sources</h2>
 
 <p>WATCHOUT 7 integrates with NDI (Network Device Interface) for both video input and video output over standard Ethernet networks. NDI allows WATCHOUT to receive live video streams from cameras, media servers, graphics systems, and any other NDI-enabled device — and to send rendered output as NDI streams to downstream systems like switchers, recorders, or additional media servers. This makes NDI a versatile tool for integrating WATCHOUT into larger production workflows without dedicated video cabling.</p>
 
-<h3>NDI as a Capture Source (Input)</h3>
+<h3 id="ndi-as-a-capture-source-input">NDI as a Capture Source (Input)</h3>
 
 <p>You can bring live NDI video streams into WATCHOUT as capture sources, then use them in cues on your timelines just like any other media. The stream is received in real time over the network, decoded, and rendered to displays.</p>
 
-<h4>Adding an NDI Source</h4>
+<h4 id="adding-an-ndi-source">Adding an NDI Source</h4>
 
 <ol>
 <li>In the <strong>Assets</strong> window, click <strong>Add</strong> and choose <strong>Capture Source</strong>.</li>
@@ -1080,7 +1080,7 @@
 
 <p>To create a capture cue on the timeline, <strong>drag the capture source from the Devices window</strong> (not the Assets window) onto the timeline.</p>
 
-<h4>NDI Audio Constraints</h4>
+<h4 id="ndi-audio-constraints">NDI Audio Constraints</h4>
 
 <p>NDI audio capture in WATCHOUT has several constraints that must be understood before you configure your sources:</p>
 
@@ -1097,7 +1097,7 @@
 <div class='info-box'><p>Plan your NDI audio channel count and bus routing carefully before creating the capture source. Since these settings are immutable after creation, getting them right the first time avoids the overhead of deleting and recreating the source and any associated cues.
 </p></div>
 
-<h4>NDI Source Discovery</h4>
+<h4 id="ndi-source-discovery">NDI Source Discovery</h4>
 
 <p>WATCHOUT runs continuous NDI discovery in the background, scanning the network for available streams. Discovered sources appear in the Stream dropdown when adding or editing an NDI source.</p>
 
@@ -1113,7 +1113,7 @@
 
 <p>You can add multiple Extra IPs for sources across different subnets. Changes take effect within a few seconds as the discovery cycle refreshes.</p>
 
-<h3>NDI as a Display Output</h3>
+<h3 id="ndi-as-a-display-output">NDI as a Display Output</h3>
 
 <p>WATCHOUT can send rendered display output as NDI streams, making the output available to any NDI receiver on the network. This is useful for:</p>
 
@@ -1124,7 +1124,7 @@
 
 </ul>
 
-<h4>Configuring NDI Output</h4>
+<h4 id="configuring-ndi-output">Configuring NDI Output</h4>
 
 <ol>
 <li>Select the display in the <strong>Devices</strong> window or Stage view.</li>
@@ -1142,11 +1142,11 @@
 
 <p>The NDI stream is published on the network using the display's name and is discoverable by any NDI receiver on the same network (or via NDI Extra IPs on other subnets).</p>
 
-<h3>NDI Calibration Stream</h3>
+<h3 id="ndi-calibration-stream">NDI Calibration Stream</h3>
 
 <p>For GPU-output displays (not NDI output), the display properties include an <strong>NDI Calibration Stream</strong> field. This allows you to associate an external NDI stream with the display for calibration workflows — for example, using a camera feed to align projector output with the physical surface. The calibration stream is referenced by name and is independent of the display's normal output path.</p>
 
-<h3>Infrastructure Recommendations</h3>
+<h3 id="infrastructure-recommendations">Infrastructure Recommendations</h3>
 
 <p>NDI streams carry uncompressed or lightly compressed video over standard IP networks. A single 1080p NDI stream typically requires 100-150 Mbps of bandwidth, and 4K streams require substantially more. Consider the following:</p>
 
@@ -1161,7 +1161,7 @@
 <div class='info-box'><p>If NDI sources are not appearing in the Stream dropdown, verify that the source machine is on the same subnet, that mDNS is not blocked by a firewall, and that the NDI source application is actively transmitting. For cross-subnet discovery, add the source machine's IP to the NDI Extra IPs list.
 </p></div>
 
-<h3>Troubleshooting NDI</h3>
+<h3 id="troubleshooting-ndi">Troubleshooting NDI</h3>
 
 <table>
 <tr><th>Symptom</th><th>Likely Cause</th><th>Resolution</th></tr>
@@ -1172,7 +1172,7 @@
 <tr><td>NDI output stream not visible to receivers</td><td>NDI output not started, or firewall blocking</td><td>Verify the display is set to NDI output type and the show is playing. Check firewall program rules for the rendering executables.</td></tr>
 </table>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li><a href="connecting-devices.html">Connecting Devices</a> — assigning displays and capture sources to nodes</li>
@@ -1201,7 +1201,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

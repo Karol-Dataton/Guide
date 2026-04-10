@@ -1043,7 +1043,7 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Quick Start Tutorial</h2>
+                    <div class="section-content-body"><h2 id="quick-start-tutorial">Quick Start Tutorial</h2>
 
 <p>This tutorial walks you through building your first WATCHOUT 7 show from scratch. By the end, you will have a display configured, media placed on the Timeline, and content playing back on a physical screen. The whole process takes just a few minutes.</p>
 
@@ -1053,7 +1053,7 @@
 
 <p>For this tutorial you need two computers on the same network: one for Producer (your authoring machine) and one acting as the display node. If you only have one computer available, you can run both Producer and Manager on the same machine to follow along — just be aware that in real productions these are always separate machines.</p>
 
-<h3>Step 1: Create a New Show</h3>
+<h3 id="step-1-create-a-new-show">Step 1: Create a New Show</h3>
 
 <p>A <strong>show file</strong> is your project file — the single document that holds everything: your display layout, media references, timeline content, and show settings. Think of it the way you would think of a <code>.pptx</code> in PowerPoint or a project file in a video editor: it does not embed your media files directly, but it knows where they are and how to use them. The show file has the extension <code>.watch</code>.</p>
 
@@ -1067,7 +1067,7 @@
 
 <p>Your new show opens with an empty <strong>Stage</strong> and <strong>Timeline</strong>, ready for you to start building.</p>
 
-<h3>Step 2: Add a Display</h3>
+<h3 id="step-2-add-a-display">Step 2: Add a Display</h3>
 
 <p>WATCHOUT needs to know about the physical screens in your setup before you can place content on them. You describe each screen by adding a <strong>display</strong> to your show — a virtual rectangle that represents the physical output. You define its pixel resolution (so WATCHOUT knows how large the canvas is) and give it a name so you can tell your displays apart when you have more than one.</p>
 
@@ -1095,7 +1095,7 @@
 <div class='info-box'><p>If your show uses multiple screens, repeat this step for each one. Arrange the display rectangles on the Stage to mirror your real-world screen layout.
 </p></div>
 
-<h3>Step 3: Import Media</h3>
+<h3 id="step-3-import-media">Step 3: Import Media</h3>
 
 <p>Before you can place content on the Timeline, you need to bring your media files into the project. WATCHOUT does not work directly from files sitting on your hard drive the way a media player does. Instead, it imports files into a managed <strong>asset library</strong> — this lets it optimize files for playback, track which files are used by which cues, and distribute media to display nodes automatically. The <strong>Assets</strong> window is where you manage this library.</p>
 
@@ -1110,7 +1110,7 @@
 
 <p>WATCHOUT supports a wide range of formats including PNG, JPEG, MP4, HAP, and many more.</p>
 
-<h3>Step 3b: Test Audio</h3>
+<h3 id="step-3b-test-audio">Step 3b: Test Audio</h3>
 
 <p>If you want to test audio playback before moving on, follow these steps:</p>
 
@@ -1132,7 +1132,7 @@
 <div class='info-box'><p><strong>Explore the context menu.</strong> Right-clicking on cues in the Timeline or items in the Stage window opens a context menu with quick access to settings and effects. This is one of the fastest ways to discover what you can do with any element in WATCHOUT.
 </p></div>
 
-<h3>Step 4: Place Media on the Timeline</h3>
+<h3 id="step-4-place-media-on-the-timeline">Step 4: Place Media on the Timeline</h3>
 
 <p>The <strong>Timeline</strong> is where you arrange all of your show content in time. It works like a video editing timeline: the horizontal axis is time (left = earlier, right = later), and each horizontal row is a <strong>layer</strong> (like a track).</p>
 
@@ -1149,7 +1149,7 @@
 
 <p><strong>About layers</strong> Each row on the Timeline is a layer. Layers work like layers in an image editor such as Photoshop: content on higher layers is drawn <em>on top of</em> content on lower layers. If two cues overlap in time on different layers, the one on the higher layer is visible in front. This is how you stack multiple pieces of content on the same display — a background image on layer 1, a logo on layer 2, a lower-third graphic on layer 3, and so on.</p>
 
-<h3>Step 5: Position on Stage</h3>
+<h3 id="step-5-position-on-stage">Step 5: Position on Stage</h3>
 
 <p>With a cue on the Timeline, you can now see and position your media on the Stage. The <strong>Stage</strong> window shows you a local preview — a real-time rendering computed on your authoring machine — of what the output will look like. It is not yet the signal going to the physical screen; that comes in Step 6. For now, it is your editing view.</p>
 
@@ -1166,7 +1166,7 @@
 <div class='info-box'><p>Any changes you make to position, scale, or rotation while the Playhead is at a specific time are stored as <strong>tween</strong> values — keyframes that record what the property looked like at that moment. This is the foundation of WATCHOUT's animation system: set a position at time 0, set a different position at time 5 seconds, and WATCHOUT smoothly interpolates between the two. For this tutorial you do not need to worry about animation — just position your media once and leave it there.
 </p></div>
 
-<h3>Step 6: Set Up a Display Node</h3>
+<h3 id="step-6-set-up-a-display-node">Step 6: Set Up a Display Node</h3>
 
 <p>Up to this point, everything has been happening inside Producer on your authoring computer. The Stage preview you have been looking at is a local simulation — your content is not yet going anywhere. To actually output video to a physical screen, you need to connect to a <strong>display node</strong>.</p>
 
@@ -1192,7 +1192,7 @@
 <div class='info-box'><p><strong>Testing on a single machine:</strong> If you are following this tutorial on one computer only, you can run both Producer and Manager on the same machine. Set the Node field to <code>localhost</code> or <code>127.0.0.1</code>. The output will appear on your own screen rather than a separate display.
 </p></div>
 
-<h3>Step 7: Run the Show</h3>
+<h3 id="step-7-run-the-show">Step 7: Run the Show</h3>
 
 <p>With your display routed to a node and the Director connected, you are ready to see your show on the physical screen.</p>
 
@@ -1214,7 +1214,7 @@
 
 <p></p></div></p>
 
-<h3>What to Explore Next</h3>
+<h3 id="what-to-explore-next">What to Explore Next</h3>
 
 <p>You now have a working WATCHOUT 7 show. Here are the logical next areas to learn:</p>
 
@@ -1256,7 +1256,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

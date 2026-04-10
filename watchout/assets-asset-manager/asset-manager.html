@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Asset Manager</h2>
+                    <div class="section-content-body"><h2 id="asset-manager">Asset Manager</h2>
 
 <p><strong>The Asset Manager is the centralized service that handles the entire lifecycle of media in a WATCHOUT 7 show</strong> — from ingesting source files, through optimization (transcoding to GPU-friendly playback codecs), to distributing the results across every display server on the network. Every show has exactly one Asset Manager, and understanding how it works is essential for managing media at any scale.</p>
 
-<h3>How the Asset Pipeline Works</h3>
+<h3 id="how-the-asset-pipeline-works">How the Asset Pipeline Works</h3>
 
 <p>When a source file is added to the show — whether by drag-and-drop, the Web UI, or a watched folder — it passes through a multi-stage pipeline before it reaches the display servers:</p>
 
@@ -1757,7 +1757,7 @@
 <div class='warning-box'><p>Only one Asset Manager can serve a show at a time. If the Asset Manager node goes offline, no new assets can be added, optimized, or distributed until it is restored. Plan your network topology accordingly — the Asset Manager node should be your most reliable machine.
 </p></div>
 
-<h3>Optimization Priority</h3>
+<h3 id="optimization-priority">Optimization Priority</h3>
 
 <p>The optimizer processes assets in a priority order based on type. Assets that are least efficient to stream in their raw form are prioritized highest:</p>
 
@@ -1772,7 +1772,7 @@
 
 <p>This ordering ensures that quick-to-process assets are available sooner, while long-running video and sequence optimizations proceed in the background.</p>
 
-<h3>The Assets Window</h3>
+<h3 id="the-assets-window">The Assets Window</h3>
 
 <p>The Assets window is the primary interface for browsing and managing media. Open it from <strong>Window → Assets</strong> or press <strong>Ctrl+2</strong>.</p>
 
@@ -1801,7 +1801,7 @@
 
 </ul>
 
-<h3>Asset Status Indicators</h3>
+<h3 id="asset-status-indicators">Asset Status Indicators</h3>
 
 <p>Each asset displays a status icon next to its name:</p>
 
@@ -1817,17 +1817,17 @@
 
 <p>Assets that failed to optimize are shown with a <strong>red name</strong>. Select the asset and check the Properties panel for error details — the <code>Fail</code> state includes a specific error message from the optimizer.</p>
 
-<h3>Missing Assets</h3>
+<h3 id="missing-assets">Missing Assets</h3>
 
 <p>An asset is considered <strong>missing</strong> when the Asset Manager can no longer locate its original source file — typically because the file was moved, renamed, or deleted from disk. Missing assets are shown with a <strong>warning indicator</strong> in the Assets window, making them easy to identify before showtime.</p>
 
 <p>Missing assets cannot be re-optimized or re-distributed. To resolve, either restore the original file to its expected path, or re-add the correct source file and update any cues that reference the missing asset.</p>
 
-<h3>Creating Asset Versions</h3>
+<h3 id="creating-asset-versions">Creating Asset Versions</h3>
 
 <p><strong>Create Version</strong> is available as a standalone action in the Assets window context menu (<strong>New → Create Version</strong>). It clones the selected asset with a new name, allowing you to maintain multiple content variants for the same cue slot — for example, different language versions of a title card or alternate color grades of a video. Asset versions share the same cue references, making it easy to swap between variants without re-building the timeline.</p>
 
-<h3>Adding Assets</h3>
+<h3 id="adding-assets">Adding Assets</h3>
 
 <p>There are several ways to add media to a show:</p>
 
@@ -1843,7 +1843,7 @@
 <div class='info-box'><p>When a single folder or dynamic asset is selected, newly added files are placed inside that folder automatically.
 </p></div>
 
-<h3>Organizing Assets with Folders</h3>
+<h3 id="organizing-assets-with-folders">Organizing Assets with Folders</h3>
 
 <p>Create folders to keep large shows organized:</p>
 
@@ -1866,7 +1866,7 @@
 <div class='warning-box'><p>Composition and dynamic asset folders are special containers managed by the system. You cannot move assets into or out of composition folders, and dynamic asset folders enforce strict versioning rules. See <a href="dynamic-assets.html">Dynamic Assets</a> for details.
 </p></div>
 
-<h3>Searching and Filtering</h3>
+<h3 id="searching-and-filtering">Searching and Filtering</h3>
 
 <p>Click the magnifying glass icon (or press <strong>Ctrl+F</strong> when the Assets window is active) to open the search panel.</p>
 
@@ -1885,11 +1885,11 @@
 
 <p>When a search or type filter is active, folders expand automatically so matching assets are visible. Press <strong>Escape</strong> to clear the search and restore the previous folder state.</p>
 
-<h3>Sorting</h3>
+<h3 id="sorting">Sorting</h3>
 
 <p>Click any sortable column header to sort the asset list by that column. Click again to reverse the sort direction. When a column sort is active, the tree view temporarily flattens into a flat list — folder hierarchy is restored when sorting is cleared.</p>
 
-<h3>Context Menu</h3>
+<h3 id="context-menu">Context Menu</h3>
 
 <p>Right-click in the Assets window to access:</p>
 
@@ -1904,7 +1904,7 @@
 
 </ul>
 
-<h3>Keyboard Navigation</h3>
+<h3 id="keyboard-navigation">Keyboard Navigation</h3>
 
 <table>
 <tr><th>Key</th><th>Action</th></tr>
@@ -1918,7 +1918,7 @@
 <tr><td><strong>Ctrl+F</strong></td><td>Open the search panel</td></tr>
 </table>
 
-<h3>Relationship to Other Systems</h3>
+<h3 id="relationship-to-other-systems">Relationship to Other Systems</h3>
 
 <p>The Asset Manager interacts with several other WATCHOUT components:</p>
 
@@ -1934,7 +1934,7 @@
 
 <p>The Asset Manager also exposes a <strong>Server-Sent Events (SSE)</strong> endpoint at <code>/sse</code> that provides real-time state updates to connected clients (including the Producer's Assets window). A heartbeat ping is sent every 10 seconds to keep connections alive.</p>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Name assets consistently.</strong> Establish a naming convention early (e.g., <code>SCENE_ELEMENT_VERSION.ext</code>) and enforce it across the team. Consistent naming makes search filters effective and keeps large asset trees navigable.</li>
@@ -1951,7 +1951,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1982,7 +1982,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

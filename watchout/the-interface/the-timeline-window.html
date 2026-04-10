@@ -1043,15 +1043,15 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>The Timeline Window</h2>
+                    <div class="section-content-body"><h2 id="the-timeline-window">The Timeline Window</h2>
 
 <p>The Timeline is where you orchestrate your show — arranging media in time, adding control cues, shaping animations with tween curves, and controlling precisely when things happen. WATCHOUT 7 actually provides two distinct windows for working with timelines: the <strong>Timeline window</strong> (one instance per open timeline) for editing cues on a time axis, and the <strong>Timelines window</strong> (a single list view) for managing all timelines in the show. This article covers both.</p>
 
-<h3>Timeline Window Structure</h3>
+<h3 id="timeline-window-structure">Timeline Window Structure</h3>
 
 <p>Each Timeline window is divided into several areas, from top to bottom:</p>
 
-<h4>Header Area</h4>
+<h4 id="header-area">Header Area</h4>
 
 <p>The top of the window contains:</p>
 
@@ -1062,11 +1062,11 @@
 
 </ul>
 
-<h4>Timecode Display</h4>
+<h4 id="timecode-display">Timecode Display</h4>
 
 <p>Displays the current play position in timecode format (hours:minutes:seconds:frames). Press <strong>T</strong> to type a specific time value and jump directly to it. The timecode display reflects the show's configured frame rate.</p>
 
-<h4>Layer Headers</h4>
+<h4 id="layer-headers">Layer Headers</h4>
 
 <p>The left column lists the layers in the timeline. Each layer header shows:</p>
 
@@ -1080,7 +1080,7 @@
 
 <p>A vertical splitter separates the layer headers from the cue area. Drag this splitter to adjust the width of the layer header column (default 200 pixels).</p>
 
-<h4>Time Ruler</h4>
+<h4 id="time-ruler">Time Ruler</h4>
 
 <p>The horizontal ruler above the cue area shows time markings that adjust dynamically based on your zoom level. A triangular indicator at the bottom of the ruler marks the current play position.</p>
 
@@ -1090,13 +1090,13 @@
 
 </ul>
 
-<h4>Cue Area</h4>
+<h4 id="cue-area">Cue Area</h4>
 
 <p>The main workspace where cues appear as colored rectangles on horizontal tracks corresponding to layers. The cue area supports scrolling both horizontally (through time) and vertically (through layers).</p>
 
 <p><strong>Overlap detection</strong> — when two cues overlap on the same layer, they display warning styling to alert you to the conflict. Exceptions: a media cue and a non-media cue on the same layer do not trigger overlap warnings, and crossfade regions (where fades overlap intentionally) are also excluded.</p>
 
-<h4>Play Cursor</h4>
+<h4 id="play-cursor">Play Cursor</h4>
 
 <p>The vertical line indicating the current playback position. Its appearance changes based on the Click Jumps to Time setting:</p>
 
@@ -1108,21 +1108,21 @@
 
 <p>When the play cursor scrolls out of view, a jump button (chevron icon) appears at the edge of the cue area. Click it to scroll the view back to the play cursor position.</p>
 
-<h4>Tween Curves Panel</h4>
+<h4 id="tween-curves-panel">Tween Curves Panel</h4>
 
 <p>Below the cue area, separated by a horizontal splitter, the tween curves panel shows animation curves for the selected cue. When a single cue is selected, this panel displays its tween tracks with enable and visibility toggles for each property. When no cue or multiple cues are selected, the panel is empty.</p>
 
 <p>Drag the horizontal splitter to adjust the height of the tween curves panel (default 82 pixels).</p>
 
-<h4>Minimap</h4>
+<h4 id="minimap">Minimap</h4>
 
 <p>A narrow bar (24 pixels tall) at the very bottom of the window shows a compressed overview of the entire timeline. Cues appear as small colored bars. A draggable thumb indicates and controls which portion of the timeline is currently visible in the cue area. The play cursor position is also shown on the minimap.</p>
 
-<h4>Playback Controls</h4>
+<h4 id="playback-controls">Playback Controls</h4>
 
 <p>In the bottom-left corner, the <strong>Play</strong>, <strong>Pause</strong>, and <strong>Stop</strong> buttons control playback for this timeline. The active state (playing, paused, stopped) is highlighted. When the timeline is in Hands Off mode, these buttons are dimmed and non-interactive.</p>
 
-<h3>Window Appearance by State</h3>
+<h3 id="window-appearance-by-state">Window Appearance by State</h3>
 
 <p>The Timeline window changes its visual appearance to indicate the timeline's current state:</p>
 
@@ -1137,9 +1137,9 @@
 
 <p>The window title shows the timeline name. When in blind edit, "(Edit)" is appended to the title.</p>
 
-<h3>Working with Cues</h3>
+<h3 id="working-with-cues">Working with Cues</h3>
 
-<h4>Adding Cues</h4>
+<h4 id="adding-cues">Adding Cues</h4>
 
 <ul>
 <li><strong>Drag and drop</strong> — drag assets from the Assets window, devices from the Devices window, or variables from the Variables window onto the cue area. Normal drop places cues in sequence; hold <strong>Ctrl</strong> while dropping to place them on separate layers.</li>
@@ -1147,7 +1147,7 @@
 
 </ul>
 
-<h4>Selecting Cues</h4>
+<h4 id="selecting-cues">Selecting Cues</h4>
 
 <table>
 <tr><th>Action</th><th>Method</th></tr>
@@ -1159,7 +1159,7 @@
 <tr><td>Select to end</td><td>Ctrl+E (selects all cues from the current position to the end of the timeline)</td></tr>
 </table>
 
-<h4>Editing Cues</h4>
+<h4 id="editing-cues">Editing Cues</h4>
 
 <table>
 <tr><th>Action</th><th>Method</th></tr>
@@ -1175,7 +1175,7 @@
 <tr><td>Nudge</td><td>Ctrl+Arrow moves by 1 pixel; Ctrl+Shift+Arrow moves by 10 pixels</td></tr>
 </table>
 
-<h4>Cue Context Menu</h4>
+<h4 id="cue-context-menu">Cue Context Menu</h4>
 
 <p>Right-click a cue to access:</p>
 
@@ -1193,7 +1193,7 @@
 
 </ul>
 
-<h3>Snapping</h3>
+<h3 id="snapping">Snapping</h3>
 
 <p>When Snap is enabled (<strong>Edit > Snap</strong> or <strong>Ctrl+N</strong>), cues snap to nearby reference points. Snap targets include:</p>
 
@@ -1209,7 +1209,7 @@
 
 <p>Hold <strong>Shift</strong> while dragging to temporarily disable snapping for that operation.</p>
 
-<h3>Working with Layers</h3>
+<h3 id="working-with-layers">Working with Layers</h3>
 
 <table>
 <tr><th>Action</th><th>Method</th></tr>
@@ -1219,7 +1219,7 @@
 <tr><td>Select all cues on a layer</td><td><strong>Timeline > Select All Layer Cues</strong></td></tr>
 </table>
 
-<h4>Key and Fill Modes</h4>
+<h4 id="key-and-fill-modes">Key and Fill Modes</h4>
 
 <p>Layers can be configured for key and fill compositing. The available modes are:</p>
 
@@ -1233,7 +1233,7 @@
 
 <p>The mode is shown as an icon on the layer header when active.</p>
 
-<h3>Blind Edit</h3>
+<h3 id="blind-edit">Blind Edit</h3>
 
 <p>Blind edit lets you make changes to a timeline that is currently playing without those changes taking effect until you explicitly apply them. The Timeline window provides three blind edit controls:</p>
 
@@ -1246,7 +1246,7 @@
 
 <p>When blind edit is active, the window border and title change color to clearly distinguish it from the live state.</p>
 
-<h3>Timeline Lock</h3>
+<h3 id="timeline-lock">Timeline Lock</h3>
 
 <p>Click the lock button in the Timeline window to cycle through lock states:</p>
 
@@ -1257,7 +1257,7 @@
 
 </ul>
 
-<h3>Zoom Controls</h3>
+<h3 id="zoom-controls">Zoom Controls</h3>
 
 <p>Three zoom buttons appear in the Timeline window:</p>
 
@@ -1270,21 +1270,21 @@
 
 <p>Keyboard shortcuts: <strong>Numpad +</strong> (zoom in), <strong>Numpad -</strong> (zoom out), <strong>Ctrl+0</strong> (zoom to fit). Zooming centers on the play cursor when it is visible in the viewport.</p>
 
-<h3>Insert and Delete Time</h3>
+<h3 id="insert-and-delete-time">Insert and Delete Time</h3>
 
 <p>The <strong>Insert/Delete Time</strong> command (<strong>Ctrl+Shift+T</strong>) opens a dialog that lets you insert blank time (pushing all subsequent cues later) or delete a time range (pulling subsequent cues earlier) at the play cursor position. This affects all cues on all layers in the timeline.</p>
 
-<h3>Grouping Cues into Compositions</h3>
+<h3 id="grouping-cues-into-compositions">Grouping Cues into Compositions</h3>
 
 <p>Select multiple cues and use <strong>Timeline > Group Cues into Composition</strong> (<strong>Ctrl+G</strong>) to combine them into a single composition cue. The selected cues are moved into the composition's internal timeline. To break a composition apart, select it and use <strong>Ungroup Cues</strong> (<strong>Ctrl+Shift+G</strong>).</p>
 
 <p>---</p>
 
-<h2>The Timelines Window</h2>
+<h2 id="the-timelines-window">The Timelines Window</h2>
 
 <p>The Timelines window (<strong>Window > Timelines</strong> or <strong>Ctrl+Alt+T</strong>) provides a list view of all timelines in the show, organized in a tree table with folder support.</p>
 
-<h3>Columns</h3>
+<h3 id="columns">Columns</h3>
 
 <table>
 <tr><th>Column</th><th>Description</th></tr>
@@ -1300,11 +1300,11 @@
 
 <p>Column visibility is configurable. Click a column header to sort by that column.</p>
 
-<h3>Folders</h3>
+<h3 id="folders">Folders</h3>
 
 <p>Timelines can be organized into folders. Drag timelines into folders to group them. Folders can be nested, and timelines inherit color from their parent folder. Open and close states are remembered between sessions.</p>
 
-<h3>Context Menu</h3>
+<h3 id="context-menu">Context Menu</h3>
 
 <p>Right-click in the Timelines window to access:</p>
 
@@ -1316,11 +1316,11 @@
 
 </ul>
 
-<h3>Opening a Timeline</h3>
+<h3 id="opening-a-timeline">Opening a Timeline</h3>
 
 <p>Double-click a timeline in the Timelines window to open it in its own Timeline editing window. You can have multiple Timeline windows open simultaneously, each showing a different timeline.</p>
 
-<h3>Timeline Properties</h3>
+<h3 id="timeline-properties">Timeline Properties</h3>
 
 <p>Select a timeline and open the Properties panel to configure:</p>
 
@@ -1330,7 +1330,7 @@
 
 </ul>
 
-<h3>Relationship to Other Windows</h3>
+<h3 id="relationship-to-other-windows">Relationship to Other Windows</h3>
 
 <ul>
 <li><strong>Stage</strong> — the Stage shows cues from the currently active timeline at the current play position. Selecting a cue in the Timeline selects it on the Stage, and vice versa.</li>
@@ -1358,7 +1358,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

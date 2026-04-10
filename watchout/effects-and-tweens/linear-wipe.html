@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Linear Wipe</h2>
+                    <div class="section-content-body"><h2 id="linear-wipe">Linear Wipe</h2>
 
 <p>Linear Wipe is a transition effect that progressively reveals or hides a cue's content using a straight-line boundary. By animating the wipe's parameters over time, you can create clean reveal and conceal transitions, split-screen effects, and dynamic content boundaries.</p>
 
 <p>The wipe works by defining an invisible edge that divides the cue into a visible region and a transparent region. The edge can be positioned, angled, and softened to produce a wide variety of transition styles.</p>
 
-<h3>Wipe Tween Channels</h3>
+<h3 id="wipe-tween-channels">Wipe Tween Channels</h3>
 
 <p>The Linear Wipe effect is controlled through four tween channels, all added together as a group:</p>
 
@@ -1649,7 +1649,7 @@
 })();
 </script>
 
-<h3>Creating a Linear Wipe</h3>
+<h3 id="creating-a-linear-wipe">Creating a Linear Wipe</h3>
 
 <p>To add a Linear Wipe to a cue:</p>
 
@@ -1662,7 +1662,7 @@
 
 <p>Once added, the cue starts fully hidden (Completion = 0) by default. Add tween points to the Completion channel to animate the reveal.</p>
 
-<h3>Animating the Wipe</h3>
+<h3 id="animating-the-wipe">Animating the Wipe</h3>
 
 <p>Linear Wipe channels support multiple <strong>tween points</strong> with configurable easing curves, just like any other tween in WATCHOUT:</p>
 
@@ -1675,11 +1675,11 @@
 
 <p>You can also animate the Angle, Location, and Feather channels independently. For example, you might rotate the wipe edge while it sweeps across the cue, or gradually increase feather softness during the transition for a more organic feel.</p>
 
-<h3>Effect Ordering</h3>
+<h3 id="effect-ordering">Effect Ordering</h3>
 
 <p>Linear Wipe is an <strong>orderable effect</strong>, meaning its position in the tween processing chain relative to other orderable effects (such as keying) matters. Effects are processed in the order they appear in the tween list. You can reorder effects to control how they interact — for example, applying a wipe after or before a color key will produce different visual results.</p>
 
-<h3>Combining with Other Effects</h3>
+<h3 id="combining-with-other-effects">Combining with Other Effects</h3>
 
 <p>Linear Wipe works well in combination with other tweens:</p>
 
@@ -1691,7 +1691,7 @@
 
 </ul>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>Scene transitions</strong> — wipe between content by placing two cues back-to-back and animating their Completion values in opposite directions.</li>
@@ -1720,7 +1720,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

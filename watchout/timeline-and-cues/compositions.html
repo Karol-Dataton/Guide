@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Compositions</h2>
+                    <div class="section-content-body"><h2 id="compositions">Compositions</h2>
 
 <p>Compositions are nested timeline units that allow you to group multiple cues into a single, self-contained entity. A composition appears on its parent timeline as a single media cue, but internally it contains its own layers, cues, and timing — effectively a timeline within a timeline. This makes compositions ideal for creating reusable visual building blocks that can be placed across multiple timelines or repeated at different points in a show.</p>
 
-<h3>What Compositions Are</h3>
+<h3 id="what-compositions-are">What Compositions Are</h3>
 
 <p>A composition is a special cue sequence with its own internal layers and cue arrangement. When you group cues into a composition, WATCHOUT:</p>
 
@@ -1062,7 +1062,7 @@
 
 <p>Compositions also have a <strong>reference frame</strong> that defines their internal coordinate space, and they can optionally be linked to a source asset (for example, when created from a 3D model import).</p>
 
-<h3>Creating a Composition</h3>
+<h3 id="creating-a-composition">Creating a Composition</h3>
 
 <p>To create a composition:</p>
 
@@ -1079,7 +1079,7 @@
 <div class='info-box'><p>When importing 3D models, WATCHOUT automatically creates compositions for multi-mesh models — each mesh surface becomes a separate cue inside the composition, allowing independent texturing while keeping the model as a single unit on the timeline.
 </p></div>
 
-<h3>Ungrouping a Composition</h3>
+<h3 id="ungrouping-a-composition">Ungrouping a Composition</h3>
 
 <p>To dissolve a composition back into individual cues:</p>
 
@@ -1102,7 +1102,7 @@
 
 <p>The ungrouped cues appear on the parent timeline at the correct times and positions, as if the composition never existed.</p>
 
-<h3>Editing a Composition</h3>
+<h3 id="editing-a-composition">Editing a Composition</h3>
 
 <p>To edit a composition's internal contents without ungrouping it:</p>
 
@@ -1124,7 +1124,7 @@
 
 <p>To exit composition mode, activate a regular timeline window. The Stage will return to its normal display.</p>
 
-<h3>Composition Properties</h3>
+<h3 id="composition-properties">Composition Properties</h3>
 
 <p>Compositions have the following properties, visible in the Properties panel:</p>
 
@@ -1137,24 +1137,24 @@
 
 <p>The composition cue on the parent timeline has its own start time and duration, which determines how much of the composition's internal timeline is played.</p>
 
-<h3>Compositions as Reusable Assets</h3>
+<h3 id="compositions-as-reusable-assets">Compositions as Reusable Assets</h3>
 
 <p>Compositions appear in the show's asset statistics alongside other asset types (images, video, audio, etc.) under the <strong>Compositions</strong> category. A composition can be used as the media source for cues on any timeline in the show, making it possible to reuse a single composition in multiple places.</p>
 
 <p>When a composition is referenced by cues on different timelines, editing its internal contents affects all instances simultaneously — the composition is a shared resource, not a copy.</p>
 
-<h3>Nesting Compositions</h3>
+<h3 id="nesting-compositions">Nesting Compositions</h3>
 
 <p>Compositions can contain other compositions. There is no explicit depth limit on nesting, so you can build layered hierarchies of grouped content. However, deeply nested compositions increase the complexity of the show and can make debugging visual issues more difficult.</p>
 
 <div class='note-box'><p>Composition cues do not support cue set (variant) assignments. If you need variant-based media switching, the individual cues inside the composition should be assigned to cue sets before grouping, or the composition should be ungrouped first.
 </p></div>
 
-<h3>Blind Editing Compositions</h3>
+<h3 id="blind-editing-compositions">Blind Editing Compositions</h3>
 
 <p>Compositions participate in the blind edit system. When a blind edit is started on a timeline, a temporary composition is created that mirrors the timeline's content. Edits are made to this temporary composition and can be applied (committed) or discarded without affecting the live show. See the <a href="blind-edit-mode.html">Blind Edit Mode</a> article for details.</p>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <p><strong>Group stable, reusable clusters.</strong> Compositions work best for content that is logically self-contained — a lower-third graphic with multiple layers, a multi-mesh 3D model, or a complex animated sequence that appears in several places.</p>
 
@@ -1183,7 +1183,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

@@ -1043,17 +1043,17 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Show Properties</h2>
+                    <div class="section-content-body"><h2 id="show-properties">Show Properties</h2>
 
 <p>Every show carries a set of properties that define how it behaves globally—settings that affect all timelines, all displays, and all output behavior. These properties establish the fundamental parameters under which your entire production operates.</p>
 
-<h3>Accessing Show Properties</h3>
+<h3 id="accessing-show-properties">Accessing Show Properties</h3>
 
 <p>Show properties are accessible through the <strong>Properties</strong> panel when no specific element is selected. The properties panel displays all configurable settings organized into logical sections.</p>
 
-<h2>General</h2>
+<h2 id="general">General</h2>
 
-<h3>Frame Rate</h3>
+<h3 id="frame-rate">Frame Rate</h3>
 
 <p>The <strong>Frame Rate</strong> determines the temporal resolution for all timeline operations throughout your show. This setting affects how precisely you can position cues in time and how smoothly animations play back.</p>
 
@@ -1066,7 +1066,7 @@
 <div class='info-box'><p><strong>Note:</strong> Frame rate changes affect how timeline positions are calculated. Changing this setting mid-production may shift the timing of existing cues.
 </p></div>
 
-<h3>Eye Point</h3>
+<h3 id="eye-point">Eye Point</h3>
 
 <p>The <strong>Eye Point</strong> defines the default viewer position in 3D space, used for perspective calculations across displays. This setting consists of three coordinates:</p>
 
@@ -1081,7 +1081,7 @@
 
 </ul>
 
-<h3>Genlock SDI</h3>
+<h3 id="genlock-sdi">Genlock SDI</h3>
 
 <p>The <strong>Genlock SDI</strong> option enables hardware synchronization for outputs using SDI (Serial Digital Interface) connections. When enabled, WATCHOUT locks video output timing to an external reference signal.</p>
 
@@ -1093,11 +1093,11 @@
 
 <p>Genlock ensures frame-accurate synchronization across multiple displays, eliminating tearing or timing drift. This requires compatible SDI hardware with genlock input capability.</p>
 
-<h2>Hardware Sync Groups</h2>
+<h2 id="hardware-sync-groups">Hardware Sync Groups</h2>
 
 <p><strong>Hardware Sync Groups</strong> coordinate playback timing across multiple display servers. By grouping nodes together, you ensure their timelines run in lockstep, which is essential for seamless multi-display presentations.</p>
 
-<h3>Managing Sync Groups</h3>
+<h3 id="managing-sync-groups">Managing Sync Groups</h3>
 
 <p>To create a new sync group: <ol> <li>Click <strong>Add Group</strong></li> <li>Enter a name for the group</li> <li>Add member nodes by typing or selecting from available devices</li></p>
 
@@ -1105,7 +1105,7 @@
 
 <p>Each sync group displays its member nodes, which can be added or removed using the multi-select chip interface. Nodes are identified by their host reference names as they appear on the network.</p>
 
-<h3>When to Use Sync Groups</h3>
+<h3 id="when-to-use-sync-groups">When to Use Sync Groups</h3>
 
 <ul>
 <li><strong>Multi-server installations</strong> – When content spans multiple playback machines</li>
@@ -1117,7 +1117,7 @@
 <div class='info-box'><p><strong>Note:</strong> Nodes must be network-accessible to participate in sync group coordination. Verify network connectivity before adding nodes to sync groups.
 </p></div>
 
-<h2>Audio Bus</h2>
+<h2 id="audio-bus">Audio Bus</h2>
 
 <p>The <strong>Audio Bus</strong> section lets you configure the number and names of audio buses used in the show.</p>
 
@@ -1130,23 +1130,23 @@
 <div class='warning-box'><p>You cannot remove an audio bus that is currently in use. Before reducing the bus count, you must first remove any Audio Device or Cue that references the bus you want to remove.
 </p></div>
 
-<h2>Default</h2>
+<h2 id="default">Default</h2>
 
 <p>The <strong>Default</strong> section controls the default behavior applied to newly created cues.</p>
 
-<h3>Image Duration</h3>
+<h3 id="image-duration">Image Duration</h3>
 
 <p>Sets the default duration for image cues when they are added to a timeline.</p>
 
-<h3>Use Last Fade</h3>
+<h3 id="use-last-fade">Use Last Fade</h3>
 
 <p>When <strong>Use Last Fade</strong> is enabled, newly created cues inherit the fade-in and fade-out settings from the most recently created cue. When disabled, the explicit fade-in and fade-out values below are used.</p>
 
-<h3>Fade In / Fade Out</h3>
+<h3 id="fade-in-fade-out">Fade In / Fade Out</h3>
 
 <p>Configures the default fade-in and fade-out duration and transition curve for new cues. These fields are disabled when <strong>Use Last Fade</strong> is enabled.</p>
 
-<h3>Default Anchor</h3>
+<h3 id="default-anchor">Default Anchor</h3>
 
 <p>The <strong>Default Anchor</strong> determines the reference point for newly created media cues. When you add a media cue to a timeline, this anchor point defines which part of the media aligns with the specified position.</p>
 
@@ -1167,7 +1167,7 @@
 
 <p>The anchor position is represented visually using a 3×3 grid selector in the Properties panel.</p>
 
-<h2>Warp</h2>
+<h2 id="warp">Warp</h2>
 
 <p>The <strong>Warp</strong> section controls defaults for warp geometry editing.</p>
 
@@ -1177,17 +1177,17 @@
 
 </ul>
 
-<h2>NDI® Extra IPs</h2>
+<h2 id="ndi-extra-ips">NDI® Extra IPs</h2>
 
 <p>A list of additional IP addresses for NDI source discovery. This is useful when NDI sources are on different subnets that are not automatically discovered via mDNS.</p>
 
 <p>You can add, edit, or remove IP addresses from the list using the corresponding buttons.</p>
 
-<h2>Show Info</h2>
+<h2 id="show-info">Show Info</h2>
 
 <p>The <strong>Show Info</strong> section provides a read-only overview of the current show, including statistics, asset counts, and technical details. See <a href="./show-information.html">Show Information</a> for a full description of each subsection.</p>
 
-<h2>Live Show Considerations</h2>
+<h2 id="live-show-considerations">Live Show Considerations</h2>
 
 <p>If a property change becomes necessary during a live show, pause playback to a safe state before making adjustments. The brief transition is preferable to unexpected disruptions during active content playback.</p></div><div class="section-nav">
                 <a href="saving-your-work.html" class="nav-btn">
@@ -1210,7 +1210,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

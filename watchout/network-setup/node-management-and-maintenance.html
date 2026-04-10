@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Node Management and Maintenance</h2>
+                    <div class="section-content-body"><h2 id="node-management-and-maintenance">Node Management and Maintenance</h2>
 
 <p>Once your WATCHOUT network is running, the <strong>Nodes</strong> window in Producer serves as your central control point for managing and maintaining every node in the system. From here you can restart services, rename nodes, configure startup behavior, manage cached assets, adjust time synchronization settings, control which network protocols are active, and perform software updates — all remotely, without needing physical access to each machine.</p>
 
 <p>This article covers the full set of management and maintenance operations available for WATCHOUT nodes.</p>
 
-<h3>Accessing Node Actions</h3>
+<h3 id="accessing-node-actions">Accessing Node Actions</h3>
 
 <p>All node management actions are available through the <strong>Nodes</strong> window:</p>
 
@@ -1063,7 +1063,7 @@
 
 <p>Some actions can be applied to multiple nodes simultaneously (select several nodes and apply at once), while others require a single node to be selected.</p>
 
-<h3>System Actions</h3>
+<h3 id="system-actions">System Actions</h3>
 
 <p>These actions affect the node at the system level:</p>
 
@@ -1078,7 +1078,7 @@
 <tr><td><strong>Network Interfaces</strong></td><td>Opens the Network Interfaces dialog where you can enable or disable specific network adapters for WATCHOUT discovery. At least one interface must remain enabled. Disabling an interface prevents WATCHOUT from using it for node discovery, which is useful when a machine has multiple adapters and you want to control which network WATCHOUT communicates on.</td></tr>
 </table>
 
-<h3>Director Actions</h3>
+<h3 id="director-actions">Director Actions</h3>
 
 <p>These actions are available when the selected node has Director capabilities:</p>
 
@@ -1089,7 +1089,7 @@
 <tr><td><strong>Startup Action</strong></td><td>Configures what the node does when it boots or when services restart — see below.</td></tr>
 </table>
 
-<h4>Startup Action Configuration</h4>
+<h4 id="startup-action-configuration">Startup Action Configuration</h4>
 
 <p>The Startup Action determines what happens automatically when a node starts:</p>
 
@@ -1112,7 +1112,7 @@
 
 <p>Startup Action is essential for unattended installations where machines must begin playback automatically after a power cycle.</p>
 
-<h3>Asset Manager Actions</h3>
+<h3 id="asset-manager-actions">Asset Manager Actions</h3>
 
 <table>
 <tr><th>Action</th><th>Description</th></tr>
@@ -1121,7 +1121,7 @@
 <tr><td><strong>Asset Watcher</strong></td><td>Opens the Asset Watcher configuration dialog — see below.</td></tr>
 </table>
 
-<h4>Asset Watcher</h4>
+<h4 id="asset-watcher">Asset Watcher</h4>
 
 <p>The Asset Watcher monitors folders on a node's disk for new or changed files and automatically uploads them to the Asset Manager. This is useful for workflows where media files are delivered to a specific folder (for example, from a render farm or content creation workstation) and should be automatically imported into the show.</p>
 
@@ -1146,7 +1146,7 @@
 
 <p>When the watcher is active, any file added to or modified in a watched folder is automatically uploaded to the Asset Manager at the specified asset path.</p>
 
-<h3>Runner Actions</h3>
+<h3 id="runner-actions">Runner Actions</h3>
 
 <table>
 <tr><th>Action</th><th>Description</th></tr>
@@ -1154,7 +1154,7 @@
 <tr><td><strong>Splash On / Splash Off</strong></td><td>Toggles the splash screen on the Runner's display outputs. Splash On shows the WATCHOUT splash screen; Splash Off clears it to black.</td></tr>
 </table>
 
-<h4>Local Asset Cache</h4>
+<h4 id="local-asset-cache">Local Asset Cache</h4>
 
 <p>Each Runner node caches downloaded media assets locally for playback. The Cache dialog lets you:</p>
 
@@ -1168,7 +1168,7 @@
 <div class='warning-box'><p>In multi-show environments where a node may be used for different shows at different times, removing unused assets for one show may delete assets needed by another. Only clean the cache when you are certain the node will not need those assets again.
 </p></div>
 
-<h3>Protocol Toggles</h3>
+<h3 id="protocol-toggles">Protocol Toggles</h3>
 
 <p>The <strong>Protocols</strong> section in Node Properties shows toggle switches for external protocols on the node:</p>
 
@@ -1184,7 +1184,7 @@
 
 <p>Each toggle enables or disables that protocol on the selected node. Protocol states are persisted and survive service restarts.</p>
 
-<h3>Other Actions</h3>
+<h3 id="other-actions">Other Actions</h3>
 
 <table>
 <tr><th>Action</th><th>Description</th></tr>
@@ -1192,7 +1192,7 @@
 <tr><td><strong>LTC Bridge</strong></td><td>Opens the LTC Bridge configuration dialog for timecode synchronization on the node.</td></tr>
 </table>
 
-<h3>Software Actions</h3>
+<h3 id="software-actions">Software Actions</h3>
 
 <table>
 <tr><th>Action</th><th>Description</th></tr>
@@ -1200,7 +1200,7 @@
 <tr><td><strong>Switch to WATCHOUT 6</strong></td><td>Reconfigures the node to run WATCHOUT 6 instead of WATCHOUT 7. Requires a full machine reboot. See <a href="software-updates.html">Software Updates</a>.</td></tr>
 </table>
 
-<h3>Node Status Information</h3>
+<h3 id="node-status-information">Node Status Information</h3>
 
 <p>In addition to actions, Node Properties displays comprehensive status information:</p>
 
@@ -1213,7 +1213,7 @@
 
 </ul>
 
-<h3>Recommended Maintenance Workflow</h3>
+<h3 id="recommended-maintenance-workflow">Recommended Maintenance Workflow</h3>
 
 <p>For routine maintenance of a WATCHOUT installation:</p>
 
@@ -1226,7 +1226,7 @@
 
 </ol>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li><a href="../08-the-interface/the-network-window.html">The Nodes Window</a> — the interface layout and controls of the Nodes window</li>
@@ -1256,7 +1256,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

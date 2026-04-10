@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Cue Sets and Variants</h2>
+                    <div class="section-content-body"><h2 id="cue-sets-and-variants">Cue Sets and Variants</h2>
 
 <p>Cue Sets allow you to create multiple named <strong>variants</strong> of media content for the same cue, and switch between them at runtime or during show preparation. This is the core mechanism for building shows that need to display different content depending on context — different languages, different clients, day versus night versions, or rehearsal versus performance configurations.</p>
 
-<h3>What Cue Sets Are</h3>
+<h3 id="what-cue-sets-are">What Cue Sets Are</h3>
 
 <p>A <strong>Cue Set</strong> is a named group containing one or more <strong>variants</strong>. Each variant is a named slot that can hold a different media source for any cue assigned to that set. When a cue belongs to a cue set, its displayed content is determined by the currently <strong>active variant</strong> of that set rather than by a fixed media source.</p>
 
@@ -1055,7 +1055,7 @@
 
 <p>Every cue set has a <strong>default variant</strong> — the variant that is automatically activated when no other variant has been explicitly selected. The active variant selection is <strong>transient state</strong>, meaning it is not part of the undo/redo history and behaves like a runtime variable.</p>
 
-<h3>The Cue Sets Panel</h3>
+<h3 id="the-cue-sets-panel">The Cue Sets Panel</h3>
 
 <p>The <strong>Cue Sets</strong> window is the central hub for managing cue sets and variants. It displays:</p>
 
@@ -1068,7 +1068,7 @@
 
 <p>Clicking a variant header <strong>activates</strong> that variant, immediately switching all assigned cues to display the media mapped to that variant.</p>
 
-<h3>Variant Status Visuals</h3>
+<h3 id="variant-status-visuals">Variant Status Visuals</h3>
 
 <p>Variants in the Cue Sets panel use border styling to indicate their activation status:</p>
 
@@ -1082,7 +1082,7 @@
 
 <p>Clicking a cue row navigates to that cue's timeline and scrolls the Timeline window to its position.</p>
 
-<h3>Creating a Cue Set</h3>
+<h3 id="creating-a-cue-set">Creating a Cue Set</h3>
 
 <p>To create a new cue set:</p>
 
@@ -1095,7 +1095,7 @@
 
 <p>The new set appears in the panel with one variant. You can then add more variants and assign cues to the set.</p>
 
-<h3>Managing Variants</h3>
+<h3 id="managing-variants">Managing Variants</h3>
 
 <p>Right-click a cue set header or a variant column to access variant management options:</p>
 
@@ -1110,7 +1110,7 @@
 
 <p>Variants are displayed sorted alphabetically by name.</p>
 
-<h3>Assigning Cues to Cue Sets</h3>
+<h3 id="assigning-cues-to-cue-sets">Assigning Cues to Cue Sets</h3>
 
 <p>To assign a cue to a cue set:</p>
 
@@ -1131,7 +1131,7 @@
 <div class='warning-box'><p>Art-Net fixture cues cannot be assigned to cue sets. The assignment will be rejected with an error message.
 </p></div>
 
-<h3>Switching the Active Variant</h3>
+<h3 id="switching-the-active-variant">Switching the Active Variant</h3>
 
 <p>You can switch the active variant in several ways:</p>
 
@@ -1145,15 +1145,15 @@
 
 <p>The active variant state is treated as transient data (like show variables), meaning variant switches are not recorded in the undo history.</p>
 
-<h3>Cue Set Column in the Cue List</h3>
+<h3 id="cue-set-column-in-the-cue-list">Cue Set Column in the Cue List</h3>
 
 <p>The <strong>Cue List</strong> window includes a <strong>Cue Set</strong> column that displays the name of the cue set each cue belongs to. This provides a quick way to identify which cues are variant-controlled. You can also filter the Cue List by cue sets to show only cues belonging to specific sets.</p>
 
-<h3>Interaction with Asset Deletion</h3>
+<h3 id="interaction-with-asset-deletion">Interaction with Asset Deletion</h3>
 
 <p>Assets that are referenced by any variant mapping in any cue set <strong>cannot be deleted</strong> from the Asset Manager. WATCHOUT protects against accidental deletion of assets that are in use by the variant system. The deletion dialog will inform you that assets used in cue sets are protected.</p>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <p><strong>Multi-language shows:</strong> Create a "Language" cue set with variants for each language. Assign all text-bearing cues (title cards, subtitle overlays, informational graphics) to this set. Switch languages with a single variant activation.</p>
 
@@ -1184,7 +1184,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

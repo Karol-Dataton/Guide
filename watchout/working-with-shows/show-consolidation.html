@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Show Archiving</h2>
+                    <div class="section-content-body"><h2 id="show-archiving">Show Archiving</h2>
 
 <p>In a typical WATCHOUT workflow, your show file references media assets stored on an Asset Manager. The show file itself is relatively small — it contains display configurations, timeline data, and cue definitions, but not the actual media files. This design is efficient for production, but it means the show depends on the Asset Manager being available with the correct assets.</p>
 
 <p><strong>Create Archive</strong> solves this dependency by packaging the show file together with copies of all its referenced assets and layouts into a self-contained folder. An archived show can be moved between systems, backed up, or deployed without needing access to the original Asset Manager.</p>
 
-<h3>When to Archive</h3>
+<h3 id="when-to-archive">When to Archive</h3>
 
 <p>Archiving is useful in several scenarios:</p>
 
@@ -1061,7 +1061,7 @@
 
 </ul>
 
-<h3>Creating an Archive</h3>
+<h3 id="creating-an-archive">Creating an Archive</h3>
 
 <p>To archive your show:</p>
 
@@ -1082,7 +1082,7 @@
 <div class='note-box'><p>Archiving copies the current versions of all referenced assets. If assets are being actively optimized or transferred when you archive, the package will contain whatever state is available at that moment. For best results, ensure all asset processing is complete before archiving.
 </p></div>
 
-<h3>Importing Assets from an Archive</h3>
+<h3 id="importing-assets-from-an-archive">Importing Assets from an Archive</h3>
 
 <p>To restore assets from an archive (or any external folder) back into your show:</p>
 
@@ -1102,7 +1102,7 @@
 
 <p>The same <strong>Transfer Assets</strong> submenu also provides options to <strong>Export</strong> all or selected assets and to <strong>Download to Runners</strong> (pre-cache assets on Runner nodes).</p>
 
-<h3>Considerations</h3>
+<h3 id="considerations">Considerations</h3>
 
 <p><strong>File size:</strong> Archives can be very large, especially for shows with high-resolution video content. Ensure you have sufficient disk space at the destination before starting.</p>
 
@@ -1127,7 +1127,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Firewall Configuration</h2>
+                    <div class="section-content-body"><h2 id="firewall-configuration">Firewall Configuration</h2>
 
 <p>WATCHOUT nodes communicate over the network using a combination of UDP and TCP protocols for discovery, playback synchronization, media distribution, time synchronization, and external control. If any of these network paths are blocked by a firewall, WATCHOUT will not function correctly — nodes may fail to discover each other, playback may lose synchronization, or media may not transfer to display servers.</p>
 
 <p>The WATCHOUT installer automatically creates Windows Firewall rules for all required ports and executables. In most environments, the installer-created rules are sufficient and no manual configuration is needed. This article covers what those rules do and how to configure firewalls manually in restricted network environments.</p>
 
-<h3>Installer-Created Rules</h3>
+<h3 id="installer-created-rules">Installer-Created Rules</h3>
 
 <p>During installation, WATCHOUT registers both <strong>port-based</strong> and <strong>program-based</strong> inbound firewall rules on Windows:</p>
 
@@ -1061,7 +1061,7 @@
 
 <p>Both types of rules are created as <strong>inbound allow</strong> rules in the Windows Firewall. Outbound traffic is typically unrestricted by default on Windows.</p>
 
-<h3>Required UDP Ports</h3>
+<h3 id="required-udp-ports">Required UDP Ports</h3>
 
 <p>These UDP ports must be open for WATCHOUT's core network functions:</p>
 
@@ -1074,7 +1074,7 @@
 <tr><td>56565</td><td>UDP</td><td>PosiStageNet — receives positional tracking data (multicast)</td></tr>
 </table>
 
-<h3>Required TCP Ports</h3>
+<h3 id="required-tcp-ports">Required TCP Ports</h3>
 
 <p>These TCP ports are used for service-to-service communication:</p>
 
@@ -1090,7 +1090,7 @@
 <tr><td>8001</td><td>TCP</td><td>OSC over TCP — receives external control commands via TCP</td></tr>
 </table>
 
-<h3>Program-Based Rules</h3>
+<h3 id="program-based-rules">Program-Based Rules</h3>
 
 <p>In addition to port rules, the installer creates program-based firewall exceptions for each WATCHOUT executable. This ensures that even if a service uses an ephemeral or dynamically assigned port, traffic is still allowed. The executables include:</p>
 
@@ -1106,7 +1106,7 @@
 
 </ul>
 
-<h3>Manual Configuration for Restricted Environments</h3>
+<h3 id="manual-configuration-for-restricted-environments">Manual Configuration for Restricted Environments</h3>
 
 <p>In enterprise environments with strict Group Policy-managed firewalls, the installer-created rules may be overridden or removed. In this case, you need to recreate them manually:</p>
 
@@ -1121,7 +1121,7 @@
 <div class='warning-box'><p>Partial firewall openings are a common source of hard-to-diagnose problems. A firewall that blocks only discovery (UDP 3012) will prevent nodes from finding each other, but all other services will work fine in isolation — leading to confusing symptoms where nodes appear to be connected but cannot coordinate. Always verify <strong>all</strong> required ports when troubleshooting network issues.
 </p></div>
 
-<h3>Verifying Firewall Rules</h3>
+<h3 id="verifying-firewall-rules">Verifying Firewall Rules</h3>
 
 <p>After configuring firewall rules, verify that WATCHOUT communication is working:</p>
 
@@ -1134,7 +1134,7 @@
 
 </ol>
 
-<h3>Additional Protocols</h3>
+<h3 id="additional-protocols">Additional Protocols</h3>
 
 <p>If your installation uses video-over-IP or networked audio, additional firewall considerations apply:</p>
 
@@ -1145,7 +1145,7 @@
 
 </ul>
 
-<h3>Network Switch and Infrastructure Considerations</h3>
+<h3 id="network-switch-and-infrastructure-considerations">Network Switch and Infrastructure Considerations</h3>
 
 <p>Firewalls are not the only potential barrier to WATCHOUT communication:</p>
 
@@ -1157,7 +1157,7 @@
 
 </ul>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li><a href="network-overview.html">Network Overview</a> — the overall communication architecture</li>
@@ -1186,7 +1186,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

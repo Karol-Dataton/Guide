@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Cropping</h2>
+                    <div class="section-content-body"><h2 id="cropping">Cropping</h2>
 
 <p>Crop tweens animate the visible bounds of a cue, progressively hiding content from any edge. Cropping is one of the most versatile visual tools in WATCHOUT — it can create directional reveals, simulate wipes, adjust framing to different aspect ratios, isolate specific regions of source media, and dynamically reshape the visible area of content during playback.</p>
 
 <p>Unlike scaling (which changes the size of the entire image) or masking (which is applied at the display level), cropping works at the cue level and simply moves the visible boundary inward from any edge, making the cropped portion fully transparent.</p>
 
-<h3>Crop Tween Channels</h3>
+<h3 id="crop-tween-channels">Crop Tween Channels</h3>
 
 <p>WATCHOUT provides four independent crop tweens, each controlling one edge of the cue:</p>
 
@@ -1072,7 +1072,7 @@
 
 <p>A value of 0% means the edge is at its natural position (nothing cropped). A value of 50% moves the edge halfway across the cue. A value of 100% moves the edge all the way to the opposite side, completely hiding the content.</p>
 
-<h3>Dual Value Display</h3>
+<h3 id="dual-value-display">Dual Value Display</h3>
 
 <p>When you select a crop tween point, the Properties panel shows two fields:</p>
 
@@ -1084,7 +1084,7 @@
 
 <p>You can edit either field. Changing the percentage recalculates the pixel value, and changing the pixel value recalculates the percentage. The pixel field is useful when you need to crop to an exact pixel boundary — for example, removing a specific number of pixels of black border from source media.</p>
 
-<h3>Adding Crop Tweens</h3>
+<h3 id="adding-crop-tweens">Adding Crop Tweens</h3>
 
 <p>There are two ways to add crop tweens:</p>
 
@@ -1108,7 +1108,7 @@
 
 <p>Adding all four sides is the most common approach — you can leave the sides you do not need at 0% (their default), and they have no visual effect.</p>
 
-<h3>Animating Crops</h3>
+<h3 id="animating-crops">Animating Crops</h3>
 
 <p>Like all tweens, crop channels support multiple tween points with configurable easing curves. To create a crop animation:</p>
 
@@ -1122,7 +1122,7 @@
 
 <p>This produces a left-to-right reveal. By animating different sides in different directions, you can create a wide variety of reveal and conceal patterns.</p>
 
-<h3>Common Use Cases</h3>
+<h3 id="common-use-cases">Common Use Cases</h3>
 
 <ul>
 <li><strong>Directional reveals</strong> — animate one crop channel from 100% to 0% to reveal content from a specific direction. For example, Crop Left 100% to 0% creates a left-to-right reveal; Crop Top 100% to 0% creates a top-to-bottom reveal.</li>
@@ -1135,7 +1135,7 @@
 
 </ul>
 
-<h3>Crop vs. Linear Wipe</h3>
+<h3 id="crop-vs-linear-wipe">Crop vs. Linear Wipe</h3>
 
 <p>Both cropping and <a href="linear-wipe.html">Linear Wipe</a> can create reveal and conceal transitions, but they differ in several ways:</p>
 
@@ -1149,7 +1149,7 @@
 
 <p>Use cropping when you need clean rectangular boundaries. Use Linear Wipe when you need angled or soft-edged transitions.</p>
 
-<h3>Combining with Other Effects</h3>
+<h3 id="combining-with-other-effects">Combining with Other Effects</h3>
 
 <p>Crop tweens work well alongside other effects:</p>
 
@@ -1179,7 +1179,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

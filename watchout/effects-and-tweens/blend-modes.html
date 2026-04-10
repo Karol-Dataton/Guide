@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Blend Modes</h2>
+                    <div class="section-content-body"><h2 id="blend-modes">Blend Modes</h2>
 
 <p>Every media cue in WATCHOUT has a <strong>Blend Mode</strong> property that determines how its rendered pixels are composited with the content beneath it. By default, cues use standard alpha compositing (Normal mode), but you can switch to alternative modes to create a variety of visual effects — from additive light simulations to darkening overlays.</p>
 
 <p>Blend modes operate on a per-pixel basis during compositing. The GPU evaluates each pixel of the cue against the corresponding pixel of the content already rendered below it, producing a final combined result according to the selected blending formula.</p>
 
-<h3>Available Blend Modes</h3>
+<h3 id="available-blend-modes">Available Blend Modes</h3>
 
 <p>WATCHOUT provides seven blend modes:</p>
 
@@ -1681,7 +1681,7 @@
 })();
 </script>
 
-<h3>Setting the Blend Mode</h3>
+<h3 id="setting-the-blend-mode">Setting the Blend Mode</h3>
 
 <p>To change a cue's blend mode:</p>
 
@@ -1698,7 +1698,7 @@
 <div class='info-box'><p>You can set the blend mode on multiple cues simultaneously by selecting them all before changing the property.
 </p></div>
 
-<h3>Interaction with Stacking and Layer Order</h3>
+<h3 id="interaction-with-stacking-and-layer-order">Interaction with Stacking and Layer Order</h3>
 
 <p>Blend modes are applied during compositing, so they are directly affected by the <strong>rendering order</strong> of cues:</p>
 
@@ -1709,7 +1709,7 @@
 
 </ul>
 
-<h3>Common Creative Techniques</h3>
+<h3 id="common-creative-techniques">Common Creative Techniques</h3>
 
 <ul>
 <li><strong>Projection mapping luminance overlays</strong> — use Add mode to layer light effects, moving patterns, or particle systems on top of base content. Black areas in the additive layer are completely transparent.</li>
@@ -1738,7 +1738,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

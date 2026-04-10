@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Asset Properties</h2>
+                    <div class="section-content-body"><h2 id="asset-properties">Asset Properties</h2>
 
 <p><strong>The Properties panel displays detailed metadata for any selected asset, adapting its layout to show only the fields relevant to that asset's type.</strong> Understanding these properties is essential for diagnosing problems, verifying optimization results, and managing color workflows — especially in HDR or multi-format shows where color space mismatches can cause visible errors.</p>
 
 <p>Select one or more assets in the Assets window to view their properties. Double-click an asset or press <strong>Enter</strong> to focus the Properties panel directly.</p>
 
-<h3>General Information</h3>
+<h3 id="general-information">General Information</h3>
 
 <p>All assets display the following read-only fields in the Info section:</p>
 
@@ -1061,7 +1061,7 @@
 <tr><td><strong>Original Path</strong></td><td>The source file location from which the asset was imported</td><td>No</td></tr>
 </table>
 
-<h3>Asset State</h3>
+<h3 id="asset-state">Asset State</h3>
 
 <p>Every asset has a state that reflects its position in the processing pipeline. The state determines what operations are available and how the asset appears in the Assets window:</p>
 
@@ -1078,7 +1078,7 @@
 <div class='warning-box'><p>Assets in the <code>Fail</code> state cannot be used on the timeline or distributed to Runners. The Properties panel shows the specific error message from the optimizer — common causes include unsupported codecs, corrupt source files, and insufficient disk space. Fix the underlying issue and re-add the asset.
 </p></div>
 
-<h3>Visual Asset Properties</h3>
+<h3 id="visual-asset-properties">Visual Asset Properties</h3>
 
 <p>For image and video assets, the following additional fields appear:</p>
 
@@ -1091,7 +1091,7 @@
 
 </ul>
 
-<h3>Video-Specific Properties</h3>
+<h3 id="video-specific-properties">Video-Specific Properties</h3>
 
 <ul>
 <li><strong>Frame Rate</strong> — displayed in frames per second. Fractional rates (e.g., 29.97) are shown with two decimal places.</li>
@@ -1100,7 +1100,7 @@
 
 </ul>
 
-<h3>Audio-Specific Properties</h3>
+<h3 id="audio-specific-properties">Audio-Specific Properties</h3>
 
 <ul>
 <li><strong>Channels</strong> — the number of audio channels (1 = mono, 2 = stereo, etc.).</li>
@@ -1109,7 +1109,7 @@
 
 </ul>
 
-<h3>Display Data Properties</h3>
+<h3 id="display-data-properties">Display Data Properties</h3>
 
 <p>For MPCDI display data assets:</p>
 
@@ -1119,7 +1119,7 @@
 
 </ul>
 
-<h3>Dynamic Asset Properties</h3>
+<h3 id="dynamic-asset-properties">Dynamic Asset Properties</h3>
 
 <p>When a dynamic (auto-updating) asset is selected, an additional <strong>Active Version</strong> section appears showing:</p>
 
@@ -1132,13 +1132,13 @@
 
 <p>See <a href="dynamic-assets.html">Dynamic Assets</a> for details on version management.</p>
 
-<h3>SVG Shape Properties</h3>
+<h3 id="svg-shape-properties">SVG Shape Properties</h3>
 
 <p>SVG shape assets display a dedicated shape editor instead of the standard property fields. This includes a live preview, geometry controls, fill and stroke colors, and (for text shapes) font and text properties.</p>
 
 <p>See <a href="svg-shapes.html">SVG Shapes</a> for full documentation.</p>
 
-<h3>Color Space Reference</h3>
+<h3 id="color-space-reference">Color Space Reference</h3>
 
 <p>WATCHOUT tracks both the <strong>input</strong> color space (from the source file) and the <strong>output</strong> color space (used during rendering). The Properties panel shows both when they differ. Getting color spaces right is critical for accurate reproduction, especially when mixing SDR and HDR content.</p>
 
@@ -1157,7 +1157,7 @@
 <div class='note-box'><p>If the color space shown in the Properties panel does not match the content's actual mastering, the rendered output will have incorrect brightness or color. For example, an sRGB-mastered image incorrectly tagged as Rec. 2100 PQ will appear washed out. Verify color space metadata with your content provider if visuals look wrong. For a deeper discussion of HDR and color management, see <a href="../03-displays-and-outputs/hdr-and-color-management.html">HDR and Color Management</a>.
 </p></div>
 
-<h3>Original vs. Optimized Properties</h3>
+<h3 id="original-vs-optimized-properties">Original vs. Optimized Properties</h3>
 
 <p>Several properties exist in pairs — an <strong>original</strong> value from the source file and an <strong>optimized</strong> value from the output:</p>
 
@@ -1170,7 +1170,7 @@
 
 <p>When both values differ, the Properties panel displays them as <code>Original → Optimized</code> with an arrow. When they match, only one value is shown.</p>
 
-<h3>Storage Footprint</h3>
+<h3 id="storage-footprint">Storage Footprint</h3>
 
 <p>Each asset's storage is tracked in two categories:</p>
 
@@ -1182,7 +1182,7 @@
 
 <p>The total disk consumption of an asset is <code>exclusive + shared</code>, but the shared portion may overlap with other assets — deleting one asset does not necessarily free its shared bytes if another asset references the same chunks.</p>
 
-<h3>Error Information</h3>
+<h3 id="error-information">Error Information</h3>
 
 <p>If an asset failed to optimize, the Properties panel displays:</p>
 
@@ -1193,7 +1193,7 @@
 
 <p>Assets in an error state show their name in red in the Assets window and cannot be renamed or used until the issue is resolved.</p>
 
-<h3>Diagnosing Issues with Properties</h3>
+<h3 id="diagnosing-issues-with-properties">Diagnosing Issues with Properties</h3>
 
 <p>Use the Properties panel systematically when something looks wrong:</p>
 
@@ -1206,7 +1206,7 @@
 
 </ol>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Verify color space on import.</strong> Content from different sources may be tagged with different color spaces. Check every visual asset's color space after import, especially when mixing content from multiple vendors.</li>
@@ -1238,7 +1238,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

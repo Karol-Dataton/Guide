@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Key and Fill</h2>
+                    <div class="section-content-body"><h2 id="key-and-fill">Key and Fill</h2>
 
 <p>Key & Fill is a <strong>layer-level</strong> compositing feature that uses the content of one layer (the <strong>key</strong> layer) to generate a transparency mask that is applied to another layer (the <strong>fill</strong> layer). This enables sophisticated compositing effects — such as masking content through animated shapes, text cutouts, or grayscale mattes — without modifying the source media.</p>
 
 <p>Unlike Chroma Key, which operates on a single cue's own pixel colors, Key & Fill uses a separate layer as the mask source. This gives you the flexibility to use any content — video, images, text, or generated graphics — as a transparency mask for other content.</p>
 
-<h3>How It Works</h3>
+<h3 id="how-it-works">How It Works</h3>
 
 <p>Key & Fill involves two layers working together:</p>
 
@@ -1574,7 +1574,7 @@
 })();
 </script>
 
-<h3>Keying Modes</h3>
+<h3 id="keying-modes">Keying Modes</h3>
 
 <p>WATCHOUT supports four keying modes that determine how the key layer's content is interpreted as a mask:</p>
 
@@ -1589,7 +1589,7 @@
 <div class='info-box'><p>Luma Key is the most versatile mode because any content — including video without an alpha channel — can serve as a mask based on its brightness values. Alpha Key is useful when working with content that has a pre-defined transparency channel, such as PNG images or ProRes 4444 video.
 </p></div>
 
-<h3>Configuring Key & Fill</h3>
+<h3 id="configuring-key-fill">Configuring Key & Fill</h3>
 
 <p>Key & Fill is configured in two places — once on the key layer and once on the fill layer:</p>
 
@@ -1614,11 +1614,11 @@
 
 </ol>
 
-<h3>Invert Toggle</h3>
+<h3 id="invert-toggle">Invert Toggle</h3>
 
 <p>The fill-side <strong>Invert</strong> toggle provides an additional way to flip the mask behavior at the cue level. This is independent of the key mode selection and allows you to invert the mask on specific fill cues without changing the key layer's mode.</p>
 
-<h3>Visualize Key</h3>
+<h3 id="visualize-key">Visualize Key</h3>
 
 <p>The <strong>Visualize Key</strong> toggle on the fill cue switches the output to a diagnostic view that displays the generated mask directly:</p>
 
@@ -1631,7 +1631,7 @@
 
 <p>This is useful for verifying that the key layer is producing the expected mask shape before viewing the final composited result. Disable Visualize Key to return to normal output.</p>
 
-<h3>Layer Indicators</h3>
+<h3 id="layer-indicators">Layer Indicators</h3>
 
 <p>When a layer is configured as a key source, WATCHOUT displays a tooltip indicator on the layer header in the Timeline. The indicator describes the layer's keying role:</p>
 
@@ -1645,7 +1645,7 @@
 
 <p>These indicators help you quickly identify which layers are participating in Key & Fill relationships without opening the properties panel.</p>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>Dynamic text reveals</strong> — place text or animated typography on the key layer and video content on the fill layer. The text shape cuts through the video, revealing it only where the text appears.</li>
@@ -1655,7 +1655,7 @@
 
 </ul>
 
-<h3>Relationship to Chroma Key</h3>
+<h3 id="relationship-to-chroma-key">Relationship to Chroma Key</h3>
 
 <p>Key & Fill and Chroma Key are complementary but distinct features:</p>
 
@@ -1686,7 +1686,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

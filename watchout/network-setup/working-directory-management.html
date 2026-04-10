@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Working Directory Management</h2>
+                    <div class="section-content-body"><h2 id="working-directory-management">Working Directory Management</h2>
 
 <p>Every WATCHOUT node has a <strong>working directory</strong> — the location on disk where the node stores essential runtime data, including cached media assets, show files, and internal state. By default, WATCHOUT creates this directory automatically in a system-managed location relative to the installation path (a <code>.wo</code> subfolder).</p>
 
 <p>You can change the working directory on any node to redirect data storage to a different drive or partition — for example, a faster SSD or a larger data volume.</p>
 
-<h3>What the Working Directory Contains</h3>
+<h3 id="what-the-working-directory-contains">What the Working Directory Contains</h3>
 
 <p>The working directory stores:</p>
 
@@ -1062,7 +1062,7 @@
 
 <p>All of this data is tied to the working directory's location. If the directory changes, the node loses access to previously stored data at the old path.</p>
 
-<h3>Changing the Working Directory</h3>
+<h3 id="changing-the-working-directory">Changing the Working Directory</h3>
 
 <p>To change a node's working directory:</p>
 
@@ -1087,13 +1087,13 @@
 <div class='warning-box'><p>Changing the working directory means all previously cached assets must be <strong>re-transferred</strong> from the Asset Manager. This can take significant time depending on the size of your asset library and network speed. Plan this operation for a maintenance window, not during a live show.
 </p></div>
 
-<h3>Resetting to Default</h3>
+<h3 id="resetting-to-default">Resetting to Default</h3>
 
 <p>To reset a node's working directory to the default system-managed location, click the <strong>Reset to Default</strong> button in the Working Directory section of Node Properties. The default location is a <code>.wo</code> subfolder relative to the WATCHOUT installation path.</p>
 
 <p>The same warnings about asset availability apply when resetting to default — assets cached at the custom location will need to be re-transferred.</p>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>Moving to a faster or larger drive</strong> — if the default system drive has limited space or slower I/O, point the working directory to a dedicated high-performance SSD or a larger data volume.</li>
@@ -1102,13 +1102,13 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <p>If the working directory path becomes invalid (e.g., the target drive is removed), WATCHOUT will attempt to fall back to the default location. If neither the configured path nor the default path is available, WATCHOUT will log an error and may be unable to start services on that node.</p>
 
 <p>To recover, either restore the target drive or reset the working directory by editing the WATCHOUT Manager settings file directly on the affected node.</p>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li><a href="node-management-and-maintenance.html">Node Management and Maintenance</a> — how to access the Working Directory controls and other node actions</li>
@@ -1136,7 +1136,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Conditional Cues</h2>
+                    <div class="section-content-body"><h2 id="conditional-cues">Conditional Cues</h2>
 
 <p>Any cue in WATCHOUT can have a <strong>condition</strong> attached that controls whether it is active during playback. For media cues, this is called <strong>Conditional Render</strong> — the cue only renders when the condition is true. For control and output cues, this is called <strong>Conditional Trigger</strong> — the cue only fires when the condition is true. This system enables interactive, data-driven shows where content appears, disappears, or triggers based on external inputs and show variables.</p>
 
-<h3>Condition States</h3>
+<h3 id="condition-states">Condition States</h3>
 
 <p>Every cue has a condition property that can be in one of three states:</p>
 
@@ -1058,7 +1058,7 @@
 
 </ul>
 
-<h3>Setting a Condition</h3>
+<h3 id="setting-a-condition">Setting a Condition</h3>
 
 <p>To add a condition to a cue:</p>
 
@@ -1079,7 +1079,7 @@
 
 </ol>
 
-<h3>Condition Expressions</h3>
+<h3 id="condition-expressions">Condition Expressions</h3>
 
 <p>A condition expression is a mathematical expression that is evaluated against the show's current <strong>variable values</strong> (inputs). The expression follows standard mathematical syntax and can reference any show variable by name.</p>
 
@@ -1099,7 +1099,7 @@
 <div class='note-box'><p>Variable names in expressions are <strong>case-insensitive</strong>. The expression <code>myVar</code> and <code>MYVAR</code> reference the same variable. Variables that are not defined in the show evaluate to 0.
 </p></div>
 
-<h3>Runtime Behavior</h3>
+<h3 id="runtime-behavior">Runtime Behavior</h3>
 
 <p>Conditions are evaluated <strong>continuously</strong> during playback, not just at the cue's start time. This means:</p>
 
@@ -1112,7 +1112,7 @@
 
 <p>If a media cue's condition becomes false while it is actively rendering, it stops rendering immediately. If the condition becomes true again while the playhead is still within the cue's time range, rendering resumes.</p>
 
-<h3>Interaction with Variables</h3>
+<h3 id="interaction-with-variables">Interaction with Variables</h3>
 
 <p>Condition expressions are most powerful when combined with <strong>show variables</strong> controlled by external inputs. Variables can be driven by:</p>
 
@@ -1127,7 +1127,7 @@
 
 <p>For example, a variable called "EmergencyMode" could be set to 1 via an HTTP API call when an emergency occurs. All cues conditioned on <code>EmergencyMode</code> would immediately start rendering emergency messaging across all displays.</p>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <p><strong>Show branching based on audience interaction:</strong> Use sensor data (via OSC or MIDI) to set a variable that controls which content path the show follows. Cues on one branch are conditioned on the variable being 1, while cues on the alternative branch are conditioned on it being 0.</p>
 
@@ -1158,7 +1158,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

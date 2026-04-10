@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Asset Transfer</h2>
+                    <div class="section-content-body"><h2 id="asset-transfer">Asset Transfer</h2>
 
 <p><strong>When a show goes online, WATCHOUT automatically distributes optimized media to every display server (Runner) in the system over the network.</strong> Each Runner receives only the assets it actually needs — based on which cues are assigned to its displays — so a Runner driving a single LED wall does not download media meant for a different projector across the venue. When you update a show and go online again, only the changed or newly added media is transferred; assets that already exist on a Runner are skipped automatically.</p>
 
 <p>This transfer process is what connects the media preparation you do in the Asset Manager to the actual playback on your display hardware. Understanding how it works helps you plan network infrastructure, estimate setup time at a venue, and troubleshoot situations where media is not appearing as expected.</p>
 
-<h3>What Happens When You Go Online</h3>
+<h3 id="what-happens-when-you-go-online">What Happens When You Go Online</h3>
 
 <p>When you take a show online, the following sequence occurs for each Runner:</p>
 
@@ -1065,13 +1065,13 @@
 <div class='note-box'><p>Runners only download assets they need for their assigned displays. If you reassign displays to different Runners or change which cues appear on which displays, the asset requirements for each Runner update accordingly the next time you go online.
 </p></div>
 
-<h3>Automatic Deduplication</h3>
+<h3 id="automatic-deduplication">Automatic Deduplication</h3>
 
 <p>WATCHOUT uses a storage system that avoids transferring or storing duplicate data. When the same media file appears in multiple places in a show — for example, a logo used on several timelines — the underlying data is stored only once. When you update a show and go online again, only the files that have actually changed are transferred. Media that has not changed since the last transfer is recognized automatically and skipped.</p>
 
 <p>This means that updating a show with minor changes (swapping a few videos, adjusting graphics) results in a fast incremental transfer rather than a full re-download of the entire media library.</p>
 
-<h3>Seamless Version Swapping</h3>
+<h3 id="seamless-version-swapping">Seamless Version Swapping</h3>
 
 <p>When a <a href="./dynamic-assets.html">Dynamic Asset</a> is updated with a new version while a show is running, the Runner handles the transition smoothly:</p>
 
@@ -1084,7 +1084,7 @@
 
 <p>This means you can update dynamic content (live data feeds, sponsor graphics, schedule boards) without visible interruptions to the audience.</p>
 
-<h3>Transfer Monitoring</h3>
+<h3 id="transfer-monitoring">Transfer Monitoring</h3>
 
 <p>You can monitor transfer progress in the <strong>Node Info</strong> panel, which shows detailed metrics for each Runner:</p>
 
@@ -1098,7 +1098,7 @@
 
 </ul>
 
-<h3>Pre-Downloading Assets to Runners</h3>
+<h3 id="pre-downloading-assets-to-runners">Pre-Downloading Assets to Runners</h3>
 
 <p>For shows with large media libraries (tens or hundreds of gigabytes), you can push assets to specific Runners before going online. This significantly reduces the time needed when the show actually goes online, because the media is already in place.</p>
 
@@ -1115,11 +1115,11 @@
 
 <p>For details on packaging assets for portable transfer between systems (via USB drives or external storage), see <a href="./import-export-and-mapping.html">Import, Export, and Mapping</a>.</p>
 
-<h3>Bandwidth Management</h3>
+<h3 id="bandwidth-management">Bandwidth Management</h3>
 
 <p>Asset transfers can consume significant network bandwidth, especially for large shows. WATCHOUT provides a <strong>Bandwidth Limit</strong> setting in the <a href="./asset-manager-settings.html">Asset Manager Settings</a> dialog that caps the transfer rate in Mbit/s. Set this when WATCHOUT shares the network with other traffic (lighting control, audio, show control). On a dedicated WATCHOUT network, leave it at the default (unlimited) for the fastest possible transfers.</p>
 
-<h3>Storage Footprint</h3>
+<h3 id="storage-footprint">Storage Footprint</h3>
 
 <p>Each asset's disk usage on a Runner is reported with two components:</p>
 
@@ -1135,7 +1135,7 @@
 <div class='info-box'><p>Monitor disk space on your Runners before going online with a large show. Ensure each Runner has enough free storage to hold all the assets assigned to its displays, plus some headroom for temporary files during transfer.
 </p></div>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Use high-speed networking.</strong> 1 Gbps is the minimum for production use; 10 Gbps is recommended for large shows with high-resolution or high-frame-rate media. Low-latency, dedicated network connections produce the best transfer performance.</li>
@@ -1154,7 +1154,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1168,7 +1168,7 @@
 <tr><td>Previously transferred media is being re-downloaded</td><td>Optimization settings were changed, producing different output files</td><td>Use consistent <a href="./asset-manager-settings.html">Asset Manager Settings</a> across show versions to preserve deduplication</td></tr>
 </table>
 
-<h3>See Also</h3>
+<h3 id="see-also">See Also</h3>
 
 <ul>
 <li><a href="./asset-manager.html">Asset Manager</a> — the optimization pipeline that prepares assets before transfer</li>
@@ -1198,7 +1198,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Asset Types</h2>
+                    <div class="section-content-body"><h2 id="asset-types">Asset Types</h2>
 
 <p><strong>WATCHOUT 7 classifies every asset into a specific type that determines how it is optimized, how it behaves on the timeline, and what properties are available.</strong> Choosing the right asset type — and understanding the differences between them — is important for efficient show design, because each type follows a different path through the optimization pipeline and has distinct playback characteristics.</p>
 
-<h3>Type Overview</h3>
+<h3 id="type-overview">Type Overview</h3>
 
 <table>
 <tr><th>Type</th><th>Description</th><th>Optimized?</th><th>Timeline Behavior</th><th>Typical Source</th></tr>
@@ -1066,11 +1066,11 @@
 <tr><td><strong>Folder</strong></td><td>Organizational container</td><td>N/A</td><td>Not playable</td><td>Created by user or system</td></tr>
 </table>
 
-<h3>Visual Media</h3>
+<h3 id="visual-media">Visual Media</h3>
 
 <p>Visual media assets produce imagery on displays. They are transcoded by the optimizer and distributed to display servers.</p>
 
-<h4>Video</h4>
+<h4 id="video">Video</h4>
 
 <p>Video assets are the most common media type in most shows. Source files are transcoded during optimization to a GPU-friendly playback codec — HAP by default, though this can be changed in <a href="asset-manager-settings.html">Asset Manager Settings</a>. Supported source codecs include HAP (all variants), ProRes 422/4444, H.264, HEVC/H.265, NotchLC, MPEG-2, and DNxHR, in containers such as <code>.mov</code>, <code>.mp4</code>, <code>.mkv</code>, <code>.avi</code>, and MPEG-TS.</p>
 
@@ -1079,29 +1079,29 @@
 <div class='info-box'><p>If your source video is already in a pass-through codec (HAP, NotchLC, or Raw RGB/RGBA 8-bit), the optimizer copies it without re-encoding, saving significant processing time. Deliver content in HAP whenever possible to avoid unnecessary transcoding.
 </p></div>
 
-<h4>Image</h4>
+<h4 id="image">Image</h4>
 
 <p>Still images are optimized into GPU texture formats (Raw RGB or RGBA 8-bit). Common source formats include JPEG, PNG, BMP, TGA, TIFF, WebP, PSD (imported as flattened), ICO, and single-frame GIF. EXR files (32-bit float) are supported for HDR workflows.</p>
 
 <p>Images have the highest optimization priority — they are small and fast to process, so they clear the queue before video and sequence assets.</p>
 
-<h4>SVG</h4>
+<h4 id="svg">SVG</h4>
 
 <p>SVG assets can be created using WATCHOUT's built-in shape editor (rectangles, ellipses, text) or imported from external <code>.svg</code> files. Internally, SVGs are rasterized to pixels at a configurable resolution, so they behave like image assets on the timeline. See <a href="svg-shapes.html">SVG Shapes</a> for full details on creation and editing.</p>
 
-<h4>Image Sequence</h4>
+<h4 id="image-sequence">Image Sequence</h4>
 
 <p>An image sequence is a folder of numbered image files (e.g., <code>frame_0001.png</code> through <code>frame_2400.png</code>) that WATCHOUT treats as a single video-like asset. During optimization, the individual frames are encoded into a single optimized video file. Supported frame formats are TIFF, TGA, PNG, JPEG, and EXR.</p>
 
 <p>Image sequences have the <strong>lowest optimization priority</strong> because encoding thousands of frames is the most time-consuming operation. See <a href="image-sequences.html">Image Sequences</a> for guidance on when to use sequences vs. pre-encoded video.</p>
 
-<h3>Audible Media</h3>
+<h3 id="audible-media">Audible Media</h3>
 
 <p><strong>Audio</strong> assets support WAV (recommended), AIFF, MP3, AAC-LC, FLAC, OGG/Vorbis, ADPCM, ALAC, and PCM formats in various containers (WAV, ISO/MP4, MKV/WebM, OGG). Audio assets display sample rate, channel count, and duration in their properties.</p>
 
 <p>Audio is routed through the show's audio bus system and rendered by the Audio Renderer, which supports WASAPI, ASIO, and Dante output devices.</p>
 
-<h3>Compositions</h3>
+<h3 id="compositions">Compositions</h3>
 
 <p>A <strong>Composition</strong> is created automatically when a source file contains both video and audio tracks and the track management setting is set to <strong>Composition</strong> (see <a href="asset-manager-settings.html">Asset Manager Settings</a>). The result is a special folder in the Assets window containing the video and audio sub-assets as children. A <code>composition.json</code> file tracks the relationship between the tracks.</p>
 
@@ -1110,29 +1110,29 @@
 <div class='note-box'><p>If you prefer to work with video and audio as separate, independent assets, change the track management setting to <strong>Individual Assets</strong> before importing. This splits the tracks into separate assets with no composition wrapper.
 </p></div>
 
-<h3>3D Models</h3>
+<h3 id="3d-models">3D Models</h3>
 
 <p><strong>Model</strong> assets are 3D objects that can be placed on the stage. They display a 3D bounding box (X × Y × Z) in their properties instead of a pixel resolution, and their <code>mesh_names</code> are extracted during import for reference.</p>
 
-<h3>Fonts</h3>
+<h3 id="fonts">Fonts</h3>
 
 <p><strong>Font</strong> assets (<code>.ttf</code>, <code>.otf</code>) are used by SVG text shapes. When a font is added, the optimizer generates a thumbnail preview of the typeface. Fonts appear in the font dropdown when editing text shapes in the <a href="svg-shapes.html">SVG Shapes</a> properties panel.</p>
 
-<h3>Display Data</h3>
+<h3 id="display-data">Display Data</h3>
 
 <p><strong>Display Data</strong> assets hold projection mapping geometry, such as MPCDI files. Their properties include the MPCDI version and canvas size information. These are used when configuring display geometry for warped or blended projections (see <a href="../03-displays-and-outputs/warp-geometry.html">Warp Geometry</a>).</p>
 
-<h3>Art-Net Assets</h3>
+<h3 id="art-net-assets">Art-Net Assets</h3>
 
 <p><strong>Art-Net Fixture</strong> assets are fixture definitions created from built-in presets, used with the Art-Net input system for DMX-based control of show parameters.</p>
 
 <p><strong>Art-Net Recording</strong> assets are captured recordings of Art-Net data that can be played back on the timeline, useful for replaying lighting sequences or DMX-controlled effects.</p>
 
-<h3>EDID</h3>
+<h3 id="edid">EDID</h3>
 
 <p><strong>EDID</strong> assets contain captured display identification data from a connected monitor or projector. You can save an EDID snapshot from a connected display through the Network window. EDID data is used to configure display properties and ensure correct signal negotiation.</p>
 
-<h3>Folders</h3>
+<h3 id="folders">Folders</h3>
 
 <p><strong>Folder</strong> assets are organizational containers. There are three folder subtypes:</p>
 
@@ -1143,7 +1143,7 @@
 <tr><td><strong>Dynamic Asset</strong></td><td>Auto-updating container holding versions of the same content</td><td>Restricted — see <a href="dynamic-assets.html">Dynamic Assets</a></td></tr>
 </table>
 
-<h3>Choosing the Right Asset Type</h3>
+<h3 id="choosing-the-right-asset-type">Choosing the Right Asset Type</h3>
 
 <p>When planning content delivery, consider:</p>
 
@@ -1158,7 +1158,7 @@
 
 </ul>
 
-<h3>Type Filtering</h3>
+<h3 id="type-filtering">Type Filtering</h3>
 
 <p>The Assets window search panel includes a type filter dropdown with the following categories:</p>
 
@@ -1194,7 +1194,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Blur Effects</h2>
+                    <div class="section-content-body"><h2 id="blur-effects">Blur Effects</h2>
 
 <p>WATCHOUT provides a <strong>Gaussian Blur</strong> tween for softening and defocusing cue content over time. Blur is a versatile creative tool — it can simulate depth-of-field focus pulls, smooth transitions, soften background elements to draw attention to foreground content, or create stylized intro and outro looks. The blur is applied per-cue, so each piece of content can have its own independent blur animation.</p>
 
-<h3>Gaussian Blur Tween</h3>
+<h3 id="gaussian-blur-tween">Gaussian Blur Tween</h3>
 
 <p>The Gaussian Blur tween controls the blur radius applied to the cue:</p>
 
@@ -1062,7 +1062,7 @@
 
 <p>The blur is Gaussian, meaning it uses a smooth, bell-curve-shaped filter kernel. This produces a natural, optically pleasing softness that resembles real camera defocus, as opposed to box blur or motion blur techniques that can look artificial.</p>
 
-<h3>Adding a Blur Tween</h3>
+<h3 id="adding-a-blur-tween">Adding a Blur Tween</h3>
 
 <p>To add blur animation to a cue:</p>
 
@@ -1075,7 +1075,7 @@
 
 <p>The tween starts at its default value of 0.5 (no visible blur). Add tween points with higher values at the desired times to create blur effects.</p>
 
-<h3>Common Use Cases</h3>
+<h3 id="common-use-cases">Common Use Cases</h3>
 
 <ul>
 <li><strong>Focus pulls</strong> — simulate depth-of-field transitions by animating blur from 0.5 (sharp) to a moderate value (8–15) and back. Layer a sharp foreground cue over a blurred background cue to direct audience attention, then reverse the blur to shift focus.</li>
@@ -1086,7 +1086,7 @@
 
 </ul>
 
-<h3>Animating Blur</h3>
+<h3 id="animating-blur">Animating Blur</h3>
 
 <p>Blur tween points work like any other tween — place the time needle, add a point, set the value, and choose a transition type:</p>
 
@@ -1101,13 +1101,13 @@
 <div class='info-box'><p>Moderate blur values (5–15) produce the most useful creative results. Very high values (above 30) dissolve the image so completely that the content becomes an indistinct color wash — which can be useful as a stylistic choice but rarely works as a focus-pull effect.
 </p></div>
 
-<h3>Blur with Overlapping Cues</h3>
+<h3 id="blur-with-overlapping-cues">Blur with Overlapping Cues</h3>
 
 <p>When multiple cues overlap on Stage and each has its own blur tween, the blurs are applied independently to each cue before compositing. The final composited image shows each cue at its own blur level. This is the expected behavior for most workflows — it lets you blur a background cue while keeping a foreground cue sharp, or vice versa.</p>
 
 <p>If two blur tweens are applied to the same cue (for example, through tween expressions or multiple tween instances), the combined blur radius is calculated as the square root of the sum of squares of the individual radii. In practice, this means two moderate blurs combine to a somewhat larger blur, but not simply the sum of the two. The maximum combined radius is capped at 64.</p>
 
-<h3>Performance Considerations</h3>
+<h3 id="performance-considerations">Performance Considerations</h3>
 
 <p>Gaussian blur is GPU-intensive because it requires sampling many surrounding pixels for each output pixel. The performance cost increases with the blur radius — higher values require larger sampling areas. In large compositions with many overlapping blurred cues, this can impact playback performance on the display server.</p>
 
@@ -1121,7 +1121,7 @@
 
 </ul>
 
-<h3>Combining with Other Effects</h3>
+<h3 id="combining-with-other-effects">Combining with Other Effects</h3>
 
 <p>Blur pairs naturally with several other tweens:</p>
 
@@ -1133,7 +1133,7 @@
 
 </ul>
 
-<h3>Practical Tips</h3>
+<h3 id="practical-tips">Practical Tips</h3>
 
 <ul>
 <li>The minimum value of 0.5 means "no blur." You cannot set blur to 0. In practice this is invisible — 0.5 is indistinguishable from perfectly sharp.</li>
@@ -1162,7 +1162,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

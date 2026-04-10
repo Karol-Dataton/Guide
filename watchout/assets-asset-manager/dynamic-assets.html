@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Dynamic Assets</h2>
+                    <div class="section-content-body"><h2 id="dynamic-assets">Dynamic Assets</h2>
 
 <p><strong>A dynamic asset is a named container that holds versioned content, allowing you to swap media — different language tracks, updated sponsor logos, seasonal variations — without editing any timelines.</strong> Timeline cues reference the dynamic asset by name rather than a specific file, so the currently active version determines which media plays. When you update a version, every cue referencing that dynamic asset picks up the change automatically, coordinated across all Runners without requiring a running Producer.</p>
 
-<h3>How It Works</h3>
+<h3 id="how-it-works">How It Works</h3>
 
 <p>A dynamic asset appears in the Assets window as a special folder (marked with a recycle icon) containing its version assets. A dynamic asset can hold at most <strong>two versions</strong>: the <strong>active version</strong> (the most recently added) and the <strong>previous version</strong>. When a new asset is added to the dynamic asset, it becomes the active version, the previously active version becomes the previous version, and the old previous version is <strong>automatically removed</strong>.</p>
 
@@ -1056,7 +1056,7 @@
 <div class='info-box'><p>Each cue stores an <code>AssetVersion</code> policy — either <strong>Latest</strong> (automatically upgrade to newer versions) or <strong>Fixed</strong> (pinned to the exact asset it was assigned). Only cues set to <code>Latest</code> participate in automatic version upgrades.
 </p></div>
 
-<h3>What Happens During a Version Swap</h3>
+<h3 id="what-happens-during-a-version-swap">What Happens During a Version Swap</h3>
 
 <p>When a new version is added to a dynamic asset, a coordinated update flows through the system:</p>
 
@@ -1072,7 +1072,7 @@
 <div class='warning-box'><p><strong>The Director coordinates upgrades independently of the Producer.</strong> Version swaps work even when the Producer is not running. The Producer is notified after the fact so it can permanently apply the upgrade to the show file.
 </p></div>
 
-<h3>Asset Substitution During Downloads</h3>
+<h3 id="asset-substitution-during-downloads">Asset Substitution During Downloads</h3>
 
 <p>Runners do not interrupt playback while downloading a new version. The downloader uses a <strong>substitution mechanism</strong>:</p>
 
@@ -1086,7 +1086,7 @@
 
 <p>This means content swaps are <strong>glitch-free</strong> on each Runner — the old version plays until the new one is ready, then the switch happens seamlessly.</p>
 
-<h3>Categories</h3>
+<h3 id="categories">Categories</h3>
 
 <p>When creating a dynamic asset, you choose a <strong>category</strong> that determines what type of content it holds:</p>
 
@@ -1099,7 +1099,7 @@
 
 <p>The category is shown as a suffix in the asset name (e.g. "MyContent (Visual)") and restricts which file types can be added as versions. A visual dynamic asset cannot hold audio files, and vice versa.</p>
 
-<h3>Creating a Dynamic Asset</h3>
+<h3 id="creating-a-dynamic-asset">Creating a Dynamic Asset</h3>
 
 <p>There are two ways to create a dynamic asset:</p>
 
@@ -1129,7 +1129,7 @@
 <div class='info-box'><p><strong>Tip:</strong> Converting an existing asset preserves all cue references. Cues that pointed to the original asset now point to the dynamic asset, which contains the original file as its first version.
 </p></div>
 
-<h3>Adding Versions</h3>
+<h3 id="adding-versions">Adding Versions</h3>
 
 <p>To add a new version to an existing dynamic asset:</p>
 
@@ -1142,7 +1142,7 @@
 
 <p>Versions within a dynamic asset are sorted by creation date, newest first. The newest version is the active version.</p>
 
-<h3>Version Structure</h3>
+<h3 id="version-structure">Version Structure</h3>
 
 <p>Dynamic assets enforce a <strong>two-slot</strong> rule: only the active version and the previous version are retained. When a new version is added, it becomes the active version, the former active version becomes the previous version, and the former previous version is automatically removed by the Asset Manager.</p>
 
@@ -1151,13 +1151,13 @@
 <div class='warning-box'><p><strong>Compositions and folders cannot be used as dynamic asset versions.</strong> Only regular media assets (video, audio, image, display data) support the versioning mechanism. Attempting to add a composition as a version will fail.
 </p></div>
 
-<h3>Automatic File-Based Updates</h3>
+<h3 id="automatic-file-based-updates">Automatic File-Based Updates</h3>
 
 <p>When <strong>Auto Update Assets</strong> is enabled in the show settings, the Producer monitors the original source files of all assets every 6 seconds. If a file's last-modified timestamp has changed since the asset was imported, the Producer automatically creates a new version — triggering the full upgrade pipeline described above. The previous version is replaced as usual under the two-slot rule.</p>
 
 <p>This works in combination with the <a href="./asset-watcher.html">Asset Watcher</a>: the watcher detects new files in watched folders, and the auto-update mechanism detects changes to existing source files.</p>
 
-<h3>Managing Versions</h3>
+<h3 id="managing-versions">Managing Versions</h3>
 
 <ul>
 <li><strong>Deleting a version</strong> — select the version inside the dynamic asset folder and delete it. If the dynamic asset is used on the timeline, at least one version must remain — WATCHOUT prevents you from deleting the last version of a used dynamic asset.</li>
@@ -1165,7 +1165,7 @@
 
 </ul>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <table>
 <tr><th>Scenario</th><th>How It Works</th></tr>
@@ -1176,7 +1176,7 @@
 <tr><td><strong>Live event updates</strong></td><td>Update scores, standings, or info graphics during a live show by replacing the source file — auto-update picks up the change within 6 seconds.</td></tr>
 </table>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Use <code>Latest</code> version mode for cues that should auto-update</strong>, and <code>Fixed</code> for cues that must never change (e.g., safety instructions, calibration patterns).</li>
@@ -1188,7 +1188,7 @@
 
 </ul>
 
-<h3>Limitations</h3>
+<h3 id="limitations">Limitations</h3>
 
 <ul>
 <li><strong>Version assets cannot be placed on the timeline directly.</strong> Always use the parent dynamic asset when creating cues. Individual version files are internal to the dynamic asset.</li>
@@ -1199,7 +1199,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1211,7 +1211,7 @@
 <tr><td>Old version still playing after swap</td><td>Download of new version not yet complete on that Runner</td><td>Check <a href="./asset-transfer.html">Asset Transfer</a> status; the Runner will switch automatically when download finishes</td></tr>
 </table>
 
-<h3>See Also</h3>
+<h3 id="see-also">See Also</h3>
 
 <ul>
 <li><a href="./asset-manager.html">Asset Manager</a> — asset pipeline overview and optimization stages</li>
@@ -1241,7 +1241,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

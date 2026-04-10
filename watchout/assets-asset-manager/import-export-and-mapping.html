@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Import, Export, and Mapping</h2>
+                    <div class="section-content-body"><h2 id="import-export-and-mapping">Import, Export, and Mapping</h2>
 
 <p><strong>Export and import let you package a show's optimized assets into a portable archive and bring them into a different WATCHOUT system, or back into the same system after changes.</strong> This is the standard workflow for moving shows between machines — preparing media on a production workstation, then deploying it at a venue; creating a backup before major edits; or transferring a show to a client's hardware after programming is complete. WATCHOUT also provides a pre-download option for pushing assets to specific display servers (Runners) ahead of going online, and codec mapping settings that control how source media is converted during optimization.</p>
 
-<h3>When to Use Export and Import</h3>
+<h3 id="when-to-use-export-and-import">When to Use Export and Import</h3>
 
 <ul>
 <li><strong>Deploying to a venue.</strong> Program and optimize a show on your production system, export the assets to a portable drive, then import them on the venue's WATCHOUT system.</li>
@@ -1057,7 +1057,7 @@
 
 </ul>
 
-<h3>Exporting Assets</h3>
+<h3 id="exporting-assets">Exporting Assets</h3>
 
 <p>To export assets, right-click in the Assets window and choose <strong>Transfer Assets</strong>, then either:</p>
 
@@ -1091,7 +1091,7 @@
 
 </ul>
 
-<h3>Importing Assets</h3>
+<h3 id="importing-assets">Importing Assets</h3>
 
 <p>To import assets, right-click in the Assets window and choose <strong>Transfer Assets > Import</strong>. The import dialog has two fields:</p>
 
@@ -1116,14 +1116,14 @@
 <div class='warning-box'><p>If the source node is a remote machine, the import path must be accessible via WATCHOUT's remote file access settings. If the path is not permitted, a dialog appears explaining how to configure remote access.
 </p></div>
 
-<h3>Merge Assets</h3>
+<h3 id="merge-assets">Merge Assets</h3>
 
 <p>When importing from an export package that is stored on the same physical disk as the Asset Manager, WATCHOUT offers the option to <strong>Merge Assets</strong> instead of copying. Merging moves files directly rather than copying them, which is significantly faster for large media libraries. However, merging consumes the export package — the files are relocated, so the export can only be used once.</p>
 
 <div class='info-box'><p>Use Merge Assets when deploying from a local export to the same machine's Asset Manager. Use standard import (copy) when working with portable drives or network locations where you want to keep the export package intact for reuse.
 </p></div>
 
-<h3>Pre-Downloading Assets to Runners</h3>
+<h3 id="pre-downloading-assets-to-runners">Pre-Downloading Assets to Runners</h3>
 
 <p>For shows with large media libraries, you can push selected assets to specific Runners before the show goes online. This reduces the time needed when you go online because the media is already in place on the display servers.</p>
 
@@ -1140,7 +1140,7 @@
 
 <p>For details on how assets are distributed to Runners during normal show operation, see <a href="./asset-transfer.html">Asset Transfer</a>.</p>
 
-<h3>Codec Mapping</h3>
+<h3 id="codec-mapping">Codec Mapping</h3>
 
 <p>The term "mapping" in the context of asset management also refers to <strong>codec mapping</strong> — the rules that determine how the optimizer converts source media formats into playback-optimized formats. For example, an H.264 video might be mapped to HEVC for GPU-accelerated decoding, or a ProRes file might be mapped to NotchLC.</p>
 
@@ -1148,7 +1148,7 @@
 
 <p>For the complete guide to codec mappings, quality levels, track management, and bandwidth settings, see <a href="./asset-manager-settings.html">Asset Manager Settings</a>.</p>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Export before making major changes.</strong> Create an export as a checkpoint before restructuring timelines, deleting assets, or changing codec settings. The export is a complete, self-contained archive you can import to restore.</li>
@@ -1163,7 +1163,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1176,7 +1176,7 @@
 <tr><td>Merge Assets option not available</td><td>The export package is not on the same physical disk as the Asset Manager</td><td>Use standard import (copy) instead, or move the export package to the same disk first</td></tr>
 </table>
 
-<h3>See Also</h3>
+<h3 id="see-also">See Also</h3>
 
 <ul>
 <li><a href="./asset-manager.html">Asset Manager</a> — overview of the asset pipeline and optimization stages</li>
@@ -1206,7 +1206,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

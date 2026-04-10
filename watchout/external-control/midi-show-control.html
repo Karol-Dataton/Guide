@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>MIDI Show Control</h2>
+                    <div class="section-content-body"><h2 id="midi-show-control">MIDI Show Control</h2>
 
 <p>MIDI Show Control (MSC) is an industry-standard protocol for controlling show equipment using a defined set of commands within the MIDI System Exclusive (SysEx) specification. It is widely used in theatrical productions, theme parks, and live events to coordinate cue triggering across multiple devices from different vendors.</p>
 
 <p>WATCHOUT receives MSC messages through the <strong>MIDI Bridge</strong> and translates them into timeline playback commands.</p>
 
-<h3>How MSC Reaches WATCHOUT</h3>
+<h3 id="how-msc-reaches-watchout">How MSC Reaches WATCHOUT</h3>
 
 <p>MSC messages are received by the <strong>MIDI Bridge</strong> service alongside regular MIDI Control Change messages. When the MIDI Bridge detects an MSC SysEx message on the connected MIDI input, it:</p>
 
@@ -1062,7 +1062,7 @@
 
 <p>The MSC Device ID is configured in the MIDI Bridge settings dialog. This allows multiple WATCHOUT systems on the same MIDI network to respond to different MSC messages.</p>
 
-<h3>Supported Commands</h3>
+<h3 id="supported-commands">Supported Commands</h3>
 
 <p>WATCHOUT supports the following MSC commands:</p>
 
@@ -1074,7 +1074,7 @@
 
 <p><strong>RESET</strong> — Stops all timelines in the show and resets them to their beginning positions. This command takes no Q-number or list number parameters.</p>
 
-<h3>Q-Number and List Number Mapping</h3>
+<h3 id="q-number-and-list-number-mapping">Q-Number and List Number Mapping</h3>
 
 <p>MSC commands can include optional Q-number and list number fields that determine which cue and timeline are targeted:</p>
 
@@ -1088,7 +1088,7 @@
 <div class='info-box'><p>To issue a play or pause command that uses the timeline's current position (without jumping to a cue), send Q-number <code>0</code>. This is a special bypass value inherited from WATCHOUT 6 behavior.
 </p></div>
 
-<h3>MSC Message Format</h3>
+<h3 id="msc-message-format">MSC Message Format</h3>
 
 <p>For reference, WATCHOUT processes standard MSC SysEx messages with the following structure:</p>
 
@@ -1106,7 +1106,7 @@
 
 </ul>
 
-<h3>Configuration</h3>
+<h3 id="configuration">Configuration</h3>
 
 <p>To receive MSC messages in WATCHOUT:</p>
 
@@ -1117,7 +1117,7 @@
 
 </ol>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>Theatrical show control</strong> — Trigger WATCHOUT cues from a stage manager's MSC-capable console (e.g., QLab, SFX, Medialon, Dataton PICKUP).</li>
@@ -1145,7 +1145,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

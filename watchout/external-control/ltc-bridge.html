@@ -1043,19 +1043,19 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>LTC Bridge</h2>
+                    <div class="section-content-body"><h2 id="ltc-bridge">LTC Bridge</h2>
 
 <p>The LTC Bridge is a standalone service that decodes Linear Time Code (LTC) from an audio input and uses it to synchronize WATCHOUT timeline playback to an external timecode source. This enables frame-accurate synchronization with external audio/video systems, broadcast workflows, and multi-system show environments.</p>
 
-<h3>What Is LTC?</h3>
+<h3 id="what-is-ltc">What Is LTC?</h3>
 
 <p>Linear Time Code is a SMPTE timecode format encoded as an audio signal. It carries hours, minutes, seconds, and frames (HH:MM:SS:FF) information in a continuous audio stream, typically on a dedicated audio channel. LTC is widely used in broadcast, film, and live event production to synchronize multiple systems to a common time reference.</p>
 
-<h3>Enabling the LTC Bridge</h3>
+<h3 id="enabling-the-ltc-bridge">Enabling the LTC Bridge</h3>
 
 <p>The LTC Bridge is managed as a service from the <strong>Network</strong> window in Producer. It can be started and stopped on any node that has an audio input device available. When started, it opens a configuration window.</p>
 
-<h3>Configuration</h3>
+<h3 id="configuration">Configuration</h3>
 
 <p>The LTC Bridge configuration window provides the following settings:</p>
 
@@ -1071,7 +1071,7 @@
 
 <p><strong>Timeline Selection</strong> — Select one or more timelines that should be synchronized to the incoming LTC. The bridge fetches the available timelines from the Director and presents them in a list. You can select multiple timelines to drive them all from the same timecode source.</p>
 
-<h3>How It Works</h3>
+<h3 id="how-it-works">How It Works</h3>
 
 <p>The LTC Bridge continuously decodes the audio stream from the selected input channel. When valid timecode frames are detected:</p>
 
@@ -1096,11 +1096,11 @@
 <div class='warning-box'><p>If the volume meter shows no signal or very low levels, the LTC decoder will not be able to extract timecode. Ensure the audio input is correctly routed and the signal level is adequate.
 </p></div>
 
-<h3>Multiple Instances</h3>
+<h3 id="multiple-instances">Multiple Instances</h3>
 
 <p>You can run multiple LTC Bridge instances with different instance names, each listening to a different audio input and driving different timelines. This is useful in complex setups where different parts of a show are synchronized to different timecode sources.</p>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>Broadcast synchronization</strong> — Lock WATCHOUT playback to the master timecode from a broadcast facility's timecode generator.</li>
@@ -1110,7 +1110,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <p><strong>No timecode detected:</strong> <ul> <li>Verify the correct audio device and channel are selected.</li> <li>Check the volume meter — ensure the LTC signal is present and at an adequate level.</li> <li>Try switching between ASIO and WASAPI if one driver type doesn't detect the signal.</li></p>
 
@@ -1143,7 +1143,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

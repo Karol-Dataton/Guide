@@ -1043,17 +1043,17 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Dante Audio</h2>
+                    <div class="section-content-body"><h2 id="dante-audio">Dante Audio</h2>
 
 <p>WATCHOUT supports <strong>Dante</strong> as an audio output device type for professional networked audio routing. Dante (Digital Audio Network Through Ethernet) transmits uncompressed, multi-channel audio over standard IP networks with low latency and sample-accurate synchronization. In a WATCHOUT installation, Dante allows you to route audio output from Runner nodes to Dante-enabled receivers — mixing consoles, amplifiers, speaker processors, or any other device on the Dante network — without dedicated analog or AES audio cabling.</p>
 
-<h3>How Dante Works in WATCHOUT</h3>
+<h3 id="how-dante-works-in-watchout">How Dante Works in WATCHOUT</h3>
 
 <p>Dante is configured as an <strong>audio device type</strong> in WATCHOUT's audio device properties. When you set an audio device's type to Dante, WATCHOUT uses the Dante Application Library to create a Dante transmitter on the node, publishing audio channels to the Dante network. The transmitter appears on the Dante network with the name "WATCHOUT-" followed by the node's hostname, making it discoverable by Dante controllers and receivers.</p>
 
 <p>Each Runner node that uses Dante audio needs a <strong>Dante-compatible network interface</strong>. This is typically a dedicated Ethernet port or a Dante-specific network adapter. The audio data is transmitted over this interface alongside other Dante traffic on the network.</p>
 
-<h3>Configuring a Dante Audio Device</h3>
+<h3 id="configuring-a-dante-audio-device">Configuring a Dante Audio Device</h3>
 
 <ol>
 <li>Open the <strong>Devices</strong> window (<strong>Window > Devices</strong>) and select the audio device you want to configure, or add a new audio device.</li>
@@ -1068,7 +1068,7 @@
 <div class='note-box'><p>When Dante is selected as the device type, the <strong>Device</strong> selector (used for WASAPI and ASIO to choose a specific sound card) is replaced by the <strong>Adapter</strong> selector for choosing the Dante network interface. Sample format options are also handled by the Dante library rather than configured manually.
 </p></div>
 
-<h3>Dante Network Requirements</h3>
+<h3 id="dante-network-requirements">Dante Network Requirements</h3>
 
 <p>Dante audio relies on precise timing and dedicated network infrastructure:</p>
 
@@ -1080,17 +1080,17 @@
 
 </ul>
 
-<h3>Dante Activation</h3>
+<h3 id="dante-activation">Dante Activation</h3>
 
 <p>Dante functionality requires activation on the node. If Dante is not activated, WATCHOUT displays an error message indicating that Dante is not available. If the Dante adapter does not have enough channels for the configured channel count, WATCHOUT reports an insufficient channel error. These status messages appear in the Nodes window message indicators.</p>
 
-<h3>Channel Routing</h3>
+<h3 id="channel-routing">Channel Routing</h3>
 
 <p>Once a Dante audio device is configured, its output channels are published on the Dante network. To route these channels to physical outputs (speakers, amplifiers, etc.), use a Dante controller application (such as Dante Controller from Audinate) to create audio routes between the WATCHOUT transmitter and the receiving devices.</p>
 
 <p>The WATCHOUT Dante transmitter appears in the Dante controller with the manufacturer name "Dataton AB" and model "WATCHOUT 7". The channel names correspond to the configured channel count.</p>
 
-<h3>Comparison with Other Audio Device Types</h3>
+<h3 id="comparison-with-other-audio-device-types">Comparison with Other Audio Device Types</h3>
 
 <table>
 <tr><th>Device Type</th><th>Connection</th><th>Use Case</th></tr>
@@ -1102,7 +1102,7 @@
 
 <p>Dante is the only audio device type that routes audio over the network rather than through a local hardware interface. This makes it ideal for installations where audio processing equipment is located remotely from the WATCHOUT Runner machines.</p>
 
-<h3>Troubleshooting Dante</h3>
+<h3 id="troubleshooting-dante">Troubleshooting Dante</h3>
 
 <table>
 <tr><th>Symptom</th><th>Likely Cause</th><th>Resolution</th></tr>
@@ -1114,7 +1114,7 @@
 <tr><td>Duplicate Dante device conflict</td><td>Two audio devices assigned to the same Dante adapter on the same host</td><td>Each node should have only one Dante audio device per adapter. Remove the duplicate assignment.</td></tr>
 </table>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li><a href="connecting-devices.html">Connecting Devices</a> — assigning audio devices to nodes</li>
@@ -1143,7 +1143,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

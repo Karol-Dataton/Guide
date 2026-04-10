@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Position and Movement</h2>
+                    <div class="section-content-body"><h2 id="position-and-movement">Position and Movement</h2>
 
 <p>Position tweens animate where a cue appears on Stage over time. By defining a path of positions across the cue's duration, you can create slide-ins, tracking moves, orbital motion, camera-like pans, and any other spatial animation. Position is one of the most commonly used tweens and provides the richest set of editing tools, including three-axis control, Bezier path handles for curved motion, and an option to automatically orient the cue along its travel direction.</p>
 
-<h3>Position Tween Channels</h3>
+<h3 id="position-tween-channels">Position Tween Channels</h3>
 
 <p>The Position tween controls three axes simultaneously:</p>
 
@@ -1060,7 +1060,7 @@
 
 <p>All three channels share the same tween points — each position tween point defines a complete X, Y, Z coordinate. The range is unlimited in all directions, with a default of 0 (the cue's initial placement as set in cue properties). Values represent Stage coordinates relative to the cue's base position.</p>
 
-<h3>Adding a Position Tween</h3>
+<h3 id="adding-a-position-tween">Adding a Position Tween</h3>
 
 <p>To add position animation to a cue:</p>
 
@@ -1073,7 +1073,7 @@
 
 <p>The tween starts with a single point at the cue's current position. Add additional tween points at different times to define the motion path.</p>
 
-<h3>Creating Position Points on Stage</h3>
+<h3 id="creating-position-points-on-stage">Creating Position Points on Stage</h3>
 
 <p>You can create new position tween points directly from the Stage view. With a Position effect active on a cue:</p>
 
@@ -1085,7 +1085,7 @@
 
 <p>WATCHOUT automatically creates a new position tween point at the current playhead time with the coordinates you dragged to. This is the fastest way to build motion paths — you define "where" on Stage and "when" on the timeline in a single action.</p>
 
-<h3>Position Points and Handles on Stage</h3>
+<h3 id="position-points-and-handles-on-stage">Position Points and Handles on Stage</h3>
 
 <p>Position tween points and their Bezier handles are visualized directly on the Stage view:</p>
 
@@ -1097,7 +1097,7 @@
 
 <p>This on-Stage visualization gives you a spatial overview of the entire motion path and lets you edit it in context with the display layout.</p>
 
-<h3>Tween Point Properties</h3>
+<h3 id="tween-point-properties">Tween Point Properties</h3>
 
 <p>When you select a position tween point, the Properties panel shows:</p>
 
@@ -1115,7 +1115,7 @@
 <tr><td><strong>Linked Handles</strong></td><td>When enabled, the In and Out handles move together to maintain a smooth curve through the point</td></tr>
 </table>
 
-<h3>Straight vs. Curved Motion</h3>
+<h3 id="straight-vs-curved-motion">Straight vs. Curved Motion</h3>
 
 <p>By default, the cue moves in straight lines between tween points. To create curved paths:</p>
 
@@ -1947,7 +1947,7 @@
 <div class='info-box'><p>When Linked Handles is active, the individual Smooth In and Smooth Out toggles are locked on. To control them independently, first disable Linked Handles.
 </p></div>
 
-<h3>Align with Trajectory</h3>
+<h3 id="align-with-trajectory">Align with Trajectory</h3>
 
 <p>The <strong>Align with Trajectory</strong> option (shown in the tween-level Properties panel when a Position tween is selected) automatically rotates the cue so that it faces the direction it is currently moving. This is useful for:</p>
 
@@ -2604,7 +2604,7 @@
 })();
 </script>
 
-<h3>Understanding the Position Curve</h3>
+<h3 id="understanding-the-position-curve">Understanding the Position Curve</h3>
 
 <p>Unlike other effect curves where the vertical axis represents the property value directly, the <strong>Position effect curve represents progress along the path</strong>, not a specific X, Y, or Z value. The first point always sits at the <strong>bottom</strong> of the curve view (start of the path) and the last point sits at the <strong>top</strong> (end of the path). Points in between are distributed vertically according to their relative position along the total path length.</p>
 
@@ -2619,11 +2619,11 @@
 
 <p>To equalize speed across segments, adjust the horizontal spacing of points on the timeline until the incline between consecutive points is uniform. To create acceleration or deceleration, space points closer together (slow) or farther apart (fast) in the curve view, or use appropriate easing curves on the tween points.</p>
 
-<h3>First Person Mode and the Axis Gizmo</h3>
+<h3 id="first-person-mode-and-the-axis-gizmo">First Person Mode and the Axis Gizmo</h3>
 
 <p>When working with 3D position animation (using the Z axis), you can switch the Stage view to <strong>First Person mode</strong> for a perspective view of the 3D space. In this mode, an <strong>axis gizmo</strong> appears on the selected cue, showing the X, Y, and Z movement axes as colored arrows. Drag an axis arrow to constrain movement to that single axis, making precise 3D positioning easier without accidentally shifting the cue on unintended axes.</p>
 
-<h3>Building a Motion Path</h3>
+<h3 id="building-a-motion-path">Building a Motion Path</h3>
 
 <p>A typical workflow for position animation:</p>
 
@@ -2635,7 +2635,7 @@
 
 </ol>
 
-<h3>Common Use Cases</h3>
+<h3 id="common-use-cases">Common Use Cases</h3>
 
 <ul>
 <li><strong>Slide-in and slide-out</strong> — animate Position X (or Y) from off-screen to the final position, then back off-screen at the end. Use an InOut easing curve for a natural entrance.</li>
@@ -2646,7 +2646,7 @@
 
 </ul>
 
-<h3>Combining with Other Tweens</h3>
+<h3 id="combining-with-other-tweens">Combining with Other Tweens</h3>
 
 <p>Position animation works well alongside:</p>
 
@@ -2658,7 +2658,7 @@
 
 </ul>
 
-<h3>Practical Tips</h3>
+<h3 id="practical-tips">Practical Tips</h3>
 
 <ul>
 <li>Animate one axis at a time to start, then layer in secondary motion once the primary path is correct.</li>
@@ -2687,7 +2687,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

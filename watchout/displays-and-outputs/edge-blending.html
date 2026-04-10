@@ -1043,7 +1043,7 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Edge Blending</h2>
+                    <div class="section-content-body"><h2 id="edge-blending">Edge Blending</h2>
 
 <p><strong>Edge blending</strong> is the process of smoothing the overlap region between two or more adjacent display outputs so that they appear as a single, continuous image. In any multi-projector or multi-display installation where outputs are tiled side by side, the overlapping edges would normally produce a bright, visible seam — the area where both outputs contribute light adds up to noticeably higher brightness than the surrounding image. Edge blending eliminates this by applying complementary intensity gradients across the overlap zone: each output fades down toward its edge so that the combined brightness in the overlap matches the single-output brightness everywhere else.</p>
 
@@ -1051,7 +1051,7 @@
 
 <img src="../media/edge-blending-diagram.svg" alt="Edge Blending Principle" style="width: 100%; height: auto;">
 
-<h3>When Edge Blending Is Needed</h3>
+<h3 id="when-edge-blending-is-needed">When Edge Blending Is Needed</h3>
 
 <p>Edge blending is used whenever two or more display outputs overlap on the same surface and the goal is a seamless combined image. Common scenarios include:</p>
 
@@ -1067,13 +1067,13 @@
 
 <p>The general rule is: if two outputs contribute light to the same physical area and you want the result to look like a single image, you need edge blending.</p>
 
-<h3>How Edge Blending Works</h3>
+<h3 id="how-edge-blending-works">How Edge Blending Works</h3>
 
 <p>Edge blending operates on a simple optical principle. In the overlap zone, both outputs are projecting onto the same surface. If both outputs are at full brightness, the overlap area is approximately twice as bright as the rest of the image. To fix this, each output applies a gradient that ramps its brightness down from full to zero across the overlap width. The two gradients are complementary — where one output is at 80%, the other is at 20% — so that at every point in the overlap, the combined brightness equals the single-output brightness.</p>
 
 <p>In WATCHOUT, this is implemented by converting the overlap geometry into gradient-intensity meshes. The renderer modifies the alpha (opacity) of pixels near the display edge so that brightness falls off smoothly across the blend zone.</p>
 
-<h4>Gamma and the Blend Curve</h4>
+<h4 id="gamma-and-the-blend-curve">Gamma and the Blend Curve</h4>
 
 <p>A linear brightness ramp does not always produce a perceptually smooth result. Because displays and projectors have non-linear brightness response curves (gamma), a simple linear fade can produce a visible dark dip or bright bump at the midpoint of the overlap. To compensate, the blend gradient is shaped by a gamma correction parameter — sometimes called <strong>soft-edge gamma</strong> — that adjusts the intensity curve of the falloff.</p>
 
@@ -1086,11 +1086,11 @@
 
 <p>The optimal gamma value depends on the display technology, the viewing environment, and the black level of the projectors. It is always validated visually using test content.</p>
 
-<h3>Blend Control Methods</h3>
+<h3 id="blend-control-methods">Blend Control Methods</h3>
 
 <p>WATCHOUT provides several ways to set up and refine edge blending, ranging from fully automatic to fully manual. Choose the method that fits your display configuration and the precision you need.</p>
 
-<h4>Automatic Soft Edges</h4>
+<h4 id="automatic-soft-edges">Automatic Soft Edges</h4>
 
 <p>The <strong>Automatic Soft Edges</strong> feature, found in the <strong>Mask</strong> section of Device Properties, is the fastest way to set up basic blending. When enabled, WATCHOUT detects where displays overlap on the stage and automatically generates soft-edge gradients in those regions.</p>
 
@@ -1108,7 +1108,7 @@
 <div class='note-box'><p>Automatic soft edges are not available for projector-type displays or canvas displays. For these configurations, use custom masks to build the blend zone manually. See <a href="display-masks.html">Display Masks</a> for details.
 </p></div>
 
-<h4>Mask-Based Shaping</h4>
+<h4 id="mask-based-shaping">Mask-Based Shaping</h4>
 
 <p>When the automatic approach does not produce satisfactory results — for example, on non-planar surfaces, with uneven overlap widths, or when scenic boundaries intersect the blend zone — you can build the blend manually using custom mask surfaces.</p>
 
@@ -1125,7 +1125,7 @@
 
 <p>For a complete guide to mask junction editing, built-in mask presets (Left, Right, Top, Bottom, Rectangular, Round), mask images, and gamma correction, see <a href="display-masks.html">Display Masks</a>.</p>
 
-<h4>Manual Warp/Mask Refinement</h4>
+<h4 id="manual-warpmask-refinement">Manual Warp/Mask Refinement</h4>
 
 <p>On irregular or curved surfaces, the blend zone may not follow a simple geometric boundary. In these cases, combine <a href="warp-geometry.html">Warp Geometry</a> corrections with custom masks:</p>
 
@@ -1137,7 +1137,7 @@
 
 <p>Because masks are applied after warp in the rendering pipeline, mask coordinates always correspond to the final (post-warp) display surface. This means you can adjust the warp mesh without invalidating the mask, as long as the mask points are updated to follow any significant changes in the corrected output shape.</p>
 
-<h3>Relationship to Warp Geometry and Masks</h3>
+<h3 id="relationship-to-warp-geometry-and-masks">Relationship to Warp Geometry and Masks</h3>
 
 <p>Edge blending, <a href="warp-geometry.html">Warp Geometry</a>, and <a href="display-masks.html">Display Masks</a> are three independent systems that work together in a specific order within WATCHOUT's rendering pipeline:</p>
 
@@ -1160,7 +1160,7 @@
 
 <p>As a general rule: get warp geometry correct first, then apply masks and edge blending on top of the corrected output. Attempting to blend before the geometry is aligned produces inconsistent overlap widths and makes the seam harder to eliminate.</p>
 
-<h3>Calibration Workflow</h3>
+<h3 id="calibration-workflow">Calibration Workflow</h3>
 
 <p>Setting up edge blending is an iterative process. Follow this sequence for reliable results:</p>
 
@@ -1189,7 +1189,7 @@
 
 </ol>
 
-<h3>Validation with Test Patterns</h3>
+<h3 id="validation-with-test-patterns">Validation with Test Patterns</h3>
 
 <p>Use WATCHOUT's built-in <a href="test-patterns.html">Test Patterns</a> and purpose-made test content to verify blend quality at each stage:</p>
 
@@ -1209,7 +1209,7 @@
 <div class='info-box'><p>Test blending at multiple brightness levels (25%, 50%, 75%, 100% white), not just full brightness. Gamma errors are often most visible at mid-brightness levels.
 </p></div>
 
-<h3>Common Pitfalls and Fixes</h3>
+<h3 id="common-pitfalls-and-fixes">Common Pitfalls and Fixes</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1222,7 +1222,7 @@
 <tr><td>Grid lines misaligned at the blend boundary</td><td>Warp geometry or placement error, not a blending issue</td><td>Correct warp mesh junction points at the overlap edge; re-verify with Pattern test mode</td></tr>
 </table>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Control the environment.</strong> Blend calibration is most reliable in a controlled lighting environment. Ambient light makes it harder to judge subtle brightness differences in the overlap zone. Calibrate in the same lighting conditions the show will run in.</li>
@@ -1260,7 +1260,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

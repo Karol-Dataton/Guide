@@ -1043,15 +1043,15 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>OSC Protocol</h2>
+                    <div class="section-content-body"><h2 id="osc-protocol">OSC Protocol</h2>
 
 <p>Open Sound Control (OSC) is a flexible, message-based protocol widely used in media servers, show controllers, and creative applications. WATCHOUT's OSC integration allows you to send variable values and timeline playback commands from any OSC-capable device or software.</p>
 
-<h3>Enabling OSC</h3>
+<h3 id="enabling-osc">Enabling OSC</h3>
 
 <p>OSC support is enabled or disabled from the <strong>Network</strong> window in Producer using the <strong>OSC</strong> toggle. When enabled, the Operative listens for incoming OSC messages on both UDP and TCP.</p>
 
-<h3>Connection Details</h3>
+<h3 id="connection-details">Connection Details</h3>
 
 <p>WATCHOUT listens for OSC on two ports simultaneously:</p>
 
@@ -1063,7 +1063,7 @@
 
 <p>Both ports bind to all network interfaces (<code>0.0.0.0</code>), so the Operative accepts OSC messages from any reachable device on the network.</p>
 
-<h3>Variable Input via OSC</h3>
+<h3 id="variable-input-via-osc">Variable Input via OSC</h3>
 
 <p>Any OSC message that does not match a playback control pattern (described below) is treated as a variable input. The OSC address and argument index are combined to form the external key that maps to a WATCHOUT variable.</p>
 
@@ -1084,7 +1084,7 @@
 
 </ul>
 
-<h3>Supported Value Types</h3>
+<h3 id="supported-value-types">Supported Value Types</h3>
 
 <p>WATCHOUT accepts the following OSC argument types:</p>
 
@@ -1096,7 +1096,7 @@
 
 <p>Other OSC types (string, blob, etc.) are not supported and will produce an error if received.</p>
 
-<h3>Playback Control via OSC</h3>
+<h3 id="playback-control-via-osc">Playback Control via OSC</h3>
 
 <p>In addition to variable input, WATCHOUT supports timeline playback control through OSC messages with the <code>/wo/</code> address prefix. The supported patterns are:</p>
 
@@ -1129,11 +1129,11 @@
 <div class='note-box'><p>OSC Bundles are not currently supported. Each message must be sent as an individual OSC message.
 </p></div>
 
-<h3>Interpolation</h3>
+<h3 id="interpolation">Interpolation</h3>
 
 <p>All OSC variable inputs are interpolated with the default <strong>50ms interpolation window</strong>. The Operative timestamps each incoming OSC message and includes a 50ms interpolation deadline when forwarding it to the Director. This ensures smooth, glitch-free transitions even when OSC messages arrive at irregular intervals.</p>
 
-<h3>Testing OSC</h3>
+<h3 id="testing-osc">Testing OSC</h3>
 
 <p>During development, you can test WATCHOUT's OSC input using tools such as:</p>
 
@@ -1145,7 +1145,7 @@
 
 </ul>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>QLab integration</strong> — Send OSC cues from QLab to control WATCHOUT variables and trigger timeline playback.</li>
@@ -1174,7 +1174,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

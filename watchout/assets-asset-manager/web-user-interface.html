@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Web User Interface</h2>
+                    <div class="section-content-body"><h2 id="web-user-interface">Web User Interface</h2>
 
 <p><strong>The Asset Manager includes a built-in web server that provides a browser-based interface for uploading and managing assets.</strong> This allows team members to contribute media from any device on the network — laptops, tablets, or smartphones — without needing the WATCHOUT Producer application installed. The Web UI is particularly valuable during collaborative setup and rehearsal phases when multiple people need to add or review content simultaneously.</p>
 
-<h3>How It Works</h3>
+<h3 id="how-it-works">How It Works</h3>
 
 <p>The Web UI is an embedded web application served directly by the Asset Manager process on <strong>port 3023</strong>. It is compiled into the Asset Manager binary and does not require a separate web server installation. When the Asset Manager starts, the web server starts automatically — there is no additional configuration needed.</p>
 
@@ -1063,7 +1063,7 @@
 
 <p>Assets uploaded via the Web UI appear in the Producer's Assets window in real time — the Asset Manager uses Server-Sent Events (SSE) to push state updates to all connected clients.</p>
 
-<h3>Accessing the Web UI</h3>
+<h3 id="accessing-the-web-ui">Accessing the Web UI</h3>
 
 <ol>
 <li>Ensure the Asset Manager node is running and the show is loaded.</li>
@@ -1083,7 +1083,7 @@
 <div class='note-box'><p>The port is always <strong>3023</strong> and cannot be changed. The URL uses the IP address of the Asset Manager node, which may be different from the Producer machine. If you're unsure which node is the Asset Manager, check the Network window in the Producer.
 </p></div>
 
-<h3>Features</h3>
+<h3 id="features">Features</h3>
 
 <p>The web interface provides the following capabilities:</p>
 
@@ -1098,13 +1098,13 @@
 <tr><td><strong>Internationalization</strong></td><td>The interface supports multiple languages.</td></tr>
 </table>
 
-<h3>Upload Details</h3>
+<h3 id="upload-details">Upload Details</h3>
 
-<h4>File Size Limit</h4>
+<h4 id="file-size-limit">File Size Limit</h4>
 
 <p>The Web UI accepts uploads up to approximately <strong>3.9 GB</strong> (4,194,304,000 bytes) per request. This limit applies to the HTTP request body and is shared across all API endpoints. Files larger than this limit must be added through the Producer's drag-and-drop interface or via the <a href="asset-watcher.html">Asset Watcher</a>.</p>
 
-<h4>Upload Progress</h4>
+<h4 id="upload-progress">Upload Progress</h4>
 
 <p>Large files display upload progress in the web interface. Once the upload completes:</p>
 
@@ -1116,11 +1116,11 @@
 
 </ol>
 
-<h4>Multiple Uploads</h4>
+<h4 id="multiple-uploads">Multiple Uploads</h4>
 
 <p>Multiple files can be uploaded in parallel. Each upload is tracked independently with its own progress indicator. Uploads do not block each other or prevent the operator from using the Producer simultaneously.</p>
 
-<h3>Browser Compatibility</h3>
+<h3 id="browser-compatibility">Browser Compatibility</h3>
 
 <p>The Web UI is built with Vue 3 and the Quasar framework, targeting modern browsers:</p>
 
@@ -1134,7 +1134,7 @@
 
 <p>Internet Explorer is not supported. The interface is responsive and adapts to different screen sizes, including tablets and smartphones.</p>
 
-<h3>Security Considerations</h3>
+<h3 id="security-considerations">Security Considerations</h3>
 
 <p>The Web UI has <strong>no authentication</strong> — it is accessible to anyone who can reach the Asset Manager's IP address and port on the network. This is by design for ease of use in controlled AV environments, but it means anyone on the network can upload, browse, or delete assets.</p>
 
@@ -1151,7 +1151,7 @@
 
 </ul>
 
-<h3>Relationship to Other Ingestion Methods</h3>
+<h3 id="relationship-to-other-ingestion-methods">Relationship to Other Ingestion Methods</h3>
 
 <p>The Web UI is one of several ways to add media to a show. Choose the method that fits your workflow:</p>
 
@@ -1165,7 +1165,7 @@
 
 <p>All methods feed into the same optimization pipeline and produce identical results. The choice is purely about workflow convenience. See <a href="asset-manager.html">Asset Manager</a> for an overview of all ingestion options.</p>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Share the URL with your team.</strong> At the start of setup, share the Asset Manager URL (<code>http://<ip>:3023</code>) with all team members who need to contribute content. This saves time compared to collecting files on USB drives or email.</li>
@@ -1178,7 +1178,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1209,7 +1209,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Scale and Size</h2>
+                    <div class="section-content-body"><h2 id="scale-and-size">Scale and Size</h2>
 
 <p>Scale tweens animate the size of a cue over time by controlling horizontal and vertical scaling independently. Whether you need a slow zoom into a photograph, a pop-in title effect, or a pulsing graphic that breathes with the music, the Scale tween provides precise control over how content grows and shrinks on Stage.</p>
 
-<h3>Scale Tween Channels</h3>
+<h3 id="scale-tween-channels">Scale Tween Channels</h3>
 
 <p>The Scale tween controls two axes:</p>
 
@@ -1061,7 +1061,7 @@
 
 <p>The Properties panel also shows computed <strong>X Pixel Value</strong> and <strong>Y Pixel Value</strong> fields, which display the resulting pixel dimensions based on the current scale percentage and the cue's source media size. These are useful for verifying that scaled content aligns to specific pixel dimensions on your output.</p>
 
-<h3>Adding a Scale Tween</h3>
+<h3 id="adding-a-scale-tween">Adding a Scale Tween</h3>
 
 <p>To add scale animation to a cue:</p>
 
@@ -1074,7 +1074,7 @@
 
 <p>The tween starts with a single point at 100% for both X and Y (original size). Add additional tween points to animate the scale over time.</p>
 
-<h3>Maintain Proportions</h3>
+<h3 id="maintain-proportions">Maintain Proportions</h3>
 
 <p>The <strong>Maintain Proportions</strong> toggle (displayed as a link icon between the X and Y value fields in the Properties panel) locks the X and Y scale values together. When enabled:</p>
 
@@ -1089,7 +1089,7 @@
 <div class='info-box'><p>Maintain Proportions is a per-tween-point setting. You can have some points locked and others unlocked within the same tween, though in practice most workflows keep it consistent.
 </p></div>
 
-<h3>Tween Point Properties</h3>
+<h3 id="tween-point-properties">Tween Point Properties</h3>
 
 <p>When you select a scale tween point, the Properties panel shows:</p>
 
@@ -1104,7 +1104,7 @@
 <tr><td><strong>Transition Type</strong></td><td>Easing curve from the previous point to this one</td></tr>
 </table>
 
-<h3>Common Use Cases</h3>
+<h3 id="common-use-cases">Common Use Cases</h3>
 
 <ul>
 <li><strong>Pop-in titles</strong> — start at 0% scale and jump to 100% (or slightly beyond with a Bounce or Back easing curve for overshoot). This produces an attention-grabbing entrance.</li>
@@ -1115,7 +1115,7 @@
 
 </ul>
 
-<h3>Scale and Pixel Sharpness</h3>
+<h3 id="scale-and-pixel-sharpness">Scale and Pixel Sharpness</h3>
 
 <p>Scaling content beyond 100% enlarges the source pixels, which can make the image appear soft or pixelated on high-resolution outputs. For the sharpest results:</p>
 
@@ -1128,7 +1128,7 @@
 
 <p>Scaling below 100% is generally safe for quality — the GPU downsamples smoothly and the result looks sharp.</p>
 
-<h3>Combining with Other Tweens</h3>
+<h3 id="combining-with-other-tweens">Combining with Other Tweens</h3>
 
 <p>Scale animation pairs naturally with other transform tweens:</p>
 
@@ -1140,7 +1140,7 @@
 
 </ul>
 
-<h3>Practical Tips</h3>
+<h3 id="practical-tips">Practical Tips</h3>
 
 <ul>
 <li>For most animations, keep <strong>Maintain Proportions</strong> enabled to avoid unintentional distortion. Disable it only when asymmetric scaling is part of the creative intent.</li>
@@ -1168,7 +1168,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Image Sequences</h2>
+                    <div class="section-content-body"><h2 id="image-sequences">Image Sequences</h2>
 
 <p><strong>An image sequence is a series of numbered image files — such as <code>render_0001.png</code>, <code>render_0002.png</code>, <code>render_0003.png</code> — that WATCHOUT treats as a single video asset.</strong> Each file represents one frame. The optimizer encodes them into a standard optimized video, so display servers play a single efficient file rather than thousands of individual images. This makes image sequences ideal for 3D render pipelines, HDR workflows, and situations where per-frame quality matters.</p>
 
-<h3>When to Use Image Sequences</h3>
+<h3 id="when-to-use-image-sequences">When to Use Image Sequences</h3>
 
 <p>Image sequences are the preferred delivery format when:</p>
 
@@ -1059,7 +1059,7 @@
 
 </ul>
 
-<h3>Image Sequences vs. Video Files</h3>
+<h3 id="image-sequences-vs-video-files">Image Sequences vs. Video Files</h3>
 
 <table>
 <tr><th>Aspect</th><th>Image Sequence</th><th>Video File</th></tr>
@@ -1076,7 +1076,7 @@
 <div class='info-box'><p><strong>When to prefer video:</strong> If you don't need per-frame precision or HDR, it's more efficient to encode to ProRes or HAP in your compositing tool and import the resulting video file directly. This skips the sequence detection step and gets a higher optimization priority.
 </p></div>
 
-<h3>How Detection Works</h3>
+<h3 id="how-detection-works">How Detection Works</h3>
 
 <p>When you add an image sequence, the Asset Manager scans the selected folder and applies a detection algorithm:</p>
 
@@ -1092,7 +1092,7 @@
 <div class='warning-box'><p><strong>Sequences must be contiguous.</strong> If any frame numbers are missing in the range, the import will fail. Verify your render output is complete before importing. A sequence of frames 1, 2, 4, 5 (missing frame 3) will be rejected.
 </p></div>
 
-<h3>Supported Frame Formats</h3>
+<h3 id="supported-frame-formats">Supported Frame Formats</h3>
 
 <table>
 <tr><th>Format</th><th>Extensions</th><th>Alpha</th><th>HDR</th><th>Notes</th></tr>
@@ -1110,7 +1110,7 @@
 
 <p>All files in a sequence must use the <strong>same format and resolution</strong>. Mixing formats within a single sequence is not supported.</p>
 
-<h3>Adding an Image Sequence</h3>
+<h3 id="adding-an-image-sequence">Adding an Image Sequence</h3>
 
 <ol>
 <li>Right-click in the Assets window and choose <strong>New → Add Image Sequence</strong>.</li>
@@ -1123,7 +1123,7 @@
 
 <p>The resulting asset appears in the Assets window with a video-style icon. Its type is set to <code>Video</code> (not <code>Image</code>), since it contains multiple frames.</p>
 
-<h3>Frame Rate and Duration</h3>
+<h3 id="frame-rate-and-duration">Frame Rate and Duration</h3>
 
 <p>Image sequences default to <strong>60 fps</strong>. You can change the frame rate when creating a version of the asset (via the <strong>Create Version</strong> dialog), or it may inherit the show's default frame rate.</p>
 
@@ -1133,7 +1133,7 @@
 
 <p>For example, a 1200-frame sequence at 30 fps produces a 40-second asset. The same sequence at 60 fps produces a 20-second asset.</p>
 
-<h3>Optimization</h3>
+<h3 id="optimization">Optimization</h3>
 
 <p>When an image sequence is added, the Asset Manager processes it through the same optimization pipeline as video files:</p>
 
@@ -1162,7 +1162,7 @@
 <div class='warning-box'><p><strong>Image sequences have the lowest optimization priority (-3).</strong> They are processed after images (+1), other assets (0), audio (-1), and video (-2). For large sequences, plan for significant optimization time. If you need faster processing, encode the sequence to a video file in your compositing tool first.
 </p></div>
 
-<h3>Playback Behavior</h3>
+<h3 id="playback-behavior">Playback Behavior</h3>
 
 <p>Once imported and optimized, an image sequence behaves identically to a video asset:</p>
 
@@ -1174,7 +1174,7 @@
 
 </ul>
 
-<h3>Performance Considerations</h3>
+<h3 id="performance-considerations">Performance Considerations</h3>
 
 <p>Image sequences can be very large — a 4K EXR sequence at 60 fps can easily produce hundreds of gigabytes of source data. Keep in mind:</p>
 
@@ -1186,7 +1186,7 @@
 
 </ul>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Use consistent numbering with leading zeros</strong> (e.g., <code>frame_0001.png</code> through <code>frame_2400.png</code>). The detection algorithm relies on trailing digits in filenames.</li>
@@ -1198,7 +1198,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1211,7 +1211,7 @@
 <tr><td>Alpha channel missing after optimization</td><td>Source format doesn't support alpha (JPEG, BMP) or codec mapping dropped it</td><td>Use PNG, TGA, or EXR source formats; verify the output codec supports alpha</td></tr>
 </table>
 
-<h3>See Also</h3>
+<h3 id="see-also">See Also</h3>
 
 <ul>
 <li><a href="./asset-manager.html">Asset Manager</a> — asset pipeline overview and optimization stages</li>
@@ -1241,7 +1241,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

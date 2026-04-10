@@ -1043,17 +1043,17 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Test Patterns</h2>
+                    <div class="section-content-body"><h2 id="test-patterns">Test Patterns</h2>
 
 <p><strong>Test patterns</strong> are built-in diagnostic output modes rendered directly by the Runner on a per-display basis. They are independent of show content and timeline playback, making them essential tools for verifying display setup, signal routing, geometry correction, and color calibration before or during a production.</p>
 
-<h3>Accessing Test Patterns</h3>
+<h3 id="accessing-test-patterns">Accessing Test Patterns</h3>
 
 <p>Test pattern controls are found in <strong>Device Properties → Test Pattern</strong> for any selected display. The section provides a set of output mode buttons and an additional toggle for the render info overlay.</p>
 
 <p>To activate a test pattern, select the desired mode from the button group. To return to normal show output, select <strong>None</strong>.</p>
 
-<h3>Output Modes</h3>
+<h3 id="output-modes">Output Modes</h3>
 
 <p>WATCHOUT provides five display output modes, controlled from the Test Pattern section:</p>
 
@@ -1066,13 +1066,13 @@
 
 </ul>
 
-<h3>Render Info Overlay</h3>
+<h3 id="render-info-overlay">Render Info Overlay</h3>
 
 <p>The <strong>Render Info</strong> toggle (available alongside the output mode buttons) enables a heads-up diagnostic overlay on the display output. When active, the Runner renders technical information directly onto the display, such as the display name, resolution, frame rate, and other runtime diagnostics.</p>
 
 <p>This overlay is drawn on top of whatever output mode is currently active — whether normal show content, a test pattern, or a white field. It is useful for quickly identifying which physical output corresponds to which display in the WATCHOUT configuration, especially in large multi-display systems where it can be difficult to tell outputs apart by visual content alone.</p>
 
-<h3>Common Use Cases</h3>
+<h3 id="common-use-cases">Common Use Cases</h3>
 
 <p><strong>Verifying signal routing:</strong> After configuring displays and assigning output channels, switch each display to <strong>White</strong> mode one at a time. This confirms that the correct physical output activates for each display in the WATCHOUT configuration. If the wrong screen lights up, the channel assignment or host address needs to be corrected.</p>
 
@@ -1084,7 +1084,7 @@
 
 <p><strong>Isolating content issues:</strong> If a display appears incorrect during playback, switch it to <strong>Muted</strong> and then back to <strong>None</strong> to determine whether the issue is in the content, the display configuration, or the signal path.</p>
 
-<h3>Interaction with Show Playback</h3>
+<h3 id="interaction-with-show-playback">Interaction with Show Playback</h3>
 
 <p>Test pattern modes operate at the output stage of the rendering pipeline. When a non-default mode is active:</p>
 
@@ -1119,7 +1119,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

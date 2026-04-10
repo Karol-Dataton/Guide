@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Corner Pinning</h2>
+                    <div class="section-content-body"><h2 id="corner-pinning">Corner Pinning</h2>
 
 <p>Corner pinning is a per-cue distortion effect that lets you independently reposition each of the four corners of a media cue. By moving corners away from their default positions, you can create perspective distortion, trapezoid correction, and arbitrary quadrilateral deformations — all without modifying the source media.</p>
 
 <p>WATCHOUT maps every pixel from the original rectangular cue into the new quadrilateral shape in a single GPU pass, preserving smooth interpolation across the entire surface.</p>
 
-<h3>Corner Tween Channels</h3>
+<h3 id="corner-tween-channels">Corner Tween Channels</h3>
 
 <p>The Corners effect is controlled through <strong>eight tween channels</strong>, one for each axis of each corner:</p>
 
@@ -1066,7 +1066,7 @@
 <div class='info-box'><p>Because each axis is independent, you have full control over both horizontal and vertical movement of every corner. This makes it possible to create not just simple trapezoids but complex quadrilateral shapes.
 </p></div>
 
-<h3>Adding Corner Tweens</h3>
+<h3 id="adding-corner-tweens">Adding Corner Tweens</h3>
 
 <p>To add corner tweens to a cue:</p>
 
@@ -1081,7 +1081,7 @@
 
 <p>Once added, each channel starts at its default value of 100 (the corner's natural position). You can then adjust individual corner coordinates by editing tween point values in the Properties panel or by adding additional keyframes.</p>
 
-<h3>Editing Corners on Stage</h3>
+<h3 id="editing-corners-on-stage">Editing Corners on Stage</h3>
 
 <p>When corner tweens are active on a cue, the Stage view provides <strong>direct manipulation handles</strong> for visual editing:</p>
 
@@ -1093,7 +1093,7 @@
 
 <p>This on-Stage visual editing mode lets you shape and fit content to irregular surfaces interactively, without switching to the Properties panel for every adjustment. The handles update the underlying tween values, so changes made on Stage are reflected in the curve view and Properties panel immediately.</p>
 
-<h3>Animating Corners</h3>
+<h3 id="animating-corners">Animating Corners</h3>
 
 <p>Like all tweens in WATCHOUT, corner channels support multiple <strong>tween points</strong> (keyframes) with configurable easing curves. To animate a corner:</p>
 
@@ -1106,14 +1106,14 @@
 
 <p>By placing keyframes at different times with different corner positions, you can create dynamic perspective shifts — for example, gradually skewing a cue to simulate a turning page or morphing a rectangle into a trapezoid during a transition.</p>
 
-<h3>Convexity Constraint</h3>
+<h3 id="convexity-constraint">Convexity Constraint</h3>
 
 <p>WATCHOUT automatically enforces a <strong>convexity constraint</strong> on the resulting quadrilateral. If you move corners into a configuration that would create a concave (self-intersecting) shape, the system subtly adjusts the offending corner to maintain a valid convex quadrilateral. This ensures the corner pin always produces a reasonable, artifact-free result.</p>
 
 <div class='note-box'><p>The convexity adjustment is minimal and designed to be visually imperceptible in most cases. However, extreme corner configurations may result in slightly different positions than the values you entered.
 </p></div>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>Projection mapping</strong> — fit rectangular content onto non-rectangular physical surfaces such as angled screens, building facades, or set pieces.</li>
@@ -1123,7 +1123,7 @@
 
 </ul>
 
-<h3>Interaction with Display-Level Warp</h3>
+<h3 id="interaction-with-display-level-warp">Interaction with Display-Level Warp</h3>
 
 <p>Corner pinning is a <strong>per-cue effect</strong> applied during the rendering of individual cues, before any display-level geometry correction. If your displays also use warp meshes or geometric correction, the two effects are applied in sequence: the cue is first distorted by its corner pinning, then the entire composited output is transformed by the display warp.</p>
 
@@ -1148,7 +1148,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

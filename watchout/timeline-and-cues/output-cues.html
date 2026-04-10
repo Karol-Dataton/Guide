@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Output Cues</h2>
+                    <div class="section-content-body"><h2 id="output-cues">Output Cues</h2>
 
 <p><strong>Output cues are the mechanism for sending external messages synchronized with timeline playback.</strong> When the playhead reaches an output cue, WATCHOUT transmits a string payload to an external system over TCP, UDP, or HTTP — enabling tight integration with automation controllers, show control middleware, lighting desks, and any network-accessible device that accepts string commands. Unlike media cues that render content over a duration, output cues are point-in-time events: they fire once at their start time and have no duration.</p>
 
-<h3>What Output Cues Are</h3>
+<h3 id="what-output-cues-are">What Output Cues Are</h3>
 
 <p>An output cue is a distinct cue type — separate from <a href="control-cues.html">control cues</a> — that sends string data to an external network destination when the playhead reaches its position on the timeline. Output cues do not affect WATCHOUT's internal playback state; their sole purpose is outbound communication.</p>
 
@@ -1061,7 +1061,7 @@
 
 </ul>
 
-<h3>Creating an Output Cue</h3>
+<h3 id="creating-an-output-cue">Creating an Output Cue</h3>
 
 <ol>
 <li>Position the playhead at the time where you want the message to be sent.</li>
@@ -1076,7 +1076,7 @@
 <div class='info-box'><p>Give every output cue a descriptive name (e.g., <code>Lights_Scene3_Go</code>, <code>Fog_Machine_Start</code>). In a complex show with dozens of output cues, unnamed cues are difficult to audit and debug.
 </p></div>
 
-<h3>Output Cue Properties</h3>
+<h3 id="output-cue-properties">Output Cue Properties</h3>
 
 <p>Select an output cue to view its properties. The following fields are available:</p>
 
@@ -1093,7 +1093,7 @@
 <tr><td><strong>Data</strong></td><td>The string payload to transmit</td><td>Empty string</td></tr>
 </table>
 
-<h3>Protocols</h3>
+<h3 id="protocols">Protocols</h3>
 
 <p>WATCHOUT output cues support exactly three transport protocols. There is no OSC protocol for output cues.</p>
 
@@ -1106,7 +1106,7 @@
 
 <img src="../media/output-protocol-comparison.svg" alt="Output Cue Protocol Comparison — TCP, UDP, and HTTP data flow" style="width: 100%; height: auto;">
 
-<h3>HTTP Configuration</h3>
+<h3 id="http-configuration">HTTP Configuration</h3>
 
 <p>When the protocol is set to <strong>HTTP</strong>, three additional fields become relevant:</p>
 
@@ -1138,7 +1138,7 @@
 <div class='note-box'><p>HTTP output cues do not support custom authentication headers. If the target API requires authentication, use a proxy or middleware service that adds the necessary headers before forwarding the request to the final destination.
 </p></div>
 
-<h3>TCP and UDP Configuration</h3>
+<h3 id="tcp-and-udp-configuration">TCP and UDP Configuration</h3>
 
 <p>For <strong>TCP</strong> and <strong>UDP</strong> protocols, configuration is straightforward:</p>
 
@@ -1154,7 +1154,7 @@
 <div class='warning-box'><p>UDP does not guarantee delivery. If an output cue fires over UDP and the target device misses the datagram due to network congestion or packet loss, the message is lost with no retry. For safety-critical or mission-critical triggers, use TCP or HTTP and verify receipt at the application level.
 </p></div>
 
-<h3>Payload Data</h3>
+<h3 id="payload-data">Payload Data</h3>
 
 <p>The <strong>Data</strong> field contains the string payload sent to the target. This is the only output format currently supported — there is no binary or structured-object mode.</p>
 
@@ -1170,7 +1170,7 @@
 
 </ul>
 
-<h4>Escape Sequences</h4>
+<h4 id="escape-sequences">Escape Sequences</h4>
 
 <p>String output payloads support the following backslash escape sequences for encoding special characters:</p>
 
@@ -1185,7 +1185,7 @@
 <div class='note-box'><p>Bytes with the value <code>0xff</code> are ignored in output and will not be transmitted. Avoid using <code>\xFF</code> in payload data.
 </p></div>
 
-<h3>Important Behavior Notes</h3>
+<h3 id="important-behavior-notes">Important Behavior Notes</h3>
 
 <ul>
 <li><strong>Point-in-time firing.</strong> Output cues execute instantaneously at their timeline position. If the playhead jumps past an output cue (for example, via a control cue jump or manual scrub), the output cue does not fire. It only fires when the playhead reaches the cue's position during normal forward playback.</li>
@@ -1200,7 +1200,7 @@
 
 </ul>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <p><strong>Triggering automation systems.</strong> Send a TCP or UDP command to a show automation controller (e.g., a PLC or industrial control system) at a precise moment in the timeline — for example, starting a motorized set piece movement exactly when a video transition begins.</p>
 
@@ -1212,7 +1212,7 @@
 
 <p><strong>Logging and monitoring.</strong> Send HTTP POST requests to a logging server each time a key show moment is reached, creating an audit trail of show execution timing.</p>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Keep payloads deterministic and documented.</strong> Every output cue's protocol, address, port, and data string should be recorded in your show documentation. When multiple operators or integrators work on the same show, undocumented output cues become a debugging liability.</li>
@@ -1232,7 +1232,7 @@
 <div class='warning-box'><p>If external systems controlled by output cues are safety-critical (e.g., pyrotechnics, motorized scenery, emergency lighting), include operator confirmation and independent safety interlocks outside of timeline automation. WATCHOUT output cues are a show control tool, not a safety system.
 </p></div>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1246,7 +1246,7 @@
 <tr><td>High latency on HTTP output cues</td><td>Keep-alive is disabled, causing a new connection per cue</td><td>Enable keep-alive (the default) to reuse connections</td></tr>
 </table>
 
-<h3>Related Articles</h3>
+<h3 id="related-articles">Related Articles</h3>
 
 <ul>
 <li><a href="control-cues.html">Control Cues</a> — separate cue type for playback state changes (play, pause, jump)</li>
@@ -1274,7 +1274,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

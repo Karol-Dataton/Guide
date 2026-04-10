@@ -1043,21 +1043,21 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Stacking Order</h2>
+                    <div class="section-content-body"><h2 id="stacking-order">Stacking Order</h2>
 
 <p>When multiple cues overlap on the same display area, WATCHOUT needs to determine which content appears in front of (on top of) which other content. This is controlled by <strong>stacking order</strong> — a system that operates at both the cue level and the timeline level to give you precise control over visual layering.</p>
 
-<h3>Per-Cue Stacking Mode</h3>
+<h3 id="per-cue-stacking-mode">Per-Cue Stacking Mode</h3>
 
 <p>Every media cue has a <strong>Stacking</strong> property in the Cue Properties panel (under the Presentation page) that determines how it composites relative to other cues on the same timeline. There are two modes:</p>
 
-<h4>By Layer</h4>
+<h4 id="by-layer">By Layer</h4>
 
 <p>The default stacking mode. Cues are composited based on their <strong>layer order</strong> within the timeline. Cues on higher-numbered layers (further down in the Timeline window) render behind cues on lower-numbered layers (higher in the Timeline window). The Z position of the cue has no effect on stacking — only the layer arrangement matters.</p>
 
 <p>This is the most predictable mode and is recommended for most 2D content workflows, where you want explicit control over what appears in front of what.</p>
 
-<h4>By Z</h4>
+<h4 id="by-z">By Z</h4>
 
 <p>Cues are composited based on their <strong>Z position</strong> value (depth in 3D space). Cues with smaller Z values (closer to the viewer) render in front of cues with larger Z values (further from the viewer). The layer order is ignored for stacking purposes.</p>
 
@@ -1066,23 +1066,23 @@
 <div class='info-box'><p>You can mix stacking modes within the same timeline. Some cues can use By Layer while others use By Z. Cues using By Z participate in depth testing against each other, while By Layer cues are composited strictly by their layer position.
 </p></div>
 
-<h3>Per-Timeline Stacking Order</h3>
+<h3 id="per-timeline-stacking-order">Per-Timeline Stacking Order</h3>
 
 <p>Timelines also have a <strong>Stacking</strong> property (found in the Timeline Properties panel under General) that controls how the timeline's content composites relative to other timelines. There are two options:</p>
 
-<h4>Timeline Order</h4>
+<h4 id="timeline-order">Timeline Order</h4>
 
 <p>The default setting. Timelines render in the order they appear in the <strong>Timelines panel</strong> — timelines listed lower in the panel render on top of timelines listed higher. You can reorder timelines by dragging them in the panel to change their stacking priority.</p>
 
 <p>This means the visual front-to-back order of timelines matches their top-to-bottom order in the panel, with the <strong>bottom-most timeline rendering on top</strong>.</p>
 
-<h4>Always on Top</h4>
+<h4 id="always-on-top">Always on Top</h4>
 
 <p>A timeline set to <strong>Always on Top</strong> renders above all other timelines that use the default Timeline Order, regardless of its position in the Timelines panel. If multiple timelines are set to Always on Top, they composite among themselves in <strong>activation order</strong> — the order in which they were set to Always on Top, with the most recently activated timeline rendering in front.</p>
 
 <p>This is useful for overlay timelines (e.g. a logo or emergency messaging layer) that must always appear in front of all other content.</p>
 
-<h3>Layer Order Within Timelines</h3>
+<h3 id="layer-order-within-timelines">Layer Order Within Timelines</h3>
 
 <p>Within a single timeline, the vertical arrangement of layers determines the default rendering priority for cues using the By Layer stacking mode. Layers are numbered starting from the top of the Timeline window:</p>
 
@@ -1095,7 +1095,7 @@
 
 <p>This ordering is consistent with common compositing conventions — the topmost layer in the timeline view is the frontmost visual layer.</p>
 
-<h3>Cross-Timeline Compositing</h3>
+<h3 id="cross-timeline-compositing">Cross-Timeline Compositing</h3>
 
 <p>When multiple timelines contribute content to the same display area, the compositing order is:</p>
 
@@ -1107,7 +1107,7 @@
 
 <p>Within each timeline, cues composite according to their per-cue stacking mode (By Layer or By Z). The result of each timeline's internal compositing is then layered according to the timeline stacking order.</p>
 
-<h3>Practical Implications</h3>
+<h3 id="practical-implications">Practical Implications</h3>
 
 <p><strong>Blend modes and transparency.</strong> Stacking order directly affects how blend modes (Add, Multiply, Screen, etc.) interact between overlapping cues. A cue using the Add blend mode on a higher layer adds its pixel values to whatever is rendered on lower layers. Changing the stacking order changes which content is "below" the blended cue.</p>
 
@@ -1136,7 +1136,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

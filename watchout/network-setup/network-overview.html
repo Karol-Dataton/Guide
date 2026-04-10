@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Network Overview</h2>
+                    <div class="section-content-body"><h2 id="network-overview">Network Overview</h2>
 
 <p>WATCHOUT 7 is a distributed system. Rather than running everything on a single computer, WATCHOUT spreads its workload across multiple machines — called <strong>nodes</strong> — that communicate over a shared network. One machine runs the Producer application where you design and program your show. Other machines act as playback engines that render content to displays and audio devices. A centralized media distribution service ensures every node has the files it needs. And a coordination service keeps all nodes synchronized and executing the same show in lockstep. This architecture allows WATCHOUT to scale from a single laptop running everything locally to large installations with dozens of dedicated playback machines driving hundreds of display outputs.</p>
 
 <p>Understanding how these pieces fit together on the network is the foundation for building reliable WATCHOUT systems.</p>
 
-<h3>The Four Core Services</h3>
+<h3 id="the-four-core-services">The Four Core Services</h3>
 
 <p>Every WATCHOUT installation involves four core services. These services can all run on the same machine, or they can be distributed across separate machines depending on the scale of the installation:</p>
 
@@ -1065,7 +1065,7 @@
 
 <p>For smaller setups or programming sessions, all four services can run on a single machine. WATCHOUT handles the internal communication transparently — the same show file works whether services are local or distributed.</p>
 
-<h3>How Nodes Discover Each Other</h3>
+<h3 id="how-nodes-discover-each-other">How Nodes Discover Each Other</h3>
 
 <p>WATCHOUT nodes find each other automatically over the local network using multicast discovery. When a node starts, it announces its presence on the network. Other nodes receive this announcement and add it to their list of available machines. This process is continuous — nodes periodically re-announce themselves, and the system detects when nodes appear or disappear.</p>
 
@@ -1076,7 +1076,7 @@
 <div class='info-box'><p>For discovery to work, all WATCHOUT nodes must be on the same network subnet or connected through infrastructure that supports multicast forwarding. See <a href="firewall-configuration.html">Firewall Configuration</a> for the specific network requirements.
 </p></div>
 
-<h3>Network Communication Model</h3>
+<h3 id="network-communication-model">Network Communication Model</h3>
 
 <p>Once nodes have discovered each other, WATCHOUT services communicate using standard network protocols over TCP. The key communication paths are:</p>
 
@@ -1090,7 +1090,7 @@
 
 <p>All of these connections are established automatically once discovery has identified the available nodes and you have assigned roles (Director, Asset Manager) to specific machines.</p>
 
-<h3>Assigning Roles</h3>
+<h3 id="assigning-roles">Assigning Roles</h3>
 
 <p>In a multi-machine setup, you must tell WATCHOUT which node should run the Director service and which should run the Asset Manager service. You do this from the <strong>Nodes</strong> window in Producer:</p>
 
@@ -1105,14 +1105,14 @@
 
 <p>Runner roles do not need explicit assignment. Any node that has the Runner service available will automatically participate in playback when the Director assigns it work based on the show's display-to-host mappings.</p>
 
-<h3>Node Failover with Duplicate Aliases</h3>
+<h3 id="node-failover-with-duplicate-aliases">Node Failover with Duplicate Aliases</h3>
 
 <p>WATCHOUT's name-based discovery enables a simple failover pattern. If two physical machines share the same host alias, WATCHOUT will use whichever one it discovers first. If the active machine goes offline, the system automatically switches to the backup machine within seconds. This provides basic redundancy without requiring any special configuration beyond giving both machines the same alias.</p>
 
 <div class='warning-box'><p>Use duplicate aliases only for intentional failover. Accidental name collisions between machines will cause unpredictable behavior as WATCHOUT arbitrarily picks one.
 </p></div>
 
-<h3>Network Design Recommendations</h3>
+<h3 id="network-design-recommendations">Network Design Recommendations</h3>
 
 <p>A well-designed WATCHOUT network is the foundation for stable, synchronized playback. Follow these guidelines:</p>
 
@@ -1127,7 +1127,7 @@
 
 </ul>
 
-<h3>Single-Machine vs. Multi-Machine</h3>
+<h3 id="single-machine-vs-multi-machine">Single-Machine vs. Multi-Machine</h3>
 
 <table>
 <tr><th>Aspect</th><th>Single Machine</th><th>Multi-Machine</th></tr>
@@ -1140,7 +1140,7 @@
 
 <p>Most workflows involve both: you program and preview on a single machine, then deploy to a multi-machine setup for the actual show.</p>
 
-<h3>Relationship to Other Chapters</h3>
+<h3 id="relationship-to-other-chapters">Relationship to Other Chapters</h3>
 
 <ul>
 <li><a href="display-servers.html">Display Servers</a> — details on what Runner nodes do and how to set them up</li>
@@ -1170,7 +1170,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

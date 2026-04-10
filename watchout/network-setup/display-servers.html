@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Display Servers</h2>
+                    <div class="section-content-body"><h2 id="display-servers">Display Servers</h2>
 
 <p>A display server is any machine in your WATCHOUT network that runs the Runner service and is responsible for rendering content to physical outputs. In a typical production, the operator designs the show on a Producer machine, and one or more display server machines handle the actual rendering — driving projectors, LED walls, monitors, audio systems, and capture devices. Display servers are the workhorses of a WATCHOUT installation: their GPU power, storage speed, and network connection directly determine what you can play back and at what quality.</p>
 
-<h3>What a Display Server Does</h3>
+<h3 id="what-a-display-server-does">What a Display Server Does</h3>
 
 <p>When a display server starts, its management service announces the machine on the network so Producer can discover it. Once the Director assigns work to the machine (based on which displays are mapped to its host alias), the Runner service on that machine:</p>
 
@@ -1061,7 +1061,7 @@
 
 <p>A single display server can drive multiple display outputs if the machine has multiple GPU outputs, SDI cards, or NDI streams configured.</p>
 
-<h3>Hardware Considerations</h3>
+<h3 id="hardware-considerations">Hardware Considerations</h3>
 
 <p>Display servers are typically dedicated machines optimized for media playback:</p>
 
@@ -1075,7 +1075,7 @@
 
 <p>For dedicated installations, Dataton offers <strong>WATCHPAX</strong> hardware — purpose-built display servers pre-configured with WATCHOUT software. WATCHPAX units come with a default configuration that includes pre-set working directories and remote file access permissions, reducing setup time.</p>
 
-<h3>Setup Checklist</h3>
+<h3 id="setup-checklist">Setup Checklist</h3>
 
 <p>Setting up a new display server involves these steps:</p>
 
@@ -1091,7 +1091,7 @@
 
 </ol>
 
-<h3>Monitoring Display Server Health</h3>
+<h3 id="monitoring-display-server-health">Monitoring Display Server Health</h3>
 
 <p>Producer provides real-time status information for each display server in the <strong>Nodes</strong> window and the node's properties panel. Key indicators include:</p>
 
@@ -1106,7 +1106,7 @@
 <tr><td><strong>Last Seen</strong></td><td>When the node last announced itself on the network — a stale timestamp may indicate a connectivity problem</td></tr>
 </table>
 
-<h3>Startup Action</h3>
+<h3 id="startup-action">Startup Action</h3>
 
 <p>Each display server can be configured with a <strong>Startup Action</strong> that determines what happens when the machine boots (or when WATCHOUT services restart):</p>
 
@@ -1121,11 +1121,11 @@
 
 <p>This feature is essential for unattended installations where machines must begin playback automatically after a power cycle without an operator present.</p>
 
-<h3>Multiple Shows and Warnings</h3>
+<h3 id="multiple-shows-and-warnings">Multiple Shows and Warnings</h3>
 
 <p>A display server is typically associated with a single show at a time through its Director connection. If the Director sends a different show than the one the Runner is currently running, the Runner transitions to the new show. Producer will display a warning if there is a show mismatch between what the Director expects and what a Runner is currently running — this typically resolves automatically as the new show loads.</p>
 
-<h3>Cloning Display Server Machines</h3>
+<h3 id="cloning-display-server-machines">Cloning Display Server Machines</h3>
 
 <p>When deploying multiple display servers from a cloned disk image, each WATCHOUT node must have a unique machine ID. This ID is stored in the <code>wo7_settings</code> folder:</p>
 
@@ -1136,7 +1136,7 @@
 <div class='warning-box'><p>Before creating a disk image for cloning, delete the <code>wo7_settings</code> folder from the source machine. Alternatively, delete this folder on each cloned machine before starting WATCHOUT for the first time. WATCHOUT will generate a new unique machine ID on next launch.
 </p></div>
 
-<h3>Configuring allow_list.json</h3>
+<h3 id="configuring-allow_listjson">Configuring allow_list.json</h3>
 
 <p>By default, WATCHOUT display servers do not permit remote software updates or unrestricted file access for security reasons. To enable these features, you must create a configuration file called <code>allow_list.json</code> in the WATCHOUT settings folder:</p>
 
@@ -1158,7 +1158,7 @@
 <div class='info-box'><p>WATCHPAX units ship with <code>allow_list.json</code> pre-configured. If you are using custom display server hardware, you must create this file manually. Without it, Producer cannot push software updates to the machine.
 </p></div>
 
-<h3>Locking Display Output Channel Numbers</h3>
+<h3 id="locking-display-output-channel-numbers">Locking Display Output Channel Numbers</h3>
 
 <p>Windows can renumber display outputs when monitor connections change (e.g., when a cable is unplugged and reconnected, or when a display is power-cycled). This can cause WATCHOUT to send content to the wrong physical output.</p>
 
@@ -1171,7 +1171,7 @@
 <div class='warning-box'><p>After setting or changing this environment variable, you must restart WATCHOUT for the change to take effect.
 </p></div>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li><a href="network-overview.html">Network Overview</a> — the overall architecture of Producer, Director, Runner, and Asset Manager</li>
@@ -1201,7 +1201,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

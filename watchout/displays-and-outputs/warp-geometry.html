@@ -1043,7 +1043,7 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Warp Geometry</h2>
+                    <div class="section-content-body"><h2 id="warp-geometry">Warp Geometry</h2>
 
 <p>Warp geometry is WATCHOUT's system for correcting the shape of rendered output so that it aligns with the physical surface it is projected or displayed on. In any real-world installation, the target surface is rarely a perfect rectangle oriented exactly perpendicular to the projector or display. Screens may be curved, projectors may be mounted at an angle, LED panels may follow an arc, or scenic elements may present irregular shapes. Warp geometry compensates for all of these by repositioning pixels across the entire display output, bending and stretching the rendered image so that it appears correct on the actual surface.</p>
 
@@ -1545,7 +1545,7 @@
     })();
 </script>
 
-<h3>When Warp Geometry is Needed</h3>
+<h3 id="when-warp-geometry-is-needed">When Warp Geometry is Needed</h3>
 
 <p>Warp geometry is used whenever the real projection surface or display alignment is not a perfect rectangle. Common scenarios include:</p>
 
@@ -1561,7 +1561,7 @@
 
 <p>The normal workflow is to do as much mechanical alignment as possible first, then use warp geometry to correct the remaining discrepancies.</p>
 
-<h3>How Warp Geometry Works</h3>
+<h3 id="how-warp-geometry-works">How Warp Geometry Works</h3>
 
 <p>Warp geometry is mesh-based. The warp mesh is a grid of <strong>junction points</strong> that defines how pixels are repositioned across the display output. Each junction point has a source position (where the pixel comes from in the rendered content) and a destination position (where it should appear on the display surface). Between junction points, the mesh interpolates smoothly using Bézier curves, producing continuous, artifact-free distortion.</p>
 
@@ -1569,7 +1569,7 @@
 
 <p>The density of the mesh — how many rows and columns of junction points it contains — determines how much local control you have. A coarse mesh (2×2, four corners) provides global perspective correction. A finer mesh (3×3 or larger) allows localized adjustments for curved or irregular surfaces.</p>
 
-<h3>Warp Mesh Presets</h3>
+<h3 id="warp-mesh-presets">Warp Mesh Presets</h3>
 
 <p>WATCHOUT provides four built-in presets that initialize the warp mesh with a specific grid density:</p>
 
@@ -1583,7 +1583,7 @@
 
 <p>Loading a preset replaces the current warp mesh. After loading, you can add additional rows and columns by clicking on mesh edges to insert new junction points wherever finer control is needed.</p>
 
-<h3>Editing Junction Points</h3>
+<h3 id="editing-junction-points">Editing Junction Points</h3>
 
 <p>Each junction point on the warp mesh has the following properties:</p>
 
@@ -1598,7 +1598,7 @@
 
 <p>You can select junction points in the Stage view and adjust their properties in the Properties panel, or drag them directly on stage. To navigate between junctions, use the arrow keys to move selection to the next point in the corresponding direction. To add a new junction point, hold <strong>Ctrl</strong> and click on a mesh edge — a new point is inserted at that position, splitting the adjacent curves while preserving the overall shape.</p>
 
-<h3>Advanced Settings</h3>
+<h3 id="advanced-settings">Advanced Settings</h3>
 
 <p>The warp editor exposes two advanced options under the <strong>Advanced</strong> section:</p>
 
@@ -1608,7 +1608,7 @@
 
 </ul>
 
-<h3>Show-Level Warp Defaults</h3>
+<h3 id="show-level-warp-defaults">Show-Level Warp Defaults</h3>
 
 <p>The <strong>Show Properties → Warp</strong> section provides two defaults that apply whenever new warp points are created in any display:</p>
 
@@ -1620,7 +1620,7 @@
 
 <p>These defaults affect only newly created points. Existing points retain their current settings.</p>
 
-<h3>Accessing the Warp Editor</h3>
+<h3 id="accessing-the-warp-editor">Accessing the Warp Editor</h3>
 
 <p>There are several ways to open the warp editor for a display:</p>
 
@@ -1633,7 +1633,7 @@
 
 <p>When the warp editor is active, the Stage view shows the warp mesh overlaid on the display output. You can toggle <strong>Show on Display</strong> to render the warp mesh grid on the actual display output, which is useful when working with test patterns to see the mesh relative to the projected image.</p>
 
-<h3>Keyboard Shortcuts</h3>
+<h3 id="keyboard-shortcuts">Keyboard Shortcuts</h3>
 
 <p>The following shortcuts are available when editing warp geometry:</p>
 
@@ -1643,7 +1643,7 @@
 <tr><td><strong>Ctrl + Left Click</strong> (on a mesh edge)</td><td>Add a new warp junction point at the clicked position</td></tr>
 </table>
 
-<h3>Position in the Rendering Pipeline</h3>
+<h3 id="position-in-the-rendering-pipeline">Position in the Rendering Pipeline</h3>
 
 <p>Warp geometry occupies a specific position in WATCHOUT's rendering pipeline, and understanding this order is important when combining it with other correction tools:</p>
 
@@ -1657,7 +1657,7 @@
 
 <p>This means corner pinning and warp geometry complement each other without conflict: use corner pinning for cue-specific adjustments (fitting individual content to specific surfaces) and warp for global projector/display alignment.</p>
 
-<h3>Relationship to Edge Blending and Masks</h3>
+<h3 id="relationship-to-edge-blending-and-masks">Relationship to Edge Blending and Masks</h3>
 
 <p>Warp geometry works alongside <a href="edge-blending.html">Edge Blending</a> and <a href="display-masks.html">Display Masks</a> to produce the final output:</p>
 
@@ -1672,7 +1672,7 @@
 
 <p>For a complete guide to mask editing, built-in mask types, mask images, gamma correction, and automatic soft edges, see <a href="display-masks.html">Display Masks</a>.</p>
 
-<h3>Recommended Workflow</h3>
+<h3 id="recommended-workflow">Recommended Workflow</h3>
 
 <ol>
 <li><strong>Complete physical alignment first.</strong> Mount and aim projectors or position displays as accurately as possible mechanically. The less correction warp has to do, the better the image quality.</li>
@@ -1685,7 +1685,7 @@
 
 </ol>
 
-<h3>Quality Control</h3>
+<h3 id="quality-control">Quality Control</h3>
 
 <p>Validate warp geometry using:</p>
 
@@ -1719,7 +1719,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

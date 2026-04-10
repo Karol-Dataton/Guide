@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Feedback Reports</h2>
+                    <div class="section-content-body"><h2 id="feedback-reports">Feedback Reports</h2>
 
 <p>A feedback report is a compressed diagnostic archive that bundles logs, system information, and optionally the current show file into a single package. You can send this archive to Dataton support or use it for internal analysis when troubleshooting issues.</p>
 
-<h3>Creating a Report</h3>
+<h3 id="creating-a-report">Creating a Report</h3>
 
 <p>The <strong>Create Feedback Report</strong> dialog is accessible from two places:</p>
 
@@ -1069,7 +1069,7 @@
 
 <p>Click <strong>Create</strong> to generate the report.</p>
 
-<h3>What the Report Contains</h3>
+<h3 id="what-the-report-contains">What the Report Contains</h3>
 
 <p>The feedback report is saved as a <strong>7z archive</strong> named <code>dataton_feedback.7z</code> in a <code>feedback</code> folder next to the Producer log directory. When the report is created, the folder opens automatically in the file explorer.</p>
 
@@ -1086,7 +1086,7 @@
 
 </ul>
 
-<h3>Size and Data Limits</h3>
+<h3 id="size-and-data-limits">Size and Data Limits</h3>
 
 <p>The report generation process enforces several safeguards:</p>
 
@@ -1097,7 +1097,7 @@
 
 </ul>
 
-<h3>The Loki Log Server</h3>
+<h3 id="the-loki-log-server">The Loki Log Server</h3>
 
 <p>WATCHOUT uses a <strong>Loki-based logging service</strong> for centralized log collection across all services in the system. Every WATCHOUT service (Director, Runner, Operative, Process Manager, etc.) sends its log output to Loki, which runs on the same node as the Process Manager.</p>
 
@@ -1106,7 +1106,7 @@
 <div class='warning-box'><p>If Loki fails to start or stops unexpectedly, a message will appear in the log window: "Logging service (Loki) failed to start" or "Logging service (Loki) has stopped unexpectedly and will attempt to restart." Without a running Loki instance, feedback reports will not contain service logs for the affected node.
 </p></div>
 
-<h3>When to Create a Report</h3>
+<h3 id="when-to-create-a-report">When to Create a Report</h3>
 
 <ul>
 <li><strong>After a crash or unexpected behavior</strong> — Capture logs as soon as possible while they are still available.</li>
@@ -1138,7 +1138,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

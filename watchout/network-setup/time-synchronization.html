@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Time Synchronization</h2>
+                    <div class="section-content-body"><h2 id="time-synchronization">Time Synchronization</h2>
 
 <p>Frame-accurate multi-display playback is one of WATCHOUT's core capabilities, and it depends on all nodes sharing a precisely aligned clock. Without proper time synchronization, content on different Runner machines drifts apart — even a few milliseconds of offset can produce visible misalignment across adjacent displays.</p>
 
 <p>WATCHOUT uses <strong>NTP (Network Time Protocol)</strong> to synchronize the system clocks of all nodes in the network. The Windows Time Service (<code>w32time</code>) on each machine handles the actual clock adjustment.</p>
 
-<h3>Synchronization Modes</h3>
+<h3 id="synchronization-modes">Synchronization Modes</h3>
 
 <p>WATCHOUT offers two approaches to time sync management:</p>
 
@@ -1060,7 +1060,7 @@
 <div class='warning-box'><p>User-managed mode includes a warning about potential synchronization issues. If your external NTP configuration is incorrect or if nodes synchronize to different time sources, playback drift will occur. Only use this mode if you are confident in your NTP setup.
 </p></div>
 
-<h3>Configuring Sync Mode</h3>
+<h3 id="configuring-sync-mode">Configuring Sync Mode</h3>
 
 <p>To change the synchronization mode:</p>
 
@@ -1082,20 +1082,20 @@
 
 <p>Changing the sync mode may require a <strong>service restart</strong> on the affected nodes.</p>
 
-<h3>NTP Server Configuration</h3>
+<h3 id="ntp-server-configuration">NTP Server Configuration</h3>
 
 <p>In Node Properties, the <strong>NTP Server</strong> field allows you to specify which NTP server the node should synchronize to.</p>
 
 <div class='info-box'><p>Leave the NTP Server field blank to keep the node's current NTP server configuration unchanged. This is useful when you want WATCHOUT to manage the sync mode but not override an existing NTP server setting.
 </p></div>
 
-<h3>Designating a Time Server</h3>
+<h3 id="designating-a-time-server">Designating a Time Server</h3>
 
 <p>In a WATCHOUT-managed setup, one node should act as the authoritative time reference. When a node is designated as the WATCHOUT time source, its NTP diff display shows <strong>"N/A (is WATCHOUT time source)"</strong> instead of a numeric offset — because it is the reference against which all other nodes are measured.</p>
 
 <p>The time server node can itself synchronize to an external NTP source (such as <code>pool.ntp.org</code> or a facility GPS clock) for absolute time accuracy, or it can run as a free-running local clock.</p>
 
-<h3>Monitoring NTP Status</h3>
+<h3 id="monitoring-ntp-status">Monitoring NTP Status</h3>
 
 <p>Each node displays an <strong>NTP Diff</strong> indicator in its node information, showing the time offset (in seconds) between that node's clock and the NTP reference. This is visible in:</p>
 
@@ -1107,13 +1107,13 @@
 
 <p>Under normal operation, the NTP diff should be very small (a few milliseconds or less). Larger offsets indicate synchronization problems.</p>
 
-<h3>Automatic Resync</h3>
+<h3 id="automatic-resync">Automatic Resync</h3>
 
 <p>When the time offset on a node exceeds a safety threshold, WATCHOUT logs a warning: <strong>"NTP offset is too high — resyncing."</strong> The system then triggers an automatic resynchronization to bring the node's clock back in line with the reference.</p>
 
 <p>This typically happens when a node has been offline for an extended period, when a network interruption delays NTP packets, or when the system clock has drifted due to hardware issues.</p>
 
-<h3>Hardware Sync (GenLock and Frame Lock)</h3>
+<h3 id="hardware-sync-genlock-and-frame-lock">Hardware Sync (GenLock and Frame Lock)</h3>
 
 <p>For LED wall installations and other scenarios where NTP synchronization alone is not sufficient, WATCHOUT supports hardware-level synchronization. Hardware sync must first be enabled outside of WATCHOUT at the operating system or GPU driver level.</p>
 
@@ -1138,7 +1138,7 @@
 <div class='info-box'><p>Hardware sync requires compatible GPU hardware. NVIDIA RTX PRO (Quadro) cards with an NVIDIA Sync board are the standard solution. Consumer GeForce GPUs do not support hardware sync.
 </p></div>
 
-<h3>Multiple Producer Warning</h3>
+<h3 id="multiple-producer-warning">Multiple Producer Warning</h3>
 
 <p>Running multiple Producer instances on the same machine can affect time synchronization. When this condition is detected, WATCHOUT displays a warning:</p>
 
@@ -1147,7 +1147,7 @@
 
 <p>The warning notes that delays may occur between time needle changes and updates when multiple instances compete for the same system clock.</p>
 
-<h3>Troubleshooting Sync Issues</h3>
+<h3 id="troubleshooting-sync-issues">Troubleshooting Sync Issues</h3>
 
 <p><strong>Symptom:</strong> Content on different displays appears offset by a consistent number of frames.</p>
 
@@ -1171,7 +1171,7 @@
 
 </ul>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li><a href="network-overview.html">Network Overview</a> — the overall network architecture and how services communicate</li>
@@ -1199,7 +1199,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

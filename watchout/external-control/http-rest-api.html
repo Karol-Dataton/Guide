@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>HTTP REST API</h2>
+                    <div class="section-content-body"><h2 id="http-rest-api">HTTP REST API</h2>
 
 <p>WATCHOUT exposes an HTTP API for programmatic show control, monitoring, and integration with third-party systems. This page is organized as a practical reference with one complete endpoint table and focused examples.</p>
 
-<h3>Base URLs and Ports</h3>
+<h3 id="base-urls-and-ports">Base URLs and Ports</h3>
 
 <ul>
 <li><strong>Operative API (main external control API):</strong> <code>http://{host}:3019</code></li>
@@ -1058,11 +1058,11 @@
 
 <p>Replace <code>{host}</code> with the IP address or hostname of the machine running the relevant service. For local testing, use <code>localhost</code> or <code>127.0.0.1</code>.</p>
 
-<h3>Enable/Disable</h3>
+<h3 id="enabledisable">Enable/Disable</h3>
 
 <p>The HTTP API is controlled from the <strong>Network</strong> window. Use the <strong>WATCHOUT 7 Protocol</strong> and <strong>Web UI</strong> toggles to expose or hide HTTP-facing features.</p>
 
-<h3>Interactive API Docs</h3>
+<h3 id="interactive-api-docs">Interactive API Docs</h3>
 
 <ul>
 <li>Interactive docs (RapiDoc): <code>http://{host}:3019/test</code></li>
@@ -1070,7 +1070,7 @@
 
 </ul>
 
-<h3>Complete Endpoint Table</h3>
+<h3 id="complete-endpoint-table">Complete Endpoint Table</h3>
 
 <p>The table below lists all documented HTTP endpoints in WATCHOUT.</p>
 
@@ -1115,7 +1115,7 @@
 <tr><td>Asset Manager</td><td>3023</td><td><code>GET</code></td><td><code>/sse</code></td><td>Asset-state event stream used by tooling/UI</td><td>Not part of main Operative control API</td></tr>
 </table>
 
-<h3>Request Body Formats</h3>
+<h3 id="request-body-formats">Request Body Formats</h3>
 
 <p><strong>Batch input update (<code>POST /v0/inputs</code>)</strong></p>
 
@@ -1169,7 +1169,7 @@
   {&quot;command&quot;: {&quot;go&quot;: {}}}
 ]</code></pre>
 
-<h3>Event Streams</h3>
+<h3 id="event-streams">Event Streams</h3>
 
 <p>WATCHOUT provides SSE and NDJSON endpoints for real-time updates.</p>
 
@@ -1193,11 +1193,11 @@
 <tr><td>NDJSON v2</td><td><code>/v2/ndjson</code></td><td>Same as SSE v2</td></tr>
 </table>
 
-<h3>Timeline and Cue IDs</h3>
+<h3 id="timeline-and-cue-ids">Timeline and Cue IDs</h3>
 
 <p>Many endpoints require numeric <code>timeline_id</code> and <code>cue_id</code> values. Use <strong>Copy ID</strong> from timeline/cue context menus in Producer to retrieve stable IDs.</p>
 
-<h3>curl Examples</h3>
+<h3 id="curl-examples">curl Examples</h3>
 
 <p><strong>Get system info</strong></p>
 
@@ -1235,7 +1235,7 @@
 
 <pre><code class="language-bash">curl -X POST http://192.168.1.12:3017/v0/reboot</code></pre>
 
-<h3>Security and Access</h3>
+<h3 id="security-and-access">Security and Access</h3>
 
 <p>By default, the HTTP API does not require authentication. Any client that can reach the service port can call endpoints.</p>
 
@@ -1246,7 +1246,7 @@
 
 </ul>
 
-<h3>Notes</h3>
+<h3 id="notes">Notes</h3>
 
 <ul>
 <li>Inbound control endpoints are documented as <code>GET</code> and <code>POST</code>.</li>
@@ -1274,7 +1274,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

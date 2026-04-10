@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Understanding Tweens</h2>
+                    <div class="section-content-body"><h2 id="understanding-tweens">Understanding Tweens</h2>
 
 <p>Tweens are time-based value changes attached to cues. Every visual and audio property of a cue that can change over time — position, scale, opacity, color, crop, rotation, blur, volume, and more — is driven by a tween. A tween defines a curve of values across the duration of a cue, controlling exactly how a property transitions from one state to another. Whether you are fading content in, sliding it across Stage, applying a color shift, or animating a crop reveal, the underlying mechanism is always a tween.</p>
 
 <p>WATCHOUT provides over 40 tween types organized into logical groups. Some tweens control a single value (such as Opacity or Brightness), while others involve multiple coordinated channels (such as Position, which has X, Y, and Z axes, or Corners, which has eight channels for the four corner points). Every tween type has its own default value, permitted range, and unit, and these are enforced in the editor to keep values within meaningful bounds.</p>
 
-<h3>How Tweens Work</h3>
+<h3 id="how-tweens-work">How Tweens Work</h3>
 
 <p>A tween is a sequence of <strong>tween points</strong> (keyframes) spread across the duration of a cue. Each tween point defines a specific value at a specific time. Between tween points, WATCHOUT interpolates smoothly according to the selected <strong>transition type</strong> (easing curve), producing continuous animation from one value to the next.</p>
 
@@ -1765,7 +1765,7 @@
 
 </ul>
 
-<h3>Tween Groups</h3>
+<h3 id="tween-groups">Tween Groups</h3>
 
 <p>Tweens are organized into groups in the tween area beneath each cue. These groups correspond to functional categories and match the submenus in the <strong>Effect</strong> menu:</p>
 
@@ -1782,7 +1782,7 @@
 
 <p>You can expand or collapse tween groups using the <strong>Show Tweens</strong> / <strong>Hide Tweens</strong> controls in the tween group header.</p>
 
-<h3>The Effect View</h3>
+<h3 id="the-effect-view">The Effect View</h3>
 
 <p>When a cue with effects is selected, the Effect View appears beneath the cue in the Timeline window. It uses a <strong>two-panel layout</strong>:</p>
 
@@ -1809,7 +1809,7 @@
 
 </ul>
 
-<h3>Adding Tweens to a Cue</h3>
+<h3 id="adding-tweens-to-a-cue">Adding Tweens to a Cue</h3>
 
 <p>To add a tween to a cue:</p>
 
@@ -1838,7 +1838,7 @@
 
 <p>Some tweens are added as a complete group. For example, selecting <strong>Corners</strong> from the Effect menu adds all eight corner channels at once, and selecting <strong>Linear Wipe</strong> adds all four wipe channels together. Individual crop sides can also be added separately through the <strong>Effect > Crop</strong> submenu, or all four at once with <strong>Alt+C</strong>.</p>
 
-<h3>Editing Tween Points</h3>
+<h3 id="editing-tween-points">Editing Tween Points</h3>
 
 <p>Once a tween is added, you work with it by adding, moving, and adjusting tween points:</p>
 
@@ -1850,7 +1850,7 @@
 
 </ul>
 
-<h3>Transition Types (Easing Curves)</h3>
+<h3 id="transition-types-easing-curves">Transition Types (Easing Curves)</h3>
 
 <p>The <strong>Transition Type</strong> property on each tween point controls how the value interpolates from the previous point to the current one. WATCHOUT provides 31 easing curves organized into 11 families:</p>
 
@@ -1883,7 +1883,7 @@
 <div class='info-box'><p>Choose easing curves that match the emotional tone of the moment. Gentle curves like Sinusoidal InOut suit elegant transitions. Snappy curves like Cubic In suit energetic reveals. Keep easing consistent within a scene for a cohesive feel.
 </p></div>
 
-<h3>Tween Value Reference</h3>
+<h3 id="tween-value-reference">Tween Value Reference</h3>
 
 <p>Every tween type has a defined range, default value, and unit. Some tweens enforce hard limits (you cannot enter values outside the range), while others allow values beyond the listed range for creative flexibility. Position, Rotation, Hue, and Corner tweens all accept values outside their default display range.</p>
 
@@ -1964,7 +1964,7 @@
 </div>
 </div>
 
-<h3>Tween Expressions</h3>
+<h3 id="tween-expressions">Tween Expressions</h3>
 
 <p>Any tween can optionally be driven by a mathematical <strong>expression</strong> instead of (or in addition to) its keyframe points. When an expression is set, the tween value is computed dynamically at playback time based on variables, time functions, ArtNet input, or other parameters.</p>
 
@@ -1972,7 +1972,7 @@
 
 <p>Expressions are a powerful tool for interactive shows, data-driven animation, and external control. For full details, see <a href="tween-expressions.html">Tween Expressions</a>.</p>
 
-<h3>Practical Advice</h3>
+<h3 id="practical-advice">Practical Advice</h3>
 
 <ul>
 <li><strong>Start simple.</strong> A two-point tween (start value and end value) is often all you need. Add intermediate points only when you need the value to change direction or hold at a specific level.</li>
@@ -1983,7 +1983,7 @@
 
 </ul>
 
-<h3>Related Topics</h3>
+<h3 id="related-topics">Related Topics</h3>
 
 <ul>
 <li><a href="position-and-movement.html">Position and Movement</a> — animating cue placement on Stage</li>
@@ -2014,7 +2014,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Variables and Variable Cues</h2>
+                    <div class="section-content-body"><h2 id="variables-and-variable-cues">Variables and Variable Cues</h2>
 
 <p><strong>Variables are the bridge between external inputs and show behavior in WATCHOUT.</strong> They store numeric values that can be driven by external control protocols (HTTP, OSC, ArtNet, MIDI, LTC) or automated by variable cues on the timeline. Expressions, conditional cues, and timeline triggers all reference variables to make shows reactive, interactive, and data-driven. Without variables, a show can only follow a fixed timeline; with them, it can respond to sensors, operator input, lighting consoles, and automation systems in real time.</p>
 
-<h3>What Variables Are</h3>
+<h3 id="what-variables-are">What Variables Are</h3>
 
 <p>A variable is a named numeric container inside the show. Each variable holds a single floating-point value that can change at runtime. The value is accessible by name from any <a href="timeline-triggers-and-expressions.html">expression</a>, any <a href="conditional-cues.html">conditional cue</a>, and any variable cue tween.</p>
 
@@ -1063,7 +1063,7 @@
 
 <p>Both mechanisms can coexist. A variable might be driven by an ArtNet channel during rehearsal and by a variable cue during the live show, or vice versa.</p>
 
-<h3>Variable Properties</h3>
+<h3 id="variable-properties">Variable Properties</h3>
 
 <p>Every variable is described by the following properties. The <strong>Default</strong> column reflects the values assigned when creating a new variable through the UI.</p>
 
@@ -1083,7 +1083,7 @@
 <div class='note-box'><p>Disabling both Clamp Min and Clamp Max allows the variable to accept any floating-point value from external sources, regardless of the configured min/max range. The min/max values are still used by the UI slider, but the actual stored value is unbounded. Only disable clamping when your external system is trusted to send valid values.
 </p></div>
 
-<h3>Interpolation Types</h3>
+<h3 id="interpolation-types">Interpolation Types</h3>
 
 <p>The interpolation type determines how the variable transitions between its current value and a newly received external input value. The default interpolation time is <strong>50 ms</strong>.</p>
 
@@ -1096,7 +1096,7 @@
 
 <p>Interpolation applies only to values received from external input protocols. Variable cues use their own tween curves and are not affected by the interpolation type setting.</p>
 
-<h3>Creating and Managing Variables</h3>
+<h3 id="creating-and-managing-variables">Creating and Managing Variables</h3>
 
 <p>Open <strong>Window > Variables</strong> to access the Variables window.</p>
 
@@ -1112,7 +1112,7 @@
 
 <p>The available edit operations in the Variables window include adding, editing, renaming, setting keys and interpolation, adjusting numeric fields, removing, saving as default, and cut/copy/paste.</p>
 
-<h3>Naming Rules</h3>
+<h3 id="naming-rules">Naming Rules</h3>
 
 <p>Variable names must follow these rules:</p>
 
@@ -1126,13 +1126,13 @@
 <div class='warning-box'><p>If you rename a variable that is referenced in expressions or conditional cues elsewhere in the show, those references will break and evaluate as 0. Always search for usages before renaming.
 </p></div>
 
-<h3>Protection</h3>
+<h3 id="protection">Protection</h3>
 
 <p>The <strong>Protected</strong> flag prevents a variable from being accidentally removed or cut. Protected variables can still be edited (name, key, range, etc.) and their values can still change at runtime. Protection only guards against deletion operations.</p>
 
 <p>Use protection for mission-critical variables — for example, an "Emergency" variable that drives safety messaging across the show, or a "ShowMode" variable that controls rehearsal-versus-performance content switching.</p>
 
-<h3>Default Values at Runtime</h3>
+<h3 id="default-values-at-runtime">Default Values at Runtime</h3>
 
 <p>The default value serves as the variable's baseline state. When the show starts, every variable is initialized to its default value. If an external input connection is lost or a variable cue finishes, the variable retains its last-set value rather than automatically reverting to the default — the default is only applied at show load time.</p>
 
@@ -1145,11 +1145,11 @@
 
 </ol>
 
-<h3>External Key and Learn Mode</h3>
+<h3 id="external-key-and-learn-mode">External Key and Learn Mode</h3>
 
 <p>The <strong>Key</strong> field determines how external control protocols address the variable. Each protocol uses a specific key format. A variable without a key cannot receive external input — it can only be changed manually via the Variables window slider or automated by a variable cue.</p>
 
-<h4>Supported Protocols and Key Formats</h4>
+<h4 id="supported-protocols-and-key-formats">Supported Protocols and Key Formats</h4>
 
 <table>
 <tr><th>Protocol</th><th>Key Format Example</th><th>Notes</th></tr>
@@ -1160,7 +1160,7 @@
 <tr><td><strong>LTC</strong></td><td>Protocol-specific key</td><td>Maps Linear Timecode values to the variable.</td></tr>
 </table>
 
-<h4>Learn Mode Workflow</h4>
+<h4 id="learn-mode-workflow">Learn Mode Workflow</h4>
 
 <p>Instead of manually typing a key, use <strong>Learn</strong> mode to capture the key from an incoming external signal:</p>
 
@@ -1175,7 +1175,7 @@
 <div class='info-box'><p>Learn mode is the fastest way to map physical controllers to variables. It eliminates manual key formatting and reduces configuration errors, especially for ArtNet and OSC addresses where the key syntax must match exactly.
 </p></div>
 
-<h4>HTTP Bulk Input Example</h4>
+<h4 id="http-bulk-input-example">HTTP Bulk Input Example</h4>
 
 <p>The HTTP bulk endpoint allows setting multiple variables in a single request:</p>
 
@@ -1190,7 +1190,7 @@ Content-Type: application/json
 
 <p>Each key in the JSON object is matched against variable keys. Variables without matching keys are unaffected.</p>
 
-<h3>Input Interpolation</h3>
+<h3 id="input-interpolation">Input Interpolation</h3>
 
 <p>When a variable receives a new value from an external source, it does not jump instantly unless the interpolation type is <strong>None</strong>. Instead, the value transitions smoothly over a default period of <strong>50 ms</strong> using the configured interpolation type (Linear or Circular).</p>
 
@@ -1198,11 +1198,11 @@ Content-Type: application/json
 
 <p>The default smoothing window is short enough to feel responsive for interactive control but long enough to smooth out the step artifacts common in 7-bit MIDI or 8-bit ArtNet inputs.</p>
 
-<h3>Variable Cues</h3>
+<h3 id="variable-cues">Variable Cues</h3>
 
 <p><strong>Variable cues automate a variable's value over time on the timeline.</strong> They are a type of <a href="control-cues.html">control cue</a> that uses tween data to drive a specific variable through a defined animation curve over a set duration.</p>
 
-<h4>Variable Cue Fields</h4>
+<h4 id="variable-cue-fields">Variable Cue Fields</h4>
 
 <p>A variable cue contains the following data:</p>
 
@@ -1214,11 +1214,11 @@ Content-Type: application/json
 <tr><td><strong>Target Variable</strong></td><td>The specific variable that this cue drives. Selected from the list of defined show variables.</td></tr>
 </table>
 
-<h4>Creating Variable Cues</h4>
+<h4 id="creating-variable-cues">Creating Variable Cues</h4>
 
 <p>To create a variable cue, drag a variable from the Variables window onto a timeline layer area. You can also drop a variable onto an existing cue to add variable-related tween data. The tween curve editor allows you to shape the automation — linear ramps, ease-in/out, step functions, or complex multi-point curves.</p>
 
-<h3>Variable Cue Behavior</h3>
+<h3 id="variable-cue-behavior">Variable Cue Behavior</h3>
 
 <p>During playback, a variable cue evaluates its tween curve and emits updated values at approximately <strong>35 updates per second</strong>. The variable's value is set to the tween output at the current playhead position within the cue's duration.</p>
 
@@ -1229,7 +1229,7 @@ Content-Type: application/json
 <div class='info-box'><p>For the smoothest results, design variable cue tweens with gradual curves rather than abrupt steps. The update rate can make sharp tween transitions appear stepped when driving visual properties through expressions.
 </p></div>
 
-<h3>Conflict Resolution</h3>
+<h3 id="conflict-resolution">Conflict Resolution</h3>
 
 <p>When multiple variable cues target the same variable simultaneously, WATCHOUT applies deterministic resolution rules:</p>
 
@@ -1242,7 +1242,7 @@ Content-Type: application/json
 <div class='note-box'><p>When designing shows with overlapping variable automation, keep the conflict resolution rules in mind. Placing competing variable cues on the same timeline with overlapping time ranges can produce unexpected results when the playhead is in the overlap zone. Use separate timelines with clear priority ordering when you need deterministic layered control.
 </p></div>
 
-<h3>Limitations</h3>
+<h3 id="limitations">Limitations</h3>
 
 <p>Variable cues have the following restrictions:</p>
 
@@ -1253,7 +1253,7 @@ Content-Type: application/json
 
 </ul>
 
-<h3>Expressions and Variables</h3>
+<h3 id="expressions-and-variables">Expressions and Variables</h3>
 
 <p>Variables are the primary data source for the WATCHOUT expression system. Expressions in <a href="timeline-triggers-and-expressions.html">timeline triggers</a> and <a href="conditional-cues.html">conditional cues</a> can reference any variable by name.</p>
 
@@ -1279,7 +1279,7 @@ Content-Type: application/json
 
 <p>For complete expression syntax and operator reference, see <a href="timeline-triggers-and-expressions.html">Timeline Triggers and Expressions</a>.</p>
 
-<h3>Variables and Conditional Cues</h3>
+<h3 id="variables-and-conditional-cues">Variables and Conditional Cues</h3>
 
 <p>Variables are the primary mechanism for enabling <a href="conditional-cues.html">conditional cues</a>. A conditional cue evaluates an expression against current variable values to decide whether to render (media cues) or trigger (control/output cues). This creates a feedback loop:</p>
 
@@ -1292,7 +1292,7 @@ Content-Type: application/json
 
 <p>This pattern enables interactive installations, show branching, emergency overrides, and any scenario where content must appear or disappear based on runtime state. See <a href="conditional-cues.html">Conditional Cues</a> for detailed syntax and use cases.</p>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Use descriptive, stable names.</strong> Variable names appear in expressions, conditional cues, and the Variables window. Choose clear names early and avoid renaming once expressions reference them.</li>
@@ -1317,7 +1317,7 @@ Content-Type: application/json
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1352,7 +1352,7 @@ Content-Type: application/json
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

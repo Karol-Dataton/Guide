@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>The Stage Window</h2>
+                    <div class="section-content-body"><h2 id="the-stage-window">The Stage Window</h2>
 
 <p>The Stage is the visual canvas of WATCHOUT 7 — a spatial representation of all your displays and the content positioned on them. It shows how your output surfaces are arranged relative to each other and lets you see, position, and manipulate cues directly in the space where they will be rendered. Whether you are working with a single screen, a multi-projector blend, or a full 3D projection-mapped environment, the Stage provides the visual context for your show layout.</p>
 
 <p>The Stage window operates in multiple camera modes and edit modes, adapting its controls and behavior to match the task at hand — from simple 2D positioning to 3D projector calibration.</p>
 
-<h3>Coordinate System</h3>
+<h3 id="coordinate-system">Coordinate System</h3>
 
 <p>The Stage uses a <strong>right-handed coordinate system</strong>. You can visualize this by holding your right hand with:</p>
 
@@ -1062,11 +1062,11 @@
 
 <p>These axis colors (X = red, Y = green, Z = blue) are consistent throughout the Stage interface, including the coordinate system origin indicator and the axis gizmo used for 3D manipulation.</p>
 
-<h3>Camera Modes</h3>
+<h3 id="camera-modes">Camera Modes</h3>
 
 <p>The Stage supports three camera modes, selectable from the <strong>Stage</strong> menu or the Camera Mode submenu in the Stage context menu.</p>
 
-<h4>Default (Front View)</h4>
+<h4 id="default-front-view">Default (Front View)</h4>
 
 <p>The standard 2D editing view. The Stage is viewed from directly in front, with pixel-accurate positioning. The title bar displays the current scale ratio (for example, "1:2"), and the toolbar shows a <strong>Scale</strong> button (magnifying glass icon) for zooming. This is the mode used for most show programming work — placing cues on displays, adjusting positions, and verifying layout.</p>
 
@@ -1081,7 +1081,7 @@
 <tr><td><strong>Ctrl+5</strong></td><td>1:1 (actual pixels)</td></tr>
 </table>
 
-<h4>First Person</h4>
+<h4 id="first-person">First Person</h4>
 
 <p>A 3D perspective view with free camera navigation. The toolbar shows <strong>Zoom</strong> and <strong>Orbit</strong> buttons along with a <strong>Velocity</strong> slider (range 0.1 to 2.0) that controls camera movement speed. Use this mode to preview how content looks from different angles in 3D show environments.</p>
 
@@ -1089,14 +1089,14 @@
 
 <p>Keyboard navigation is available for camera movement: <strong>W/S</strong> pan forward/backward, <strong>A/D</strong> pan left/right, <strong>E/Q</strong> pan up/down. Orbit with <strong>J/L</strong> (left/right) and <strong>I/K</strong> (up/down), or hold <strong>Right-Mouse+Move</strong> to orbit freely. See <a href="../11-keyboard-shortcuts/stage-navigation.html">Keyboard Shortcuts — Stage Navigation</a> for the full key list.</p>
 
-<h4>Projector</h4>
+<h4 id="projector">Projector</h4>
 
 <p>Views the Stage from the perspective of a selected 3D projector, showing exactly what that projector will output. This mode is used for projector calibration. It requires at least one 3D projector to be defined in the show. When Projector mode is active, a dropdown at the top of the Stage lets you switch between projectors. Use <strong>PageUp</strong> and <strong>PageDown</strong> to cycle through projectors.</p>
 
 <div class='note-box'><p>Projector mode is not available while editing a composition. The Stage automatically exits Projector mode when you enter composition editing.
 </p></div>
 
-<h3>Edit Modes</h3>
+<h3 id="edit-modes">Edit Modes</h3>
 
 <p>The Stage has two edit modes, toggled by clicking the topbar area:</p>
 
@@ -1108,7 +1108,7 @@
 
 <p>Click the topbar icon to switch between modes.</p>
 
-<h3>Toolbar Controls</h3>
+<h3 id="toolbar-controls">Toolbar Controls</h3>
 
 <p>The Stage toolbar (top-right area) adjusts based on the active camera mode:</p>
 
@@ -1121,19 +1121,19 @@
 <tr><td><strong>Velocity</strong></td><td>First Person and Projector</td><td>Slider controlling camera movement speed (0.1 to 2.0, step 0.1)</td></tr>
 </table>
 
-<h3>Navigating the Stage</h3>
+<h3 id="navigating-the-stage">Navigating the Stage</h3>
 
-<h4>Panning</h4>
+<h4 id="panning">Panning</h4>
 
 <p>Move your view across the Stage canvas: <ul> <li>Activate the <strong>Pan</strong> button and drag</li> <li>Hold <strong>Ctrl+Alt</strong> and drag anywhere on the Stage</li></p>
 
 </ul>
 
-<h4>Zooming and Scaling</h4>
+<h4 id="zooming-and-scaling">Zooming and Scaling</h4>
 
 <p>In Front View, use the <strong>Scale</strong> control or mouse wheel (<strong>Ctrl+Mouse Wheel</strong>) to change magnification. In 3D views, use the <strong>Zoom</strong> control.</p>
 
-<h4>View Commands</h4>
+<h4 id="view-commands">View Commands</h4>
 
 <table>
 <tr><th>Shortcut</th><th>Command</th><th>Description</th></tr>
@@ -1142,7 +1142,7 @@
 <tr><td><strong>Ctrl+Shift+O</strong></td><td>Scroll to Origin</td><td>Center the view on coordinates (0, 0)</td></tr>
 </table>
 
-<h3>Selection</h3>
+<h3 id="selection">Selection</h3>
 
 <p>Click a cue or display to select it. Standard selection modifiers apply:</p>
 
@@ -1155,7 +1155,7 @@
 
 <p>What is selectable depends on the edit mode: in Cue Edit Mode you select cues, in Display Edit Mode you select displays.</p>
 
-<h3>Moving and Nudging</h3>
+<h3 id="moving-and-nudging">Moving and Nudging</h3>
 
 <p>Drag selected items to reposition them. In Default camera mode, pixel-precise nudging is available:</p>
 
@@ -1165,7 +1165,7 @@
 <tr><td><strong>Ctrl+Shift+Arrow</strong></td><td>Nudge 10 pixels in the arrow direction</td></tr>
 </table>
 
-<h3>Drag and Drop</h3>
+<h3 id="drag-and-drop">Drag and Drop</h3>
 
 <p>Drag assets from the Assets window onto the Stage to create cues at the drop location. The placement behavior depends on modifier keys:</p>
 
@@ -1177,7 +1177,7 @@
 
 <p>Dropping an MPCDI file onto the Stage creates display definitions from the projection mapping data.</p>
 
-<h3>Background Settings</h3>
+<h3 id="background-settings">Background Settings</h3>
 
 <p>The Stage background can be customized via the Stage Properties in the Properties panel (click empty space on the Stage when in Display Edit Mode, or select Stage from the Properties panel):</p>
 
@@ -1187,21 +1187,21 @@
 
 </ul>
 
-<h3>Tier Filters</h3>
+<h3 id="tier-filters">Tier Filters</h3>
 
 <p>When your show uses stage tiers to organize content into visibility groups, the Stage Properties panel provides per-tier visibility toggles (eye icons). Toggle a tier off to hide all cues assigned to that tier in the Stage view, making it easier to work with specific content layers. You can also add, rename, and delete tiers from this panel.</p>
 
 <p>Tiers also affect display blending behavior: when two overlapping displays are on the <strong>same tier</strong>, WATCHOUT automatically creates a <strong>soft-edge blend</strong> between them. To avoid automatic edge blending when displays overlap in the Stage area, place them on <strong>different tiers</strong>.</p>
 
-<h3>Display Labels</h3>
+<h3 id="display-labels">Display Labels</h3>
 
 <p>In Display Edit Mode, display names appear as labels overlaid on each display rectangle. These labels scale with zoom level and help identify outputs in complex multi-display configurations. Labels are hidden in Projector mode.</p>
 
-<h3>Composition View</h3>
+<h3 id="composition-view">Composition View</h3>
 
 <p>When editing a composition, the Stage switches to show the composition's internal canvas instead of the main stage layout. A border appears around the viewport and the title bar shows a composition icon. The Stage forces Cue Edit Mode and exits Projector mode while in composition view. If you are in a blind edit, the border color changes to indicate the blind edit state.</p>
 
-<h3>Context Menu</h3>
+<h3 id="context-menu">Context Menu</h3>
 
 <p>Right-click on the Stage to access a context menu with options that vary based on what is under the cursor and what is selected:</p>
 
@@ -1217,11 +1217,11 @@
 
 </ul>
 
-<h3>Projector Calibration</h3>
+<h3 id="projector-calibration">Projector Calibration</h3>
 
 <p>When in Projector mode, additional controls appear for aligning projected output with physical surfaces.</p>
 
-<h4>3D Calibration</h4>
+<h4 id="3d-calibration">3D Calibration</h4>
 
 <p>3D calibration uses paired virtual and real-world points to compute the projector's position and orientation:</p>
 
@@ -1234,7 +1234,7 @@
 
 </ul>
 
-<h4>2D Calibration</h4>
+<h4 id="2d-calibration">2D Calibration</h4>
 
 <p>2D calibration refines the projector alignment after 3D calibration. It requires at least 6 virtual calibration points to be defined:</p>
 
@@ -1247,11 +1247,11 @@
 
 </ul>
 
-<h4>Show Warp Points on Display</h4>
+<h4 id="show-warp-points-on-display">Show Warp Points on Display</h4>
 
 <p>The <strong>Show on Display</strong> toggle renders the warp mesh grid on the actual display output, making it visible on the projected surface. This is useful for verifying warp corrections against the physical screen during calibration.</p>
 
-<h3>Relationship to Other Windows</h3>
+<h3 id="relationship-to-other-windows">Relationship to Other Windows</h3>
 
 <ul>
 <li><strong>Timeline</strong> — cues visible on the Stage correspond to cues at the current play position in the active timeline. Selecting a cue on the Stage selects it in the Timeline, and vice versa.</li>
@@ -1280,7 +1280,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

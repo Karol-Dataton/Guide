@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Working with Layers</h2>
+                    <div class="section-content-body"><h2 id="working-with-layers">Working with Layers</h2>
 
 <p><strong>Layers are the primary organizational and compositing structure within a WATCHOUT timeline.</strong> Every media cue, control cue, and effect lives on a layer, and the arrangement of layers determines the visual draw order of your content — which elements appear in front of others on screen. A well-structured layer setup is the difference between a manageable production and one that becomes chaotic under pressure.</p>
 
-<h3>What Layers Are</h3>
+<h3 id="what-layers-are">What Layers Are</h3>
 
 <p>A layer is a horizontal track in the Timeline window that holds cues. Each timeline maintains its own collection of layers, each identified by a unique ID. Each layer carries its own properties — name, order position, visibility state, lock state, and optional key-and-fill settings — independent of the cues it contains.</p>
 
@@ -1059,7 +1059,7 @@
 
 </ul>
 
-<h3>Layer Properties</h3>
+<h3 id="layer-properties">Layer Properties</h3>
 
 <p>Every layer exposes the following properties:</p>
 
@@ -1073,7 +1073,7 @@
 <tr><td><strong>Key and Fill</strong></td><td>Enables key-and-fill compositing for the layer, with mode and channel settings.</td><td>Disabled</td></tr>
 </table>
 
-<h3>Default Layer Setup</h3>
+<h3 id="default-layer-setup">Default Layer Setup</h3>
 
 <p>WATCHOUT creates a predefined number of layers depending on the context:</p>
 
@@ -1088,9 +1088,9 @@
 <div class='note-box'><p>Starting with a generous number of layers is intentional — it is faster to rename and use existing layers than to repeatedly add new ones during programming. Delete unused layers at the end of the production process if you want a cleaner file.
 </p></div>
 
-<h3>Adding and Removing Layers</h3>
+<h3 id="adding-and-removing-layers">Adding and Removing Layers</h3>
 
-<h4>Adding Layers</h4>
+<h4 id="adding-layers">Adding Layers</h4>
 
 <p>There are two methods for adding layers:</p>
 
@@ -1100,7 +1100,7 @@
 
 </ol>
 
-<h4>Removing Layers</h4>
+<h4 id="removing-layers">Removing Layers</h4>
 
 <p>Deleting a layer removes it and <strong>all cues on that layer</strong>. This is a cascading deletion — every cue that lives on the deleted layer is permanently removed from the timeline.</p>
 
@@ -1116,7 +1116,7 @@
 
 </ol>
 
-<h3>Naming Layers</h3>
+<h3 id="naming-layers">Naming Layers</h3>
 
 <p>When a layer has no custom name assigned, WATCHOUT displays a default name based on its position: <strong>"Layer 1"</strong>, <strong>"Layer 2"</strong>, and so on. These names update automatically if layers are reordered.</p>
 
@@ -1132,7 +1132,7 @@
 
 <p>Common naming conventions include functional labels (<code>BG</code>, <code>Video</code>, <code>Titles</code>, <code>FX</code>, <code>Overlays</code>) or scene-based labels (<code>Scene1_BG</code>, <code>Scene1_FX</code>). Choose a convention and apply it consistently across all timelines.</p>
 
-<h3>Layer Visibility and Locking</h3>
+<h3 id="layer-visibility-and-locking">Layer Visibility and Locking</h3>
 
 <p>Three properties control how a layer behaves during editing and playback:</p>
 
@@ -1146,11 +1146,11 @@
 <div class='info-box'><p>Lock layers progressively as sections of the show are finalized. This prevents accidental edits to approved content while you continue working on other layers. Unlock temporarily if adjustments are needed.
 </p></div>
 
-<h3>Key and Fill</h3>
+<h3 id="key-and-fill">Key and Fill</h3>
 
 <p>Each layer has an optional <strong>Key and Fill</strong> system that controls how the layer's content is used in compositing. This is relevant for broadcast-style workflows where a separate key (matte) signal controls the transparency of a fill (content) signal.</p>
 
-<h4>Key and Fill Settings</h4>
+<h4 id="key-and-fill-settings">Key and Fill Settings</h4>
 
 <table>
 <tr><th>Setting</th><th>Options</th><th>Default</th></tr>
@@ -1159,7 +1159,7 @@
 <tr><td><strong>Channels</strong></td><td>Channel selection</td><td>Channel 1</td></tr>
 </table>
 
-<h4>Key and Fill Modes</h4>
+<h4 id="key-and-fill-modes">Key and Fill Modes</h4>
 
 <table>
 <tr><th>Mode</th><th>Behavior</th></tr>
@@ -1398,7 +1398,7 @@
 
 <p>Key and fill is typically used when integrating WATCHOUT with broadcast graphics systems or when building advanced compositing setups where one layer's luminance or alpha drives the visibility of another layer's content.</p>
 
-<h3>Layer Rendering Order</h3>
+<h3 id="layer-rendering-order">Layer Rendering Order</h3>
 
 <p>The vertical position of layers in the Timeline window directly determines the visual compositing order for cues using the default <strong>By Layer</strong> stacking mode:</p>
 
@@ -1416,7 +1416,7 @@
 <div class='note-box'><p>The layer order applies within a single timeline. When multiple timelines overlap on the same display area, the inter-timeline stacking order (controlled by timeline panel position and the Always on Top setting) takes precedence. See <a href="stacking-order.html">Stacking Order</a> for the full compositing hierarchy.
 </p></div>
 
-<h3>Layer Operations Reference</h3>
+<h3 id="layer-operations-reference">Layer Operations Reference</h3>
 
 <table>
 <tr><th>Operation</th><th>Description</th></tr>
@@ -1448,7 +1448,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

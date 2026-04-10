@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Display Properties</h2>
+                    <div class="section-content-body"><h2 id="display-properties">Display Properties</h2>
 
 <p><strong>Display Properties</strong> control how each display is named, placed, routed, rendered, and calibrated. In practice, this panel is where most output troubleshooting and final show handoff work happens.</p>
 
-<h3>Open Display Properties</h3>
+<h3 id="open-display-properties">Open Display Properties</h3>
 
 <ol>
 <li>Select a display in <strong>Stage</strong> or in the <strong>Devices</strong> pane.</li>
@@ -1058,7 +1058,7 @@
 
 <p>Many properties can be edited on multiple selected displays at once, which is useful for fast setup across large systems.</p>
 
-<h3>Property Groups at a Glance</h3>
+<h3 id="property-groups-at-a-glance">Property Groups at a Glance</h3>
 
 <table>
 <tr><th>Group</th><th>Typical settings</th><th>Why it matters</th></tr>
@@ -1073,7 +1073,7 @@
 <tr><td><strong>Test Pattern</strong></td><td>None/Muted/White/Masked/Pattern, overlay</td><td>Fast output verification and diagnostics</td></tr>
 </table>
 
-<h3>General Properties</h3>
+<h3 id="general-properties">General Properties</h3>
 
 <p>Use this section first, before deep signal tuning:</p>
 
@@ -1087,7 +1087,7 @@
 
 <p>For virtual displays, node assignment is not required.</p>
 
-<h3>Placement and Orientation</h3>
+<h3 id="placement-and-orientation">Placement and Orientation</h3>
 
 <p>Placement settings control where the display exists in the show coordinate space.</p>
 
@@ -1104,13 +1104,13 @@
 
 <p>Projector calibration lock options can prevent calibration from changing lens shift or width/distance ratio when those values are known and fixed.</p>
 
-<h3>Presentation (Tiers)</h3>
+<h3 id="presentation-tiers">Presentation (Tiers)</h3>
 
 <p>The <strong>tiers mask</strong> determines which Stage tiers are allowed to render cues on that display.</p>
 
 <p>Use this to isolate content families (for example show layer variants, rehearsal overlays, operator-only graphics) without changing cue geometry.</p>
 
-<h3>Output Properties</h3>
+<h3 id="output-properties">Output Properties</h3>
 
 <table>
 <tr><th>Property</th><th>Purpose</th></tr>
@@ -1127,7 +1127,7 @@
 <tr><td><strong>Max Quality</strong></td><td>Higher quality render path where needed</td></tr>
 </table>
 
-<h4>Routing Notes</h4>
+<h4 id="routing-notes">Routing Notes</h4>
 
 <ul>
 <li><code>GPU</code> and <code>SDI</code> routing depends on node alias + channel.</li>
@@ -1138,7 +1138,7 @@
 
 <p>If two displays share the same route resources, WATCHOUT can report a <strong>resource conflict</strong> warning.</p>
 
-<h4>Resolution and Size Behavior</h4>
+<h4 id="resolution-and-size-behavior">Resolution and Size Behavior</h4>
 
 <p>The <strong>Use as Input Resolution</strong> toggle controls how stage dimensions relate to output resolution:</p>
 
@@ -1150,7 +1150,7 @@
 
 <p>Use independent size only when you intentionally want design-space dimensions to differ from transmission raster.</p>
 
-<h3>Signal and EDID</h3>
+<h3 id="signal-and-edid">Signal and EDID</h3>
 
 <p>Signal-related options are output-type dependent:</p>
 
@@ -1172,7 +1172,7 @@
 
 <p>Use non-default signal settings only when they solve a specific hardware or show requirement.</p>
 
-<h3>EDID Capture</h3>
+<h3 id="edid-capture">EDID Capture</h3>
 
 <p>EDID (Extended Display Identification Data) is a data block that displays transmit to describe their capabilities — supported resolutions, timing modes, color depth, and manufacturer information. WATCHOUT can capture and save a display's EDID data as an asset in the show.</p>
 
@@ -1192,7 +1192,7 @@
 
 <p>EDID capture is particularly useful in rental and staging environments where you need to document the exact display capabilities at each venue, or when troubleshooting resolution and timing issues where the display is not advertising the expected modes.</p>
 
-<h3>Signal and Calibration</h3>
+<h3 id="signal-and-calibration">Signal and Calibration</h3>
 
 <p>Display-level calibration settings include:</p>
 
@@ -1212,7 +1212,7 @@
 
 </ul>
 
-<h3>Warp, Mask, and Soft Edges</h3>
+<h3 id="warp-mask-and-soft-edges">Warp, Mask, and Soft Edges</h3>
 
 <p>Display shaping tools are configured per display:</p>
 
@@ -1226,13 +1226,13 @@
 
 <p>Use these together for projector blending and irregular output surfaces.</p>
 
-<h3>White Point and Test Pattern</h3>
+<h3 id="white-point-and-test-pattern">White Point and Test Pattern</h3>
 
-<h4>White Point</h4>
+<h4 id="white-point">White Point</h4>
 
 <p>Per-display red/green/blue white point controls are used to match output color temperature between displays.</p>
 
-<h4>Test Pattern</h4>
+<h4 id="test-pattern">Test Pattern</h4>
 
 <p>Diagnostic output modes are available per display:</p>
 
@@ -1266,7 +1266,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

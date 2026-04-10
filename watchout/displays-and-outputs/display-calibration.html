@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Display Calibration</h2>
+                    <div class="section-content-body"><h2 id="display-calibration">Display Calibration</h2>
 
 <p><strong>Calibration</strong> is the process of aligning WATCHOUT's rendered output to the physical reality of the display surface. This encompasses projector alignment for 3D mapping, camera-based calibration via NDI streams, EDID management for display identification, and external calibration integration through the HTTP API.</p>
 
-<h3>NDI Calibration Stream</h3>
+<h3 id="ndi-calibration-stream">NDI Calibration Stream</h3>
 
 <p>For camera-based calibration workflows, each GPU display can be assigned an <strong>NDI Calibration Stream</strong> in the <strong>Calibration</strong> section of Device Properties. This setting specifies the name of an NDI video stream that carries a live camera feed of the display surface.</p>
 
@@ -1064,7 +1064,7 @@
 
 <p>The stream name should match the NDI source name exactly as it appears on the network. The calibration system uses this stream to compare the expected output pattern with the observed result on the physical surface.</p>
 
-<h3>Projector Calibration (3D Mapping)</h3>
+<h3 id="projector-calibration-3d-mapping">Projector Calibration (3D Mapping)</h3>
 
 <p>For 3D projector displays, WATCHOUT provides a dedicated calibration system that uses point correspondences to compute the projector's position, orientation, and lens parameters. This is essential for accurate projection mapping where content must align precisely to a physical 3D model.</p>
 
@@ -2003,7 +2003,7 @@
     })();
 </script>
 
-<h4>End-to-End 3D Mapping Workflow</h4>
+<h4 id="end-to-end-3d-mapping-workflow">End-to-End 3D Mapping Workflow</h4>
 
 <p>The full 3D mapping process follows four steps:</p>
 
@@ -2018,7 +2018,7 @@
 <div class='info-box'><p>The 3D model must closely match the real object's proportions. If the model and the physical object differ significantly, calibration will be very difficult or impossible.
 </p></div>
 
-<h4>Calibration UI Reference</h4>
+<h4 id="calibration-ui-reference">Calibration UI Reference</h4>
 
 <p>The calibration toolbar provides the following controls:</p>
 
@@ -2042,7 +2042,7 @@
 <tr><td>16</td><td><strong>Exit</strong></td><td>Exit projector/calibration mode.</td></tr>
 </table>
 
-<h4>Virtual Points and Reality Points</h4>
+<h4 id="virtual-points-and-reality-points">Virtual Points and Reality Points</h4>
 
 <p>The calibration process works with two sets of points:</p>
 
@@ -2054,7 +2054,7 @@
 
 <p>The calibration algorithm uses these point pairs to solve for the projector's intrinsic parameters (focal length, lens shift) and extrinsic parameters (position, orientation) using a camera calibration model.</p>
 
-<h4>Calibration Workflow</h4>
+<h4 id="calibration-workflow">Calibration Workflow</h4>
 
 <ol>
 <li><strong>Switch to Calibration mode</strong> — in the Stage toolbar, switch the projector view from <strong>View</strong> mode to <strong>Calibration</strong> mode. This enables the calibration point editing tools.</li>
@@ -2086,7 +2086,7 @@
 
 </ol>
 
-<h4>Continuous vs. Manual Calibration</h4>
+<h4 id="continuous-vs-manual-calibration">Continuous vs. Manual Calibration</h4>
 
 <p>The calibration toolbar provides two calibration behaviors:</p>
 
@@ -2102,7 +2102,7 @@
 
 </ul>
 
-<h4>Calibration Accuracy</h4>
+<h4 id="calibration-accuracy">Calibration Accuracy</h4>
 
 <p>After calibration, WATCHOUT displays an <strong>accuracy indicator</strong> that shows how well the computed projector model aligns the virtual and reality points. A low error value (reprojection error) indicates good alignment. An error above 100 indicates a significant problem — typically caused by incorrect point placement, insufficient point count, or a physical setup that doesn't match the model.</p>
 
@@ -2115,11 +2115,11 @@
 
 </ul>
 
-<h4>Reposition Action</h4>
+<h4 id="reposition-action">Reposition Action</h4>
 
 <p>The <strong>Reposition</strong> action moves all reality points to sit directly on top of their corresponding virtual points in the current projector view. This is useful as a reset or starting point before manual fine-tuning — it gives you a clean baseline where both point sets overlap, and you can then adjust individual reality points to account for real-world discrepancies.</p>
 
-<h4>Projector Parameter Locking</h4>
+<h4 id="projector-parameter-locking">Projector Parameter Locking</h4>
 
 <p>During calibration, you can lock specific projector parameters to prevent the calibration algorithm from changing them:</p>
 
@@ -2131,7 +2131,7 @@
 
 <p>Locking parameters reduces the degrees of freedom in the calibration solve, which can improve accuracy when the locked values are known to be correct, but can also degrade results if the locked values are wrong.</p>
 
-<h3>External Calibration Triggers</h3>
+<h3 id="external-calibration-triggers">External Calibration Triggers</h3>
 
 <p>WATCHOUT supports an external calibration trigger mechanism that allows third-party calibration systems to put displays into calibration mode via the HTTP API. This is used in automated calibration workflows where an external system (such as VIOSO or other camera-based alignment tools) needs WATCHOUT to display calibration patterns while the external system captures and processes the result.</p>
 
@@ -2178,7 +2178,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

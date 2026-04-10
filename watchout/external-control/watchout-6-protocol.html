@@ -1043,7 +1043,7 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>WATCHOUT 6 Protocol</h2>
+                    <div class="section-content-body"><h2 id="watchout-6-protocol">WATCHOUT 6 Protocol</h2>
 
 <p>WATCHOUT 7 includes a backward-compatible WATCHOUT 6 command interface. It is intended for existing integrations (Crestron, AMX, Extron, custom scripts) that already speak WO6 command syntax.</p>
 
@@ -1051,7 +1051,7 @@
 
 <p>This page documents behavior as implemented in the current WO6 compatibility source code.</p>
 
-<h3>Transport and Framing</h3>
+<h3 id="transport-and-framing">Transport and Framing</h3>
 
 <ul>
 <li><strong>Ports:</strong> <code>3040</code> (WATCHMAKER) and <code>3039</code> (WATCHPOINT)</li>
@@ -1064,7 +1064,7 @@
 
 <p>Use CRLF in clients even if some line-ending variants may be tolerated.</p>
 
-<h3>Request IDs (<code>[id]</code> Prefix)</h3>
+<h3 id="request-ids-codeidcode-prefix">Request IDs (<code>[id]</code> Prefix)</h3>
 
 <p>Commands may be prefixed with an ID tag: <code>[my-id]ping</code></p>
 
@@ -1075,7 +1075,7 @@
 
 </ul>
 
-<h3>Main Timeline Behavior</h3>
+<h3 id="main-timeline-behavior">Main Timeline Behavior</h3>
 
 <p>Commands that omit a timeline name target a timeline named exactly <code>Main Timeline</code>.</p>
 
@@ -1084,7 +1084,7 @@
 <div class='info-box'><p><code>"Main Timeline"</code> also appears in the list returned by <code>getAuxTimelines</code>. It is not filtered out from auxiliary timeline listings.
 </p></div>
 
-<h3>Syntax Rules</h3>
+<h3 id="syntax-rules">Syntax Rules</h3>
 
 <ul>
 <li>Command names are case-sensitive (<code>getStatus</code>, not <code>getstatus</code>)</li>
@@ -1098,7 +1098,7 @@
 
 </ul>
 
-<h3>Response Formats</h3>
+<h3 id="response-formats">Response Formats</h3>
 
 <table>
 <tr><th>Type</th><th>Wire format</th><th>Used by</th></tr>
@@ -1112,7 +1112,7 @@
 <tr><td><code>Error</code></td><td><code>Error &lt;code 1-8&gt; 0 "&lt;message&gt;"</code></td><td>parse/runtime/auth/unsupported failures</td></tr>
 </table>
 
-<h3>getStatus Modes</h3>
+<h3 id="getstatus-modes">getStatus Modes</h3>
 
 <p><code>getStatus</code> is one command with multiple modes (including timeline status and subscriptions).</p>
 
@@ -1136,7 +1136,7 @@
 
 </ul>
 
-<h3>Implemented Commands</h3>
+<h3 id="implemented-commands">Implemented Commands</h3>
 
 <table>
 <tr><th>Command</th><th>Syntax</th><th>Success response</th><th>Notes</th></tr>
@@ -1158,7 +1158,7 @@
 <tr><td><code>online</code></td><td><code>online &lt;bool&gt;</code></td><td>empty</td><td>accepted for compatibility; currently no-op</td></tr>
 </table>
 
-<h4>Response Details</h4>
+<h4 id="response-details">Response Details</h4>
 
 <ul>
 <li><strong><code>ping</code> response:</strong> The program name field is always <code>"WATCHMAKER"</code> and the license field is always <code>true</code>, regardless of the actual WATCHOUT 7 license state.</li>
@@ -1176,7 +1176,7 @@
 
 </ul>
 
-<h3>Parsed but Not Implemented</h3>
+<h3 id="parsed-but-not-implemented">Parsed but Not Implemented</h3>
 
 <p>These commands are parsed, but currently return runtime unimplemented errors (<code>Error 7 0 "Request ... is not implemented in WATCHOUT 7 yet."</code>) on TCP:</p>
 
@@ -1196,7 +1196,7 @@
 
 </ul>
 
-<h3>Discover Compatibility Command</h3>
+<h3 id="discover-compatibility-command">Discover Compatibility Command</h3>
 
 <p><code>discover &lt;digits&gt;</code> is accepted for legacy compatibility traffic.</p>
 
@@ -1206,7 +1206,7 @@
 
 </ul>
 
-<h3>UDP Behavior</h3>
+<h3 id="udp-behavior">UDP Behavior</h3>
 
 <p>UDP support is fire-and-forget: no responses are sent.</p>
 
@@ -1216,7 +1216,7 @@
 
 </ul>
 
-<h3>Differences from Older WO6 Integrations</h3>
+<h3 id="differences-from-older-wo6-integrations">Differences from Older WO6 Integrations</h3>
 
 <ul>
 <li><code>getTimelineStatus</code>, <code>subscribeStatus</code>, and related timeline-subscribe commands are represented through <code>getStatus</code> mode variants</li>
@@ -1227,7 +1227,7 @@
 
 </ul>
 
-<h3>Migration Guidance</h3>
+<h3 id="migration-guidance">Migration Guidance</h3>
 
 <p>Use WO6 protocol compatibility to keep existing control systems running, but prefer newer interfaces for new development:</p>
 
@@ -1258,7 +1258,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

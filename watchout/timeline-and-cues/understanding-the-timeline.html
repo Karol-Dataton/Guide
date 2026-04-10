@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Understanding the Timeline</h2>
+                    <div class="section-content-body"><h2 id="understanding-the-timeline">Understanding the Timeline</h2>
 
 <p><strong>The timeline is the central workspace in WATCHOUT 7 where every piece of show content is placed, sequenced, and controlled.</strong> A timeline is a horizontal time-based canvas divided into layers, each holding cues that define what plays, when it plays, and how it behaves. Media cues carry images, video, and audio; control cues orchestrate playback across timelines; output cues send messages to external systems; variable cues automate parameters; marker cues annotate moments for navigation and show-calling; and ArtNet fixture cues drive DMX lighting. Everything that happens during a show — from the first fade-in to the final blackout — originates from cues on timelines.</p>
 
 <p>A WATCHOUT show typically contains multiple timelines, each responsible for a different aspect of the production: one timeline for the main video sequence, another for ambient backgrounds, another for overlay graphics, another for lighting control. The Timelines panel lists all timelines in the show, and their order in that panel determines the visual stacking priority when multiple timelines contribute content to the same display area. This multi-timeline architecture lets you build complex, layered shows while keeping each timeline focused and manageable.</p>
 
-<h3>The Timeline Window</h3>
+<h3 id="the-timeline-window">The Timeline Window</h3>
 
 <p>Opening a timeline (by double-clicking it in the Timelines panel) reveals the <strong>Timeline window</strong> — the primary editing interface for that timeline's content. The window is divided into several functional areas:</p>
 
@@ -1069,7 +1069,7 @@
 
 <p><strong>Top Bar.</strong> Displays the current cue information fields and a countdown display. When a cue is selected, its name and timing details appear here. When you hover over a cue, the top bar shows the <strong>media name</strong>, <strong>start time</strong>, <strong>duration</strong>, and <strong>cue ID</strong> for quick reference without needing to open properties.</p>
 
-<h3>Navigation and Scrolling</h3>
+<h3 id="navigation-and-scrolling">Navigation and Scrolling</h3>
 
 <p>The Timeline window supports several navigation methods:</p>
 
@@ -1088,7 +1088,7 @@
 
 <p>During playback, the viewport automatically scrolls to keep the playhead visible. When you stop playback and navigate manually, auto-scrolling pauses until the next play command.</p>
 
-<h3>Zoom</h3>
+<h3 id="zoom">Zoom</h3>
 
 <p>Zoom controls how much of the timeline is visible in the window at once. At minimum zoom you can see the entire timeline duration; at maximum zoom you can work at millisecond precision on individual cue edges.</p>
 
@@ -1101,7 +1101,7 @@
 
 <p>The zoom level persists per-timeline, so switching between timelines restores each one's last zoom setting.</p>
 
-<h3>Selection and Editing Contexts</h3>
+<h3 id="selection-and-editing-contexts">Selection and Editing Contexts</h3>
 
 <p>The Timeline window uses <strong>context-sensitive editing</strong> — the available operations change depending on what is currently selected. There are four editing contexts:</p>
 
@@ -1115,7 +1115,7 @@
 
 <p>Keyboard shortcuts and right-click menu options change based on the active context. For example, the Delete key removes cues when in Cue context but removes tween points when in Tween Points context.</p>
 
-<h3>Cue Hover Info</h3>
+<h3 id="cue-hover-info">Cue Hover Info</h3>
 
 <p>When you hover over a cue on the timeline, the top bar displays a summary of that cue's key details:</p>
 
@@ -1129,7 +1129,7 @@
 
 <p>This hover information provides quick identification without needing to select the cue or open its properties panel.</p>
 
-<h3>Cue Overlaps</h3>
+<h3 id="cue-overlaps">Cue Overlaps</h3>
 
 <p>When two cues reside on the same layer, they may overlap. Overlapping cues are marked with a <strong>striped pattern</strong> on the affected cue objects in the timeline, signaling a conflict that should typically be resolved by moving cues until the pattern disappears.</p>
 
@@ -1144,14 +1144,14 @@
 
 <p>Overlaps between two media cues on the same layer are also allowed when using <strong>Fade-in/out</strong> transitions — the striped pattern does not appear in this case.</p>
 
-<h3>Disabled Cues</h3>
+<h3 id="disabled-cues">Disabled Cues</h3>
 
 <p>Cues can be disabled to temporarily exclude them from playback without deleting them. Disabled cues are displayed with a <strong>grey striped overlay</strong> and <strong>reduced opacity</strong>, making them visually distinct from active cues on the timeline. To disable a cue, set its condition to <strong>Disabled</strong> in <a href="cue-properties.html">Cue Properties</a>.</p>
 
 <div class='info-box'><p>Disabling cues is useful during rehearsal and development — you can keep alternate versions or test content on the timeline without affecting playback.
 </p></div>
 
-<h3>Cue Types</h3>
+<h3 id="cue-types">Cue Types</h3>
 
 <p>WATCHOUT provides six types of cues, each serving a different purpose on the timeline:</p>
 
@@ -1167,7 +1167,7 @@
 
 <p>Cues are placed on the timeline by dragging assets from the Assets panel (for media cues) or by using the <strong>Timeline</strong> menu and context menu (for all cue types). Every cue lives on exactly one layer at any given time.</p>
 
-<h3>Layers</h3>
+<h3 id="layers">Layers</h3>
 
 <p>Layers are the vertical structure of the timeline. Each layer is a horizontal track that holds cues, and the arrangement of layers determines the visual compositing order — which content appears in front of other content on the displays.</p>
 
@@ -1182,7 +1182,7 @@
 
 <p>For the complete guide to layer properties, naming conventions, key-and-fill modes, and layer operations, see <a href="working-with-layers.html">Working with Layers</a>.</p>
 
-<h3>Playback</h3>
+<h3 id="playback">Playback</h3>
 
 <p>A timeline is always in one of three <strong>playback states</strong>:</p>
 
@@ -1197,11 +1197,11 @@
 
 <p>Time is displayed in <code>HH:MM:SS.mmm</code> format throughout the interface.</p>
 
-<h3>The Timelines Panel</h3>
+<h3 id="the-timelines-panel">The Timelines Panel</h3>
 
 <p>The <strong>Timelines panel</strong> lists all timelines in the current show and provides an overview of their status. The panel is organized as a tree table that supports folders for grouping related timelines.</p>
 
-<h4>Panel Columns</h4>
+<h4 id="panel-columns">Panel Columns</h4>
 
 <table>
 <tr><th>Column</th><th>Shows</th></tr>
@@ -1213,7 +1213,7 @@
 <tr><td><strong>ID</strong></td><td>The timeline's unique identifier</td></tr>
 </table>
 
-<h4>Working with the Panel</h4>
+<h4 id="working-with-the-panel">Working with the Panel</h4>
 
 <ul>
 <li><strong>Double-click</strong> a timeline to open its Timeline window</li>
@@ -1223,11 +1223,11 @@
 
 </ul>
 
-<h4>Timeline Folders</h4>
+<h4 id="timeline-folders">Timeline Folders</h4>
 
 <p>Folders organize timelines into logical groups. A folder has a name, color, and position in the panel. Folders can be nested within other folders. Timelines inherit their parent folder's color if they have no color of their own. Use folders to group timelines by scene, department, or function — for example, "Act 1", "Overlays", "Lighting Control".</p>
 
-<h3>Timeline Properties</h3>
+<h3 id="timeline-properties">Timeline Properties</h3>
 
 <p>Every timeline has a set of properties that control its behavior and identity:</p>
 
@@ -1242,7 +1242,7 @@
 <tr><td><strong>Play / Pause / Stop Expressions</strong></td><td>Expression rules that automate playback state changes based on variable values</td><td>None</td></tr>
 </table>
 
-<h4>Lock States</h4>
+<h4 id="lock-states">Lock States</h4>
 
 <p>Timelines support three lock states that provide progressively stronger protection:</p>
 
@@ -1265,13 +1265,13 @@
 <div class='info-box'><p>Use <strong>Hands Off</strong> for critical timelines during a live performance — safety messaging, emergency overlays, or synchronized background sequences that must run undisturbed. Hands Off prevents accidental operator interaction with the timeline entirely.
 </p></div>
 
-<h4>Auto Run</h4>
+<h4 id="auto-run">Auto Run</h4>
 
 <p>When <strong>Auto Run</strong> is enabled, the timeline automatically enters the Run (play) state when the show file is opened. This fires once at show load and does not re-trigger if the timeline is subsequently stopped. Auto Run is independent of trigger expressions — a timeline can have both Auto Run and expression-based triggers.</p>
 
 <p>Auto Run is indicated by a start-arrow icon on the timeline's row in the Timelines panel.</p>
 
-<h3>Stacking Order</h3>
+<h3 id="stacking-order">Stacking Order</h3>
 
 <p>When multiple timelines contribute content to the same display area, WATCHOUT needs to determine which timeline's content appears in front. This is controlled by the <strong>stacking order</strong> system:</p>
 
@@ -1285,7 +1285,7 @@
 
 <p>For the complete guide to per-cue and per-timeline stacking, see <a href="stacking-order.html">Stacking Order</a>.</p>
 
-<h3>Marker Cues</h3>
+<h3 id="marker-cues">Marker Cues</h3>
 
 <p>Marker cues (also called comment cues) are zero-duration annotations that mark specific moments on the timeline. They produce no visual or audio output — they exist purely as organizational signposts and as named jump targets for control cues.</p>
 
@@ -1300,7 +1300,7 @@
 
 <p>For the full guide to creating marker cues, configuring countdown timers, naming jump targets, and best practices, see <a href="marker-cues.html">Marker Cues</a>.</p>
 
-<h3>Compositions</h3>
+<h3 id="compositions">Compositions</h3>
 
 <p>Compositions are nested timelines that group multiple cues into a single, self-contained unit. A composition appears on its parent timeline as a single media cue, but internally it contains its own layers, cues, and timing — a timeline within a timeline.</p>
 
@@ -1318,7 +1318,7 @@
 
 <p>For the full guide to creating, editing, ungrouping, and nesting compositions, see <a href="compositions.html">Compositions</a>.</p>
 
-<h3>Triggers and Expressions</h3>
+<h3 id="triggers-and-expressions">Triggers and Expressions</h3>
 
 <p>Timelines can be automated using <strong>trigger expressions</strong> — rules that automatically play, pause, or stop a timeline based on the current value of show variables. Each timeline has three expression slots:</p>
 
@@ -1333,7 +1333,7 @@
 
 <p>For the full guide to expression syntax, variable references, and automation workflows, see <a href="timeline-triggers-and-expressions.html">Timeline Triggers and Expressions</a>.</p>
 
-<h3>Common Issues</h3>
+<h3 id="common-issues">Common Issues</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1367,7 +1367,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

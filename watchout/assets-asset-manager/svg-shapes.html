@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>SVG Shapes</h2>
+                    <div class="section-content-body"><h2 id="svg-shapes">SVG Shapes</h2>
 
 <p><strong>WATCHOUT 7 includes a built-in shape editor that lets you create vector-based assets — rectangles, ellipses, and text — directly within the application.</strong> These shapes are stored as SVG data internally and rasterized to pixels at a configurable resolution before rendering on display servers. This means shapes remain crisp at any target size, but the final output is always a pixel image — the visual renderer does not process vector graphics natively.</p>
 
-<h3>How It Works</h3>
+<h3 id="how-it-works">How It Works</h3>
 
 <p>Shapes follow a different pipeline than imported media assets. Instead of going through the full optimization process (upload → optimize → distribute), shapes are:</p>
 
@@ -1062,7 +1062,7 @@
 <div class='warning-box'><p><strong>The visual renderer has no native SVG support.</strong> All shapes are rasterized to pixels before being sent to display servers. If you scale a shape cue beyond its render resolution, it will exhibit the same pixelation as any bitmap image. Set the render resolution to match or exceed the final display size.
 </p></div>
 
-<h3>Shapes vs. Imported Images</h3>
+<h3 id="shapes-vs-imported-images">Shapes vs. Imported Images</h3>
 
 <table>
 <tr><th>Aspect</th><th>SVG Shape</th><th>Imported Image</th></tr>
@@ -1075,7 +1075,7 @@
 <tr><td><strong>Use case</strong></td><td>Simple geometric shapes, titles, labels</td><td>Complex graphics, photographs, renders</td></tr>
 </table>
 
-<h3>Why Use Shapes?</h3>
+<h3 id="why-use-shapes">Why Use Shapes?</h3>
 
 <p>Shapes are useful for:</p>
 
@@ -1090,7 +1090,7 @@
 
 <p>Because shapes are generated internally, there is no need to round-trip through an external graphics editor for simple visual elements.</p>
 
-<h3>Creating a Shape</h3>
+<h3 id="creating-a-shape">Creating a Shape</h3>
 
 <ol>
 <li>Right-click in the Assets window.</li>
@@ -1115,17 +1115,17 @@
 <div class='info-box'><p><strong>Note:</strong> Shapes cannot be created inside composition folders or non-visual <a href="./dynamic-assets.html">Dynamic Asset</a> folders.
 </p></div>
 
-<h3>Shape Properties Panel</h3>
+<h3 id="shape-properties-panel">Shape Properties Panel</h3>
 
 <p>Select a shape asset to view its dedicated properties panel. Unlike other asset types, shapes display an interactive editor rather than the standard property fields.</p>
 
 <p><!-- screenshot: Shape Properties panel showing preview, base size, geometry, and color sections --></p>
 
-<h4>Preview</h4>
+<h4 id="preview">Preview</h4>
 
 <p>The top section shows a <strong>live preview</strong> of the shape on a checkerboard background (indicating transparency). The preview updates in real time as you modify properties. When multiple shapes are selected with different values, the preview displays a "Multiple values" message.</p>
 
-<h4>Base Size</h4>
+<h4 id="base-size">Base Size</h4>
 
 <p>The <strong>Base Size</strong> section controls the canvas dimensions:</p>
 
@@ -1137,7 +1137,7 @@
 
 <p>For text shapes, a <strong>Crop to Fit</strong> button appears that automatically adjusts the canvas size to tightly fit the rendered text.</p>
 
-<h4>Geometry</h4>
+<h4 id="geometry">Geometry</h4>
 
 <p>The <strong>Geometry</strong> section lets you switch between shape types and set visual properties:</p>
 
@@ -1151,7 +1151,7 @@
 
 <p>Both fill and stroke show a reset button when their value differs from the original, allowing you to quickly revert individual properties.</p>
 
-<h4>Text Properties</h4>
+<h4 id="text-properties">Text Properties</h4>
 
 <p>When the geometry kind is set to <strong>Text</strong>, an additional section appears:</p>
 
@@ -1170,11 +1170,11 @@
 <div class='info-box'><p><strong>Tip:</strong> To use a custom font, first add the font file as an asset in the Assets window (see <a href="./asset-types.html">Asset Types</a>). It will then appear in the font dropdown. Font thumbnails are generated using SVG rasterization during optimization.
 </p></div>
 
-<h4>Applying Changes</h4>
+<h4 id="applying-changes">Applying Changes</h4>
 
 <p>Shape property changes are <strong>not</strong> applied automatically. After making edits, click the <strong>Apply Changes</strong> button at the bottom of the properties panel to commit the new shape data. This regenerates the SVG and updates all cues referencing the shape.</p>
 
-<h3>SVG Render Resolution</h3>
+<h3 id="svg-render-resolution">SVG Render Resolution</h3>
 
 <p>When an SVG shape is placed on the timeline as a cue, you can override its render resolution on a per-cue basis. This is configured in the cue's properties:</p>
 
@@ -1187,7 +1187,7 @@
 
 <p>Increasing the render resolution produces sharper output when the cue is scaled up on stage, at the cost of more GPU memory.</p>
 
-<h3>Using Shapes on the Timeline</h3>
+<h3 id="using-shapes-on-the-timeline">Using Shapes on the Timeline</h3>
 
 <p>Shape assets work like any other visual asset:</p>
 
@@ -1201,7 +1201,7 @@
 
 <p>Shapes can be used as versions in <a href="./dynamic-assets.html">Dynamic Assets</a> — for example, a dynamic text shape whose content changes between shows.</p>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Set render resolution to match display output</strong> — a shape displayed at 4K should have at least a 4K render resolution to avoid pixelation.</li>
@@ -1213,7 +1213,7 @@
 
 </ul>
 
-<h3>Limitations</h3>
+<h3 id="limitations">Limitations</h3>
 
 <ul>
 <li><strong>No native vector rendering</strong> — shapes are rasterized to pixels. The visual renderer does not process SVG natively. Scaling beyond the render resolution causes pixelation.</li>
@@ -1224,7 +1224,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1236,7 +1236,7 @@
 <tr><td>Imported <code>.svg</code> looks pixelated</td><td>SVG was rasterized at a resolution lower than the display output</td><td>Re-import and ensure the render resolution matches the intended display size</td></tr>
 </table>
 
-<h3>See Also</h3>
+<h3 id="see-also">See Also</h3>
 
 <ul>
 <li><a href="./asset-types.html">Asset Types</a> — overview of all asset types including font assets for text shapes</li>
@@ -1265,7 +1265,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

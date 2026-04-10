@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Remote File Access</h2>
+                    <div class="section-content-body"><h2 id="remote-file-access">Remote File Access</h2>
 
 <p>WATCHOUT allows Producer to browse, upload, and manage files on remote nodes across the network. This enables centralized management of distributed playback systems — you can push assets, configure watch folders, and browse directories on Runner machines directly from the Producer interface.</p>
 
 <p>For security, remote file access is controlled by an <strong>allow list</strong> that explicitly defines which directories on each node can be accessed remotely. Without this configuration, remote file browsing is blocked.</p>
 
-<h3>File Browser</h3>
+<h3 id="file-browser">File Browser</h3>
 
 <p>The file browser dialog opens whenever a feature requires selecting a path on a remote node — for example, configuring an Asset Watcher folder or choosing an export destination. The dialog provides:</p>
 
@@ -1063,7 +1063,7 @@
 
 <p>Folders that are listed in the allow list but do not actually exist on disk are shown with a disabled appearance and a "Does not exist" tooltip. These cannot be selected or navigated into.</p>
 
-<h3>Allow List Configuration</h3>
+<h3 id="allow-list-configuration">Allow List Configuration</h3>
 
 <p>The allow list is a JSON file that specifies which directories on a node are accessible for remote file operations.</p>
 
@@ -1085,7 +1085,7 @@
 <div class='warning-box'><p>After creating or modifying the <code>allow_list.json</code> file, you must <strong>restart WATCHOUT Manager</strong> on the target node for the changes to take effect. The allow list is read at startup and cached.
 </p></div>
 
-<h3>Setting Up Remote Access</h3>
+<h3 id="setting-up-remote-access">Setting Up Remote Access</h3>
 
 <p>When you attempt to access a remote node that has no allow list configured (or the requested path is not covered), WATCHOUT displays a <strong>Remote access needed</strong> dialog that walks you through the setup:</p>
 
@@ -1102,7 +1102,7 @@
 <div class='note-box'><p>On WATCHPAX hardware, a default allow list is automatically created with common drive letters (W:\, D:\ through H:\), so remote file browsing works out of the box.
 </p></div>
 
-<h3>When Remote Access Is Required</h3>
+<h3 id="when-remote-access-is-required">When Remote Access Is Required</h3>
 
 <p>Remote file access is needed for several operations:</p>
 
@@ -1114,7 +1114,7 @@
 
 </ul>
 
-<h3>Error Handling</h3>
+<h3 id="error-handling">Error Handling</h3>
 
 <p>If you attempt to browse a node that does not permit remote access, you will see the error:</p>
 
@@ -1125,7 +1125,7 @@
 
 <p>If a path was allowed but the directory has since been removed from disk, the file browser shows it with a "Does not exist" indicator and prevents navigation.</p>
 
-<h3>Security Considerations</h3>
+<h3 id="security-considerations">Security Considerations</h3>
 
 <p>The allow list exists to prevent unintended exposure of a node's file system over the network. Best practices:</p>
 
@@ -1136,7 +1136,7 @@
 
 </ul>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li><a href="node-management-and-maintenance.html">Node Management and Maintenance</a> — other remote management operations available from the Nodes window</li>
@@ -1163,7 +1163,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

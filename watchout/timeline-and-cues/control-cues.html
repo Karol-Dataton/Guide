@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Control Cues</h2>
+                    <div class="section-content-body"><h2 id="control-cues">Control Cues</h2>
 
 <p><strong>Control cues are the mechanism for orchestrating timeline playback states across a WATCHOUT show.</strong> While media cues place visual and audio content on the timeline, control cues change <em>what timelines are doing</em> — starting them, pausing them, stopping them, and jumping to specific points in time. Any show that uses more than one timeline needs control cues to coordinate playback between them.</p>
 
-<h3>What Control Cues Are</h3>
+<h3 id="what-control-cues-are">What Control Cues Are</h3>
 
 <p>A control cue is a <strong>point-in-time instruction</strong> placed on a timeline. When the playhead reaches a control cue, it fires once and changes the playback state of one or more target timelines. Control cues have no duration — they execute at their start time and do not occupy a range on the timeline.</p>
 
@@ -1063,7 +1063,7 @@
 
 <p>Control cues are one of several specialized cue types in WATCHOUT. They are distinct from <a href="output-cues.html">Output Cues</a>, which send external messages (HTTP, TCP, UDP, OSC), and from <a href="variables-and-variable-cues.html">Variable Cues</a>, which automate show variable values. Output and Variable cues are separate cue types-they are not subtypes of control cues.</p>
 
-<h3>Control Cue States</h3>
+<h3 id="control-cue-states">Control Cue States</h3>
 
 <p>The state property determines what happens to the target timeline when the control cue fires:</p>
 
@@ -1076,7 +1076,7 @@
 
 <p>States are ranked in priority order: <strong>Stop > Pause > Run</strong>. This ordering matters for <a href="#conflict-resolution">conflict resolution</a> when multiple control cues fire simultaneously.</p>
 
-<h3>Creating a Control Cue</h3>
+<h3 id="creating-a-control-cue">Creating a Control Cue</h3>
 
 <ol>
 <li>Position the playhead at the desired time on the timeline.</li>
@@ -1090,11 +1090,11 @@
 <div class='info-box'><p>Give control cues descriptive names — especially cues that serve as jump targets. A cue named "Loop Point A" is far easier to work with than an unnamed cue at an arbitrary timecode. Named control cues and named <a href="marker-cues.html">Marker Cues</a> both appear in jump-target lists.
 </p></div>
 
-<h3>Targeting</h3>
+<h3 id="targeting">Targeting</h3>
 
 <p>The target property (labeled <strong>"Timeline"</strong> in the Properties panel) determines which timelines a control cue affects. There are three targeting modes.</p>
 
-<h4>Legacy Mode</h4>
+<h4 id="legacy-mode">Legacy Mode</h4>
 
 <p>Legacy mode targets a single timeline and is the default behavior. It uses one of three values:</p>
 
@@ -1107,7 +1107,7 @@
 
 <p>Legacy mode is the simplest option and is appropriate when a control cue needs to affect exactly one timeline.</p>
 
-<h4>List Mode</h4>
+<h4 id="list-mode">List Mode</h4>
 
 <p>List mode targets an explicit set of timelines and/or folders:</p>
 
@@ -1120,7 +1120,7 @@
 
 <p>Use List mode when you need to start, pause, or stop a known group of timelines — for example, running all timelines in a "Scene 2" folder.</p>
 
-<h4>All Mode</h4>
+<h4 id="all-mode">All Mode</h4>
 
 <p>All mode targets every timeline in the show, with optional exclusions:</p>
 
@@ -1133,7 +1133,7 @@
 
 <p>All mode is useful for global operations like stopping all timelines at the end of a show or pausing everything except a background loop.</p>
 
-<h4>Targeting Mode Summary</h4>
+<h4 id="targeting-mode-summary">Targeting Mode Summary</h4>
 
 <table>
 <tr><th>Mode</th><th>Targets</th><th>Use Case</th></tr>
@@ -1145,7 +1145,7 @@
 <div class='warning-box'><p>When using <strong>All</strong> mode or <strong>List</strong> mode with <strong>Skip Self</strong> disabled, a Run cue on a timeline can re-trigger itself. This is usually unintentional. Enable <strong>Skip Self</strong> unless you specifically need the cue's own timeline in the target set.
 </p></div>
 
-<h3>Jump Behavior</h3>
+<h3 id="jump-behavior">Jump Behavior</h3>
 
 <p>Control cues can optionally reposition the target timeline's playhead before the state change takes effect. The jump property has three modes:</p>
 
@@ -1156,7 +1156,7 @@
 <tr><td><strong>ToCue</strong></td><td>Searches for a named cue matching <strong>Target Cue Name</strong> on the target timeline, jumps to that cue's position, then applies the state change.</td></tr>
 </table>
 
-<h4>Search Direction for Jump-to-Cue</h4>
+<h4 id="search-direction-for-jump-to-cue">Search Direction for Jump-to-Cue</h4>
 
 <p>When jump is set to <strong>ToCue</strong>, the <strong>Search Direction</strong> property controls which direction the system searches for the named cue:</p>
 
@@ -1169,7 +1169,7 @@
 <div class='note-box'><p>The asymmetry between forward and reverse search is intentional. Forward wrapping enables looping constructs (jump to "Loop Start" from any position). Reverse non-wrapping prevents unexpected backward jumps past the beginning of the timeline.
 </p></div>
 
-<h3>Jump Targets</h3>
+<h3 id="jump-targets">Jump Targets</h3>
 
 <p>When a control cue uses <strong>ToCue</strong> jump mode, it searches the target timeline for cues with a matching name. Two types of cues can serve as jump targets:</p>
 
@@ -1184,7 +1184,7 @@
 <div class='info-box'><p>Use <a href="marker-cues.html">Marker Cues</a> as jump targets when the destination is simply a labeled position in the timeline. Reserve named control cues as jump targets when the destination also needs to perform its own state change or jump.
 </p></div>
 
-<h3>Conflict Resolution</h3>
+<h3 id="conflict-resolution">Conflict Resolution</h3>
 
 <p>When multiple control cues fire at the same time on the same target timeline, the system must determine which one takes precedence. WATCHOUT resolves this deterministically:</p>
 
@@ -1196,17 +1196,17 @@
 
 <p>In practice, this means the most restrictive state wins. If one cue says "Run" and another says "Stop" at the same instant on the same target, the target stops.</p>
 
-<h3>Start Delay</h3>
+<h3 id="start-delay">Start Delay</h3>
 
 <p>The <strong>Start Delay</strong> property adds a waiting period between the playhead reaching the control cue and the cue actually executing. The delay is specified as a duration.</p>
 
 <p>Start delays are useful for staggering a sequence of state changes — for example, placing several control cues at the same timeline position but giving each a different delay so that target timelines start in sequence rather than simultaneously.</p>
 
-<h3>Blind Edit Mode and Control Cues</h3>
+<h3 id="blind-edit-mode-and-control-cues">Blind Edit Mode and Control Cues</h3>
 
 <p>When a timeline is opened in <a href="blind-edit-mode.html">Blind Edit Mode</a>, it is isolated from the live show. WATCHOUT automatically prevents control cues in blind-edited compositions from affecting other timelines during editing. This ensures that making changes to a composition offline does not inadvertently start, stop, or jump timelines in the running show.</p>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Name every control cue that serves as a jump target.</strong> Unnamed cues cannot be found by jump-to-cue searches. Use clear, descriptive names like "Scene 3 Start" or "Loop Return Point".</li>
@@ -1225,7 +1225,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1239,7 +1239,7 @@
 <tr><td>Jump creates an infinite loop</td><td>Two or more control cues jump to each other's positions</td><td>Break the cycle by removing one jump, or use a conditional trigger to gate one of the cues.</td></tr>
 </table>
 
-<h3>See Also</h3>
+<h3 id="see-also">See Also</h3>
 
 <ul>
 <li><a href="marker-cues.html">Marker Cues</a> — named markers serve as jump targets for control cues</li>
@@ -1270,7 +1270,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

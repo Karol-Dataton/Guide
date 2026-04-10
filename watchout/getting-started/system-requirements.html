@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>System Requirements</h2>
+                    <div class="section-content-body"><h2 id="system-requirements">System Requirements</h2>
 
 <p>WATCHOUT 7 requires a Windows-based computer with modern hardware to deliver optimal performance. The requirements differ between the Producer computer (where you edit shows) and Display computers (which render and output to projectors/screens).</p>
 
-<h3>Producer vs. Display Computer Architecture</h3>
+<h3 id="producer-vs-display-computer-architecture">Producer vs. Display Computer Architecture</h3>
 
 <p>WATCHOUT uses a <strong>client-server architecture</strong> that separates show creation from show playback:</p>
 
@@ -1058,7 +1058,7 @@
 <div class='info-box'><p><strong>Tip:</strong> You can run both Producer and Display on the same computer for small setups or previewing. For production environments, dedicated Display computers ensure reliable, uninterrupted playback.
 </p></div>
 
-<h3>Producer Computer (Editing)</h3>
+<h3 id="producer-computer-editing">Producer Computer (Editing)</h3>
 
 <table>
 <tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr>
@@ -1070,7 +1070,7 @@
 <tr><td>Network</td><td>Gigabit Ethernet</td><td>2.5 Gigabit Ethernet</td></tr>
 </table>
 
-<h3>Display Computer (Playback)</h3>
+<h3 id="display-computer-playback">Display Computer (Playback)</h3>
 
 <table>
 <tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr>
@@ -1091,7 +1091,7 @@
 <div class='warning-box'><p><strong>Note on AMD Graphics:</strong> While AMD GPUs may work, NVIDIA is recommended for full WATCHOUT feature support. AMD graphics cards require additional testing before deployment in production environments.
 </p></div>
 
-<h3>Windows Editions: Consumer vs. WATCHPAX</h3>
+<h3 id="windows-editions-consumer-vs-watchpax">Windows Editions: Consumer vs. WATCHPAX</h3>
 
 <p>When building your own display computer, you'll use standard consumer Windows editions. <strong>Windows 11 Home</strong> or <strong>Windows 11 Pro</strong> are the recommended options for user-built systems.</p>
 
@@ -1132,11 +1132,11 @@
 <div class='info-box'><p><strong>Note:</strong> Display computers should be dedicated to WATCHOUT playback. Avoid running other applications during live shows to ensure consistent performance.
 </p></div>
 
-<h3>Windows Updates and Rendering Performance</h3>
+<h3 id="windows-updates-and-rendering-performance">Windows Updates and Rendering Performance</h3>
 
 <p>Keeping Windows up to date is <strong>critical for optimal WATCHOUT performance</strong>. Newer Windows updates deliver significant improvements to rendering stability and visual output quality:</p>
 
-<h4>DirectX 12 Ultimate Enhancements</h4>
+<h4 id="directx-12-ultimate-enhancements">DirectX 12 Ultimate Enhancements</h4>
 
 <p>Windows updates continuously improve DirectX 12 capabilities:</p>
 
@@ -1149,7 +1149,7 @@
 
 </ul>
 
-<h4>Multi-Head Output Stability</h4>
+<h4 id="multi-head-output-stability">Multi-Head Output Stability</h4>
 
 <p>For display servers driving multiple outputs, Windows updates are essential:</p>
 
@@ -1164,7 +1164,7 @@
 
 </ul>
 
-<h4>Security and Reliability</h4>
+<h4 id="security-and-reliability">Security and Reliability</h4>
 
 <ul>
 <li><strong>Kernel improvements</strong> – Reduced system crashes and blue screens during extended operation</li>
@@ -1178,11 +1178,11 @@
 <div class='warning-box'><p><strong>Recommendation:</strong> Always use the latest stable Windows version and cumulative updates. Test updates in a staging environment before deploying to production show computers.
 </p></div>
 
-<h3>NVIDIA RTX PRO Professional Graphics</h3>
+<h3 id="nvidia-rtx-pro-professional-graphics">NVIDIA RTX PRO Professional Graphics</h3>
 
 <p>While consumer GeForce cards can run WATCHOUT, <strong>NVIDIA RTX PRO (Quadro and RTX Ada) professional GPUs</strong> are strongly recommended for display computers in production environments. Here's why:</p>
 
-<h4>Key Benefits of NVIDIA RTX PRO</h4>
+<h4 id="key-benefits-of-nvidia-rtx-pro">Key Benefits of NVIDIA RTX PRO</h4>
 
 <table>
 <tr><th>Feature</th><th>NVIDIA RTX PRO</th><th>GeForce RTX</th></tr>
@@ -1193,7 +1193,7 @@
 <tr><td>Long-term Support</td><td>✓ Enterprise driver branches</td><td>Consumer update cycle</td></tr>
 </table>
 
-<h4>EDID Management</h4>
+<h4 id="edid-management">EDID Management</h4>
 
 <p>WATCHOUT can manage EDID (Extended Display Identification Data) directly when using <strong>NVIDIA RTX PRO or Quadro</strong> graphics cards. This allows you to:</p>
 
@@ -1207,7 +1207,7 @@
 <div class='info-box'><p><strong>Note:</strong> EDID management through WATCHOUT is only supported on NVIDIA professional GPUs. Users with AMD or other graphics cards will need to manage EDID settings outside of WATCHOUT using third-party tools or hardware EDID emulators.
 </p></div>
 
-<h4>NVIDIA Sync Board: Framelock and Genlock</h4>
+<h4 id="nvidia-sync-board-framelock-and-genlock">NVIDIA Sync Board: Framelock and Genlock</h4>
 
 <p>For multi-projector installations requiring <strong>perfect frame synchronization</strong>:</p>
 
@@ -1221,7 +1221,7 @@
 <div class='warning-box'><p><strong>Hardware Required:</strong> Framelocking multiple display computers or syncing to an external genlock signal requires an NVIDIA Sync board installed in each display computer. This is a separate hardware add-on for RTX PRO / Quadro cards—it is not possible with consumer GeForce GPUs.
 </p></div>
 
-<h4>Professional Driver Certification</h4>
+<h4 id="professional-driver-certification">Professional Driver Certification</h4>
 
 <p>RTX PRO drivers undergo extensive testing and certification:</p>
 
@@ -1234,7 +1234,7 @@
 
 </ul>
 
-<h3>Video Capture Requirements</h3>
+<h3 id="video-capture-requirements">Video Capture Requirements</h3>
 
 <p>When using video capture devices with WATCHOUT, ensure your hardware meets these requirements:</p>
 
@@ -1247,14 +1247,14 @@
 <div class='info-box'><p><strong>GPUDirect:</strong> For Deltacast capture cards, GPUDirect enables direct memory transfer between the capture card and GPU, bypassing system memory for lower latency and reduced CPU overhead.
 </p></div>
 
-<h3>Storage Recommendations</h3>
+<h3 id="storage-recommendations">Storage Recommendations</h3>
 
 <p>Video playback performance depends heavily on storage speed. <strong>Sustained read rates</strong> are more important than peak specifications—this is the read speed your SSD can maintain continuously during 24/7 operation without thermal throttling.</p>
 
 <div class='warning-box'><p><strong>Sustained vs. Peak Performance:</strong> SSD manufacturers often advertise peak read speeds, but thermal throttling can reduce actual performance during continuous operation. Ensure your system has adequate cooling for the SSD, and look for drives with good sustained performance ratings. The read rate an SSD can maintain indefinitely may be significantly lower than its maximum specification, depending on the drive model and thermal conditions.
 </p></div>
 
-<h4>Video Codec Storage Requirements</h4>
+<h4 id="video-codec-storage-requirements">Video Codec Storage Requirements</h4>
 
 <table>
 <tr><th>Content Type</th><th>Sustained Read Required</th><th>Recommended Storage</th></tr>
@@ -1266,7 +1266,7 @@
 <tr><td>8K image sequence (60 fps)</td><td>~7,594 MiB/s</td><td>NVMe Gen4 RAID array</td></tr>
 </table>
 
-<h4>Asset Disk Space Guidelines</h4>
+<h4 id="asset-disk-space-guidelines">Asset Disk Space Guidelines</h4>
 
 <p>Plan storage capacity based on your content library. Below are typical file sizes for common media formats:</p>
 
@@ -1286,7 +1286,7 @@
 <div class='info-box'><p><strong>Tip:</strong> For shows with large media libraries, calculate total storage needs including headroom for revisions and additional content. A 1 TB NVMe SSD is suitable for most productions; consider 2 TB or more for 4K/8K heavy projects.
 </p></div>
 
-<h3>Network Requirements</h3>
+<h3 id="network-requirements">Network Requirements</h3>
 
 <table>
 <tr><th>Component</th><th>Minimum</th><th>Recommended</th></tr>
@@ -1303,7 +1303,7 @@
 <div class='info-box'><p><strong>What is IGMP Snooping?</strong> Internet Group Management Protocol (IGMP) snooping is a switch feature that optimizes multicast traffic. Without it, multicast packets (used by WATCHOUT for synchronization and NDI video) flood all switch ports, wasting bandwidth. With IGMP snooping enabled, the switch intelligently forwards multicast traffic only to devices that need it—reducing network congestion and improving overall performance, especially in systems with multiple display servers or NDI sources.
 </p></div>
 
-<h4>NDI Stream Bandwidth Requirements</h4>
+<h4 id="ndi-stream-bandwidth-requirements">NDI Stream Bandwidth Requirements</h4>
 
 <p>NDI (Network Device Interface) is commonly used for video input in WATCHOUT. Here are the typical bandwidth requirements:</p>
 
@@ -1317,7 +1317,7 @@
 <div class='info-box'><p><strong>Note:</strong> Multiple simultaneous NDI streams may require 2.5 Gbps or faster networking depending on total throughput.
 </p></div>
 
-<h4>File Transfer Time Comparison</h4>
+<h4 id="file-transfer-time-comparison">File Transfer Time Comparison</h4>
 
 <p>Network speed dramatically affects how quickly you can deploy media to display servers. The table below shows approximate transfer times for common file sizes:</p>
 
@@ -1360,7 +1360,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

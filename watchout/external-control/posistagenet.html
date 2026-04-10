@@ -1043,15 +1043,15 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>PosiStageNet</h2>
+                    <div class="section-content-body"><h2 id="posistagenet">PosiStageNet</h2>
 
 <p>PosiStageNet (PSN) is an open protocol for transmitting real-time 3D position data from tracking systems over a network. WATCHOUT receives PSN data and maps tracker coordinates to show variables, enabling content that dynamically follows performers, objects, or other tracked elements on stage.</p>
 
-<h3>Enabling PSN</h3>
+<h3 id="enabling-psn">Enabling PSN</h3>
 
 <p>PSN support is enabled or disabled from the <strong>Network</strong> window in Producer using the <strong>PosiStageNet</strong> toggle. When enabled, the Operative starts a PSN forwarder that listens for incoming tracking data.</p>
 
-<h3>Network Details</h3>
+<h3 id="network-details">Network Details</h3>
 
 <p>PSN uses <strong>UDP multicast</strong> for data transmission. The WATCHOUT PSN forwarder listens on:</p>
 
@@ -1063,7 +1063,7 @@
 
 <p>The forwarder joins the multicast group on all available network interfaces. Ensure your tracking system is sending PSN data to this standard multicast address and that multicast routing is properly configured on your network.</p>
 
-<h3>Data Mapping</h3>
+<h3 id="data-mapping">Data Mapping</h3>
 
 <p>Each PSN tracker exposes multiple data fields as WATCHOUT variables. The external key format is:</p>
 
@@ -1097,7 +1097,7 @@
 
 <p>Not all fields are present in every PSN frame — the forwarder only forwards fields that the tracking system actually sends.</p>
 
-<h3>How It Works</h3>
+<h3 id="how-it-works">How It Works</h3>
 
 <p>The PSN forwarder operates as follows:</p>
 
@@ -1112,7 +1112,7 @@
 <div class='info-box'><p>Coordinate systems vary between tracking systems. You may need to use WATCHOUT's variable min/max range and tween expressions to remap PSN coordinates to your stage coordinate system.
 </p></div>
 
-<h3>Requirements</h3>
+<h3 id="requirements">Requirements</h3>
 
 <ul>
 <li>A <strong>tracking system</strong> that outputs PosiStageNet data (e.g., BlackTrax, Mo-Sys, Augmenta, or custom PSN senders).</li>
@@ -1121,7 +1121,7 @@
 
 </ul>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>Performer tracking</strong> — Content (spotlights, graphics, text) that follows performers as they move across the stage.</li>
@@ -1150,7 +1150,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

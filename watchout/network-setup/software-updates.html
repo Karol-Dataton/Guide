@@ -1043,21 +1043,21 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Software Updates</h2>
+                    <div class="section-content-body"><h2 id="software-updates">Software Updates</h2>
 
 <p>WATCHOUT provides a built-in mechanism for pushing software updates from Producer to remote nodes over the network. This ensures all nodes in a production run the same software version, which is essential for protocol compatibility and consistent behavior across the system.</p>
 
-<h3>Why Version Alignment Matters</h3>
+<h3 id="why-version-alignment-matters">Why Version Alignment Matters</h3>
 
 <p>All WATCHOUT nodes (Runners, Director, Asset Manager) communicate using internal protocols that evolve with each software release. When nodes run different versions, protocol mismatches can cause communication failures, missing features, or unexpected behavior. Keeping all nodes at the same version eliminates these risks.</p>
 
-<h3>Version Mismatch Indicators</h3>
+<h3 id="version-mismatch-indicators">Version Mismatch Indicators</h3>
 
 <p>WATCHOUT displays a visual warning indicator on any node in the <strong>Nodes</strong> window that is running a different software version than your Producer. The tooltip reads: "Warning: Not the same software version as your Producer." This makes it easy to identify nodes that need updating at a glance.</p>
 
 <p>Each node's current version is reported in its <strong>Node Properties</strong> panel under the <strong>Info</strong> section.</p>
 
-<h3>Initiating an Update</h3>
+<h3 id="initiating-an-update">Initiating an Update</h3>
 
 <p>To push an update to one or more nodes:</p>
 
@@ -1073,7 +1073,7 @@
 <div class='warning-box'><p>The node will <strong>restart</strong> after a successful installation. During the restart, the node is temporarily inaccessible and any active playback on that node will be interrupted. Additionally, manual actions may be required to start WATCHOUT Manager on the node after the update.
 </p></div>
 
-<h3>Update Process</h3>
+<h3 id="update-process">Update Process</h3>
 
 <p>When you confirm the update, the following occurs:</p>
 
@@ -1085,7 +1085,7 @@
 
 </ol>
 
-<h3>Switching to WATCHOUT 6</h3>
+<h3 id="switching-to-watchout-6">Switching to WATCHOUT 6</h3>
 
 <p>For installations that need to revert to WATCHOUT 6 operation, WATCHOUT provides a <strong>Switch to WATCHOUT 6</strong> option:</p>
 
@@ -1100,7 +1100,7 @@
 <div class='note-box'><p>Switching to WATCHOUT 6 is a machine-level operation that triggers a full reboot, not just a service restart. The machine must have WATCHOUT 6 software already installed.
 </p></div>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Update during controlled downtime</strong> — never update nodes during a live show. Schedule updates for maintenance windows when playback interruption is acceptable.</li>
@@ -1110,7 +1110,7 @@
 
 </ul>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li><a href="node-management-and-maintenance.html">Node Management and Maintenance</a> — the full set of node management actions, including software updates</li>
@@ -1137,7 +1137,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Audio Volume</h2>
+                    <div class="section-content-body"><h2 id="audio-volume">Audio Volume</h2>
 
 <p>The Volume tween automates the loudness of cues that contain audio content. Whether you need music fade-ins, voice-over ducking, ambience balancing, or precisely timed silence points, the Volume tween provides keyframe-level control over audio levels within each cue's timeline.</p>
 
-<h3>Volume Tween</h3>
+<h3 id="volume-tween">Volume Tween</h3>
 
 <p>The Volume tween controls the playback volume of a cue's audio:</p>
 
@@ -1060,7 +1060,7 @@
 
 <p>A value of 100% plays the audio at its original level. A value of 0% silences the audio completely. Intermediate values attenuate the audio proportionally. The range is hard-limited — you cannot amplify audio beyond 100% (the original source level). To increase perceived loudness, the source media itself must be louder.</p>
 
-<h3>Adding a Volume Tween</h3>
+<h3 id="adding-a-volume-tween">Adding a Volume Tween</h3>
 
 <p>To add volume automation to a cue:</p>
 
@@ -1076,7 +1076,7 @@
 <div class='note-box'><p>The Volume tween only affects cues that have audio content. Adding a volume tween to a purely visual cue (such as an image or video without an audio track) has no effect.
 </p></div>
 
-<h3>Common Use Cases</h3>
+<h3 id="common-use-cases">Common Use Cases</h3>
 
 <ul>
 <li><strong>Music fade-in</strong> — start at 0% and ramp to 100% over the desired duration. Use <strong>Cubic Out</strong> or <strong>Sinusoidal Out</strong> easing for a natural-sounding fade-in that reaches full volume gradually.</li>
@@ -1088,7 +1088,7 @@
 
 </ul>
 
-<h3>Volume Tween vs. Fades</h3>
+<h3 id="volume-tween-vs-fades">Volume Tween vs. Fades</h3>
 
 <p>The Volume tween and the <a href="opacity-and-fades.html">fade system</a> both affect audio, but they work differently:</p>
 
@@ -1104,7 +1104,7 @@
 
 <p>If both a Volume tween and a composition-level fade are active, their effects combine (multiply). A volume tween at 50% during a composition fade at 50% results in 25% effective volume.</p>
 
-<h3>Shaping Audio Transitions</h3>
+<h3 id="shaping-audio-transitions">Shaping Audio Transitions</h3>
 
 <p>Easing curve selection is particularly important for volume tweens because human hearing perceives loudness on a logarithmic scale. The same easing curve that looks smooth visually may sound abrupt for audio:</p>
 
@@ -1119,7 +1119,7 @@
 <div class='info-box'><p>If an audio fade does not sound smooth, try switching from Linear to Cubic In (for fade-outs) or Cubic Out (for fade-ins). The difference is subtle visually but significant audibly.
 </p></div>
 
-<h3>Volume Tween, cueVolume, and masterVolume</h3>
+<h3 id="volume-tween-cuevolume-and-mastervolume">Volume Tween, cueVolume, and masterVolume</h3>
 
 <p>The Volume tween is one of three controls that determine a cue's effective audio level:</p>
 
@@ -1134,7 +1134,7 @@
 
 <p>The <code>cueVolume</code> and <code>masterVolume</code> variables are configured in the audio channel mapping matrices on the cue and the audio device respectively. See <a href="../09-network-setup/03-connecting-devices.md#audio-channel-mapping-matrix">Connecting Devices — Audio Channel Mapping Matrix</a> for details on configuring these matrices.</p>
 
-<h3>Working with Multiple Audio Cues</h3>
+<h3 id="working-with-multiple-audio-cues">Working with Multiple Audio Cues</h3>
 
 <p>In shows with multiple overlapping audio sources, the Volume tween on each cue controls only that cue's contribution to the audio mix. All active audio cues are mixed together at the output stage. There is no master volume tween — the combined output level is the sum of all playing audio cues at their respective volume levels.</p>
 
@@ -1147,7 +1147,7 @@
 
 </ul>
 
-<h3>Combining with Other Effects</h3>
+<h3 id="combining-with-other-effects">Combining with Other Effects</h3>
 
 <p>Volume tweens can be coordinated with visual effects for cohesive transitions:</p>
 
@@ -1158,7 +1158,7 @@
 
 </ul>
 
-<h3>Practical Tips</h3>
+<h3 id="practical-tips">Practical Tips</h3>
 
 <ul>
 <li>Always preview audio transitions through the actual output routing path. Headphones and workstation speakers have different characteristics than the show's speaker system.</li>
@@ -1188,7 +1188,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

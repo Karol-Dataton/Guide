@@ -1043,17 +1043,17 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>MIDI Bridge</h2>
+                    <div class="section-content-body"><h2 id="midi-bridge">MIDI Bridge</h2>
 
 <p>The MIDI Bridge is a standalone service that receives MIDI messages from a connected MIDI device and forwards them as variable updates to the WATCHOUT Director. It provides a straightforward way to use physical MIDI controllers — faders, knobs, buttons, and pitch wheels — for real-time control of show parameters.</p>
 
-<h3>Enabling the MIDI Bridge</h3>
+<h3 id="enabling-the-midi-bridge">Enabling the MIDI Bridge</h3>
 
 <p>The MIDI Bridge is managed as a service from the <strong>Network</strong> window in Producer. It can be started and stopped on any node that has MIDI input hardware (or a virtual MIDI driver) available.</p>
 
 <p>When the MIDI Bridge starts, it opens a configuration window where you can select the MIDI device, configure the Director target, and adjust settings.</p>
 
-<h3>Configuration</h3>
+<h3 id="configuration">Configuration</h3>
 
 <p>The MIDI Bridge configuration window provides the following settings:</p>
 
@@ -1065,7 +1065,7 @@
 
 </ul>
 
-<h3>Supported Message Types</h3>
+<h3 id="supported-message-types">Supported Message Types</h3>
 
 <p>The MIDI Bridge handles the following MIDI message types:</p>
 
@@ -1090,7 +1090,7 @@
 <div class='note-box'><p>Other MIDI message types (Program Change, Aftertouch, System Exclusive other than MSC) are not processed by the MIDI Bridge.
 </p></div>
 
-<h3>How It Works</h3>
+<h3 id="how-it-works">How It Works</h3>
 
 <p>The MIDI Bridge operates independently from the Operative. When a MIDI message is received:</p>
 
@@ -1103,7 +1103,7 @@
 
 <p>Messages are batched and sent at a maximum rate of approximately 100 updates per second (10ms interval) to avoid overwhelming the Director with rapid MIDI changes.</p>
 
-<h3>Hardware Requirements</h3>
+<h3 id="hardware-requirements">Hardware Requirements</h3>
 
 <p>The machine running the MIDI Bridge must have:</p>
 
@@ -1115,7 +1115,7 @@
 
 <p>The MIDI Bridge lists all available MIDI input ports on the system. If no ports appear, check that your MIDI device drivers are correctly installed.</p>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>Fader-based control</strong> — Map physical faders on a MIDI controller to opacity, volume, or position variables for hands-on show control.</li>
@@ -1144,7 +1144,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

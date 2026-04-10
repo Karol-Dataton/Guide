@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Adding Displays</h2>
+                    <div class="section-content-body"><h2 id="adding-displays">Adding Displays</h2>
 
 <p>A <strong>display</strong> is the fundamental output unit in WATCHOUT. It maps a rectangular pixel area on the stage to a physical output — a GPU connector, an SDI port, or an NDI stream — on a specific display server node. Every cue that appears on-screen is rendered through one or more displays.</p>
 
-<h3>Display Object Types</h3>
+<h3 id="display-object-types">Display Object Types</h3>
 
 <p>WATCHOUT has three distinct types of stage display objects, each designed for different use cases:</p>
 
@@ -1070,7 +1070,7 @@
 
 </ul>
 
-<h3>Output Types</h3>
+<h3 id="output-types">Output Types</h3>
 
 <p>A display's routing is determined by its <strong>Output Type</strong>. WATCHOUT supports four output modes:</p>
 
@@ -1084,7 +1084,7 @@
 
 <p>GPU is the default when creating a new display. For virtual displays, see the dedicated Virtual Displays article.</p>
 
-<h3>Where to Add Displays</h3>
+<h3 id="where-to-add-displays">Where to Add Displays</h3>
 
 <p>You can add displays from several places depending on your workflow:</p>
 
@@ -1100,11 +1100,11 @@
 <div class='info-box'><p>If you know the target machine first, add from the Network/Nodes window — the node assignment is filled in automatically. If you are sketching stage geometry first, add from Stage.
 </p></div>
 
-<h3>Configuring a Display</h3>
+<h3 id="configuring-a-display">Configuring a Display</h3>
 
 <p>After creation, select the display and open the <strong>Device Properties</strong> panel. Configuration is grouped into several sections.</p>
 
-<h4>General</h4>
+<h4 id="general">General</h4>
 
 <ul>
 <li><strong>Name</strong> — a clear operator-facing label (for example <code>Left_LED_Wall_A</code>)</li>
@@ -1115,7 +1115,7 @@
 
 </ul>
 
-<h4>Output and Routing</h4>
+<h4 id="output-and-routing">Output and Routing</h4>
 
 <ul>
 <li><strong>Output Type</strong> — <code>GPU</code>, <code>SDI</code>, <code>NDI</code>, or <code>Virtual</code></li>
@@ -1125,7 +1125,7 @@
 
 <p>If two displays are mapped to the same node and channel, WATCHOUT flags a resource conflict.</p>
 
-<h4>Dimensions</h4>
+<h4 id="dimensions">Dimensions</h4>
 
 <ul>
 <li><strong>Resolution</strong> (<code>width × height</code>) — must match the real output raster of the connected display device or processor</li>
@@ -1133,7 +1133,7 @@
 
 </ul>
 
-<h4>Signal and Quality</h4>
+<h4 id="signal-and-quality">Signal and Quality</h4>
 
 <p>These settings are available for physical output types (GPU, SDI, NDI) and should only be changed when required by the deployment:</p>
 
@@ -1148,7 +1148,7 @@
 <tr><td><strong>EDID</strong></td><td>✓</td><td>—</td><td>—</td></tr>
 </table>
 
-<h4>Warp, Mask, and White Point</h4>
+<h4 id="warp-mask-and-white-point">Warp, Mask, and White Point</h4>
 
 <p>All display types support post-processing:</p>
 
@@ -1159,7 +1159,7 @@
 
 </ul>
 
-<h3>Placement on Stage</h3>
+<h3 id="placement-on-stage">Placement on Stage</h3>
 
 <p>Set the display's position and size to match the real-world layout of your screens, projectors, or LED walls:</p>
 
@@ -1171,11 +1171,11 @@
 
 </ul>
 
-<h3>Verifying Outputs</h3>
+<h3 id="verifying-outputs">Verifying Outputs</h3>
 
 <p>Validate routing before building show content.</p>
 
-<h4>Test Pattern Verification</h4>
+<h4 id="test-pattern-verification">Test Pattern Verification</h4>
 
 <p>In <strong>Device Properties → Test Pattern</strong>, cycle through:</p>
 
@@ -1210,7 +1210,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

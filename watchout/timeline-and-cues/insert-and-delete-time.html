@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Insert and Delete Time</h2>
+                    <div class="section-content-body"><h2 id="insert-and-delete-time">Insert and Delete Time</h2>
 
 <p>The <strong>Insert/Delete Time</strong> operation shifts cues in bulk by inserting or removing a time range at a specific point on a timeline. This is a powerful tool for restructuring timeline content — adding gaps for new sections, removing dead time, or shifting content to accommodate schedule changes — without needing to manually reposition every cue.</p>
 
-<h3>Accessing the Dialog</h3>
+<h3 id="accessing-the-dialog">Accessing the Dialog</h3>
 
 <p>To open the Insert/Delete Time dialog:</p>
 
@@ -1059,22 +1059,22 @@
 
 <p>The operation is not available if the timeline is locked.</p>
 
-<h3>Parameters</h3>
+<h3 id="parameters">Parameters</h3>
 
 <p>The dialog presents three controls:</p>
 
-<h4>Time</h4>
+<h4 id="time">Time</h4>
 The amount of time to insert or delete. Enter a <strong>positive value</strong> to insert time (push cues forward), or a <strong>negative value</strong> to delete time (pull cues backward). The value uses the show's standard time expression format.
 
 <p>The operation is applied at the <strong>current playhead position</strong> on the timeline.</p>
 
-<h4>Adjust Duration of Cues</h4>
+<h4 id="adjust-duration-of-cues">Adjust Duration of Cues</h4>
 When enabled, cues that <strong>span the insertion/deletion point</strong> (i.e. start before it and end after it) will have their durations adjusted to account for the time change. Without this option, only the start times of cues after the insertion point are shifted, and spanning cues keep their original duration.
 
-<h4>Adjust Position of Tween Points</h4>
+<h4 id="adjust-position-of-tween-points">Adjust Position of Tween Points</h4>
 When enabled and cue durations are adjusted, tween keyframe positions (effect points, position keyframes, etc.) within affected cues are shifted to maintain their relative timing within the modified cue. Tween points that fall after the insertion point are moved proportionally.
 
-<h3>Insertion Behavior (Positive Time)</h3>
+<h3 id="insertion-behavior-positive-time">Insertion Behavior (Positive Time)</h3>
 
 <p>When you insert time:</p>
 
@@ -1088,7 +1088,7 @@ When enabled and cue durations are adjusted, tween keyframe positions (effect po
 
 <p>The result is a gap at the insertion point, with all subsequent content pushed later in the timeline.</p>
 
-<h3>Deletion Behavior (Negative Time)</h3>
+<h3 id="deletion-behavior-negative-time">Deletion Behavior (Negative Time)</h3>
 
 <p>When you delete time:</p>
 
@@ -1103,13 +1103,13 @@ When enabled and cue durations are adjusted, tween keyframe positions (effect po
 <div class='warning-box'><p>Deletion can <strong>remove cues</strong> that fall entirely within the deleted range. This operation is undoable, but you should verify the result carefully.
 </p></div>
 
-<h3>Effect on Tween Points</h3>
+<h3 id="effect-on-tween-points">Effect on Tween Points</h3>
 
 <p>When "Adjust Position of Tween Points" is enabled, the operation iterates through all tween types on affected cues — generic tweens (opacity, color corrections, etc.), scale tweens, position tweens, and Art-Net tweens. Each tween point's time is recalculated relative to the new cue start and duration.</p>
 
 <p>Fade placeholder tweens are not affected by the time shift, as they are derived from the cue's fade-in and fade-out settings rather than having independent time positions.</p>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <p><strong>Adding a new section mid-show:</strong> Position the playhead where the new section should begin, insert the desired amount of time, and then add new cues into the created gap.</p>
 
@@ -1141,7 +1141,7 @@ When enabled and cue durations are adjusted, tween keyframe positions (effect po
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

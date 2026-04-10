@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Network Configuration</h2>
+                    <div class="section-content-body"><h2 id="network-configuration">Network Configuration</h2>
 
 <p>Establishing a robust and properly configured network is critical for WATCHOUT 7. The system relies on the network not just for file transfer, but for frame-accurate synchronization (UDP) and system control (TCP).</p>
 
-<h3>General Recommendations</h3>
+<h3 id="general-recommendations">General Recommendations</h3>
 
 <ul>
 <li><strong>Dedicated Network:</strong> The WATCHOUT network should be a closed, dedicated local area network (LAN). Do <strong>not</strong> connect it to the internet or a general office network alongside your show data.</li>
@@ -1056,11 +1056,11 @@
 
 </ul>
 
-<h3>Recommended Network Hardware</h3>
+<h3 id="recommended-network-hardware">Recommended Network Hardware</h3>
 
 <p>Choosing the right hardware ensures stable, low-latency communication between your Production and Display computers.</p>
 
-<h4>Network Switches</h4>
+<h4 id="network-switches">Network Switches</h4>
 
 <p>For most WATCHOUT installations, a quality unmanaged gigabit switch is sufficient. However, for larger or more demanding setups, consider managed switches that offer greater control.</p>
 
@@ -1074,7 +1074,7 @@
 <div class='warning-box'><p><strong>Disable Power Saving Features:</strong> If using managed switches, disable "Green Ethernet," "Energy Efficient Ethernet" (EEE), and any auto-sleep modes. These features can interrupt synchronization and cause stuttering.
 </p></div>
 
-<h4>Network Interface Cards (NICs)</h4>
+<h4 id="network-interface-cards-nics">Network Interface Cards (NICs)</h4>
 
 <p>Built-in motherboard NICs (Intel I211, I225, Realtek RTL8125) are typically adequate. For demanding workflows (10GbE, NDI sources), consider dedicated add-in cards:</p>
 
@@ -1085,7 +1085,7 @@
 
 </ul>
 
-<h4>Cabling</h4>
+<h4 id="cabling">Cabling</h4>
 
 <ul>
 <li><strong>Cat5e:</strong> Suitable for Gigabit Ethernet up to 100 meters.</li>
@@ -1094,11 +1094,11 @@
 
 </ul>
 
-<h3>IP Addressing</h3>
+<h3 id="ip-addressing">IP Addressing</h3>
 
 <p>WATCHOUT computers must be on the same subnet to discover each other. We recommend using static IP addresses to ensure consistent connectivity.</p>
 
-<h4>Recommended Scheme</h4>
+<h4 id="recommended-scheme">Recommended Scheme</h4>
 
 <ul>
 <li><strong>Subnet Mask:</strong> <code>255.255.255.0</code> (Class C)</li>
@@ -1110,7 +1110,7 @@
 <div class='warning-box'><p><strong>Avoid DHCP:</strong> While WATCHOUT can technically work with auto-assigned IPs (DHCP), it is strongly discouraged for live environments. IPs can change upon reboot, potentially breaking your mapping and control links.
 </p></div>
 
-<h3>Windows Firewall</h3>
+<h3 id="windows-firewall">Windows Firewall</h3>
 
 <p>WATCHOUT 7 requires specific network ports to operate. Upon installation, the installer typically adds the necessary rules to the Windows Defender Firewall.</p>
 
@@ -1123,11 +1123,11 @@
 
 </ul>
 
-<h3>Complete Port Reference</h3>
+<h3 id="complete-port-reference">Complete Port Reference</h3>
 
 <p>WATCHOUT uses the following ports for internal communication and external integration. All ports listed here should be allowed through any firewall on WATCHOUT machines.</p>
 
-<h4>Internal Communication</h4>
+<h4 id="internal-communication">Internal Communication</h4>
 
 <table>
 <tr><th>Process</th><th>Port</th><th>Protocol</th></tr>
@@ -1138,7 +1138,7 @@
 <tr><td>Asset Manager</td><td>3023</td><td>TCP</td></tr>
 </table>
 
-<h4>External Communication</h4>
+<h4 id="external-communication">External Communication</h4>
 
 <table>
 <tr><th>Process</th><th>Port</th><th>Protocol</th></tr>
@@ -1149,7 +1149,7 @@
 <tr><td>Legacy Protocol</td><td>3039, 3040</td><td>TCP</td></tr>
 </table>
 
-<h4>Multicast Discovery</h4>
+<h4 id="multicast-discovery">Multicast Discovery</h4>
 
 <p>WATCHOUT nodes discover each other on the local network using multicast:</p>
 
@@ -1163,7 +1163,7 @@
 <div class='warning-box'><p>If nodes on the same subnet cannot discover each other, verify that multicast traffic (IP 239.2.2.2, ports 3011 and 3012) is not being blocked by the network switch or firewall. Some managed switches block multicast by default.
 </p></div>
 
-<h3>Advanced: Jumbo Frames</h3>
+<h3 id="advanced-jumbo-frames">Advanced: Jumbo Frames</h3>
 
 <p>For 10GbE networks or systems pushing very high bandwidth video data (especially NDI or uncompressed streams), enabling <strong>Jumbo Frames</strong> (usually 9000 MTU) on all network cards and switches can improve performance. Ensure every device in the chain supports and is configured for the same MTU size.</p>
 
@@ -1189,7 +1189,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

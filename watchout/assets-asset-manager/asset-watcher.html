@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Asset Watcher</h2>
+                    <div class="section-content-body"><h2 id="asset-watcher">Asset Watcher</h2>
 
 <p><strong>The Asset Watcher monitors designated folders on the Asset Manager node's file system and automatically imports new or changed files into the show.</strong> This enables unattended content ingestion workflows — content creators, render farms, or automated systems can drop files into a watched folder, and the Asset Manager picks them up, optimizes them, and distributes them to display servers without any manual intervention.</p>
 
 <p>The Asset Watcher is a key component in collaborative and live-update workflows where media changes frequently and the show must stay current without operator involvement.</p>
 
-<h3>How It Works Internally</h3>
+<h3 id="how-it-works-internally">How It Works Internally</h3>
 
 <p>The Asset Watcher uses <strong>operating system-level file system events</strong> (Windows <code>ReadDirectoryChangesWatcher</code>) rather than periodic polling. This means:</p>
 
@@ -1071,7 +1071,7 @@
 
 <p>The watcher processes files using the same optimization settings (codec mapping, quality, track management) as manually added assets. See <a href="asset-manager-settings.html">Asset Manager Settings</a> for details.</p>
 
-<h3>Startup Behavior</h3>
+<h3 id="startup-behavior">Startup Behavior</h3>
 
 <p>When the Asset Watcher is started, it performs two actions:</p>
 
@@ -1109,7 +1109,7 @@
 
 </ol>
 
-<h3>Setting Up a Watch Folder</h3>
+<h3 id="setting-up-a-watch-folder">Setting Up a Watch Folder</h3>
 
 <p>Watch folders are configured in the Network window, under the Asset Manager node's settings:</p>
 
@@ -1140,7 +1140,7 @@
 
 </ul>
 
-<h4>Asset Path</h4>
+<h4 id="asset-path">Asset Path</h4>
 
 <p>The <strong>Asset Path</strong> field controls where watched files are placed in the Asset Manager's asset tree. It can be left blank (files go to the root) or set to a specific sub-path.</p>
 
@@ -1161,11 +1161,11 @@
 
 <p>Think of the Asset Path as an <strong>optional</strong> way to restrict or map the upload to a specific location.</p>
 
-<h3>Removing a Watch Folder</h3>
+<h3 id="removing-a-watch-folder">Removing a Watch Folder</h3>
 
 <p>To stop watching a folder, locate it in the Asset Manager node's settings in the Network window and remove it. Existing assets that were imported from the folder remain in the show — removing the watch only stops monitoring for future changes.</p>
 
-<h3>Command Prompt</h3>
+<h3 id="command-prompt">Command Prompt</h3>
 
 <p>It is recommended to configure the Asset Watcher from Producer, but you can also start it from the command prompt. This is useful when a machine is not running Producer but you still want to share content from it.</p>
 
@@ -1194,7 +1194,7 @@
 
 <pre><code class="language-text">asset-watcher.exe --help</code></pre>
 
-<h3>Local vs. Remote Configuration</h3>
+<h3 id="local-vs-remote-configuration">Local vs. Remote Configuration</h3>
 
 <table>
 <tr><th>Scenario</th><th>Path Validation</th></tr>
@@ -1204,7 +1204,7 @@
 
 <p>In remote configurations, ensure the watched folder path is valid on the Asset Manager node, not on the Producer machine. A common mistake is entering a local path that doesn't exist on the remote Asset Manager.</p>
 
-<h3>Integration with Dynamic Assets</h3>
+<h3 id="integration-with-dynamic-assets">Integration with Dynamic Assets</h3>
 
 <p>The Asset Watcher can work together with <a href="dynamic-assets.html">Dynamic Assets</a> to create fully automated content rotation workflows:</p>
 
@@ -1218,11 +1218,11 @@
 
 <p>This is particularly useful for live content updates, sponsor rotations, and multi-language content swaps that need to happen without operator intervention.</p>
 
-<h3>Reserved File/Folder Names</h3>
+<h3 id="reserved-filefolder-names">Reserved File/Folder Names</h3>
 
 <p>Certain file and folder naming patterns inside a watch folder instruct the Asset Manager on how the content should be treated. These reserved names trigger special behavior automatically.</p>
 
-<h4>Dynamic Asset Folders</h4>
+<h4 id="dynamic-asset-folders">Dynamic Asset Folders</h4>
 
 <p>Creating a folder named <code><name>_dyn_<type></code> causes the Asset Manager to create a <a href="dynamic-assets.html">Dynamic Asset</a>. The <code><type></code> suffix determines the dynamic asset category:</p>
 
@@ -1244,13 +1244,13 @@
 
 <p>Files placed inside a <code>_dyn_</code> folder become <strong>versions</strong> managed by that dynamic asset. Each new file added extends the version chain, and cues referencing the dynamic asset automatically pick up the latest version. See <a href="dynamic-assets.html">Dynamic Assets</a> for details on version behavior.</p>
 
-<h4>Image Sequence Folders</h4>
+<h4 id="image-sequence-folders">Image Sequence Folders</h4>
 
 <p>Creating a folder named <code><name>_img_seq</code> tells the Asset Manager to interpret its contents as an <a href="image-sequences.html">image sequence</a>. Images added to that folder are converted to a video asset.</p>
 
 <p>You can <strong>patch</strong> an existing image sequence by replacing an image file inside the <code>_img_seq</code> folder. The Asset Manager detects the change and re-processes the sequence with the updated frame.</p>
 
-<h4>Video Patching</h4>
+<h4 id="video-patching">Video Patching</h4>
 
 <p>It is possible to patch a video asset by adding a new video file that specifies a frame insertion point in its filename.</p>
 
@@ -1265,7 +1265,7 @@
 <div class='info-box'><p>Reserved naming conventions only apply to files and folders inside an Asset Watcher watch folder. Creating these names in the Assets window directly does not trigger the same behavior.
 </p></div>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>Collaborative workflows</strong> — content creators drop rendered files into a shared folder on the Asset Manager node. The operator's show picks them up automatically without needing to manually import each file.</li>
@@ -1275,7 +1275,7 @@
 
 </ul>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Use a dedicated watched folder.</strong> Do not point the watcher at a general-purpose directory (e.g., <code>Desktop</code> or <code>Downloads</code>). Use a dedicated, clearly named folder (e.g., <code>C:\WO_WatchFolder\</code>) to prevent accidental imports.</li>
@@ -1290,7 +1290,7 @@
 
 </ul>
 
-<h3>Limitations</h3>
+<h3 id="limitations">Limitations</h3>
 
 <ul>
 <li><strong>Watch folders cannot overlap.</strong> Watching two sibling folders is allowed (e.g., <code>C:\watched</code> and <code>C:\watched2</code>), but watching a folder and one of its subdirectories is <strong>not</strong> allowed (e.g., <code>C:\watched</code> and <code>C:\watched\videos</code>).</li>
@@ -1300,7 +1300,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1334,7 +1334,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

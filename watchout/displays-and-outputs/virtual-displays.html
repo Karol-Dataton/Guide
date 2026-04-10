@@ -1043,7 +1043,7 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Virtual Displays</h2>
+                    <div class="section-content-body"><h2 id="virtual-displays">Virtual Displays</h2>
 
 <p>A <strong>virtual display</strong> renders cues to an internal texture buffer instead of a physical output connector. Think of it as a <strong>virtual camera</strong> capturing a specific area of the stage — its rendered output can then be used as a media source in other cues, routed through a wall processor to LED tiles, or mapped onto 3D geometry.</p>
 
@@ -1584,7 +1584,7 @@
     })();
 </script>
 
-<h3>What Makes a Display Virtual</h3>
+<h3 id="what-makes-a-display-virtual">What Makes a Display Virtual</h3>
 
 <p>A display is virtual when its <strong>Output Type</strong> is set to <code>Virtual</code>. This is one of four output types available in WATCHOUT:</p>
 
@@ -1607,9 +1607,9 @@
 
 </ul>
 
-<h3>When to Use Virtual Displays</h3>
+<h3 id="when-to-use-virtual-displays">When to Use Virtual Displays</h3>
 
-<h4>LED Wall Pixel Mapping</h4>
+<h4 id="led-wall-pixel-mapping">LED Wall Pixel Mapping</h4>
 
 <p>Virtual displays are widely used for mapping content onto <strong>LED walls</strong> through a wall processor. Place a virtual display over the stage area you want to capture, set its resolution to match the LED processor input, and use its output as the feed. This gives precise control over which part of the stage content reaches each section of the wall.</p>
 
@@ -1622,7 +1622,7 @@
 
 </ul>
 
-<h4>Content Compositing</h4>
+<h4 id="content-compositing">Content Compositing</h4>
 
 <p>Virtual displays enable <strong>layered compositing workflows</strong>. Because a virtual display's rendered output can be used as a media source, you can:</p>
 
@@ -1635,15 +1635,15 @@
 
 <p>This keeps timelines clean and allows reusable pre-composed elements.</p>
 
-<h4>3D Projection Mapping</h4>
+<h4 id="3d-projection-mapping">3D Projection Mapping</h4>
 
 <p>When mapping content onto <strong>3D geometry</strong>, virtual displays can act as viewpoints that capture specific faces or sections of a model. The captured output is then routed to the corresponding physical projector or display that covers that geometry.</p>
 
-<h4>Multi-Format Output</h4>
+<h4 id="multi-format-output">Multi-Format Output</h4>
 
 <p>Virtual displays allow you to <strong>adapt content layout</strong> to match different output formats. For example, if your stage contains a single wide panoramic composition, you can overlay multiple virtual displays — each capturing a different section at the resolution required by its destination processor or screen.</p>
 
-<h3>Adding a Virtual Display</h3>
+<h3 id="adding-a-virtual-display">Adding a Virtual Display</h3>
 
 <p>You can create virtual displays from multiple places in the interface:</p>
 
@@ -1659,7 +1659,7 @@
 <div class='info-box'><p>Rename virtual displays early with a descriptive name that reflects their purpose, for example <code>LED_TopRow_Feed</code> or <code>Comp_BackgroundLayer</code>.
 </p></div>
 
-<h3>Initial Configuration</h3>
+<h3 id="initial-configuration">Initial Configuration</h3>
 
 <p>After creating a virtual display, configure these properties in the <strong>Device Properties</strong> panel:</p>
 
@@ -1671,7 +1671,7 @@
 
 </ul>
 
-<h3>Using a Virtual Display as a Media Source</h3>
+<h3 id="using-a-virtual-display-as-a-media-source">Using a Virtual Display as a Media Source</h3>
 
 <p>A key capability of virtual displays is that their rendered output can be used as a <strong>media source</strong> for cues on other timelines or displays. This enables multi-stage compositing where one display's full render becomes a single input element elsewhere.</p>
 
@@ -1689,7 +1689,7 @@
 <div class='warning-box'><p>Deleting a virtual display that is currently used as a media source in any cue will trigger a warning. Remove or reassign those cue references first.
 </p></div>
 
-<h3>Rendering Details</h3>
+<h3 id="rendering-details">Rendering Details</h3>
 
 <p>Internally, a virtual display renders to an <strong>RGBA16F</strong> (16-bit floating-point per channel) texture. A compute shader clamps pixel values to the <code>[0.0, 1.0]</code> range during post-processing, preserving wide color range during intermediate rendering stages.</p>
 
@@ -1714,7 +1714,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

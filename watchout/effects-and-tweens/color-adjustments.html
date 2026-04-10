@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Color Adjustments</h2>
+                    <div class="section-content-body"><h2 id="color-adjustments">Color Adjustments</h2>
 
 <p>Color adjustment tweens let you animate tonal and channel-level color properties directly on individual cues. WATCHOUT provides 14 color tweens covering global adjustments (brightness, contrast, exposure), tone mapping (temperature, gamma), color manipulation (hue, saturation, invert), and per-channel corrections (red, green, and blue gain and offset). All are animatable over time and can be combined freely for precise color control.</p>
 
 <p>Color tweens are accessed through the <strong>Effect > Color</strong> submenu. Each tween is added individually — you choose which color properties you need and add only those.</p>
 
-<h3>Available Color Tweens</h3>
+<h3 id="available-color-tweens">Available Color Tweens</h3>
 
 <div class="tab-container">
 <div class="tab-buttons">
@@ -1102,7 +1102,7 @@
 </div>
 </div>
 
-<h3>Adding Color Tweens</h3>
+<h3 id="adding-color-tweens">Adding Color Tweens</h3>
 
 <p>To add a color tween to a cue:</p>
 
@@ -1116,7 +1116,7 @@
 
 <p>Color tweens are added individually. You can add as many or as few as needed for your purpose. All color tweens share the <strong>Color</strong> group header in the tween area.</p>
 
-<h3>Understanding the Color Controls</h3>
+<h3 id="understanding-the-color-controls">Understanding the Color Controls</h3>
 
 <p>The color tweens fall into three functional categories:</p>
 
@@ -2296,7 +2296,7 @@
 
 </ul>
 
-<h3>Animating Color Changes</h3>
+<h3 id="animating-color-changes">Animating Color Changes</h3>
 
 <p>Color tweens work like any other tween — add tween points at different times with different values and choose transition types to control the interpolation:</p>
 
@@ -2310,7 +2310,7 @@
 
 <p>For smooth, natural-looking color transitions, <strong>Cubic InOut</strong> or <strong>Sinusoidal InOut</strong> easing curves work well. For sudden shifts (like a lighting change on a beat), use <strong>Linear</strong> with a short time interval.</p>
 
-<h3>Common Use Cases</h3>
+<h3 id="common-use-cases">Common Use Cases</h3>
 
 <ul>
 <li><strong>Day-to-night transitions</strong> — combine decreasing Brightness, decreasing Temperature (cooler), and slightly decreasing Saturation over a long duration for a gradual sunset-to-night effect.</li>
@@ -2322,13 +2322,13 @@
 
 </ul>
 
-<h3>Processing Order</h3>
+<h3 id="processing-order">Processing Order</h3>
 
 <p>When multiple color tweens are active on the same cue, they are applied in a defined order. The general sequence is: gain and offset adjustments are applied to individual channels first, then global adjustments (brightness, contrast, exposure, gamma) are applied, then hue, saturation, and invert transformations are processed. The temperature adjustment uses a white-balance correction that is applied during the matrix processing stage.</p>
 
 <p>In practice, the processing order is most relevant when using extreme values. For moderate adjustments, the order has minimal visible impact and you can work with the controls intuitively without worrying about the pipeline sequence.</p>
 
-<h3>Quality Considerations</h3>
+<h3 id="quality-considerations">Quality Considerations</h3>
 
 <ul>
 <li><strong>Extreme values can clip.</strong> Pushing Brightness, Contrast, or Exposure to high values can clip highlights to pure white or crush shadows to pure black, losing detail that cannot be recovered. Work with moderate values and check the result on calibrated output.</li>
@@ -2338,7 +2338,7 @@
 
 </ul>
 
-<h3>Combining with Other Effects</h3>
+<h3 id="combining-with-other-effects">Combining with Other Effects</h3>
 
 <p>Color tweens combine well with:</p>
 
@@ -2349,7 +2349,7 @@
 
 </ul>
 
-<h3>Practical Tips</h3>
+<h3 id="practical-tips">Practical Tips</h3>
 
 <ul>
 <li>For show-wide looks (such as making all content warmer or cooler), apply consistent color tween values across related cues rather than adjusting each cue individually. Consider using <a href="tween-expressions.html">Tween Expressions</a> driven by a variable to control color adjustments globally.</li>
@@ -2378,7 +2378,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

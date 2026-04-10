@@ -585,14 +585,14 @@ function setupHeroVideo() {
   const heroMedia = document.getElementById("hero-media");
   if (!heroMedia) return;
 
-  const splashVideo = 'media/splash/0302.mp4';
+  const splashVideo = 'media/splash/0317.mp4';
 
   heroMedia.innerHTML = `
         <div class="video-wrapper" style="position: relative;">
             <video autoplay muted loop playsinline>
                 <source src="${splashVideo}" type="video/mp4">
             </video>
-            <div class="hero-text">WATCHOUT</div>
+            <div class="hero-text"></div>
         </div>
     `;
 }

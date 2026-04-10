@@ -1043,18 +1043,18 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>ArtNet Input</h2>
+                    <div class="section-content-body"><h2 id="artnet-input">ArtNet Input</h2>
 
 <p>WATCHOUT can receive ArtNet DMX data over the network and map incoming DMX channel values to show variables. This allows lighting consoles, DMX controllers, and other ArtNet-capable devices to directly control media server parameters like opacity, position, color, and any other variable-driven property.</p>
 
 <div class='note-box'><p>WATCHOUT does not directly support DMX input. You need a <strong>DMX-to-Ethernet adapter</strong> (Art-Net node) to convert physical DMX signals to Art-Net over Ethernet before WATCHOUT can receive them. If your controller already outputs Art-Net natively over Ethernet, no adapter is needed.
 </p></div>
 
-<h3>Enabling ArtNet</h3>
+<h3 id="enabling-artnet">Enabling ArtNet</h3>
 
 <p>ArtNet input is enabled or disabled from the <strong>Network</strong> window in Producer using the <strong>ArtNet</strong> toggle. When enabled, the Operative listens for ArtNet packets on the standard ArtNet port.</p>
 
-<h3>External Key Format</h3>
+<h3 id="external-key-format">External Key Format</h3>
 
 <p>ArtNet variables use a structured external key format that specifies the DMX universe and channel address. The primary syntax uses <code>universe()</code> and <code>channel()</code>:</p>
 
@@ -1070,7 +1070,7 @@
 
 <p>Both <code>channel()</code> and <code>channels()</code> (plural) are accepted and are functionally identical.</p>
 
-<h3>Channel Resolutions</h3>
+<h3 id="channel-resolutions">Channel Resolutions</h3>
 
 <p>WATCHOUT supports multiple DMX channel resolutions for different precision requirements:</p>
 
@@ -1092,7 +1092,7 @@
 
 <p>For multi-channel resolutions, channels are listed in order from most significant (coarse) to least significant. The values are combined in big-endian byte order.</p>
 
-<h4>Named Accessor Syntax</h4>
+<h4 id="named-accessor-syntax">Named Accessor Syntax</h4>
 
 <p>As an alternative to listing channel numbers, you can use named accessors to bind individual resolution channels explicitly:</p>
 
@@ -1100,7 +1100,7 @@
 
 <p>This syntax is equivalent to <code>artnet.universe(1).channel(1, 2, 3, 4)</code> and can be more readable when the channel mapping is non-contiguous or when you want to make the resolution hierarchy explicit.</p>
 
-<h4>Maximum Values by Resolution</h4>
+<h4 id="maximum-values-by-resolution">Maximum Values by Resolution</h4>
 
 <p>When working with absolute (non-normalized) values, the maximum value depends on the number of channels. The formula is <strong>2^N - 1</strong> where N is the total bit depth:</p>
 
@@ -1118,7 +1118,7 @@
 <div class='note-box'><p>DMX channels are 1-indexed in the key format — channel 1 corresponds to the first channel in the DMX universe.
 </p></div>
 
-<h3>Normalization</h3>
+<h3 id="normalization">Normalization</h3>
 
 <p>Append <code>.normalized()</code> to the key to receive normalized values (0.0–1.0) instead of raw DMX values:</p>
 
@@ -1126,13 +1126,13 @@
 
 <p>Normalization divides the raw value by the maximum for the channel resolution (255 for 8-bit, 65535 for 16-bit, etc.). This is useful when your variable range is 0–1 or when you want consistent scaling regardless of resolution.</p>
 
-<h3>Update Frequency and Interpolation</h3>
+<h3 id="update-frequency-and-interpolation">Update Frequency and Interpolation</h3>
 
 <p>ArtNet typically operates at approximately <strong>44 Hz</strong> (roughly every 22ms). Each incoming ArtNet packet is timestamped with a <strong>50ms interpolation window</strong> by the Operative before forwarding to the Director. This provides smooth transitions between DMX value updates.</p>
 
 <p>The Operative subscribes only to the ArtNet universes that are actually referenced by variables in the current show. If no variables reference a particular universe, that universe's traffic is ignored, keeping processing efficient.</p>
 
-<h3>ArtNet Fixtures and Output</h3>
+<h3 id="artnet-fixtures-and-output">ArtNet Fixtures and Output</h3>
 
 <p>In addition to receiving ArtNet input, WATCHOUT supports ArtNet output through <strong>fixture cues</strong> on timelines. Fixture cues allow you to drive external DMX devices (lights, fog machines, motors, etc.) from the WATCHOUT timeline with keyframed values. ArtNet output runs at 44 FPS.</p>
 
@@ -1142,7 +1142,7 @@
 
 <p>See the ArtNet Fixture Cues section in Chapter 6 for details on fixture configuration and output.</p>
 
-<h3>Use Cases</h3>
+<h3 id="use-cases">Use Cases</h3>
 
 <ul>
 <li><strong>Lighting desk integration</strong> — Control WATCHOUT opacity, position, and blend parameters from a grandMA, ETC Eos, or any ArtNet-capable lighting console.</li>
@@ -1170,7 +1170,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

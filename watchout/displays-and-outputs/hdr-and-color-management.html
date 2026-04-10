@@ -1043,7 +1043,7 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>HDR and Color Management</h2>
+                    <div class="section-content-body"><h2 id="hdr-and-color-management">HDR and Color Management</h2>
 
 <p>WATCHOUT includes a color-managed rendering pipeline that handles the full chain from media decode through compositing to display output. This pipeline supports both standard dynamic range (SDR) and high dynamic range (HDR) workflows, with configurable color spaces and transfer functions at the asset, cue, and display levels.</p>
 
@@ -1052,7 +1052,7 @@
 <div class='note-box'><p>In simple terms, color management is about making sure colors look the way they should on every screen in your setup. "SDR" is standard brightness (what most screens have shown for decades), while "HDR" allows much brighter highlights and deeper darks — closer to what your eyes see in the real world.
 </p></div>
 
-<h3>The Rendering Pipeline</h3>
+<h3 id="the-rendering-pipeline">The Rendering Pipeline</h3>
 
 <p>Color data flows through a four-stage pipeline as it moves from source media to the physical display:</p>
 
@@ -1072,7 +1072,7 @@
 
 <img src="../media/watchout-pipeline.svg" alt="The WATCHOUT Pipeline" class="content-image" style="width: 100%;">
 
-<h3>Color Spaces</h3>
+<h3 id="color-spaces">Color Spaces</h3>
 A color space defines the range of colors (the "gamut") that can be represented, specified by three color primaries and a white point. WATCHOUT supports the following color spaces for display output:
 
 <div class='note-box'><p>A color space's gamut determines the range of colors it can represent. sRGB and Rec. 709 have a relatively narrow gamut suitable for conventional displays, while Rec. 2020 covers a significantly wider range — enabling more saturated and vivid color reproduction. The display hardware must support the target gamut for the wider color space to produce a visible benefit.
@@ -1185,7 +1185,7 @@ A color space defines the range of colors (the "gamut") that can be represented,
     })();
 </script>
 
-<h3>Transfer Functions</h3>
+<h3 id="transfer-functions">Transfer Functions</h3>
 Transfer functions define how linear light values are encoded into the non-linear signal that displays expect. Encoding fewer bits for bright values and more bits for dark values matches human visual perception, reducing visible banding:
 
 <div class='note-box'><p>Your eyes are more sensitive to differences in dark shades than bright ones. A transfer function takes advantage of this by spending more of the signal's precision on the darks (where you'd notice problems) and less on the brights. Different standards (sRGB, PQ, HLG) are just different strategies for doing this, optimized for different situations.
@@ -1501,7 +1501,7 @@ Transfer functions define how linear light values are encoded into the non-linea
 
 <p>The choice of transfer function is determined by the color space you select on the display. For example, selecting Rec. 2100 PQ automatically uses the PQ transfer function.</p>
 
-<h3>Display Color Depth</h3>
+<h3 id="display-color-depth">Display Color Depth</h3>
 Color depth determines how many bits are used per color component in the output signal. Higher bit depth reduces banding artifacts, which is especially important for HDR content:
 
 <div class='note-box'><p>Bit depth is like the number of steps in a staircase between two colors. With only a few steps (8-bit), you might see visible "bands" where one shade jumps to the next — especially in gradients like a sunset sky. More steps (10-bit or higher) make those transitions smoother and invisible to the eye.
@@ -1601,7 +1601,7 @@ Color depth determines how many bits are used per color component in the output 
 
 <p>Color depth is configured per display in <strong>Device Properties → Output → Signal</strong> and is available for GPU output types. SDI outputs currently operate at 8 bpc.</p>
 
-<h3>SDR White Point (Per-Cue)</h3>
+<h3 id="sdr-white-point-per-cue">SDR White Point (Per-Cue)</h3>
 When SDR content plays on an HDR display, the system needs to know how bright "white" in the SDR content should appear relative to the HDR luminance range. The <strong>SDR White Point</strong> property on media cues controls this mapping.
 
 <div class='note-box'><p>Imagine you have a regular photo (SDR) and you want to show it on a screen that can go super bright (HDR). The SDR White Point tells the system "this is how bright the photo's white should be" — so it doesn't look washed out or blindingly overexposed on the HDR screen.
@@ -1795,7 +1795,7 @@ When SDR content plays on an HDR display, the system needs to know how bright "w
     })();
 </script>
 
-<h3>Per-Display Color Settings</h3>
+<h3 id="per-display-color-settings">Per-Display Color Settings</h3>
 
 <p>Each display in WATCHOUT has independent color configuration in the <strong>Output → Signal</strong> section of Device Properties:</p>
 
@@ -1807,7 +1807,7 @@ When SDR content plays on an HDR display, the system needs to know how bright "w
 
 <p>These settings tell the renderer what format to output. They should match the capabilities of the physical display hardware. Setting an HDR color space on a display that only supports SDR will result in incorrect rendering.</p>
 
-<h3>NDI Color Space</h3>
+<h3 id="ndi-color-space">NDI Color Space</h3>
 
 <p>Displays configured with NDI output have a separate <strong>NDI Color Space</strong> setting that controls the color encoding of the NDI stream. The available options are:</p>
 
@@ -1821,7 +1821,7 @@ When SDR content plays on an HDR display, the system needs to know how bright "w
 
 <p>The NDI color space is independent of the GPU color space setting, since NDI and GPU outputs may serve different destinations with different requirements. NDI outputs also support the <strong>Interlaced</strong> toggle for compatibility with interlaced NDI receivers.</p>
 
-<h3>Asset Color Space</h3>
+<h3 id="asset-color-space">Asset Color Space</h3>
 
 <p>Media assets carry color metadata that tells the renderer how to interpret the source pixels. WATCHOUT's decode pipeline detects the color space from the media container or codec metadata when available. If the metadata is missing or incorrect, you can override the asset's color space in the asset properties.</p>
 
@@ -1830,13 +1830,13 @@ When SDR content plays on an HDR display, the system needs to know how bright "w
 <div class='note-box'><p>Every image or video file has a label that says "I was made using these colors." If that label is wrong or missing, WATCHOUT won't interpret the colors correctly — like reading a recipe in the wrong units. You can fix this by manually setting the correct color space on the asset.
 </p></div>
 
-<h3>White Point Calibration</h3>
+<h3 id="white-point-calibration">White Point Calibration</h3>
 
 <p>Every display has a <strong>White Point</strong> setting in Device Properties, consisting of separate Red, Green, and Blue sliders (each ranging from 0.0 to 1.0, defaulting to 1.0). This is a per-display color temperature correction that adjusts the white balance of the output.</p>
 
 <p>The primary use case is <strong>projector color matching</strong> in multi-projector setups. When adjacent projectors have slightly different color temperatures (one appears warmer, another cooler), adjusting the white point sliders brings them into visual alignment. For example, if a projector's output appears too blue, reduce the Blue slider slightly until the white tone matches neighboring units.</p>
 
-<h3>Tone Mapping</h3>
+<h3 id="tone-mapping">Tone Mapping</h3>
 When HDR content is rendered to an SDR display, the high dynamic range must be compressed to fit the SDR output range without losing important detail in highlights and shadows. WATCHOUT uses a <strong>Hable tone mapping operator</strong> for this conversion, which preserves natural-looking midtones while smoothly compressing highlights toward peak white.
 
 <p>Tone mapping is applied automatically when the source content has a wider dynamic range than the target display. No manual configuration is required — the system handles the conversion based on the source and destination transfer functions.</p>
@@ -1863,7 +1863,7 @@ When HDR content is rendered to an SDR display, the high dynamic range must be c
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

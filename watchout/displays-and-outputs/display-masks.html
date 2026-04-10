@@ -1043,7 +1043,7 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Display Masks</h2>
+                    <div class="section-content-body"><h2 id="display-masks">Display Masks</h2>
 
 <p><strong>Display masks</strong> control which pixels on a display are visible and how their edges are shaped. Unlike warp geometry, which repositions pixels to correct for surface distortion, masks operate as alpha-based overlays that hide or reveal regions of the rendered output. Masks are applied <em>after</em> the warp stage in the rendering pipeline, meaning they work on already-corrected imagery.</p>
 
@@ -2332,7 +2332,7 @@
     })();
 </script>
 
-<h3>Accessing the Mask Editor</h3>
+<h3 id="accessing-the-mask-editor">Accessing the Mask Editor</h3>
 
 <p>There are two ways to enable and edit masks on a display:</p>
 
@@ -2344,7 +2344,7 @@
 
 <p>When the mask editor is active, the Stage view switches to a specialized editing mode where you can manipulate mask junction points, add or remove mask surfaces, and preview the result in real time.</p>
 
-<h3>Mask Surfaces</h3>
+<h3 id="mask-surfaces">Mask Surfaces</h3>
 
 <p>A single display can contain multiple mask surfaces, each acting as an independent layer. Every mask surface has its own:</p>
 
@@ -2358,7 +2358,7 @@
 
 <p>Multiple mask surfaces on the same display are composited together. This means you can combine, for example, a side-edge mask with an irregular scenic cutout mask on a single output.</p>
 
-<h3>Built-in Mask Types</h3>
+<h3 id="built-in-mask-types">Built-in Mask Types</h3>
 
 <p>WATCHOUT provides several preset mask shapes that serve as starting points. These create a properly structured junction grid that you can then refine:</p>
 
@@ -2374,7 +2374,7 @@
 
 <p>Each preset configures an opaque region (where content is hidden), a feathered transition region, and a fully visible region. After creation, all points can be freely repositioned and the feathered edges adjusted.</p>
 
-<h3>Editing Mask Points</h3>
+<h3 id="editing-mask-points">Editing Mask Points</h3>
 
 <p>Mask geometry is defined by a grid of <strong>junction points</strong>. Each junction has the following properties:</p>
 
@@ -2388,13 +2388,13 @@
 
 <p>The mask mesh requires a minimum of two rows and two columns of junction points. You can add rows and columns by clicking on an edge between two existing junctions — the editor inserts a new junction at that position, splitting the adjacent Bézier curves while preserving the overall shape. Rows and columns can also be removed, as long as at least two remain in each dimension.</p>
 
-<h3>Mask Images</h3>
+<h3 id="mask-images">Mask Images</h3>
 
 <p>In addition to geometric masks, you can assign an <strong>image asset</strong> as a mask source on a display. This is useful when you have a pre-rendered mask texture — for example, an alpha map exported from a 3D modeling tool or a camera-captured calibration image.</p>
 
 <p>To assign a mask image, select the display and set the mask image property to the desired asset. To remove it, clear the asset reference. Mask images and geometric masks can coexist; the image acts as an additional masking layer.</p>
 
-<h3>Gamma Correction</h3>
+<h3 id="gamma-correction">Gamma Correction</h3>
 
 <p>Each mask surface has a <strong>gamma correction</strong> parameter that adjusts how the feathered transition between visible and hidden regions is rendered. The default value approximates a perceptually linear fade, but depending on the display technology and viewing environment, you may need to adjust it:</p>
 
@@ -2406,7 +2406,7 @@
 
 <p>Gamma correction is particularly important when masks are used in combination with edge blending. Mismatched gamma between the mask feather and the soft-edge blend can produce visible intensity bands or dark seams in the overlap region.</p>
 
-<h3>Automatic Soft Edges</h3>
+<h3 id="automatic-soft-edges">Automatic Soft Edges</h3>
 
 <p>In addition to custom masks, WATCHOUT offers an <strong>Automatic Soft Edges</strong> feature found in the Mask section of Device Properties. When enabled, the system automatically generates soft-edge gradients wherever overlapping displays are detected. This is a quick way to set up basic blend zones without manual mask editing.</p>
 
@@ -2415,7 +2415,7 @@
 <div class='note-box'><p>Automatic soft edges are not available for projector-type displays or canvas displays. Use custom masks for these configurations.
 </p></div>
 
-<h3>Common Workflows</h3>
+<h3 id="common-workflows">Common Workflows</h3>
 
 <p><strong>Masking projection spill:</strong> When a projector illuminates an area larger than the intended surface, add a mask to cut the output at the scenic boundary. Start with a rectangular or side mask preset, then adjust junction points to follow the edge of the physical surface.</p>
 
@@ -2425,7 +2425,7 @@
 
 <p><strong>Multi-layer masking:</strong> Combine multiple mask surfaces on a single display for complex scenarios. For instance, one surface can handle the blend zone on the left edge, while another cuts an irregular scenic border on the right.</p>
 
-<h3>Relationship to Warp Geometry</h3>
+<h3 id="relationship-to-warp-geometry">Relationship to Warp Geometry</h3>
 
 <p>Warp geometry and display masks are independent systems that serve different purposes in the rendering pipeline:</p>
 
@@ -2458,7 +2458,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

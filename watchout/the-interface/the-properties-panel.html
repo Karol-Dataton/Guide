@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>The Properties Panel</h2>
+                    <div class="section-content-body"><h2 id="the-properties-panel">The Properties Panel</h2>
 
 <p>The Properties panel is a context-sensitive inspector that displays settings for whatever is currently selected in the application. Select a cue, and it shows cue properties. Select a display, and it shows display configuration. Select nothing, and it shows the show-level preferences. This single window adapts to every selection type in the application, making it the central place for viewing and editing the details of any object in your show.</p>
 
 <p>The Properties panel is always available from <strong>Window > Properties</strong>. It updates automatically whenever the selection changes in the Stage, Timeline, Cue List, Assets, Devices, or any other window.</p>
 
-<h3>What the Properties Panel Shows</h3>
+<h3 id="what-the-properties-panel-shows">What the Properties Panel Shows</h3>
 
 <p>The content of the Properties panel depends entirely on what is selected:</p>
 
@@ -1072,11 +1072,11 @@
 <tr><td><strong>Variable/Input</strong></td><td>Variable properties</td></tr>
 </table>
 
-<h3>Cue Properties</h3>
+<h3 id="cue-properties">Cue Properties</h3>
 
 <p>When a media cue is selected, the Properties panel organizes its settings into collapsible sections:</p>
 
-<h4>General</h4>
+<h4 id="general">General</h4>
 
 <ul>
 <li><strong>Name</strong> — custom cue name</li>
@@ -1089,7 +1089,7 @@
 
 </ul>
 
-<h4>Placement</h4>
+<h4 id="placement">Placement</h4>
 
 <ul>
 <li><strong>Position</strong> — X, Y (and Z for 3D) coordinates on the Stage</li>
@@ -1097,11 +1097,11 @@
 
 </ul>
 
-<h4>SVG Render Size</h4>
+<h4 id="svg-render-size">SVG Render Size</h4>
 
 <p>For SVG assets, controls the rendered resolution of the vector graphic.</p>
 
-<h4>Playback</h4>
+<h4 id="playback">Playback</h4>
 
 <ul>
 <li><strong>Free Running</strong> — when enabled, the cue plays independently of the timeline transport</li>
@@ -1112,7 +1112,7 @@
 
 </ul>
 
-<h4>Fade In / Fade Out</h4>
+<h4 id="fade-in-fade-out">Fade In / Fade Out</h4>
 
 <ul>
 <li><strong>Enable</strong> — toggle fade on or off</li>
@@ -1121,27 +1121,27 @@
 
 </ul>
 
-<h4>Control</h4>
+<h4 id="control">Control</h4>
 
 <p>For control cues (play, pause, stop): <ul> <li><strong>Target Timelines</strong> — which timelines the control affects</li> <li><strong>Jump</strong> — time position to jump to</li> <li><strong>State</strong> — the playback state to trigger</li></p>
 
 </ul>
 
-<h4>Surface / Size</h4>
+<h4 id="surface-size">Surface / Size</h4>
 
 <p>For 3D model cues, controls the geometry surface and scaling.</p>
 
-<h4>Channel Mapping</h4>
+<h4 id="channel-mapping">Channel Mapping</h4>
 
 <p>Audio channel routing configuration.</p>
 
-<h4>Output</h4>
+<h4 id="output">Output</h4>
 
 <p>For output cues, configures the external communication: <ul> <li><strong>Protocol</strong> — TCP, UDP, or HTTP</li> <li><strong>Address</strong> — destination host</li> <li><strong>Port</strong> — destination port</li> <li><strong>Data</strong> — the payload to send</li></p>
 
 </ul>
 
-<h4>Presentation</h4>
+<h4 id="presentation">Presentation</h4>
 
 <ul>
 <li><strong>Frame Blend</strong> — smooth motion by blending frames</li>
@@ -1153,28 +1153,28 @@
 
 </ul>
 
-<h4>ArtNet Fixture / ArtNet Recording</h4>
+<h4 id="artnet-fixture-artnet-recording">ArtNet Fixture / ArtNet Recording</h4>
 
 <p>For ArtNet fixture cues, controls DMX addressing and recording.</p>
 
-<h4>Asset</h4>
+<h4 id="asset">Asset</h4>
 
 <ul>
 <li><strong>SDR White Point</strong> — white point mapping for standard dynamic range content</li>
 
 </ul>
 
-<h4>Marker</h4>
+<h4 id="marker">Marker</h4>
 
 <p>For comment/marker cues: <ul> <li><strong>Description</strong> — text note displayed in the Timeline</li> <li><strong>Countdown</strong> — enable live countdown display to this marker</li> <li><strong>Countup</strong> — enable countup display from this marker</li></p>
 
 </ul>
 
-<h4>Chroma Key / Key and Fill</h4>
+<h4 id="chroma-key-key-and-fill">Chroma Key / Key and Fill</h4>
 
 <p>Keying configuration for compositing effects.</p>
 
-<h4>Conditions</h4>
+<h4 id="conditions">Conditions</h4>
 
 <ul>
 <li><strong>Enabled/Disabled</strong> — toggle the cue on or off</li>
@@ -1182,11 +1182,11 @@
 
 </ul>
 
-<h3>Display Properties</h3>
+<h3 id="display-properties">Display Properties</h3>
 
 <p>When a display is selected on the Stage, the Properties panel shows:</p>
 
-<h4>General</h4>
+<h4 id="general">General</h4>
 
 <ul>
 <li><strong>Name</strong> — display identifier</li>
@@ -1196,7 +1196,7 @@
 
 </ul>
 
-<h4>Placement</h4>
+<h4 id="placement">Placement</h4>
 
 <p>For flat displays: <ul> <li><strong>Position</strong> — X, Y coordinates on the Stage</li></p>
 
@@ -1206,14 +1206,14 @@
 
 </ul>
 
-<h4>Presentation</h4>
+<h4 id="presentation">Presentation</h4>
 
 <ul>
 <li><strong>Tiers</strong> — which stage tiers this display renders</li>
 
 </ul>
 
-<h4>Output</h4>
+<h4 id="output">Output</h4>
 
 <ul>
 <li><strong>Type</strong> — GPU, SDI, NDI, or Virtual</li>
@@ -1227,7 +1227,7 @@
 
 </ul>
 
-<h4>Warp / Mask</h4>
+<h4 id="warp-mask">Warp / Mask</h4>
 
 <ul>
 <li><strong>Warp</strong> — enable and edit warp geometry corrections. See <a href="../03-displays-and-outputs/warp-geometry.html">Warp Geometry</a>.</li>
@@ -1235,11 +1235,11 @@
 
 </ul>
 
-<h4>Calibration / White Point / Test Pattern</h4>
+<h4 id="calibration-white-point-test-pattern">Calibration / White Point / Test Pattern</h4>
 
 <p>Projector calibration settings, white point adjustment, and test pattern mode.</p>
 
-<h3>Audio Device Properties</h3>
+<h3 id="audio-device-properties">Audio Device Properties</h3>
 
 <ul>
 <li><strong>Type</strong> — WASAPI, WASAPI Exclusive, Dante, or ASIO</li>
@@ -1250,7 +1250,7 @@
 
 </ul>
 
-<h3>Timeline Properties</h3>
+<h3 id="timeline-properties">Timeline Properties</h3>
 
 <ul>
 <li><strong>Name</strong> — timeline name</li>
@@ -1262,7 +1262,7 @@
 
 </ul>
 
-<h3>Layer Properties</h3>
+<h3 id="layer-properties">Layer Properties</h3>
 
 <ul>
 <li><strong>Name</strong> — custom layer name</li>
@@ -1270,11 +1270,11 @@
 
 </ul>
 
-<h3>Show Preferences</h3>
+<h3 id="show-preferences">Show Preferences</h3>
 
 <p>When nothing is selected, the Properties panel shows global show settings. For a summary of all preference sections, see <a href="main-window-overview.html">Main Window Overview</a>.</p>
 
-<h3>Editing Values</h3>
+<h3 id="editing-values">Editing Values</h3>
 
 <p>Property values can be edited using various input types depending on the data:</p>
 
@@ -1290,7 +1290,7 @@
 
 <p>Changes apply immediately when values are modified. There is no separate "apply" step.</p>
 
-<h3>Navigation and Focus</h3>
+<h3 id="navigation-and-focus">Navigation and Focus</h3>
 
 <ul>
 <li><strong>Tab</strong> cycles through editable fields within the Properties panel</li>
@@ -1299,7 +1299,7 @@
 
 </ul>
 
-<h3>Collapsible Sections</h3>
+<h3 id="collapsible-sections">Collapsible Sections</h3>
 
 <p>Properties are organized into collapsible sections with headers. Click a section header to expand or collapse it. This lets you focus on the settings you need and hide the rest, which is especially useful for property pages with many sections (such as Cue Properties).</p></div><div class="section-nav">
                 <a href="the-assets-window.html" class="nav-btn">
@@ -1322,7 +1322,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

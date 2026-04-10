@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Opacity and Fades</h2>
+                    <div class="section-content-body"><h2 id="opacity-and-fades">Opacity and Fades</h2>
 
 <p>Opacity controls how transparent or visible a cue is on Stage. WATCHOUT provides two distinct mechanisms for controlling visibility over time: the <strong>Opacity tween</strong>, which gives you full keyframe control over transparency, and the <strong>fade system</strong> (Fade-in, Fade-out, and Cross-fade), which provides quick, standardized visibility transitions as cue properties. Understanding when to use each — and how they interact — is key to smooth, professional show transitions.</p>
 
-<h3>Opacity Tween</h3>
+<h3 id="opacity-tween">Opacity Tween</h3>
 
 <p>The Opacity tween animates transparency as a percentage from <strong>0%</strong> (fully transparent) to <strong>100%</strong> (fully visible). The default value is 100%. Unlike fades, the Opacity tween gives you complete control over the transparency curve — you can create any shape of fade, hold at partial transparency, create pulsing effects, or build complex multi-stage visibility changes.</p>
 
@@ -1072,7 +1072,7 @@
 
 </ul>
 
-<h3>The Fade System</h3>
+<h3 id="the-fade-system">The Fade System</h3>
 
 <p>Fades are a separate, simplified system for adding standard visibility transitions to cues. They are not tweens — they are cue-level properties that automatically generate smooth opacity transitions at the beginning and/or end of a cue. Fades are designed for speed and consistency: you can add them in one click, and they use configurable defaults so that all fades in your show have a uniform look.</p>
 
@@ -1087,7 +1087,7 @@
 
 <p>These actions are toggles — clicking them adds the fade if not present, or removes it if already applied.</p>
 
-<h3>Fade Properties</h3>
+<h3 id="fade-properties">Fade Properties</h3>
 
 <p>When a fade is enabled on a cue, its properties appear in the cue Properties panel under <strong>Fade In/Out</strong>:</p>
 
@@ -1103,7 +1103,7 @@
 
 <p>For Cross-fades, the fade duration is defined by the overlap region between two cues rather than a fixed time value. The Properties panel shows the overlap reference as <strong>(Overlap with cue)</strong> alongside the linked cue.</p>
 
-<h3>Auto-Fade Defaults</h3>
+<h3 id="auto-fade-defaults">Auto-Fade Defaults</h3>
 
 <p>WATCHOUT maintains default fade settings that are applied whenever you add a new fade. These defaults are configured in <strong>Show Settings</strong> under the fade preferences:</p>
 
@@ -1116,7 +1116,7 @@
 
 <p>These defaults apply only when creating new fades. Existing fades retain their individual settings.</p>
 
-<h3>Opacity Tween vs. Fade System</h3>
+<h3 id="opacity-tween-vs-fade-system">Opacity Tween vs. Fade System</h3>
 
 <table>
 <tr><th>Opacity Tween</th><th>Fade System</th></tr>
@@ -1131,17 +1131,17 @@
 <div class='info-box'><p>Use the fade system for standard transitions where you want speed and consistency. Use the Opacity tween when you need precise control over the transparency curve, need to hold at partial transparency, or need more than a simple in/out ramp.
 </p></div>
 
-<h3>Interaction Between Opacity Tween and Fades</h3>
+<h3 id="interaction-between-opacity-tween-and-fades">Interaction Between Opacity Tween and Fades</h3>
 
 <p>A cue can have both an Opacity tween and fades applied simultaneously. When both are present, the effects multiply: the fade opacity value and the tween opacity value are combined. For example, if the fade is at 50% and the tween is at 80%, the resulting opacity is 40% (0.5 x 0.8).</p>
 
 <p>In most workflows, you use one or the other — not both. If you need custom fade shapes, use the Opacity tween directly and skip the fade system. If you need quick standard transitions, use fades and skip the Opacity tween.</p>
 
-<h3>Applying Fades to Compositions</h3>
+<h3 id="applying-fades-to-compositions">Applying Fades to Compositions</h3>
 
 <p>When applying fades to a <a href="../05-timeline-and-cues/compositions.html">Composition</a>, the fade affects both the visual opacity and the audio volume of the composition's contents simultaneously. This provides a convenient way to fade an entire multi-cue scene in or out without adding individual fades to every cue inside the composition.</p>
 
-<h3>Common Use Cases</h3>
+<h3 id="common-use-cases">Common Use Cases</h3>
 
 <ul>
 <li><strong>Scene transitions</strong> — add Fade-in to incoming content and Fade-out to outgoing content for clean, professional transitions between scenes.</li>
@@ -1152,7 +1152,7 @@
 
 </ul>
 
-<h3>Practical Tips</h3>
+<h3 id="practical-tips">Practical Tips</h3>
 
 <ul>
 <li>For most show transitions, the fade system is faster and more consistent than manually building Opacity tweens. Reserve the tween for situations that genuinely need custom curves.</li>
@@ -1181,7 +1181,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

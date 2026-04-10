@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Rotation Effects</h2>
+                    <div class="section-content-body"><h2 id="rotation-effects">Rotation Effects</h2>
 
 <p>Rotation tweens control the orientation of a cue over time, enabling everything from simple 2D spins to full 3D perspective turns. WATCHOUT provides three independent rotation axes, each with its own tween, giving you complete control over how content tilts, turns, and rolls on Stage.</p>
 
-<h3>Rotation Axes</h3>
+<h3 id="rotation-axes">Rotation Axes</h3>
 
 <p>WATCHOUT offers three rotation tweens, each corresponding to a different axis:</p>
 
@@ -1574,7 +1574,7 @@
     })();
 </script>
 
-<h3>Adding Rotation Tweens</h3>
+<h3 id="adding-rotation-tweens">Adding Rotation Tweens</h3>
 
 <p>To add rotation animation to a cue:</p>
 
@@ -1587,7 +1587,7 @@
 
 <p>Each rotation axis is added as a separate tween. You can add one, two, or all three depending on the effect you need. For a simple 2D spin, Rotation Z alone is sufficient. For 3D perspective effects, combine two or three axes.</p>
 
-<h3>Rotation Order</h3>
+<h3 id="rotation-order">Rotation Order</h3>
 
 <p>When multiple rotation axes are active on the same cue, WATCHOUT applies them in a fixed order: <strong>Rotation Z first, then Rotation Y, then Rotation X</strong>. This order affects the final visual result because 3D rotations are not commutative — rotating Z then Y produces a different orientation than rotating Y then Z.</p>
 
@@ -2161,7 +2161,7 @@
 <div class='info-box'><p>For most 2D work, only Rotation Z is needed. Reserve Rotation X and Y for situations where you specifically want a 3D perspective effect — they are most impactful when combined with content that has a visible sense of depth or when used alongside Position Z changes.
 </p></div>
 
-<h3>Common Use Cases</h3>
+<h3 id="common-use-cases">Common Use Cases</h3>
 
 <ul>
 <li><strong>Logo or badge spins</strong> — apply a Rotation Z tween that goes from 0° to 360° for one full revolution, or animate continuously for a spinning effect. Use Sinusoidal InOut easing for a graceful start and stop.</li>
@@ -2172,7 +2172,7 @@
 
 </ul>
 
-<h3>3D Rotation Considerations</h3>
+<h3 id="3d-rotation-considerations">3D Rotation Considerations</h3>
 
 <p>Rotation Y and Rotation X produce perspective effects that simulate 3D depth. When using these:</p>
 
@@ -2184,7 +2184,7 @@
 
 </ul>
 
-<h3>Combining with Other Transform Tweens</h3>
+<h3 id="combining-with-other-transform-tweens">Combining with Other Transform Tweens</h3>
 
 <p>Rotation works well alongside the other transform tweens:</p>
 
@@ -2195,7 +2195,7 @@
 
 </ul>
 
-<h3>Practical Tips</h3>
+<h3 id="practical-tips">Practical Tips</h3>
 
 <ul>
 <li>Keep pivot/anchor placement in mind. Rotation always occurs around the cue's position on Stage (its anchor point). If you want a cue to rotate around a different point, offset the cue's position and then use position animation to counteract the offset.</li>
@@ -2224,7 +2224,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

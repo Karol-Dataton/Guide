@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Adding Media Cues</h2>
+                    <div class="section-content-body"><h2 id="adding-media-cues">Adding Media Cues</h2>
 
 <p><strong>A media cue is the primary visual or audible element on a WATCHOUT timeline-it is what the audience actually sees and hears.</strong> Every image, video, audio clip, composition, NDI capture, and virtual display playback on stage originates from a media cue. Understanding how media cues are created, what default values they receive, and what properties control their behavior is essential for building any show, because nearly every other timeline feature-tweens, fades, stacking, conditional logic-operates on or modifies a media cue.</p>
 
-<h3>What Is a Media Cue</h3>
+<h3 id="what-is-a-media-cue">What Is a Media Cue</h3>
 
 <p>A media cue combines two sets of information: <strong>timeline-level properties</strong> that position the cue in time and on a layer, and <strong>media-level properties</strong> that describe what content to play and how to play it.</p>
 
@@ -1064,7 +1064,7 @@
 
 <p>The <strong>media-level properties</strong> carry everything about the content itself-source, duration, position, orientation, fades, blend mode, playback speed, looping, and more. Together, these two groups of properties define the complete state of a media cue.</p>
 
-<h3>Media Sources</h3>
+<h3 id="media-sources">Media Sources</h3>
 
 <p>Every media cue has a <strong>media source</strong> that determines where its content comes from. The source is set automatically when you place an asset on the timeline, but you can change it in the Properties panel.</p>
 
@@ -1080,7 +1080,7 @@
 <div class='note-box'><p>The "NDI" source type is the internal name, but it actually covers all capture input types-not only NDI streams. Any capture source configured in the show can be referenced through this type.
 </p></div>
 
-<h3>Adding a Media Cue to the Timeline</h3>
+<h3 id="adding-a-media-cue-to-the-timeline">Adding a Media Cue to the Timeline</h3>
 
 <p>The standard workflow for placing a media cue:</p>
 
@@ -1100,7 +1100,7 @@
 <div class='note-box'><p>The show defaults for auto-fade, image duration, and fade curves apply to all newly created cues. Changing these defaults does not retroactively modify existing cues. Configure them early in your show build via the show settings to avoid repetitive manual edits.
 </p></div>
 
-<h3>Auto-Adjust Duration</h3>
+<h3 id="auto-adjust-duration">Auto-Adjust Duration</h3>
 
 <p>The Auto-Adjust Duration setting controls whether a cue's duration updates automatically when related properties change.</p>
 
@@ -1114,11 +1114,11 @@
 <div class='warning-box'><p>When Auto-Adjust Duration is set to <strong>Asset</strong> or <strong>Proportional</strong>, editing the playback speed or swapping the asset can shift the end point of the cue, potentially overlapping with subsequent cues. Verify your timeline layout after making speed or asset changes on cues with auto-adjust enabled.
 </p></div>
 
-<h3>Fades and Transitions</h3>
+<h3 id="fades-and-transitions">Fades and Transitions</h3>
 
 <p>Fades control how a media cue appears and disappears. Each cue can have an independent <strong>fade in</strong> and <strong>fade out</strong>, configured through the cue's tween settings.</p>
 
-<h4>How Fades Work</h4>
+<h4 id="how-fades-work">How Fades Work</h4>
 
 <ul>
 <li><strong>Fade In</strong> ramps a property (typically opacity or volume) from zero to full over a specified duration at the start of the cue.</li>
@@ -1127,7 +1127,7 @@
 
 </ul>
 
-<h4>Show Defaults for Fades</h4>
+<h4 id="show-defaults-for-fades">Show Defaults for Fades</h4>
 
 <p>When <strong>auto-fade</strong> is enabled in Show Settings (the default), every new media cue receives:</p>
 
@@ -1139,7 +1139,7 @@
 
 <p>These defaults are controlled by the <strong>Fade In Duration</strong>, <strong>Fade In Curve</strong>, <strong>Fade Out Duration</strong>, and <strong>Fade Out Curve</strong> settings in <strong>Show Settings</strong>. Disable auto-fade if you prefer cues to appear with hard cuts by default.</p>
 
-<h3>Free-Running Mode</h3>
+<h3 id="free-running-mode">Free-Running Mode</h3>
 
 <p>When <strong>Free Running</strong> is enabled on a media cue, the media playback position is based on the system clock rather than the timeline transport. This means the media continues playing at its natural rate even when the timeline is stopped, paused, or scrubbed to a different position.</p>
 
@@ -1155,7 +1155,7 @@
 <div class='warning-box'><p>Free-running cues ignore timeline stop and pause commands. If you stop the timeline during rehearsal, free-running cues will continue advancing. This is intentional but can be surprising during debugging. Disable free-running on a cue if you need it to respond to transport controls normally.
 </p></div>
 
-<h3>Looping</h3>
+<h3 id="looping">Looping</h3>
 
 <p>Looping allows a media cue to repeat a region of its source media indefinitely (or for the cue's duration). The loop is defined by a <strong>start</strong> and <strong>end</strong> point within the source media:</p>
 
@@ -1169,7 +1169,7 @@
 
 <p>If no loop points are set (the default), the cue plays through its source media once and holds on the last frame (for video/image) or ends (for audio).</p>
 
-<h3>Pre-roll</h3>
+<h3 id="pre-roll">Pre-roll</h3>
 
 <p>The <strong>Pre-roll</strong> property controls how far ahead of the cue's start time WATCHOUT should begin preparing and loading the media into memory. This is specified as a time offset before the cue's start time.</p>
 
@@ -1178,25 +1178,25 @@
 <div class='info-box'><p>If you observe a brief stutter or delay when a cue begins playing, increase the pre-roll value to give WATCHOUT more time to buffer the media before playback starts.
 </p></div>
 
-<h3>Presentation Properties</h3>
+<h3 id="presentation-properties">Presentation Properties</h3>
 
 <p>In addition to the core timeline and media properties described above, media cues expose several presentation properties that control how the content is rendered on stage.</p>
 
-<h4>Frame Blending</h4>
+<h4 id="frame-blending">Frame Blending</h4>
 
 <p>When enabled, <strong>Frame Blending</strong> interpolates between source video frames to produce smoother playback when the timeline playback rate does not match the source frame rate. This is particularly useful when playing back content at non-native speeds.</p>
 
 <div class='warning-box'><p>Frame blending doubles the memory usage for the affected cue because WATCHOUT must hold two adjacent frames in memory simultaneously for interpolation. On systems with limited GPU memory, enabling frame blending on many concurrent cues may impact performance.
 </p></div>
 
-<h4>HW Acceleration</h4>
+<h4 id="hw-acceleration">HW Acceleration</h4>
 
 <p><strong>HW Acceleration</strong> enables hardware-accelerated video decoding on supported codecs and GPU hardware. When enabled, video decoding is offloaded to the GPU, freeing CPU resources for other tasks.</p>
 
 <div class='note-box'><p>HW Acceleration is not supported for all codecs. HEVC (H.265) playback may not be compatible with hardware acceleration on all GPU configurations. If you experience playback issues with HW Acceleration enabled on HEVC content, disable this setting and rely on software decoding.
 </p></div>
 
-<h4>Render Surface</h4>
+<h4 id="render-surface">Render Surface</h4>
 
 <p>The <strong>Render Surface</strong> property controls which sides of a 3D surface are rendered when content is mapped onto geometry.</p>
 
@@ -1207,15 +1207,15 @@
 <tr><td><strong>Both Sides</strong></td><td>Both the interior and exterior faces are rendered</td></tr>
 </table>
 
-<h4>Show on Stage Tiers</h4>
+<h4 id="show-on-stage-tiers">Show on Stage Tiers</h4>
 
 <p>Controls which stage tiers the cue is visible on. Use this to restrict a cue's output to specific tiers when your show uses a multi-tier stage configuration.</p>
 
-<h4>SDR White Point</h4>
+<h4 id="sdr-white-point">SDR White Point</h4>
 
 <p>The <strong>SDR White Point</strong> property sets the luminance level (in nits) that represents white for SDR (Standard Dynamic Range) content when displayed on an HDR-capable output. Adjusting this value controls how bright SDR content appears relative to HDR content in mixed-content shows.</p>
 
-<h4>Blend Mode</h4>
+<h4 id="blend-mode">Blend Mode</h4>
 
 <p>The <strong>Blend Mode</strong> property determines how the cue's pixels are composited with the layers below it. The following modes are available:</p>
 
@@ -1230,13 +1230,13 @@
 <tr><td><strong>Linear Burn</strong></td><td>Adds the source and destination values and subtracts white, producing a darker result than Multiply</td></tr>
 </table>
 
-<h4>Anchor Point</h4>
+<h4 id="anchor-point">Anchor Point</h4>
 
 <p>The <strong>Anchor Point</strong> defines the reference point on the cue used for position, rotation, and scale operations. The Properties panel provides a visual widget with directional arrows for setting the anchor to any corner, any edge midpoint, or the center of the cue.</p>
 
 <p>Changing the anchor point does not move the cue on stage-it changes the origin around which transformations are applied. For example, setting the anchor to the top-left corner causes rotation to pivot around that corner rather than the center.</p>
 
-<h3>Chroma Key (Per-Cue)</h3>
+<h3 id="chroma-key-per-cue">Chroma Key (Per-Cue)</h3>
 
 <p>Media cues have per-cue <strong>Chroma Key</strong> settings that allow you to key out a specific color directly on the cue without applying a separate effect. This is useful for removing green-screen or blue-screen backgrounds from video content.</p>
 
@@ -1255,11 +1255,11 @@
 <div class='info-box'><p>Enable <strong>Show Alpha Mask</strong> while adjusting the Tolerance and Spill Removal values. The alpha mask view makes it easy to see exactly which pixels are being keyed out, without the distraction of the background composite.
 </p></div>
 
-<h3>3D Model Properties</h3>
+<h3 id="3d-model-properties">3D Model Properties</h3>
 
 <p>When a media cue references a 3D model asset, additional properties specific to 3D rendering become available in the Properties panel.</p>
 
-<h4>Size and Scaling</h4>
+<h4 id="size-and-scaling">Size and Scaling</h4>
 
 <p>By default, WATCHOUT auto-scales 3D models to fit within a <strong>1000 x 1000 x 1000</strong> bounding cube. Two scale modes are available:</p>
 
@@ -1269,7 +1269,7 @@
 <tr><td><strong>By Factor</strong></td><td>Applies a multiplicative scaling factor to the model's original size</td></tr>
 </table>
 
-<h4>Surface Properties</h4>
+<h4 id="surface-properties">Surface Properties</h4>
 
 <p>Each mesh within a 3D model has surface properties that control its appearance:</p>
 
@@ -1283,7 +1283,7 @@
 <div class='note-box'><p>Mesh names are defined in the source 3D model file and cannot be edited within WATCHOUT Producer. To rename meshes, modify the model in your external 3D modeling software (e.g., Blender, 3ds Max, Cinema 4D) and re-import the asset.
 </p></div>
 
-<h3>Snapping During Placement</h3>
+<h3 id="snapping-during-placement">Snapping During Placement</h3>
 
 <p>When dragging a cue onto the timeline, WATCHOUT snaps the cue edges to nearby reference points to help with precise alignment.</p>
 
@@ -1315,7 +1315,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

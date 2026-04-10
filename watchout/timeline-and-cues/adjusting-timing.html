@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Adjusting Timing</h2>
+                    <div class="section-content-body"><h2 id="adjusting-timing">Adjusting Timing</h2>
 
 <p><strong>Precise timing is central to show quality — a single frame of misalignment between projectors or a late audio cue can break the audience's immersion.</strong> WATCHOUT provides high-precision internal timing and exposes direct-manipulation tools that let you position, trim, and tempo-shift cues with frame-accurate control. This article explains how the timing properties work and how to use snapping, looping, and fades to build tight, repeatable shows.</p>
 
-<h3>How WATCHOUT Represents Time</h3>
+<h3 id="how-watchout-represents-time">How WATCHOUT Represents Time</h3>
 
 <p>WATCHOUT uses high-precision internal timing for all calculations, and stores time values as milliseconds in the show file. The timeline UI displays time in <code>HH:MM:SS.mmm</code> format (hours, minutes, seconds, and milliseconds).</p>
 
@@ -1059,7 +1059,7 @@
 <div class='info-box'><p>For image assets, the default duration is <strong>10 seconds</strong> (set by the show-level image duration default). Video and audio assets default to their intrinsic asset duration. You can change the show default in <strong>Show Settings</strong>.
 </p></div>
 
-<h3>Moving Cues</h3>
+<h3 id="moving-cues">Moving Cues</h3>
 
 <p>Dragging a cue's body repositions it along the timeline, changing its <strong>start</strong> time without affecting duration or <strong>In Time</strong>.</p>
 
@@ -1075,7 +1075,7 @@
 <div class='info-box'><p>Hold <strong>Shift</strong> while dragging to temporarily disable snapping for fine free-placement.
 </p></div>
 
-<h3>Trimming Duration</h3>
+<h3 id="trimming-duration">Trimming Duration</h3>
 
 <p>Drag the left or right edge of a cue to change its duration. How the edges behave depends on which side you drag:</p>
 
@@ -1085,7 +1085,7 @@
 
 </ul>
 
-<h4>Trim and Reset Commands</h4>
+<h4 id="trim-and-reset-commands">Trim and Reset Commands</h4>
 
 <p>For precise operations, use the timeline context menu or keyboard shortcuts:</p>
 
@@ -1099,7 +1099,7 @@
 
 <p>These commands are especially useful after rehearsal changes when multiple cues need to be normalized quickly.</p>
 
-<h3>In-Time (Media Start Offset)</h3>
+<h3 id="in-time-media-start-offset">In-Time (Media Start Offset)</h3>
 
 <p><strong>In Time defines where inside the source asset playback begins.</strong> A cue with an <strong>In Time</strong> of 5 seconds skips the first five seconds of the media file and starts playing from that point.</p>
 
@@ -1114,7 +1114,7 @@
 
 <p>To change <strong>In Time</strong> directly, select the cue and edit the <strong>In-Time</strong> field in the Properties panel, or drag the cue's left edge on the timeline.</p>
 
-<h3>Playback Speed</h3>
+<h3 id="playback-speed">Playback Speed</h3>
 
 <p>The <strong>Playback Speed</strong> property is a multiplier applied to media playback rate.</p>
 
@@ -1131,7 +1131,7 @@
 <div class='warning-box'><p>Extreme speed values (above 4x or below 0.25x) may cause dropped frames on complex compositions or high-resolution assets. Test performance at your target frame rate before committing to non-standard speeds in a live show.
 </p></div>
 
-<h3>Auto-Adjust Duration</h3>
+<h3 id="auto-adjust-duration">Auto-Adjust Duration</h3>
 
 <p>The <strong>Auto-Adjust Duration</strong> setting controls whether the cue duration updates automatically when related values change.</p>
 
@@ -1144,7 +1144,7 @@
 
 <p>The default mode is <strong>None</strong>. Set the mode per cue in the Properties panel.</p>
 
-<h3>How Playback Position Is Calculated</h3>
+<h3 id="how-playback-position-is-calculated">How Playback Position Is Calculated</h3>
 
 <p>Understanding how WATCHOUT determines the current playback frame helps when debugging timing mismatches or building complex loop structures.</p>
 
@@ -1163,11 +1163,11 @@
 
 <p>For <strong>free-running cues</strong>, the playback position is based on wall-clock time rather than the timeline position. This means the media continues advancing even when the timeline is paused. See <a href="understanding-the-timeline.html">Understanding the Timeline</a> for more on free-running mode.</p>
 
-<h3>Snapping</h3>
+<h3 id="snapping">Snapping</h3>
 
 <p><strong>Snapping aligns cue edges and positions to meaningful reference points, preventing small timing gaps that are invisible in the editor but audible or visible during playback.</strong></p>
 
-<h4>How Snapping Works</h4>
+<h4 id="how-snapping-works">How Snapping Works</h4>
 
 <p>The timeline uses a <strong>6-pixel threshold</strong> — when a dragged point comes within 6 pixels of a snap target (at the current zoom level), the cue locks to that target. Snap targets include:</p>
 
@@ -1179,7 +1179,7 @@
 
 </ul>
 
-<h4>Disabling Snapping</h4>
+<h4 id="disabling-snapping">Disabling Snapping</h4>
 
 <ul>
 <li>Hold <strong>Shift</strong> while dragging to temporarily bypass snapping.</li>
@@ -1187,7 +1187,7 @@
 
 </ul>
 
-<h3>Looping</h3>
+<h3 id="looping">Looping</h3>
 
 <p>Cues can loop a portion of their source media using <strong>loop points</strong>.</p>
 
@@ -1196,7 +1196,7 @@
 <div class='info-box'><p>Set the cue duration longer than the loop region to let the loop repeat multiple times. The loop cycle length is the difference between Loop End and Loop Start; the cue will loop as many full cycles as fit within its duration.
 </p></div>
 
-<h3>Free-Running Mode</h3>
+<h3 id="free-running-mode">Free-Running Mode</h3>
 
 <p>In free-running mode, a cue's playback offset is derived from the system clock rather than the timeline position. This means the media keeps advancing even when the timeline is stopped or scrubbed.</p>
 
@@ -1208,11 +1208,11 @@
 
 <p>For more detail, see <a href="understanding-the-timeline.html">Understanding the Timeline</a>.</p>
 
-<h3>Fades and Cross-Fades</h3>
+<h3 id="fades-and-cross-fades">Fades and Cross-Fades</h3>
 
 <p>Fades control how a cue's opacity, volume, or generic value ramps at its start and end.</p>
 
-<h4>Fade Structure</h4>
+<h4 id="fade-structure">Fade Structure</h4>
 
 <p>Each cue has optional <strong>fade in</strong> and <strong>fade out</strong> properties. A fade consists of:</p>
 
@@ -1237,7 +1237,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

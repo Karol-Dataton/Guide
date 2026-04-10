@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Importing GDTF Files</h2>
+                    <div class="section-content-body"><h2 id="importing-gdtf-files">Importing GDTF Files</h2>
 
 <p><strong>GDTF (General Device Type Format) is an open standard for describing intelligent lighting fixtures. Importing a GDTF file creates an Art-Net Fixture asset in the Asset Manager, giving WATCHOUT accurate channel layout, parameter names, and mode definitions for that fixture instead of relying on the built-in generic presets.</strong></p>
 
 <p>GDTF files are published by fixture manufacturers and are available from the <a href="https://gdtf-share.com">GDTF Share</a> repository. Importing a manufacturer-provided GDTF file is the recommended approach whenever a fixture has more than one mode, named parameters (pan, tilt, color wheel, gobo, dimmer, etc.), or 16-bit channels that must be mapped correctly.</p>
 
-<h3>What GDTF Contains</h3>
+<h3 id="what-gdtf-contains">What GDTF Contains</h3>
 
 <p>A <code>.gdtf</code> file is a ZIP archive containing fixture geometry, wheel definitions, and one or more <strong>DMX modes</strong>, each describing:</p>
 
@@ -1063,7 +1063,7 @@
 
 <p>WATCHOUT reads all of this information during import and maps it to its internal fixture definition format.</p>
 
-<h3>Importing a GDTF File</h3>
+<h3 id="importing-a-gdtf-file">Importing a GDTF File</h3>
 
 <ol>
 <li>Open the <strong>Assets</strong> window.</li>
@@ -1080,7 +1080,7 @@
 <div class='info-box'><p>Download GDTF files directly from the fixture manufacturer or from <a href="https://gdtf-share.com">gdtf-share.com</a>. Files from the GDTF Share repository are community-verified against physical fixtures, which reduces the risk of addressing errors.
 </p></div>
 
-<h3>Selecting the Correct DMX Mode</h3>
+<h3 id="selecting-the-correct-dmx-mode">Selecting the Correct DMX Mode</h3>
 
 <p>Most intelligent fixtures offer multiple operating modes that differ in channel count and functionality. You must select the mode that matches the mode configured on the physical fixture:</p>
 
@@ -1097,7 +1097,7 @@
 <div class='warning-box'><p>If you change the selected mode after tween keyframes have been added, existing keyframes are not automatically remapped to the new channel layout. You must verify and update affected tween data manually.
 </p></div>
 
-<h3>GDTF vs. Built-in Generic Presets</h3>
+<h3 id="gdtf-vs-built-in-generic-presets">GDTF vs. Built-in Generic Presets</h3>
 
 <p>WATCHOUT ships with two generic fixture presets (1ch and 10ch). Use these when a GDTF file is not available or when a simple, unnamed channel layout is sufficient. Use a GDTF file when:</p>
 
@@ -1110,7 +1110,7 @@
 <tr><td>Prototyping before the final fixture is decided</td><td>Generic preset; replace with GDTF when the fixture type is confirmed</td></tr>
 </table>
 
-<h3>Viewing Imported Channel Definitions</h3>
+<h3 id="viewing-imported-channel-definitions">Viewing Imported Channel Definitions</h3>
 
 <p>After importing a GDTF file, you can inspect the imported channel layout in the Properties panel of the fixture asset itself (not a cue — the asset entry in the Assets window):</p>
 
@@ -1123,7 +1123,7 @@
 
 <p>This view is read-only for imported GDTF fixtures. To modify a fixture definition, edit the <code>.gdtf</code> source file and re-import.</p>
 
-<h3>Updating a Fixture Definition</h3>
+<h3 id="updating-a-fixture-definition">Updating a Fixture Definition</h3>
 
 <p>If the manufacturer releases an updated GDTF file, or if you need to correct an imported definition:</p>
 
@@ -1138,7 +1138,7 @@
 <div class='note-box'><p>WATCHOUT does not support in-place update of an existing fixture asset from a new GDTF file. Deleting and re-importing is the correct workflow.
 </p></div>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Match the GDTF revision to the firmware version.</strong> Fixture manufacturers sometimes update GDTF files when firmware changes the channel layout. Confirm that the GDTF revision matches the firmware installed on the physical unit.</li>
@@ -1151,7 +1151,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1162,7 +1162,7 @@
 <tr><td>Mode list is shorter than expected</td><td>Only some modes from the GDTF file were imported</td><td>WATCHOUT imports all modes in the file — if a mode is missing, it may be defined as a variant that requires a specific GDTF revision; check the GDTF file's revision history</td></tr>
 </table>
 
-<h3>See Also</h3>
+<h3 id="see-also">See Also</h3>
 
 <ul>
 <li><a href="../05-timeline-and-cues/artnet-fixture-cues.html">ArtNet Fixture Cues</a> — placing fixture assets on the timeline, addressing, tween automation, and recording</li>
@@ -1190,7 +1190,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

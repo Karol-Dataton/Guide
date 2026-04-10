@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Asset Manager Settings</h2>
+                    <div class="section-content-body"><h2 id="asset-manager-settings">Asset Manager Settings</h2>
 
 <p><strong>The Asset Manager Settings dialog is the central control point for how assets are optimized, what codecs are used, and how transfers are throttled.</strong> Changes here affect every future optimization — they determine the file size, visual quality, playback performance, and alpha channel support of every asset in your show. Open the dialog by right-clicking in the Assets window and choosing <strong>Asset Manager Settings</strong>.</p>
 
 <p><!-- screenshot: Asset Manager Settings dialog showing all sections --></p>
 
-<h3>When to Change Settings</h3>
+<h3 id="when-to-change-settings">When to Change Settings</h3>
 
 <p>Most shows work well with the default settings. Consider changing them when:</p>
 
@@ -1061,7 +1061,7 @@
 
 </ul>
 
-<h3>Bandwidth Limit</h3>
+<h3 id="bandwidth-limit">Bandwidth Limit</h3>
 
 <p>The <strong>Bandwidth Limit</strong> setting caps the data rate (in Mbit/s) used when transferring optimized assets to display servers (Runners).</p>
 
@@ -1073,7 +1073,7 @@
 
 <p>Use a bandwidth limit when WATCHOUT shares the network with other traffic (lighting control, audio, show control, internet access). On a dedicated WATCHOUT network, leave it at 0 for the fastest possible transfers. See <a href="asset-transfer.html">Asset Transfer</a> for more on optimizing transfer performance.</p>
 
-<h3>Track Management</h3>
+<h3 id="track-management">Track Management</h3>
 
 <p>The <strong>Track Management</strong> section controls how the optimizer handles source files that contain both video and audio tracks (e.g., an <code>.mp4</code> with a stereo audio track). The <strong>Composition Logic</strong> dropdown provides four options:</p>
 
@@ -1090,7 +1090,7 @@
 <div class='note-box'><p>When <strong>Composition</strong> mode is selected, the optimizer creates a composition folder in the Assets window containing separate video and audio sub-assets linked by a <code>composition.json</code> file. The composition appears on the timeline as a single asset, but its components can be inspected individually in the Assets window. See <a href="asset-types.html">Asset Types</a> for more on compositions.
 </p></div>
 
-<h3>Output Properties (Quality Levels)</h3>
+<h3 id="output-properties-quality-levels">Output Properties (Quality Levels)</h3>
 
 <p>The <strong>Output Properties</strong> section lists codecs that support quality configuration. For each codec, you can set a <strong>Quality Level</strong> that controls the trade-off between visual fidelity and file size:</p>
 
@@ -1108,7 +1108,7 @@
 <div class='info-box'><p>Quality differences are most visible in content with fine detail, subtle gradients, and saturated colors. Test with representative show content before finalizing — a quality level that looks identical on a white-field test may show visible differences on real media.
 </p></div>
 
-<h3>Codec Mapping</h3>
+<h3 id="codec-mapping">Codec Mapping</h3>
 
 <p>The <strong>Codecs</strong> section shows the input-to-output codec mapping — the rules that determine what the optimizer converts each source codec into. This is the most impactful setting in the dialog.</p>
 
@@ -1123,7 +1123,7 @@
 <tr><td><strong>Reset All button</strong></td><td>Reverts every row to the system default mapping</td></tr>
 </table>
 
-<h4>Default Codec Mappings</h4>
+<h4 id="default-codec-mappings">Default Codec Mappings</h4>
 
 <p>The system default maps each source to a GPU-friendly output:</p>
 
@@ -1145,7 +1145,7 @@
 <div class='warning-box'><p>Codec mapping changes take effect only for <strong>future</strong> optimizations. Assets already optimized are not re-processed automatically. To re-optimize an existing asset with new settings, delete it and re-add the source file, or use the re-optimize command if available.
 </p></div>
 
-<h3>How Settings Interact</h3>
+<h3 id="how-settings-interact">How Settings Interact</h3>
 
 <p>The three main settings — bandwidth limit, track management, and codec mapping — operate independently but can have combined effects:</p>
 
@@ -1159,11 +1159,11 @@
 
 <p>For example: switching the HAP codec mapping from "Good" to "Best" quality produces larger files, which take longer to transfer — if you also have a bandwidth limit enabled, the transfer time increases proportionally.</p>
 
-<h3>Saving Changes</h3>
+<h3 id="saving-changes">Saving Changes</h3>
 
 <p>Click <strong>Save</strong> to apply the current settings. The <strong>Save</strong> button is only enabled when changes have been made. Click <strong>Cancel</strong> to discard changes and close the dialog.</p>
 
-<h3>Best Practices</h3>
+<h3 id="best-practices">Best Practices</h3>
 
 <ul>
 <li><strong>Set codec mappings before importing content.</strong> Once assets are optimized, changing the mapping does not retroactively update them. Set the desired mappings before your first import to avoid re-processing.</li>
@@ -1178,7 +1178,7 @@
 
 </ul>
 
-<h3>Troubleshooting</h3>
+<h3 id="troubleshooting">Troubleshooting</h3>
 
 <table>
 <tr><th>Problem</th><th>Cause</th><th>Fix</th></tr>
@@ -1209,7 +1209,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

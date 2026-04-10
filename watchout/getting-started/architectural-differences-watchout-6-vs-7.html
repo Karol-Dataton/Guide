@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Migrating from WATCHOUT 6</h2>
+                    <div class="section-content-body"><h2 id="migrating-from-watchout-6">Migrating from WATCHOUT 6</h2>
 
 <p>If you have been running shows with WATCHOUT 6, much of what you know still applies — timelines, cues, the Stage metaphor, and the general production workflow all carry forward. However, the underlying architecture changed significantly in WATCHOUT 7. This article maps the old concepts to the new ones so you can transfer your expertise without starting from scratch.</p>
 
-<h3>Overview</h3>
+<h3 id="overview">Overview</h3>
 
 <p>The table below is a quick cheat-sheet of the major shifts. Each row is expanded in the sections that follow.</p>
 
@@ -1062,7 +1062,7 @@
 <tr><td>Display software</td><td>Watchpoint</td><td>Runner</td></tr>
 </table>
 
-<h3>From Two Roles to Four Services</h3>
+<h3 id="from-two-roles-to-four-services">From Two Roles to Four Services</h3>
 
 <p>In WATCHOUT 6, the architecture was a straightforward master/slave model. The <strong>Production Computer</strong> ran the authoring application and controlled one or more <strong>Display Computers</strong> (Watchpoint). Two programs, two roles.</p>
 
@@ -1084,7 +1084,7 @@
 
 <p>See <a href="../09-network-setup/network-overview.html">Network Overview</a> for the full technical picture of how the services communicate.</p>
 
-<h3>Key Executables</h3>
+<h3 id="key-executables">Key Executables</h3>
 
 <p>Under the hood, WATCHOUT 7 is composed of specialized executables that are started and managed automatically. Understanding what each one does helps when troubleshooting or planning deployments.</p>
 
@@ -1107,7 +1107,7 @@
 
 <p>The <strong>Operative</strong> deserves special mention because it is the single entry point for all external control protocols. Rather than each protocol having its own standalone service, the Operative translates incoming OSC, ArtNet, and HTTP messages into WATCHOUT's unified variable system, and routes outgoing messages back to the appropriate protocol.</p>
 
-<h3>Deployment Configurations</h3>
+<h3 id="deployment-configurations">Deployment Configurations</h3>
 
 <p>Because the services are independent executables, you can distribute them across machines in whatever arrangement suits your production:</p>
 
@@ -1119,7 +1119,7 @@
 
 </ol>
 
-<h3>System Resilience</h3>
+<h3 id="system-resilience">System Resilience</h3>
 
 <p>The distributed design provides built-in fault tolerance:</p>
 
@@ -1131,7 +1131,7 @@
 
 </ul>
 
-<h3>Always Connected — No More Online/Offline</h3>
+<h3 id="always-connected-no-more-onlineoffline">Always Connected — No More Online/Offline</h3>
 
 <p>In WATCHOUT 6, you worked <strong>offline</strong> by default. You staged your edits, previewed locally, and then explicitly chose <strong>Go Online</strong> to push changes to the display computers. This two-step workflow gave you a safety net — nothing was live until you said so.</p>
 
@@ -1150,7 +1150,7 @@
 
 <p>For more detail, see <a href="../07-playback/going-online.html">Going Online</a>.</p>
 
-<h3>Centralized Asset Management</h3>
+<h3 id="centralized-asset-management">Centralized Asset Management</h3>
 
 <p>In WATCHOUT 6, media management was manual. You placed files directly on each display computer's hard drive or pointed to a network share. Keeping files in sync across multiple machines was your responsibility.</p>
 
@@ -1168,13 +1168,13 @@
 
 <p>See <a href="../04-assets-asset-manager/asset-manager.html">Asset Manager</a> for full documentation.</p>
 
-<h3>Show File Format</h3>
+<h3 id="show-file-format">Show File Format</h3>
 
 <p>WATCHOUT 6 used a proprietary show file format. WATCHOUT 7 also uses <code>.watch</code> files, but the content model is different: a <code>.watch</code> file stores display configurations, timeline data, and cue definitions — <strong>not media</strong>. All media lives in the Asset Manager.</p>
 
 <p>There is no automatic import or conversion path from WATCHOUT 6 show files to WATCHOUT 7. Shows must be rebuilt in the new system.</p>
 
-<h3>Network Discovery and Failover</h3>
+<h3 id="network-discovery-and-failover">Network Discovery and Failover</h3>
 
 <p>In WATCHOUT 6, display computers were configured by IP address. You typed in the IP of each Watchpoint and the Production Computer connected directly.</p>
 
@@ -1184,7 +1184,7 @@
 
 <p>See <a href="../09-network-setup/network-overview.html">Network Overview</a> for subnet, VLAN, and switch configuration details.</p>
 
-<h3>External Control and Protocols</h3>
+<h3 id="external-control-and-protocols">External Control and Protocols</h3>
 
 <p>In WATCHOUT 6, external control used a text-based TCP protocol on ports 3039 (production) and 3040 (display). Control systems sent direct commands like <code>run</code>, <code>halt</code>, <code>load</code>, and <code>gotoControlCue</code>.</p>
 
@@ -1211,7 +1211,7 @@
 
 <p>See <a href="../10-external-control/watchout-6-protocol.html">WATCHOUT 6 Protocol</a> and <a href="../10-external-control/external-control-overview.html">External Control Overview</a> for the full reference.</p>
 
-<h3>Keyboard and Playback Behavior</h3>
+<h3 id="keyboard-and-playback-behavior">Keyboard and Playback Behavior</h3>
 
 <p>In WATCHOUT 6, pressing <strong>Space</strong> targeted the last active timeline. In WATCHOUT 7, Space targets the <strong>currently selected</strong> timeline. If you are used to the old behavior, enable <strong>Legacy Keyboard Mode</strong> from the Edit menu.</p>
 
@@ -1225,7 +1225,7 @@
 
 <p>See <a href="../07-playback/starting-and-stopping.html">Starting and Stopping</a> for the full playback reference.</p>
 
-<h3>Running Both Versions</h3>
+<h3 id="running-both-versions">Running Both Versions</h3>
 
 <p>If you need to switch between WATCHOUT 6 and WATCHOUT 7 on WATCHPAX hardware, you can do so from Producer's <strong>Nodes</strong> window using the <strong>Switch to WATCHOUT 6</strong> command. This triggers a full machine reboot and requires that WATCHOUT 6 is pre-installed on the node.</p>
 
@@ -1252,7 +1252,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

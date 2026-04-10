@@ -1043,15 +1043,15 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Launching the Application</h2>
+                    <div class="section-content-body"><h2 id="launching-the-application">Launching the Application</h2>
 
 <p>Once WATCHOUT is installed, you are ready to launch the software. How you launch it depends on whether you are working on the Production Computer (designing) or a Display Computer (playback).</p>
 
-<h3>On the Production Computer</h3>
+<h3 id="on-the-production-computer">On the Production Computer</h3>
 
 <p>Launch <strong>WATCHOUT Producer</strong> from the desktop shortcut or Start Menu.</p>
 
-<h4>The Welcome Screen</h4>
+<h4 id="the-welcome-screen">The Welcome Screen</h4>
 Upon first launch, you are greeted by the Welcome Screen, which serves as your project hub:
 
 <ul>
@@ -1063,10 +1063,10 @@ Upon first launch, you are greeted by the Welcome Screen, which serves as your p
 
 </ul>
 
-<h4>Layout Presets</h4>
+<h4 id="layout-presets">Layout Presets</h4>
 WATCHOUT 7 allows you to save and load custom layout presets. You can save up to 9 layout presets and quickly switch between them using keyboard shortcuts or the Window menu. Use <strong>Reset Layout</strong> from the Window menu to return to the default layout.
 
-<h3>On Display Computers</h3>
+<h3 id="on-display-computers">On Display Computers</h3>
 
 <p>On your media servers, launch the <strong>WATCHOUT Manager</strong> to start playback services.</p>
 
@@ -1080,84 +1080,30 @@ WATCHOUT 7 allows you to save and load custom layout presets. You can save up to
 
 <p>The WATCHOUT Manager coordinates multiple background services including the Director, Runner, and Visual Renderer components that work together to deliver synchronized playback.</p>
 
-<h4>Configuring Auto-Launch</h4>
+<h4 id="configuring-auto-launch">Configuring Auto-Launch</h4>
 
 <p>For permanent installations, it is critical that WATCHOUT starts automatically when the computer boots. This ensures the system recovers automatically after a power cycle.</p>
 
-<p><strong>Using Windows Task Scheduler (Recommended):</strong></p>
+<p><strong>Using the WATCHOUT Manager Tray Icon:</strong></p>
 
 <ol>
-<li><strong>Open Task Scheduler:</strong></li>
-</ol>
-
-<ul>
-<li>Press <code>Windows Key</code>, type <strong>Task Scheduler</strong>, and press <strong>Enter</strong>.</li>
-<li>Alternatively, press <code>Windows Key + R</code>, type <code>taskschd.msc</code>, and press <strong>Enter</strong>.</li>
-
-</ul>
-
-<ol>
-<li><strong>Import the Task File:</strong></li>
-</ol>
-
-<ul>
-<li>In the right-hand <strong>Actions</strong> panel, click <strong>Import Task...</strong>.</li>
-<li>Navigate to your WATCHOUT installation directory (e.g., <code>C:\WATCHOUT7\</code>).</li>
-<li>Select the file <code>wo-autostart.xml</code> and click <strong>Open</strong>.</li>
-
-</ul>
-
-<ol>
-<li><strong>Review Task Settings:</strong></li>
-</ol>
-
-<ul>
-<li>A dialog will appear showing the task configuration.</li>
-<li>On the <strong>General</strong> tab, ensure <strong>Run with highest privileges</strong> is checked.</li>
-<li>On the <strong>Triggers</strong> tab, verify the trigger is set to <strong>At log on</strong>.</li>
-<li>On the <strong>Actions</strong> tab, confirm the action points to <code>C:\WATCHOUT7\process-manager.exe</code> (adjust if you installed elsewhere).</li>
-
-</ul>
-
-<ol>
-<li><strong>Save the Task:</strong></li>
-</ol>
-
-<ul>
-<li>Click <strong>OK</strong> to create the scheduled task.</li>
-<li>If prompted for credentials, enter your Windows username and password.</li>
-
-</ul>
-
-<ol>
-<li><strong>Verify:</strong> Restart the computer to confirm that WATCHOUT Manager launches automatically upon login.</li>
+<li>Launch <strong>WATCHOUT Manager</strong> from the desktop shortcut.</li>
+<li>Click the <strong>WATCHOUT Manager</strong> icon in the Windows system tray (notification area).</li>
+<li>Check the <strong>Auto Start</strong> option.</li>
+<li>This configures WATCHOUT Manager to automatically start with administrator privileges when you log in.</li>
 
 </ol>
 
-<div class='info-box'><p><strong>Managing the Task:</strong> To edit or delete the task later, open Task Scheduler and look for the task named <strong>WATCHOUT manager</strong> under <em>Task Scheduler Library > WATCHOUT</em>.
-</p></div>
+<p>To disable auto-launch, click the tray icon again and uncheck <strong>Auto Start</strong>.</p>
 
-<p><strong>Using <code>schtasks.exe</code> from the Command Line (Alternative):</strong></p>
+<p><strong>Using the Installer:</strong></p>
 
-<p>If you prefer a CLI approach or need to script autostart configuration, you can import the task file using the <code>schtasks.exe</code> command:</p>
-
-<pre><code class="language-cmd">schtasks.exe /Create /XML &quot;C:\WATCHOUT7\wo-autostart.xml&quot; /TN &quot;WATCHOUT\WATCHOUT manager&quot;</code></pre>
-
-<p>To verify the task was created:</p>
-
-<pre><code class="language-cmd">schtasks.exe /Query /TN &quot;WATCHOUT\WATCHOUT manager&quot;</code></pre>
-
-<p>To delete the task:</p>
-
-<pre><code class="language-cmd">schtasks.exe /Delete /TN &quot;WATCHOUT\WATCHOUT manager&quot; /F</code></pre>
-
-<div class='info-box'><p>Run the command prompt as Administrator if you encounter permission errors. The <code>/TN</code> (Task Name) path must match the task folder structure used by the XML file.
-</p></div>
+<p>During installation, select the optional <strong>Auto Start</strong> component to enable auto-launch immediately.</p>
 
 <div class='info-box'><p><strong>Auto-Login:</strong> Ensure your Windows user account is configured to log in automatically without a password prompt. This can be configured using the <code>netplwiz</code> Windows utility.
 </p></div>
 
-<h3>Troubleshooting Launch Issues</h3>
+<h3 id="troubleshooting-launch-issues">Troubleshooting Launch Issues</h3>
 
 <p>If the application fails to launch:</p>
 
@@ -1187,7 +1133,7 @@ WATCHOUT 7 allows you to save and load custom layout presets. You can save up to
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

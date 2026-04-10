@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Connecting to Display Servers</h2>
+                    <div class="section-content-body"><h2 id="connecting-to-display-servers">Connecting to Display Servers</h2>
 
 <p>A WATCHOUT system becomes a multi-machine installation when Producer connects to one or more display servers (Runners) through a Director. The Nodes window is your central interface for discovering machines on the network, verifying their services, assigning roles, and monitoring system health. Before you can run a show across multiple outputs, you need to confirm that all nodes are visible, that the correct services are running on each machine, and that your display assignments match the physical hardware. This article covers the complete process from network discovery through to a fully connected, verified system.</p>
 
-<h3>System Architecture Overview</h3>
+<h3 id="system-architecture-overview">System Architecture Overview</h3>
 
 <p>WATCHOUT's networked playback involves three key services that run on machines across your network:</p>
 
@@ -1060,7 +1060,7 @@
 
 <p>Producer is the authoring application where you build and control your show. It connects to both the Director (for playback control) and the Asset Manager (for asset management). The Director then broadcasts playback state to all Runners in real time.</p>
 
-<h3>The Nodes Window</h3>
+<h3 id="the-nodes-window">The Nodes Window</h3>
 
 <p>The Nodes window is your primary interface for managing the machines in your WATCHOUT system. Open it from <strong>Window > Nodes</strong>.</p>
 
@@ -1072,7 +1072,7 @@
 
 </ul>
 
-<h4>Node List Filters</h4>
+<h4 id="node-list-filters">Node List Filters</h4>
 
 <p>The node list supports three filter modes to help you focus on relevant machines:</p>
 
@@ -1085,7 +1085,7 @@
 
 <p>Use <strong>Active in Show</strong> during operation to focus on the machines that matter. Switch to <strong>All</strong> when troubleshooting to see if a missing machine is visible on the network but not yet assigned to your show.</p>
 
-<h4>Node Information Display</h4>
+<h4 id="node-information-display">Node Information Display</h4>
 
 <p>Each node in the list shows:</p>
 
@@ -1098,7 +1098,7 @@
 
 </ul>
 
-<h4>Status Warnings</h4>
+<h4 id="status-warnings">Status Warnings</h4>
 
 <p>The Nodes window displays visual warnings for common problems:</p>
 
@@ -1108,7 +1108,7 @@
 <tr><td><strong>Multi-show warning</strong></td><td>The Director and a Runner have different shows loaded</td><td>Ensure all nodes are running the same show — use the Director to load the correct show on all Runners</td></tr>
 </table>
 
-<h3>Node Discovery</h3>
+<h3 id="node-discovery">Node Discovery</h3>
 
 <p>WATCHOUT automatically discovers nodes on the network using UDP multicast. When a machine running WATCHOUT services is on the same network as Producer, it should appear in the Nodes window within a few seconds.</p>
 
@@ -1124,11 +1124,11 @@
 <div class='note-box'><p>Automatic discovery relies on multicast networking. If your network infrastructure blocks multicast (some managed switches, VLANs without multicast routing, or cloud/virtual networks), nodes will not appear automatically. Consult your network administrator to ensure multicast is enabled on the relevant network segments.
 </p></div>
 
-<h3>Assigning Services to Nodes</h3>
+<h3 id="assigning-services-to-nodes">Assigning Services to Nodes</h3>
 
 <p>Once nodes are visible in the Nodes window, you need to assign the Director and Asset Manager roles to specific machines. Runners are typically configured at the node level and do not need to be explicitly assigned from Producer.</p>
 
-<h4>Setting Up the Director</h4>
+<h4 id="setting-up-the-director">Setting Up the Director</h4>
 
 <p>Right-click a node in the Nodes window and choose <strong>Use Director</strong> to designate that machine as the Director for your show. The show configuration stores this assignment, so it persists across sessions.</p>
 
@@ -1136,17 +1136,17 @@
 
 <p>To disconnect from a Director, right-click the Director node and choose <strong>Close Director</strong>.</p>
 
-<h4>Setting Up the Asset Manager</h4>
+<h4 id="setting-up-the-asset-manager">Setting Up the Asset Manager</h4>
 
 <p>Right-click a node and choose <strong>Use Asset Manager</strong> to designate it as the asset distribution point for your show. Runners automatically connect to the Asset Manager to download any media files they need.</p>
 
 <p>To disconnect, right-click and choose <strong>Close Asset Manager</strong>.</p>
 
-<h4>Display Assignment</h4>
+<h4 id="display-assignment">Display Assignment</h4>
 
 <p>Each display in your show must be assigned to a specific host — the machine whose Runner will render and output that display. This assignment is made in the display's properties (see <a href="../03-displays-and-outputs/display-outputs.html">Display Outputs</a>). The host reference in the display properties must match the host name of the intended Runner node.</p>
 
-<h3>Node Detail View</h3>
+<h3 id="node-detail-view">Node Detail View</h3>
 
 <p>Selecting a node in the list opens its detail view in the right panel. This view provides comprehensive information about the machine:</p>
 
@@ -1182,7 +1182,7 @@
 
 </ul>
 
-<h3>Node Metrics Dashboard</h3>
+<h3 id="node-metrics-dashboard">Node Metrics Dashboard</h3>
 
 <p>When multiple nodes are selected (or when switching to the metrics view), the right panel shows a multi-node dashboard with comparative charts for:</p>
 
@@ -1198,7 +1198,7 @@
 
 <p>This dashboard is invaluable during rehearsal and show operation for identifying which machines are under stress and whether any Runner is struggling to maintain frame rate.</p>
 
-<h3>Node Context Menu Operations</h3>
+<h3 id="node-context-menu-operations">Node Context Menu Operations</h3>
 
 <p>Right-clicking a node provides access to several categories of operations:</p>
 
@@ -1218,7 +1218,7 @@
 
 </ul>
 
-<h3>Connection Verification Workflow</h3>
+<h3 id="connection-verification-workflow">Connection Verification Workflow</h3>
 
 <p>After setting up your nodes, follow this process to verify that the system is fully connected and ready:</p>
 
@@ -1241,7 +1241,7 @@
 
 </ol>
 
-<h3>Troubleshooting Missing Nodes</h3>
+<h3 id="troubleshooting-missing-nodes">Troubleshooting Missing Nodes</h3>
 
 <p>If a node does not appear in the Nodes window:</p>
 
@@ -1258,7 +1258,7 @@
 <div class='warning-box'><p>Duplicate host names are a common source of connection problems. If two machines share the same host name, the system cannot reliably distinguish between them, which can cause displays to connect to the wrong Runner or control commands to reach the wrong node. Always ensure every machine in your WATCHOUT network has a unique name.
 </p></div>
 
-<h3>Menu Bar Status Indicators</h3>
+<h3 id="menu-bar-status-indicators">Menu Bar Status Indicators</h3>
 
 <p>The Producer menu bar provides at-a-glance status information about your network connections:</p>
 
@@ -1273,7 +1273,7 @@
 
 <p>Monitor these indicators during setup and operation. The message bell in particular can surface problems that are not immediately visible in the Nodes window, such as network timeouts, asset transfer failures, or Runner errors.</p>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li>For details on display configuration and host assignment, see <a href="../03-displays-and-outputs/display-outputs.html">Display Outputs</a>.</li>
@@ -1302,7 +1302,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

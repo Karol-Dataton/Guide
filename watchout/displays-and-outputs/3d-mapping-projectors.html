@@ -1043,15 +1043,15 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>3D Mapping Projectors</h2>
+                    <div class="section-content-body"><h2 id="3d-mapping-projectors">3D Mapping Projectors</h2>
 
 <p><strong>3D projectors</strong> are used to project media content onto real-world three-dimensional surfaces such as buildings, stage sets, sculptures, and other irregular shapes. Unlike standard flat display outputs, 3D projectors allow content to wrap around and conform to the physical geometry of a surface, so that imagery appears correctly aligned and undistorted when viewed in the real environment. This makes them essential for architectural projection mapping, immersive stage design, and any application where projected content must match a non-flat surface.</p>
 
-<h3>What is 3D Mapping?</h3>
+<h3 id="what-is-3d-mapping">What is 3D Mapping?</h3>
 
 <p>3D mapping is the process of aligning a projector's output to the contours of a real-world surface so that projected content appears geometrically correct. Because physical surfaces are rarely flat or perfectly perpendicular to the projector, the software must account for the shape of the target surface, the projector's physical position and orientation, and the characteristics of the projector's lens. WATCHOUT models each projector as a virtual camera with a projection frustum. By matching this virtual frustum to the real projector's placement and lens properties, content can be warped and positioned so that it maps accurately onto the physical surface.</p>
 
-<h3>What is Required</h3>
+<h3 id="what-is-required">What is Required</h3>
 
 <p>To use 3D mapping projectors in WATCHOUT, the following are needed:</p>
 
@@ -1064,7 +1064,7 @@
 
 </ul>
 
-<h3>Core Projector Parameters</h3>
+<h3 id="core-projector-parameters">Core Projector Parameters</h3>
 
 <p>These parameters define the projection frustum — the 3D volume that the projector illuminates. Together they tell WATCHOUT exactly how to warp content so it maps correctly onto the target surface.</p>
 
@@ -1644,11 +1644,11 @@
     })();
 </script>
 
-<h3>Projector Camera Mode</h3>
+<h3 id="projector-camera-mode">Projector Camera Mode</h3>
 
 <p>Switch Stage camera mode to <strong>Projector</strong> for alignment work. WATCHOUT supports calibration workflows with virtual/reality points and continuous/manual calibration behavior.</p>
 
-<h3>3D Calibration</h3>
+<h3 id="3d-calibration">3D Calibration</h3>
 
 <p>3D mapping in WATCHOUT is achieved through 3D calibration. Calibration establishes the correspondence between virtual points (defined in the software's coordinate space) and reality points (physical locations on the target surface). By providing a sufficient number of these point pairs, WATCHOUT can compute the precise transformation needed to warp the projected image so that it aligns with the real-world geometry.</p>
 
@@ -1657,7 +1657,7 @@
 <div class='warning-box'><p>Projector calibration in 2D reality mode requires at least six virtual points before editing reality points.
 </p></div>
 
-<h3>Operational Notes</h3>
+<h3 id="operational-notes">Operational Notes</h3>
 
 <ul>
 <li><strong>No automatic edge blending</strong> — unlike standard Display objects, 3D Projectors do not receive automatic soft-edge blending when they overlap on the stage. To manage overlapping projection areas, use manual masking. See <a href="display-masks.html">Display Masks</a>.</li>
@@ -1685,7 +1685,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

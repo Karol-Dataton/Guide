@@ -1043,13 +1043,13 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>SDI Output</h2>
+                    <div class="section-content-body"><h2 id="sdi-output">SDI Output</h2>
 
 <p><strong>SDI (Serial Digital Interface)</strong> is a professional video transport standard used widely in broadcast, live event, and AV installation environments. In WATCHOUT, SDI is one of the four display output types alongside GPU, NDI, and Virtual. Choosing SDI routes the rendered display output through a dedicated SDI capture/output card installed in the Runner node, delivering an uncompressed digital video signal over coaxial BNC cabling.</p>
 
 <p>SDI is the right choice when your downstream equipment — video switchers, LED processors, recording systems, or broadcast infrastructure — expects a baseband SDI signal rather than a direct GPU output or network-based stream.</p>
 
-<h3>Configuring an SDI Display</h3>
+<h3 id="configuring-an-sdi-display">Configuring an SDI Display</h3>
 
 <p>To set up a display for SDI output:</p>
 
@@ -1062,7 +1062,7 @@
 
 </ol>
 
-<h3>SDI Link Types</h3>
+<h3 id="sdi-link-types">SDI Link Types</h3>
 
 <p>The link type determines how many physical SDI connections are used to transport a single display's output. Higher resolutions and frame rates require more bandwidth than a single SDI link can carry, so multiple links are bonded together:</p>
 
@@ -1074,13 +1074,13 @@
 
 </ul>
 
-<h3>Channel Assignment</h3>
+<h3 id="channel-assignment">Channel Assignment</h3>
 
 <p>The <strong>Channel</strong> property identifies which physical output port on the SDI card is used for this display. Channel numbering starts at 1 and maps directly to the hardware connectors. If your Runner node has a card with four SDI outputs, channels 1–4 correspond to those four BNC connectors.</p>
 
 <p>When using dual-link or quad-link modes, the channel number refers to the first connector in the group — the card automatically bonds the required number of adjacent outputs.</p>
 
-<h3>Color and Signal Settings</h3>
+<h3 id="color-and-signal-settings">Color and Signal Settings</h3>
 
 <p>SDI output in WATCHOUT uses the following signal characteristics:</p>
 
@@ -1091,11 +1091,11 @@
 
 </ul>
 
-<h3>Max Quality Mode</h3>
+<h3 id="max-quality-mode">Max Quality Mode</h3>
 
 <p>The <strong>Render with maximum quality</strong> toggle selects a higher-precision intermediate rendering format. When enabled, the internal render buffer uses 16-bit floating-point (RGBA16F) instead of the default 11/11/10-bit packed float (R11F_G11F_B10F). This can reduce banding artifacts in gradients and subtle color transitions, at the cost of slightly higher GPU memory usage. Enable this when the content demands it — particularly for HDR-mastered material or content with extensive color grading.</p>
 
-<h3>Genlock</h3>
+<h3 id="genlock">Genlock</h3>
 
 <p>In multi-display SDI environments, frame-accurate synchronization is critical to prevent tearing or timing mismatches between outputs. WATCHOUT supports <strong>SDI Genlock</strong>, which locks the frame output timing of SDI displays to an external reference signal (typically blackburst or tri-level sync).</p>
 
@@ -1112,7 +1112,7 @@
 
 <p>Genlock ensures that all Runner nodes with SDI outputs deliver frames at precisely the same time, which is essential for seamless multi-projector arrays, LED wall setups, and broadcast environments where downstream equipment expects time-aligned signals.</p>
 
-<h3>Frame Delay</h3>
+<h3 id="frame-delay">Frame Delay</h3>
 
 <p>The <strong>Delay Frames</strong> setting (0–10 frames) adds a configurable output delay to the display. Each frame of delay adds one additional frame buffer to the rendering pipeline before the pixels are sent to the SDI output.</p>
 
@@ -1120,7 +1120,7 @@
 
 <p>The delay buffer is allocated at initialization — the SDI output always maintains (delay + 1) render target buffers in a ring, presenting the oldest completed frame while rendering into the newest.</p>
 
-<h3>Hardware Requirements</h3>
+<h3 id="hardware-requirements">Hardware Requirements</h3>
 
 <p>SDI output in WATCHOUT requires a <strong>Deltacast</strong> SDI capture/output card installed in the Runner node. The system uses both the Deltacast SDK for stream management and the Deltacast GPU SDK for zero-copy texture transfer between the GPU render pipeline and the SDI output.</p>
 
@@ -1157,7 +1157,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

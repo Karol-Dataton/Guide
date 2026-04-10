@@ -1043,11 +1043,11 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Running Your Show</h2>
+                    <div class="section-content-body"><h2 id="running-your-show">Running Your Show</h2>
 
 <p>Running a show reliably is about establishing repeatable procedures that you follow before, during, and after every performance. WATCHOUT provides a range of tools for automating multi-timeline playback, coordinating complex sequences, and monitoring system health in real time. This article covers everything from pre-show preparation through live operation to post-show procedures, including the automation features — control cues, timeline triggers, and auto-run — that make complex shows manageable.</p>
 
-<h3>Pre-Show Checklist</h3>
+<h3 id="pre-show-checklist">Pre-Show Checklist</h3>
 
 <p>Before every performance, work through this checklist systematically. Skipping steps under time pressure is how shows fail.</p>
 
@@ -1072,7 +1072,7 @@
 
 </ol>
 
-<h3>Auto Run</h3>
+<h3 id="auto-run">Auto Run</h3>
 
 <p>When <strong>Auto Run</strong> is enabled on a timeline, that timeline automatically begins playing as soon as the show is loaded by the Director. This is configured per-timeline in the timeline properties.</p>
 
@@ -1090,11 +1090,11 @@
 
 <p>To set Auto Run, select the timeline and enable <strong>Auto Run</strong> in the timeline properties panel.</p>
 
-<h3>Control Cues</h3>
+<h3 id="control-cues">Control Cues</h3>
 
 <p>Control cues are special cues placed on a timeline that can start, stop, or pause other timelines. They are the primary mechanism for building complex, multi-timeline sequences that execute automatically as a timeline plays.</p>
 
-<h4>Adding Control Cues</h4>
+<h4 id="adding-control-cues">Adding Control Cues</h4>
 
 <ul>
 <li><strong>Ctrl+P</strong> / <strong>Cmd+P</strong> — add a Play control cue at the current play cursor position</li>
@@ -1103,7 +1103,7 @@
 
 </ul>
 
-<h4>Control Cue Properties</h4>
+<h4 id="control-cue-properties">Control Cue Properties</h4>
 
 <p>Each control cue has three key settings:</p>
 
@@ -1113,7 +1113,7 @@
 
 <p><strong>Target</strong> — which timelines the control cue affects: <table> <tr><th>Target Mode</th><th>Scope</th></tr> <tr><td><strong>This</strong></td><td>The timeline that contains the control cue (useful for self-stopping or self-looping timelines)</td></tr> <tr><td><strong>Specific timelines</strong></td><td>One or more named timelines</td></tr> <tr><td><strong>All</strong></td><td>All timelines in the show (with optional exclusions)</td></tr> <tr><td><strong>List</strong></td><td>A specified list of timelines and/or folders</td></tr> </table></p>
 
-<h4>Common Control Cue Patterns</h4>
+<h4 id="common-control-cue-patterns">Common Control Cue Patterns</h4>
 
 <p><strong>Sequential scenes:</strong> A master timeline with control cues that start each scene's timeline in sequence, with appropriate jump-to-time settings so each scene begins from its start.</p>
 
@@ -1123,7 +1123,7 @@
 
 <p><strong>Cue-based navigation:</strong> Control cues that jump other timelines to named cues, allowing a single master timeline to drive non-linear navigation through the show.</p>
 
-<h3>Timeline Triggers</h3>
+<h3 id="timeline-triggers">Timeline Triggers</h3>
 
 <p>Timelines support three expression-based triggers that can automatically change their playback state based on show variables:</p>
 
@@ -1147,11 +1147,11 @@
 
 <p>Configure triggers in the timeline properties panel under <strong>Play Expression</strong>, <strong>Pause Expression</strong>, and <strong>Stop Expression</strong>.</p>
 
-<h3>Monitoring During the Show</h3>
+<h3 id="monitoring-during-the-show">Monitoring During the Show</h3>
 
 <p>During live operation, keep these monitoring tools active:</p>
 
-<h4>Menu Bar Indicators</h4>
+<h4 id="menu-bar-indicators">Menu Bar Indicators</h4>
 
 <p>The Producer menu bar provides real-time status at a glance:</p>
 
@@ -1164,7 +1164,7 @@
 
 </ul>
 
-<h4>Node Metrics Dashboard</h4>
+<h4 id="node-metrics-dashboard">Node Metrics Dashboard</h4>
 
 <p>The Node Metrics dashboard (<strong>Nodes</strong> window, metrics view) shows real-time charts for CPU, GPU, memory, network, drive activity, and render performance across all Runner nodes. During a show, watch for:</p>
 
@@ -1175,11 +1175,11 @@
 
 </ul>
 
-<h4>Cue List Window</h4>
+<h4 id="cue-list-window">Cue List Window</h4>
 
 <p>The Cue List window provides a timeline-independent view of all cues in the show, useful for monitoring which cues are active and verifying that cue sequencing is proceeding as expected.</p>
 
-<h3>Auto-Save</h3>
+<h3 id="auto-save">Auto-Save</h3>
 
 <p>WATCHOUT automatically saves the show at regular intervals during operation. Auto-save files are stored in a dedicated directory and can be accessed from <strong>Help > Open Auto-Saves Directory</strong>. The system keeps recent auto-save files and removes the oldest ones as new saves are made.</p>
 
@@ -1193,7 +1193,7 @@
 
 </ul>
 
-<h3>Handling Problems During a Show</h3>
+<h3 id="handling-problems-during-a-show">Handling Problems During a Show</h3>
 
 <p>Even with thorough preparation, issues can arise during live performance. Here are common scenarios and recovery approaches:</p>
 
@@ -1211,7 +1211,7 @@
 <div class='warning-box'><p>Avoid editing running timelines during a live show unless absolutely necessary. The blind edit warning exists for a reason — changes to cues on a running timeline can produce unexpected visual results. If you must make a correction, prefer stopping or pausing the timeline first, making the change, and then restarting.
 </p></div>
 
-<h3>Live Operation Best Practices</h3>
+<h3 id="live-operation-best-practices">Live Operation Best Practices</h3>
 
 <ul>
 <li><strong>Follow a fixed procedure.</strong> Establish a pre-show, show, and post-show routine and follow it every time. Consistency prevents errors.</li>
@@ -1224,7 +1224,7 @@
 
 </ul>
 
-<h3>Post-Show Procedures</h3>
+<h3 id="post-show-procedures">Post-Show Procedures</h3>
 
 <p>After the performance:</p>
 
@@ -1241,7 +1241,7 @@
 
 </ol>
 
-<h3>Relationship to Other Articles</h3>
+<h3 id="relationship-to-other-articles">Relationship to Other Articles</h3>
 
 <ul>
 <li>For playback controls (run, pause, stop, keyboard shortcuts), see <a href="starting-and-stopping.html">Starting and Stopping</a>.</li>
@@ -1270,7 +1270,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>

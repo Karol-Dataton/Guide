@@ -1043,19 +1043,19 @@
 
             <article class="content-body" id="content-body">
                 <div class="section-content" style="display: block;">
-                    <div class="section-content-body"><h2>Tween Expressions</h2>
+                    <div class="section-content-body"><h2 id="tween-expressions">Tween Expressions</h2>
 
 <p>Tween expressions allow any tween property — position, opacity, scale, color adjustments, and more — to be driven dynamically by a mathematical expression instead of relying solely on static keyframe values. Expressions are evaluated at runtime on every frame, making tween values responsive to show variables, external inputs, and mathematical functions.</p>
 
 <p>This is one of the most powerful features in WATCHOUT for creating interactive, data-driven, and externally controllable presentations.</p>
 
-<h3>How Expressions Work</h3>
+<h3 id="how-expressions-work">How Expressions Work</h3>
 
 <p>Every tween in WATCHOUT has an <strong>expression field</strong> alongside its keyframe data. At runtime, the system first interpolates the keyframe curve at the current time to produce a base value called <code>tweenValue</code>. This value is then passed into the expression, which can transform, replace, or augment it.</p>
 
 <p>The expression language is a mathematical formula evaluator that supports standard arithmetic, mathematical functions, and variable references. The expression must resolve to a single numeric value, which becomes the final tween output for that frame.</p>
 
-<h3>Setting an Expression</h3>
+<h3 id="setting-an-expression">Setting an Expression</h3>
 
 <p>To add an expression to a tween:</p>
 
@@ -1077,7 +1077,7 @@
 
 <p>Leave the expression field at its default value (<code>tweenValue</code>) to pass the keyframe-interpolated value through unmodified.</p>
 
-<h3>The <code>tweenValue</code> Variable</h3>
+<h3 id="the-codetweenvaluecode-variable">The <code>tweenValue</code> Variable</h3>
 
 <p>The built-in variable <code>tweenValue</code> represents the keyframe-interpolated value at the current point in time. This is the default expression for all tweens — when the expression field contains <code>tweenValue</code> (or is empty), the tween behaves as if no expression is set, outputting the pure keyframe value.</p>
 
@@ -1092,7 +1092,7 @@
 
 <p>For position tweens, the same concept applies per axis: the X expression receives the X component of the interpolated position as <code>tweenValue</code>, the Y expression receives the Y component, and so on.</p>
 
-<h3>Expression Syntax</h3>
+<h3 id="expression-syntax">Expression Syntax</h3>
 
 <p>Expressions support standard mathematical syntax:</p>
 
@@ -1114,7 +1114,7 @@
 <div class='info-box'><p><strong>Division-by-zero safety.</strong> If an expression divides by a variable that could be zero, add a small safety offset to avoid undefined results. For example, use <code>tweenValue / (divisor + 0.0001)</code> or guard with a conditional: <code>if(divisor != 0, tweenValue / divisor, 0)</code>.
 </p></div>
 
-<h3>Variable References</h3>
+<h3 id="variable-references">Variable References</h3>
 
 <p>Expressions can reference <strong>show variables</strong> (defined in the Variables panel) by name. This is what makes expressions truly powerful: you can bind any tween property to an external input.</p>
 
@@ -1132,7 +1132,7 @@
 <div class='warning-box'><p>All variables referenced in an expression must exist in the show's Variables panel. If an expression references an unknown variable, it will produce an error. WATCHOUT validates expressions when they are entered and reports any unknown references.
 </p></div>
 
-<h3>Interaction with Keyframes</h3>
+<h3 id="interaction-with-keyframes">Interaction with Keyframes</h3>
 
 <p>Expressions and keyframes are not mutually exclusive — they work together:</p>
 
@@ -2185,7 +2185,7 @@
 })();
 </script>
 
-<h3>Practical Examples</h3>
+<h3 id="practical-examples">Practical Examples</h3>
 
 <p><strong>Externally controlled opacity:</strong> Set the Opacity tween expression to <code>oscFader1</code> where <code>oscFader1</code> is a show variable mapped to an OSC input. A lighting console or control surface can now directly control the cue's opacity in real time.</p>
 
@@ -2193,7 +2193,7 @@
 
 <p><strong>Scaled animation:</strong> Keyframe a position animation along a path, then set the expression to <code>tweenValue * intensity / 100</code> where <code>intensity</code> is a variable. The animation plays its keyframed path but the displacement is scaled by the external value.</p>
 
-<h3>Creative Application Examples</h3>
+<h3 id="creative-application-examples">Creative Application Examples</h3>
 
 <p><strong>Dynamic motion — horizontal oscillation:</strong> Use <code>centerX + sin(time <em> speed) </em> amplitude</code> as a Position X expression to create a smoothly oscillating element whose speed and range are controlled by show variables.</p>
 
@@ -2205,7 +2205,7 @@
 
 <p><strong>Interactive controls — ternary cross-fade:</strong> Toggle an element on or off based on a state variable: <code>isActive ? masterOpacity : 0</code>. This uses the ternary operator to select between two output values based on a condition.</p>
 
-<h3>Relationship to Timeline Expressions</h3>
+<h3 id="relationship-to-timeline-expressions">Relationship to Timeline Expressions</h3>
 
 <p>Tween expressions and <strong>timeline trigger expressions</strong> are different features that serve different purposes:</p>
 
@@ -2236,7 +2236,7 @@
             </article>
 
             <footer class="content-footer">
-                <p>WATCHOUT User Guide • Dataton Documentation • Generated March 2026</p>
+                <p>WATCHOUT User Guide • Dataton Documentation • Generated April 2026</p>
             </footer>
         </main>
     </div>
